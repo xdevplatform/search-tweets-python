@@ -1,5 +1,6 @@
 from functools import reduce
 import itertools as it
+import types
 import re
 import codecs
 import unicodedata
@@ -15,6 +16,7 @@ try:
 except ImportError:
     import json
 import requests
+
 
 GNIP_RESP_CODES = {
     '200': 'OK: The request was successful. The JSON response will be similar to the following:',
@@ -240,76 +242,39 @@ def gen_rule_payload(pt_rule, max_results=500,
     return json.dumps(payload) if stringify else payload
 
 
-def name_munger(input_rule):
-    """
-    Utility function to create a valid, friendly file name base
-    string from an input rule.
-
-    Args:
-        input_rule (str): a gnip query rule
-    """
-
-    if isinstance(input_rule, dict):
-        rule = input_rule["query"]
-
-    if isinstance(input_rule, str):
-        if input_rule.rfind("query") != -1:
-            rule = json.loads(input_rule)["query"]
-        else:
-            rule = input_rule
-
-    rule = re.sub(' +', '_', rule)
-    rule = rule.replace(':', '_')
-    rule = rule.replace('"', '_Q_')
-    rule = rule.replace('(', '_p_')
-    rule = rule.replace(')', '_p_')
-    file_name_prefix = (unicodedata
-                        .normalize("NFKD", rule[:42])
-                        .encode("ascii", "ignore")
-                        .decode()
-                       )
-    return file_name_prefix
-
-
-def write_ndjson(filename, data, append=False, passthrough_stream=False):
+def write_ndjson(filename, data_iterable, append=False, **kwargs):
     write_mode = "ab" if append else "wb"
-    if passthrough_stream:
-        print("initializing data writer with continued streaming")
-    else:
-        print("initializing data writer without streaming; will not return results")
-
     print("writing data to file {}".format(filename))
     with codecs.open(filename, write_mode, "utf-8") as outfile:
-        for item in data:
+        for item in data_iterable:
             outfile.write(json.dumps(item) + "\n")
-            if passthrough_stream:
-                yield item
+            yield item
 
 
-def write_result_stream(result_stream, results_per_file=None):
-    stream = result_stream.stream()
+def write_result_stream(result_stream, filename_prefix=None,
+                        results_per_file=None, **kwargs):
+    if isinstance(result_stream, types.GeneratorType):
+        stream = result_stream
+    else:
+        stream = result_stream.stream()
+
+    file_time_formatter = "%Y-%m-%dT%H:%M:%S"
+    if filename_prefix is None:
+        filename_prefix = "twitter_search_results"
 
     if results_per_file:
-        print("chunking result stream to files with {} results per file"
-              .format(results_per_file))
-        if isinstance(results_per_file, int):
-            chunked_stream = partition(stream, results_per_file, pad_none=True)
-            for chunk in chunked_stream:
-                chunk = filter(lambda x: x is not None, chunk)
-                curr_datetime = (datetime
-                                 .datetime
-                                 .utcnow()
-                                 .strftime("%Y%m%d%H%M%S"))
-                _filename = "{}_{}.json".format(curr_datetime,
-                                                name_munger(result_stream.rule_payload))
-                write_ndjson(_filename, chunk)
-
+        print("chunking result stream to files with {} tweets per file".format(results_per_file))
+        chunked_stream = partition(stream, results_per_file, pad_none=True)
+        for chunk in chunked_stream:
+            chunk = filter(lambda x: x is not None, chunk)
+            curr_datetime = datetime.datetime.utcnow().strftime(file_time_formatter)
+            _filename = "{}_{}.json".format(filename_prefix, curr_datetime)
+            yield from write_ndjson(_filename, chunk)
 
     else:
-        curr_datetime = datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
-        filename = "{}_{}.json".format(curr_datetime,
-                                       name_munger(result_stream.rule_payload))
-        write_ndjson(filename, stream)
+        curr_datetime = datetime.datetime.utcnow().strftime(file_time_formatter)
+        _filename = "{}.json".format(filename_prefix)
+        yield from write_ndjson(_filename, stream)
 
 
 def gen_params_from_config(config_dict):
@@ -318,6 +283,7 @@ def gen_params_from_config(config_dict):
                             config_dict["endpoint_label"],
                             config_dict.get("count_endpoint", None)
                            )
+
     rule = gen_rule_payload(pt_rule=config_dict["pt_rule"],
                             from_date=config_dict.get("from_date", None),
                             to_date=config_dict.get("to_date", None),
@@ -330,9 +296,16 @@ def gen_params_from_config(config_dict):
              "username": config_dict["username"],
              "password": config_dict["password"],
              "rule_payload": rule,
+             "results_per_file": int(config_dict.get("results_per_file")),
              "max_tweets": int(config_dict.get("max_tweets"))
             }
     return _dict
+
+
+def gen_filepath(config_dict):
+    parts = [i for i in [config_dict.get("output_file_path"),
+                         config_dict.get("output_file_prefix")]]
+    return os.path.join(*parts)
 
 
 def read_configfile(filename):
