@@ -5,6 +5,11 @@ import codecs
 import unicodedata
 import datetime
 import time
+import sys
+if sys.version_info.major == 2:
+    import ConfigParser as configparser
+else:
+    import configparser
 try:
     import ujson as json
 except ImportError:
@@ -22,6 +27,10 @@ GNIP_RESP_CODES = {
     '502': "Proxy Error: There was an error on Gnip's side. Retry your request using an exponential backoff pattern.",
     '503': "Service Unavailable: There was an error on Gnip's side. Retry your request using an exponential backoff pattern."
 }
+BASE_URL = "https://gnip-api.twitter.com/search/"
+BASE_ENDPOINT = "{api}/accounts/{account_name}/{label}"
+
+
 
 
 def take(n, iterable):
@@ -144,6 +153,44 @@ def convert_utc_time(datetime_str):
     return _date.strftime("%Y%m%d%H%M")
 
 
+def gen_endpoint(search_api, account_name, label, count_endpoint=False, **kwargs):
+    """
+    Creates the endpoint URL from discrete information.
+
+    Args:
+        search_api (str): the api to use, `30day` or `fullarchive`
+        account_name (str): the master account for the user
+        label (str): stream within an account to connect
+        count_endpoint (bool): defines using the Counts endpoint over the
+            default data endpoint.
+
+    Returns:
+        str: well-formed url for a connection.
+
+    Example:
+        >>> search_api = "30day"
+        >>> account_name = "montypython"
+        >>> endpoint_label = "python.json"
+        >>> gen_endpoint(search_api, account_name, endpoint_label, count_endpoint=False)
+        'https://gnip-api.twitter.com/search/30day/accounts/montypython/python.json'
+        >>> gen_endpoint(search_api, account_name, endpoint_label, count_endpoint=True)
+        'https://gnip-api.twitter.com/search/30day/accounts/montypython/python/counts.json'
+    """
+    # helper for modifying count data
+    label = label if not label.endswith(".json") else label.split(".")[0]
+    endpoint = BASE_ENDPOINT.format(api=search_api,
+                                    account_name=account_name,
+                                    label=label)
+    if count_endpoint:
+        endpoint = endpoint + "/counts.json"
+    else:
+        endpoint = endpoint + ".json"
+
+    endpoint = BASE_URL + endpoint
+    return endpoint
+
+
+
 def gen_rule_payload(pt_rule, max_results=500,
                      from_date=None, to_date=None, count_bucket=None,
                      stringify=True):
@@ -254,12 +301,46 @@ def write_result_stream(result_stream, results_per_file=None):
                                  .utcnow()
                                  .strftime("%Y%m%d%H%M%S"))
                 _filename = "{}_{}.json".format(curr_datetime,
-                                               name_munger(result_stream.rule_payload))
+                                                name_munger(result_stream.rule_payload))
                 write_ndjson(_filename, chunk)
 
 
     else:
         curr_datetime = datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S")
         filename = "{}_{}.json".format(curr_datetime,
-                                   name_munger(result_stream.rule_payload))
+                                       name_munger(result_stream.rule_payload))
         write_ndjson(filename, stream)
+
+
+def gen_params_from_config(config_dict):
+    endpoint = gen_endpoint(config_dict["search_api"],
+                            config_dict["account_name"],
+                            config_dict["endpoint_label"],
+                            config_dict.get("count_endpoint", None)
+                           )
+    rule = gen_rule_payload(pt_rule=config_dict["pt_rule"],
+                            from_date=config_dict.get("from_date", None),
+                            to_date=config_dict.get("to_date", None),
+                            max_results=int(config_dict.get("max_results", None)),
+                            count_bucket=config_dict.get("count_bucket", None)
+                           )
+
+
+    _dict = {"url": endpoint,
+             "username": config_dict["username"],
+             "password": config_dict["password"],
+             "rule_payload": rule,
+             "max_tweets": int(config_dict.get("max_tweets"))
+            }
+    return _dict
+
+
+def read_configfile(filename):
+    config = configparser.ConfigParser()
+
+    with open(filename) as f:
+        config.read_file(f)
+
+    config_dict = merge_dicts(*[dict(config[s]) for s in config.sections()])
+    return config_dict
+
