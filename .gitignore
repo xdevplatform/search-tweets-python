@@ -106,3 +106,4 @@ ENV/
 *.swo
 
 *.config
+*.json
