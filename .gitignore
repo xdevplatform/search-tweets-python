@@ -104,3 +104,5 @@ ENV/
 # vim
 *.swp
 *.swo
+
+*.config
