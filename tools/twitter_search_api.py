@@ -18,9 +18,9 @@ except ImportError:
         from io import StringIO
 
 
-from twittersearchapi.resul_stream import ResultStream
+from twittersearchapi.result_stream import ResultStream
 from twittersearchapi.utils import gen_endpoint
-from gapi.utils import *
+from twittersearchapi.utils import *
 
 
 def parse_cmd_args():
@@ -40,36 +40,32 @@ def parse_cmd_args():
                                 default=None,
                                 help="Gnip API account name")
 
-    twitter_parser.add_argument("-u",
-                                "--user-name",
+    twitter_parser.add_argument("--user-name",
                                 dest="username",
                                 default=None,
                                 help="User name")
 
-    twitter_parser.add_argument("-p",
-                                "--password",
+    twitter_parser.add_argument("--password",
                                 dest="password",
                                 default=None,
                                 help="Password")
 
-    twitter_parser.add_argument("-b",
-                                "--bucket",
+    twitter_parser.add_argument("--count-bucket",
                                 dest="count_bucket",
-                                default="day",
+                                default=None,
                                 help=("Bucket size for counts query. Options",
                                       "are day, hour, minute (default is 'day')."))
 
-    twitter_parser.add_argument("-s",
-                                "--start-datetime",
+    twitter_parser.add_argument("--start-datetime",
                                 dest="from_date",
                                 default=None,
                                 help="Start of datetime window, format 'YYYY-mm-DDTHH:MM' (default: 30 days ago)")
 
-    twitter_parser.add_argument("-e", "--end-datetime", dest="to_date",
+    twitter_parser.add_argument("--end-datetime", dest="to_date",
                                 default=None,
                                 help="End of datetime window, format 'YYYY-mm-DDTHH:MM' (default: most recent activities)")
 
-    twitter_parser.add_argument("-f", "--filter_rule", dest="pt_rule",
+    twitter_parser.add_argument("--filter-rule", dest="pt_rule",
                                 default="beyonce has:geo",
                                 help="PowerTrack filter rule (See: http://support.gnip.com/customer/portal/articles/901152-powertrack-operators)")
 
@@ -87,25 +83,75 @@ def parse_cmd_args():
                                 type=int,
                                 help="Maximum results to return for all pages; see -a option")
 
-    twitter_parser.add_argument("--output-filename-prefix",
-                                dest="output_filename_prefix",
+    
+    twitter_parser.add_argument("--results-per-file", dest="results_per_file",
+                                default=0,
+                                type=int,
+                                help="Maximum tweets to save per file.")
+
+
+    twitter_parser.add_argument("--filename-prefix",
+                                dest="filename_prefix",
                                 default=None,
                                 help="prefix for the filename where tweet json data will be stored."
                                )
 
     twitter_parser.add_argument("--output-file-path",
                                 dest="output_file_path",
-                                default="./data/",
+                                default=None,
                                 help=("Create files in ./OUTPUT-FILE-PATH. This path must exist &",
                                       "will not be created. This option is available only with -a",
                                       "option. Default is no output files."))
+
+    twitter_parser.add_argument("--no-print-stream",
+                                dest="print_stream",
+                                action="store_false",
+                                help="disable print streaming")
+
+    twitter_parser.add_argument("--print-stream",
+                                dest="print_stream",
+                                action="store_true",
+                                default=True,
+                                help="Print tweet stream to stdout")
+
     return twitter_parser
 
 
-def main():
-    args = parse_cmd_args().parse_args()
+def merge_args(cmd_args, config_args):
+    pass
 
-    print(json.dumps(args, spaces=4))
+
+def main():
+    args_dict = vars(parse_cmd_args().parse_args())
+    print(json.dumps(args_dict, indent=4))
+
+    if "config_filename" in args_dict:
+        configfile_dict = read_configfile(args_dict["config_filename"])
+
+    print(json.dumps(configfile_dict, indent=4))
+    dict_filter = lambda x: {k: v for k, v in x.items() if v is not None}
+    config_dict = merge_dicts(dict_filter(configfile_dict),
+                              dict_filter(args_dict))
+    stream_params = gen_params_from_config(config_dict)
+
+    print(json.dumps(config_dict, indent=4))
+
+    rs = ResultStream(**stream_params, tweetify=False)
+
+    if "filename_prefix" in config_dict:
+        stream = write_result_stream(rs,
+                                     filename_prefix=config_dict["filename_prefix"],
+                                     results_per_file=config_dict["results_per_file"],
+                                     passthrough_stream=True,
+                                    )
+    else:
+        stream = rs.stream()
+
+    for tweet in stream:
+        if config_dict["print_stream"] is True:
+            print(tweet)
+        else:
+            _ = tweet
 
 
 if __name__ == '__main__':
