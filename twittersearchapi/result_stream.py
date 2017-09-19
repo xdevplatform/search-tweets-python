@@ -1,9 +1,6 @@
 # This Python file uses the following encoding: utf-8
 
-from functools import reduce
-import time
 import re
-import datetime
 import requests
 try:
     import ujson as json
