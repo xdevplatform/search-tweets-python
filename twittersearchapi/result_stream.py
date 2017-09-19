@@ -49,7 +49,7 @@ class ResultStream:
     """
 
     def __init__(self, username, password, url, rule_payload,
-                 max_tweets=1000, tweetify=True):
+                 max_tweets=1000, tweetify=True, **kwargs):
         """
         Args:
             username (str): username
