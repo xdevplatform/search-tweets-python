@@ -99,7 +99,7 @@ class ResultStream:
     """
 
     def __init__(self, username, password, url, rule_payload,
-                 max_tweets=1000, tweetify=True, **kwargs):
+                 max_tweets=1000, tweetify=True, max_pages=None, **kwargs):
         """
         Args:
             username (str): username
@@ -130,6 +130,7 @@ class ResultStream:
         self.next_token = None
         self.stream_started = False
         self._tweet_func = Tweet if tweetify else lambda x: x
+        self.max_pages = max_pages if max_pages is not None else 10 ** 9 # magic number of pages!
 
 
     def stream(self):
@@ -148,7 +149,7 @@ class ResultStream:
                 yield self._tweet_func(tweet)
                 self.total_results += 1
 
-            if self.next_token and self.total_results < self.max_tweets:
+            if self.next_token and self.total_results < self.max_tweets and self.n_requests <= self.max_pages:
                 self.rule_payload = merge_dicts(self.rule_payload, ({"next": self.next_token}))
                 logger.info("paging; total requests read so far: {}".format(self.n_requests))
                 self.execute_request()

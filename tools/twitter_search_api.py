@@ -97,12 +97,16 @@ def parse_cmd_args():
                                 type=int,
                                 help="Maximum results to return for all pages; see -a option")
 
-    
+    twitter_parser.add_argument("--max-pages",
+                                dest="max_pages",
+                                type=int,
+                                default=None,
+                                help="Maximum number of pages to use for this session.")
+
     twitter_parser.add_argument("--results-per-file", dest="results_per_file",
                                 default=0,
                                 type=int,
                                 help="Maximum tweets to save per file.")
-
 
     twitter_parser.add_argument("--filename-prefix",
                                 dest="filename_prefix",

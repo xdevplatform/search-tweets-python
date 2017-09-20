@@ -45,6 +45,7 @@ def take(n, iterable):
 def partition(iterable, chunk_size, pad_none=False):
     """adapted from Toolz. Breaks an iterable into n iterables up to the
     certain chunk size, padding with Nones if availble.
+
     Example:
         >>> from twittersearchapi.utils import partition
         >>> iter_ = range(10)
@@ -244,7 +245,8 @@ def write_result_stream(result_stream, filename_prefix=None,
         filename_prefix = "twitter_search_results"
 
     if results_per_file:
-        logger.info("chunking result stream to files with {} tweets per file".format(results_per_file))
+        logger.info("chunking result stream to files with {} tweets per file"
+                    .format(results_per_file))
         chunked_stream = partition(stream, results_per_file, pad_none=True)
         for chunk in chunked_stream:
             chunk = filter(lambda x: x is not None, chunk)
@@ -281,7 +283,8 @@ def gen_params_from_config(config_dict):
              "password": config_dict["password"],
              "rule_payload": rule,
              "results_per_file": int(config_dict.get("results_per_file")),
-             "max_tweets": int(config_dict.get("max_tweets"))
+             "max_tweets": int(config_dict.get("max_tweets")),
+             "max_pages": config_dict.get("max_pages", None)
             }
     return _dict
 
