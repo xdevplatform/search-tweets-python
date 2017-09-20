@@ -134,7 +134,8 @@ class ResultStream:
 
     def stream(self):
         """
-        Handles pagination of results. Uses new yield from syntax.
+        Main entry point for the data from the API. Will automatically paginate
+        through the results via the 'next' token and return up to `max_tweets` tweets.
         """
         self.init_session()
         self.check_counts()
@@ -154,22 +155,30 @@ class ResultStream:
             else:
                 break
         logger.info("ending stream at {} tweets".format(self.total_results))
+        self.current_tweets = None
+        self.session.close()
 
     def init_session(self):
+        """
+        Defines a session object for passing requests.
+        """
         if self.session:
             self.session.close()
         self.session = make_session(self.username, self.password)
 
     def check_counts(self):
+        """
+        Disables tweet parsing if the count api is used.
+        """
         if "counts" in re.split("[/.]", self.url):
             logger.info("disabling tweet parsing due to counts api usage")
             self._tweet_func = lambda x: x
 
-    def end_stream(self):
-        self.current_tweets = None
-        self.session.close()
-
     def execute_request(self):
+        """
+        Sends the request to the api and parses the json response.
+
+        """
         if self.n_requests % 20 == 0 and self.n_requests > 1:
             logger.info("refreshing session")
             self.init_session()
@@ -184,5 +193,5 @@ class ResultStream:
     def __repr__(self):
         repr_keys = ["username", "url", "rule_payload", "tweetify", "max_tweets"]
         str_ = json.dumps(dict([(k, self.__dict__.get(k)) for k in repr_keys]), indent=4)
-        str_ = "ResultStream params: \n\t" + str_
+        str_ = "ResultStream: \n\t" + str_
         return str_
