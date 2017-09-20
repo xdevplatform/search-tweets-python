@@ -206,6 +206,19 @@ def gen_rule_payload(pt_rule, max_results=500,
     return json.dumps(payload) if stringify else payload
 
 
+def validate_count_api(rule_payload, url):
+    rule = rule_payload if isinstance(rule_payload, dict) else json.loads(rule_payload)
+    bucket = rule.get('bucket')
+    counts = set(url.split("/")) & {"counts.json"}
+    if len(counts) == 0:
+        if bucket is not None:
+            msg = ("""there is a count bucket present in your payload,
+                   but you are using not using the counts API.
+                   Please check your endpoints and try again""")
+            logger.error(msg)
+            raise ValueError
+
+
 def write_ndjson(filename, data_iterable, append=False, **kwargs):
     """
     Generator that writes newline-delimited json to a file and returns items
@@ -264,10 +277,11 @@ def gen_params_from_config(config_dict):
     """
     Generates parameters for a ResultStream from a dictionary.
     """
+
     endpoint = gen_endpoint(config_dict["search_api"],
                             config_dict["account_name"],
                             config_dict["endpoint_label"],
-                            config_dict.get("count_endpoint", None)
+                            config_dict.get("count_bucket") # autoconfigures counts api
                            )
 
     rule = gen_rule_payload(pt_rule=config_dict["pt_rule"],

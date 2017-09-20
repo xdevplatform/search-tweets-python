@@ -131,6 +131,7 @@ class ResultStream:
         self.stream_started = False
         self._tweet_func = Tweet if tweetify else lambda x: x
         self.max_pages = max_pages if max_pages is not None else 10 ** 9 # magic number of pages!
+        validate_count_api(self.rule_payload, self.url)
 
 
     def stream(self):
