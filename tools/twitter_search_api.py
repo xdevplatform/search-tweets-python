@@ -29,7 +29,7 @@ from twittersearchapi.utils import *
 
 
 
-REQUIRED_KEYS = {"account_name", "username", "password", "pt_rule", "endpoint_label", "max_tweets"}
+REQUIRED_KEYS = {"account_name", "username", "password", "pt_rule", "endpoint_label", "search_api"}
 
 def parse_cmd_args():
     twitter_parser = argparse.ArgumentParser()
@@ -75,15 +75,20 @@ def parse_cmd_args():
                                 help="End of datetime window, format 'YYYY-mm-DDTHH:MM' (default: most recent activities)")
 
     twitter_parser.add_argument("--filter-rule", dest="pt_rule",
-                                default="beyonce has:geo",
+                                default=None,
                                 help="PowerTrack filter rule (See: http://support.gnip.com/customer/portal/articles/901152-powertrack-operators)")
 
+    twitter_parser.add_argument("--search-api",
+                                dest="search_api",
+                                default=None,
+                                help="which api to use")
+
     twitter_parser.add_argument("--stream-endpoint",
-                                dest="endoint_label",
+                                dest="endpoint_label",
                                 default=None,
                                 help="Url of search endpoint. (See your Gnip console.)")
 
-    twitter_parser.add_argument("--results-max", dest="results_max",
+    twitter_parser.add_argument("--max-results", dest="max_results",
                                 default=500,
                                 help="Maximum results to return per api call (default 500; max 500)")
 
@@ -141,6 +146,7 @@ def main():
                               dict_filter(args_dict))
 
     if len(dict_filter(config_dict).keys() & REQUIRED_KEYS) < len(REQUIRED_KEYS):
+        print(REQUIRED_KEYS - dict_filter(config_dict).keys())
         logger.error("ERROR: not enough arguments present for the program to work")
         sys.exit(1)
 
