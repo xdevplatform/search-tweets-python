@@ -2,6 +2,7 @@ import os
 import argparse
 import json
 import sys
+import logging
 
 if sys.version_info.major == 2:
     import ConfigParser as configparser
@@ -17,16 +18,24 @@ except ImportError:
     except ModuleNotFoundError:
         from io import StringIO
 
+logger = logging.getLogger()
+# we want to leave this here and have it command-line configurable via the
+# --debug flag
+logging.basicConfig(level=os.environ.get("LOGLEVEL", "ERROR"))
 
 from twittersearchapi.result_stream import ResultStream
 from twittersearchapi.utils import gen_endpoint
 from twittersearchapi.utils import *
 
 
+
+REQUIRED_KEYS = {"account_name", "username", "password", "pt_rule", "endpoint_label", "max_tweets"}
+
 def parse_cmd_args():
     twitter_parser = argparse.ArgumentParser()
 
-    twitter_parser.add_argument("--config-file", dest="config_filename",
+    twitter_parser.add_argument("--config-file",
+                                dest="config_filename",
                                 default=None,
                                 help=("configuration file with all parameters. Far",
                                       "easier to use than the command-line args version.",
@@ -78,7 +87,7 @@ def parse_cmd_args():
                                 default=500,
                                 help="Maximum results to return per api call (default 500; max 500)")
 
-    twitter_parser.add_argument("--max_tweets", dest="max_tweets",
+    twitter_parser.add_argument("--max-tweets", dest="max_tweets",
                                 default=500,
                                 type=int,
                                 help="Maximum results to return for all pages; see -a option")
@@ -96,13 +105,6 @@ def parse_cmd_args():
                                 help="prefix for the filename where tweet json data will be stored."
                                )
 
-    twitter_parser.add_argument("--output-file-path",
-                                dest="output_file_path",
-                                default=None,
-                                help=("Create files in ./OUTPUT-FILE-PATH. This path must exist &",
-                                      "will not be created. This option is available only with -a",
-                                      "option. Default is no output files."))
-
     twitter_parser.add_argument("--no-print-stream",
                                 dest="print_stream",
                                 action="store_false",
@@ -114,45 +116,49 @@ def parse_cmd_args():
                                 default=True,
                                 help="Print tweet stream to stdout")
 
+    twitter_parser.add_argument("--debug",
+                                dest="debug",
+                                action="store_true",
+                                default=False,
+                                help="print all info and warning messages")
     return twitter_parser
-
-
-def merge_args(cmd_args, config_args):
-    pass
 
 
 def main():
     args_dict = vars(parse_cmd_args().parse_args())
-    print(json.dumps(args_dict, indent=4))
+    if args_dict.get("debug") is True:
+        logger.setLevel(logging.DEBUG)
 
-    if "config_filename" in args_dict:
+    logger.debug(json.dumps(args_dict, indent=4))
+
+    if args_dict.get("config_filename") is not None:
         configfile_dict = read_configfile(args_dict["config_filename"])
+    else:
+        configfile_dict = {}
 
-    print(json.dumps(configfile_dict, indent=4))
     dict_filter = lambda x: {k: v for k, v in x.items() if v is not None}
     config_dict = merge_dicts(dict_filter(configfile_dict),
                               dict_filter(args_dict))
-    stream_params = gen_params_from_config(config_dict)
 
-    print(json.dumps(config_dict, indent=4))
+    if len(dict_filter(config_dict).keys() & REQUIRED_KEYS) < len(REQUIRED_KEYS):
+        logger.error("ERROR: not enough arguments present for the program to work")
+        sys.exit(1)
+
+    stream_params = gen_params_from_config(config_dict)
 
     rs = ResultStream(**stream_params, tweetify=False)
 
-    if "filename_prefix" in config_dict:
+    if config_dict.get("filename_prefix") is not None:
         stream = write_result_stream(rs,
                                      filename_prefix=config_dict["filename_prefix"],
                                      results_per_file=config_dict["results_per_file"],
-                                     passthrough_stream=True,
                                     )
     else:
         stream = rs.stream()
 
     for tweet in stream:
         if config_dict["print_stream"] is True:
-            print(tweet)
-        else:
-            _ = tweet
-
+            print(json.dumps(tweet))
 
 if __name__ == '__main__':
     main()

@@ -5,6 +5,7 @@ import re
 import codecs
 import unicodedata
 import datetime
+import logging
 import time
 import sys
 if sys.version_info.major == 2:
@@ -33,6 +34,7 @@ BASE_URL = "https://gnip-api.twitter.com/search/"
 BASE_ENDPOINT = "{api}/accounts/{account_name}/{label}"
 
 
+logger = logging.getLogger(__name__)
 
 
 def take(n, iterable):
@@ -70,54 +72,6 @@ def merge_dicts(*dicts):
         return {**dict1, **dict2}
 
     return reduce(_merge_dicts, dicts)
-
-
-
-def retry(func):
-    """
-    Decorator to handle API retries and exceptions. Defaults to three retries.
-
-    Args:
-        func (function): function for decoration
-
-    Returns:
-        decorated function
-
-    """
-    def retried_func(*args, **kwargs):
-        MAX_TRIES = 3
-        tries = 0
-        while True:
-            try:
-                resp = func(*args, **kwargs)
-
-            except requests.exceptions.ConnectionError as exc:
-                exc.msg = "Connection error for session; exiting"
-                raise exc
-
-            except requests.exceptions.HTTPError as exc:
-                exc.msg = "HTTP error for session; exiting"
-                raise exc
-
-            if resp.status_code != 200 and tries < MAX_TRIES:
-                print("retrying request; current status code: {}"
-                      .format(resp.status_code))
-                tries += 1
-                time.sleep(1)
-                continue
-
-            break
-
-        if resp.status_code != 200:
-            print("HTTP Error code: {}: {}"
-                  .format(resp.status_code,
-                          GNIP_RESP_CODES[str(resp.status_code)]))
-            print("rule payload: {}".format(kwargs["rule_payload"]))
-            raise requests.exceptions.HTTPError
-
-        return resp
-
-    return retried_func
 
 
 def convert_utc_time(datetime_str):
@@ -236,7 +190,7 @@ def gen_rule_payload(pt_rule, max_results=500,
             payload["bucket"] = count_bucket
             del payload["maxResults"]
         else:
-            print("invalid count bucket: provided {}".format(count_bucket))
+            logger.error("invalid count bucket: provided {}".format(count_bucket))
             raise ValueError
 
     return json.dumps(payload) if stringify else payload
@@ -244,7 +198,7 @@ def gen_rule_payload(pt_rule, max_results=500,
 
 def write_ndjson(filename, data_iterable, append=False, **kwargs):
     write_mode = "ab" if append else "wb"
-    print("writing data to file {}".format(filename))
+    logger.info("writing to file {}".format(filename))
     with codecs.open(filename, write_mode, "utf-8") as outfile:
         for item in data_iterable:
             outfile.write(json.dumps(item) + "\n")
@@ -258,12 +212,12 @@ def write_result_stream(result_stream, filename_prefix=None,
     else:
         stream = result_stream.stream()
 
-    file_time_formatter = "%Y-%m-%dT%H:%M:%S"
+    file_time_formatter = "%Y-%m-%dT%H_%M_%S"
     if filename_prefix is None:
         filename_prefix = "twitter_search_results"
 
     if results_per_file:
-        print("chunking result stream to files with {} tweets per file".format(results_per_file))
+        logger.info("chunking result stream to files with {} tweets per file".format(results_per_file))
         chunked_stream = partition(stream, results_per_file, pad_none=True)
         for chunk in chunked_stream:
             chunk = filter(lambda x: x is not None, chunk)

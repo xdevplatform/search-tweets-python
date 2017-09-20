@@ -1,6 +1,7 @@
 # This Python file uses the following encoding: utf-8
 
 import re
+import logging
 import requests
 try:
     import ujson as json
@@ -10,6 +11,9 @@ from tweet_parser.tweet import Tweet
 
 from .utils import *
 
+
+
+logger = logging.getLogger(__name__)
 
 def make_session(username, password):
     """Creates a Requests Session for use.
@@ -23,6 +27,52 @@ def make_session(username, password):
     session.headers = {'Accept-encoding': 'gzip'}
     session.auth = username, password
     return session
+
+def retry(func):
+    """
+    Decorator to handle API retries and exceptions. Defaults to three retries.
+
+    Args:
+        func (function): function for decoration
+
+    Returns:
+        decorated function
+
+    """
+    def retried_func(*args, **kwargs):
+        MAX_TRIES = 3
+        tries = 0
+        while True:
+            try:
+                resp = func(*args, **kwargs)
+
+            except requests.exceptions.ConnectionError as exc:
+                exc.msg = "Connection error for session; exiting"
+                raise exc
+
+            except requests.exceptions.HTTPError as exc:
+                exc.msg = "HTTP error for session; exiting"
+                raise exc
+
+            if resp.status_code != 200 and tries < MAX_TRIES:
+                logger.warn("retrying request; current status code: {}"
+                            .format(resp.status_code))
+                tries += 1
+                time.sleep(1)
+                continue
+
+            break
+
+        if resp.status_code != 200:
+            logger.error("HTTP Error code: {}: {}"
+                         .format(resp.status_code,
+                                 GNIP_RESP_CODES[str(resp.status_code)]))
+            logger.error("rule payload: {}".format(kwargs["rule_payload"]))
+            raise requests.exceptions.HTTPError
+
+        return resp
+
+    return retried_func
 
 
 @retry
@@ -99,11 +149,11 @@ class ResultStream:
 
             if self.next_token and self.total_results < self.max_tweets:
                 self.rule_payload = merge_dicts(self.rule_payload, ({"next": self.next_token}))
-                print("paging; total requests read so far: {}".format(self.n_requests))
+                logger.info("paging; total requests read so far: {}".format(self.n_requests))
                 self.execute_request()
             else:
                 break
-        print("ending stream at {} tweets".format(self.total_results))
+        logger.info("ending stream at {} tweets".format(self.total_results))
 
     def init_session(self):
         if self.session:
@@ -112,7 +162,7 @@ class ResultStream:
 
     def check_counts(self):
         if "counts" in re.split("[/.]", self.url):
-            print("disabling tweet parsing due to counts api usage")
+            logger.info("disabling tweet parsing due to counts api usage")
             self._tweet_func = lambda x: x
 
     def end_stream(self):
@@ -121,7 +171,7 @@ class ResultStream:
 
     def execute_request(self):
         if self.n_requests % 20 == 0 and self.n_requests > 1:
-            print("refreshing session")
+            logger.info("refreshing session")
             self.init_session()
         resp = request(session=self.session,
                        url=self.url,
