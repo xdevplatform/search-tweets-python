@@ -9,12 +9,13 @@ Features
 ========
 
 - delivers a stream of data to the user for low in-memory requirements
-- automatically handles paagination of results with easy hard cutoffs
+- automatically handles pagination of results with specifiable limits
 - will handle both token authentication and basic username/password authentication
 - quick to handle in a standalone program or interactive environment
 - compatible with our group's Tweet Parser for extraction of relevant data fields from each tweet payload
 - supports the Search Counts API to estimate volumes for queries without using many API calls
 - command-line utility is pipeable to other tools (e.g., ``jq``).
+
 
 
 Installation
@@ -104,6 +105,69 @@ It can be far easier to specify your information in a configuration file. An exa
 
 
 When using a config file in conjunction with the command-line utility, you need to specify your config file via the ``--config-file`` parameter. Additional command-line arguments will either be *added* to the config file args or **overwrite** the config file args if both are specified and present.
+
+
+
+
+Command-line options
+====================
+
+* --config-file
+  * the configuration file with variable numbers of these parameters filled out.
+
+* --account-name
+  * the search api account name
+
+* --user-name
+  * your username for this session
+
+* --password
+  * your password for this session
+
+* --count-bucket
+  * If specified, the result will be passed to the Counts API with the specified bucket. Valid options are 
+  "hour", "day", and "minute"
+
+* --start-datetime
+  * the starttime of the query
+
+* --end-datetime
+  * the end-time of the query
+
+* --filter-rule
+  * a valid PowerTrack rule.
+
+* --search-api
+  * the api to use, 30day, fullarchive, or 7 day
+
+* --stream-endpoint
+  * the endpoint for your session. See your console.
+
+* --max-results
+  * gnip api payload parameter. Defines the number of results returned per API call. Program defaults to 500, and this can vary between 100 and 500.
+
+* --max-tweets
+  * hard number of tweets to return from this session.
+
+* --max-pages
+  * maxiumum pages to use this session. Setting this to 0 or 1 will effectively disable pagination, which is valuable for testing.
+
+* --results-per-file
+  * when saving results to a file, this provides a mechanism to split the files up into chunks. Defaults to 10000000.
+
+* --filename-prefix
+  * defines the filename for saving tweets.
+
+* --no-print-stream
+  * disables the stdout printstream. Good when using this to save tweets.
+
+* --print-stream
+  * defaults to True and prints each retrieved tweet to JSON on stdout. Useful for inspection or for piping to other utilities.
+
+* --debug
+  * prints debugging and info messages within the program.
+
+
 
 
 
