@@ -107,3 +107,4 @@ ENV/
 
 *.config
 *.json
+docs/build/
