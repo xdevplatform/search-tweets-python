@@ -100,11 +100,16 @@ It can be far easier to specify your information in a configuration file. An exa
   max_tweets = 500
 
   [output_params]
-  save_file = True
   output_file_prefix = beyonce
 
 
 When using a config file in conjunction with the command-line utility, you need to specify your config file via the ``--config-file`` parameter. Additional command-line arguments will either be *added* to the config file args or **overwrite** the config file args if both are specified and present.
+
+example::
+
+  python twitter_search_api.py \
+    --config-file myapiconfig.config \
+    --no-print-stream
 
 
 
