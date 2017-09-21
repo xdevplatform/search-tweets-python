@@ -13,7 +13,7 @@ Welcome to twitter search api's documentation!
    :caption: Contents:
 
    self
-   twittersearchapi
+   twittersearch
 
 
 

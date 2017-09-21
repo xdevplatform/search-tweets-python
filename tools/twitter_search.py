@@ -23,9 +23,9 @@ logger = logging.getLogger()
 # --debug flag
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "ERROR"))
 
-from twittersearchapi.result_stream import ResultStream
-from twittersearchapi.utils import gen_endpoint
-from twittersearchapi.utils import *
+from twittersearch.result_stream import ResultStream
+from twittersearch.utils import gen_endpoint
+from twittersearch.utils import *
 
 
 

@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-setup(name='twittersearchapi',
+setup(name='twittersearch',
       description="Wrapper for the Twitter/GNIP search API",
       url='https://github.com/tw-ddis/twitter_search_api',
       author='Fiona Pigott, Jeff Kolb, Josh Montague, Aaron Gonzales',
@@ -9,6 +9,6 @@ setup(name='twittersearchapi',
       license='MIT',
       version='0.1',
       packages=find_packages(),
-      scripts=["tools/twitter_search_api.py"],
+      scripts=["tools/twitter_search.py"],
       install_requires=[],
       )
