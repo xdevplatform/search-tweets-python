@@ -47,7 +47,7 @@ def partition(iterable, chunk_size, pad_none=False):
     certain chunk size, padding with Nones if availble.
 
     Example:
-        >>> from twittersearchapi.utils import partition
+        >>> from twittersearch.utils import partition
         >>> iter_ = range(10)
         >>> list(partition(iter_, 3))
         [(0, 1, 2), (3, 4, 5), (6, 7, 8)]
@@ -74,6 +74,7 @@ def merge_dicts(*dicts):
         the sequence will override duplicate keys from previous dictionaries.
 
     Example:
+        >>> from twittersearch.utils import merge_dicts
         >>> d1 = {"rule": "something has:geo"}
         >>> d2 = {"maxResults": 1000}
         >>> merge_dicts(*[d1, d2])
@@ -97,6 +98,7 @@ def convert_utc_time(datetime_str):
         string of GNIP API formatted date.
 
     Example:
+        >>> from twittersearch.utils import convert_utc_time
         >>> convert_utc_time("201708020000")
         '201708020000'
         >>> convert_utc_time("2017-08-02")
@@ -135,6 +137,7 @@ def gen_endpoint(search_api, account_name, label, count_endpoint=False, **kwargs
         str: well-formed url for a connection.
 
     Example:
+        >>> from twittersearch.utils import gen_endpoint
         >>> search_api = "30day"
         >>> account_name = "montypython"
         >>> endpoint_label = "python.json"
@@ -181,6 +184,7 @@ def gen_rule_payload(pt_rule, max_results=500,
 
     Example:
 
+        >>> from twittersearch.utils import gen_rule_payload
         >>> gen_rule_payload("kanye west has:geo",
             ...              from_date="2017-08-21",
             ...              to_date="2017-08-22")
