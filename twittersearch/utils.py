@@ -130,8 +130,7 @@ def gen_endpoint(search_api, account_name, label, count_endpoint=False, **kwargs
         search_api (str): the api to use, `30day` or `fullarchive`
         account_name (str): the master account for the user
         label (str): stream within an account to connect
-        count_endpoint (bool): defines using the Counts endpoint over the
-            default data endpoint.
+        count_endpoint (bool): defines using the Counts endpoint over the default data endpoint.
 
     Returns:
         str: well-formed url for a connection.
