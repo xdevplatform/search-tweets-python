@@ -1,0 +1,129 @@
+name: holo
+channels:
+- ioam
+- bokeh
+- conda-forge
+- defaults
+dependencies:
+- datashader=0.6.0=py36_0
+- cartopy=0.15.1=np113py36_3
+- geos=3.5.1=1
+- libiconv=1.14=4
+- libxslt=1.1.29=4
+- lxml=3.8.0=py36_0
+- owslib=0.14.0=py36_1
+- proj4=4.9.3=4
+- pyepsg=0.3.2=py36_0
+- pyproj=1.9.5.1=py36_0
+- pyshp=1.2.11=py36_0
+- shapely=1.6.1=py36_0
+- _nb_ext_conf=0.4.0=py36_1
+- anaconda-client=1.6.3=py36_0
+- appnope=0.1.0=py36_0
+- bkcharts=0.2=py36_0
+- bleach=1.5.0=py36_0
+- bokeh=0.12.7=py36_0
+- cloudpickle=0.4.0=py36_0
+- clyent=1.2.2=py36_0
+- colorcet=0.9.1=py36_0
+- cycler=0.10.0=py36_0
+- dask=0.15.2=py36_0
+- datashape=0.5.4=py36_0
+- decorator=4.1.2=py36_0
+- entrypoints=0.2.3=py36_0
+- freetype=2.5.5=2
+- holoviews=1.8.3=py36_0
+- html5lib=0.999=py36_0
+- icu=54.1=0
+- ipykernel=4.6.1=py36_0
+- ipython=6.1.0=py36_0
+- ipython_genutils=0.2.0=py36_0
+- ipywidgets=6.0.0=py36_0
+- jbig=2.1=0
+- jedi=0.10.2=py36_2
+- jinja2=2.9.6=py36_0
+- jpeg=9b=0
+- jsonschema=2.6.0=py36_0
+- jupyter=1.0.0=py36_3
+- jupyter_client=5.1.0=py36_0
+- jupyter_console=5.2.0=py36_0
+- jupyter_core=4.3.0=py36_0
+- libpng=1.6.30=1
+- libtiff=4.0.6=3
+- libxml2=2.9.4=0
+- llvmlite=0.19.0=py36_0
+- locket=0.2.0=py36_1
+- markupsafe=1.0=py36_0
+- matplotlib=2.0.2=np113py36_0
+- mistune=0.7.4=py36_0
+- mkl=2017.0.3=0
+- multipledispatch=0.4.9=py36_0
+- nb_anacondacloud=1.4.0=py36_0
+- nb_conda=2.2.0=py36_0
+- nb_conda_kernels=2.1.0=py36_0
+- nbconvert=5.2.1=py36_0
+- nbformat=4.4.0=py36_0
+- nbpresent=3.0.2=py36_0
+- notebook=5.0.0=py36_0
+- numba=0.34.0=np113py36_0
+- numpy=1.13.1=py36_0
+- olefile=0.44=py36_0
+- openssl=1.0.2l=0
+- pandas=0.20.3=py36_0
+- pandocfilters=1.4.2=py36_0
+- param=1.5.1=py36_0
+- partd=0.3.8=py36_0
+- path.py=10.3.1=py36_0
+- patsy=0.4.1=py36_0
+- pexpect=4.2.1=py36_0
+- pickleshare=0.7.4=py36_0
+- pillow=4.2.1=py36_0
+- pip=9.0.1=py36_1
+- prompt_toolkit=1.0.15=py36_0
+- ptyprocess=0.5.2=py36_0
+- pygments=2.2.0=py36_0
+- pyparsing=2.2.0=py36_0
+- pyqt=5.6.0=py36_2
+- python=3.6.2=0
+- python-dateutil=2.6.1=py36_0
+- pytz=2017.2=py36_0
+- pyyaml=3.12=py36_0
+- pyzmq=16.0.2=py36_0
+- qt=5.6.2=2
+- qtconsole=4.3.1=py36_0
+- readline=6.2=2
+- requests=2.14.2=py36_0
+- scipy=0.19.1=np113py36_0
+- seaborn=0.8=py36_0
+- setuptools=27.2.0=py36_0
+- simplegeneric=0.8.1=py36_1
+- sip=4.18=py36_0
+- six=1.10.0=py36_0
+- sqlite=3.13.0=0
+- statsmodels=0.8.0=np113py36_0
+- terminado=0.6=py36_0
+- testpath=0.3.1=py36_0
+- tk=8.5.18=0
+- toolz=0.8.2=py36_0
+- tornado=4.5.2=py36_0
+- traitlets=4.3.2=py36_0
+- wcwidth=0.1.7=py36_0
+- wheel=0.29.0=py36_0
+- widgetsnbextension=3.0.2=py36_0
+- xarray=0.9.6=py36_0
+- xz=5.2.3=0
+- yaml=0.1.6=0
+- zlib=1.2.11=0
+- geoviews=1.3.2=py36_0
+- pip:
+  - ipython-genutils==0.2.0
+  - jupyter-client==5.1.0
+  - jupyter-console==5.2.0
+  - jupyter-core==4.3.0
+  - nb-anacondacloud==1.4.0
+  - nb-conda==2.2.0
+  - nb-conda-kernels==2.1.0
+  - prompt-toolkit==1.0.15
+  - twittersearch (/Users/agonzales/git/twitter_search_api)==0.1
+prefix: /Users/agonzales/anaconda3/envs/holo
+
