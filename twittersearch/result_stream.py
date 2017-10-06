@@ -40,7 +40,7 @@ def retry(func):
 
     """
     def retried_func(*args, **kwargs):
-        MAX_TRIES = 3
+        MAX_TRIES = 4
         tries = 0
         while True:
             try:
@@ -58,7 +58,8 @@ def retry(func):
                 logger.warn("retrying request; current status code: {}"
                             .format(resp.status_code))
                 tries += 1
-                time.sleep(1)
+                # mini exponential backoff here. 
+                time.sleep(tries ** 2)
                 continue
 
             break
