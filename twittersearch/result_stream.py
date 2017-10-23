@@ -15,18 +15,31 @@ from .utils import *
 
 logger = logging.getLogger(__name__)
 
-def make_session(username, password):
-    """Creates a Requests Session for use.
+def make_session(username=None, password=None, bearer_token=None):
+    """Creates a Requests Session for use. Accepts a bearer token 
+    for freemium users and will override username and password information if
+    present.
 
     Args:
         username (str): username for the session
         password (str): password for the user
+        bearer_token (str): token for the session for freemium.
     """
 
+    if password is None and bearer_token is None:
+        logger.error("No authentication information provided; please check your object")
+        raise KeyError
+
     session = requests.Session()
-    session.headers = {'Accept-encoding': 'gzip'}
-    session.auth = username, password
+    headers = {'Accept-encoding': 'gzip'}
+    if bearer_token:
+        headers['Authorization'] = "Bearer {}".format(bearer_token)
+        session.headers = headers
+    else:
+        session.auth = username, password
+        session.headers = headers
     return session
+
 
 def retry(func):
     """
@@ -89,7 +102,7 @@ def request(session, url, rule_payload, **kwargs):
     """
     if isinstance(rule_payload, dict):
         rule_payload = json.dumps(rule_payload)
-    result = session.post(url, data=rule_payload)
+    result = session.post(url, data=rule_payload, **kwargs)
     return result
 
 
@@ -99,12 +112,14 @@ class ResultStream:
     pagination of results.
     """
 
-    def __init__(self, username, password, url, rule_payload,
-                 max_tweets=1000, tweetify=True, max_pages=None, **kwargs):
+    def __init__(self, url, rule_payload, username=None, password=None,
+                 bearer_token=None, max_tweets=1000,
+                 tweetify=True, max_pages=None, **kwargs):
         """
         Args:
             username (str): username
             password (str): password
+            bearer_token (str): bearer token for freemium users
             url (str): API endpoint; should be generated using the
                 `gen_endpoint` function.
             rule_payload (json or dict): payload for the post request
@@ -117,6 +132,7 @@ class ResultStream:
 
         self.username = username
         self.password = password
+        self.bearer_token = bearer_token
         self.url = url
         if isinstance(rule_payload, str):
             rule_payload = json.loads(rule_payload)
@@ -167,7 +183,7 @@ class ResultStream:
         """
         if self.session:
             self.session.close()
-        self.session = make_session(self.username, self.password)
+        self.session = make_session(self.username, self.password, self.bearer_token)
 
     def check_counts(self):
         """
@@ -187,7 +203,8 @@ class ResultStream:
             self.init_session()
         resp = request(session=self.session,
                        url=self.url,
-                       rule_payload=self.rule_payload)
+                       rule_payload=self.rule_payload,
+                      )
         self.n_requests += 1
         resp = json.loads(resp.content.decode(resp.encoding))
         self.next_token = resp.get("next", None)
