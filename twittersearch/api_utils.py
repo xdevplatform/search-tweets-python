@@ -41,10 +41,6 @@ GNIP_RESP_CODES = {
             "request using an exponential backoff pattern.")
 }
 
-BASE_URL = "https://gnip-api.twitter.com/search/"
-BASE_ENDPOINT = "{api}/accounts/{account_name}/{label}"
-PREMIUM_URL = "https://api.twitter.com/1.1/tweets/search/30day/{ENV}.json"
-
 
 def convert_utc_time(datetime_str):
     """Handles datetime argument conversion to the GNIP API format, which is
@@ -80,7 +76,6 @@ def convert_utc_time(datetime_str):
         except ValueError:
             _date = datetime.datetime.strptime(datetime_str, "%Y-%m-%d")
     return _date.strftime("%Y%m%d%H%M")
-
 
 
 def _gen_premium_endpoint(env_name, count_endpoint=False):
