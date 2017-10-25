@@ -1,5 +1,6 @@
 # This Python file uses the following encoding: utf-8
 
+import time
 import re
 import logging
 import requests
@@ -10,8 +11,7 @@ except ImportError:
 from tweet_parser.tweet import Tweet
 
 from .utils import *
-
-
+from .api_utils import *
 
 logger = logging.getLogger(__name__)
 
@@ -33,9 +33,11 @@ def make_session(username=None, password=None, bearer_token=None):
     session = requests.Session()
     headers = {'Accept-encoding': 'gzip'}
     if bearer_token:
+        logger.warning("using bearer token for authentication")
         headers['Authorization'] = "Bearer {}".format(bearer_token)
         session.headers = headers
     else:
+        logger.warning("using username and password for authentication")
         session.auth = username, password
         session.headers = headers
     return session
@@ -53,7 +55,7 @@ def retry(func):
 
     """
     def retried_func(*args, **kwargs):
-        MAX_TRIES = 4
+        max_tries = 3
         tries = 0
         while True:
             try:
@@ -67,9 +69,9 @@ def retry(func):
                 exc.msg = "HTTP error for session; exiting"
                 raise exc
 
-            if resp.status_code != 200 and tries < MAX_TRIES:
-                logger.warn("retrying request; current status code: {}"
-                            .format(resp.status_code))
+            if resp.status_code != 200 and tries < max_tries:
+                logger.warning("retrying request; current status code: {}"
+                               .format(resp.status_code))
                 tries += 1
                 # mini exponential backoff here. 
                 time.sleep(tries ** 2)
@@ -138,7 +140,8 @@ class ResultStream:
             rule_payload = json.loads(rule_payload)
         self.rule_payload = rule_payload
         self.tweetify = tweetify
-        self.max_tweets = max_tweets
+        # magic number of max tweets if you pass a non_int
+        self.max_tweets = max_tweets if isinstance(max_tweets, int) else 10 ** 15
 
         self.total_results = 0
         self.n_requests = 0
@@ -154,7 +157,15 @@ class ResultStream:
     def stream(self):
         """
         Main entry point for the data from the API. Will automatically paginate
-        through the results via the 'next' token and return up to `max_tweets` tweets.
+        through the results via the 'next' token and return up to `max_tweets`
+        tweets or up to `max_pages` api calls, whichever is lower.
+
+        Usage:
+            >>> result_stream = ResultStream(**kwargs)
+            >>> stream = result_stream.stream()
+            >>> results = list(stream)
+            >>> # or for faster usage...
+            >>> results = list(ResultStream(**kwargs).stream())
         """
         self.init_session()
         self.check_counts()
