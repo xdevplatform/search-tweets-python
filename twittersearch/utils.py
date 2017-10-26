@@ -14,10 +14,11 @@ try:
 except ImportError:
     import json
 
+
 logger = logging.getLogger(__name__)
 
 __all__ = ["take", "partition", "merge_dicts", "write_result_stream",
-           "read_configfile", "collect_results"]
+           "read_configfile"]
 
 def take(n, iterable):
     "Return first n items of the iterable as a list"
@@ -135,17 +136,3 @@ def read_configfile(filename):
     return config_dict
 
 
-def collect_results(rule, max_tweets=500, result_stream_args=None):
-    """Utility function to quickly get a list of tweets from a resultstream
-    without keeping the object around. Rqequires your args to be configured
-    prior to using.
-    """
-    if result_stream_args is None:
-        logger.error("This function requires a configuration dict for the "
-                     "inner ResultStream object.")
-        raise KeyError
-
-    rs = ResultStream(**result_stream_args,
-                      rule_payload=rule,
-                      max_tweets=365*10)
-    return list(rs.stream())

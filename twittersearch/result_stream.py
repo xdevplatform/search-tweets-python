@@ -226,3 +226,19 @@ class ResultStream:
         str_ = json.dumps(dict([(k, self.__dict__.get(k)) for k in repr_keys]), indent=4)
         str_ = "ResultStream: \n\t" + str_
         return str_
+
+
+def collect_results(rule, max_tweets=500, result_stream_args=None):
+    """Utility function to quickly get a list of tweets from a resultstream
+    without keeping the object around. Rqequires your args to be configured
+    prior to using.
+    """
+    if result_stream_args is None:
+        logger.error("This function requires a configuration dict for the "
+                     "inner ResultStream object.")
+        raise KeyError
+
+    rs = ResultStream(**result_stream_args,
+                      rule_payload=rule,
+                      max_tweets=max_tweets)
+    return list(rs.stream())
