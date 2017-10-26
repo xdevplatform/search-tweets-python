@@ -9,9 +9,11 @@ Our group's python tweet parser library is a requirement.
 
 Prior to starting your program, an easy way to define your secrets will be setting an environment variable. If you are an enterprise client, your authentication will be a (username, password) pair. If you are a premium client, you'll need to get a bearer token that will be passed with each call for authentication.
 
-`export TWITTER_SEARCH_PW=<password>`
-`export TWITTER_SEARCH_ACCOUNT_NAME=<account_name>`
-`export TWITTER_SEARCH_BEARER_TOKEN=<token>`
+```
+export TWITTER_SEARCH_PW=<password>
+export TWITTER_SEARCH_ACCOUNT_NAME=<account_name>
+export TWITTER_SEARCH_BEARER_TOKEN=<token>
+```
 
 
 The other points that you will have to set in the program are your endpoint, the api you want to use. There are functions to generate correct API endpoints from this info as well as flags to use the `counts` endpoint instead of the regular endpoint.
