@@ -115,8 +115,8 @@ class ResultStream:
     """
 
     def __init__(self, url, rule_payload, username=None, password=None,
-                 bearer_token=None, max_tweets=1000,
-                 tweetify=True, max_pages=None, **kwargs):
+                 bearer_token=None, max_results=1000,
+                 tweetify=True, max_requests=None, **kwargs):
         """
         Args:
             username (str): username
@@ -125,7 +125,7 @@ class ResultStream:
             url (str): API endpoint; should be generated using the
                 `gen_endpoint` function.
             rule_payload (json or dict): payload for the post request
-            max_tweets (int): max results that will be fetched from the API.
+            max_results (int): max results that will be fetched from the API.
             tweetify (bool): If you are grabbing tweets and not counts, use the
                 tweet parser library to convert each raw tweet package to a Tweet
                 with lazy properties.
@@ -141,7 +141,7 @@ class ResultStream:
         self.rule_payload = rule_payload
         self.tweetify = tweetify
         # magic number of max tweets if you pass a non_int
-        self.max_tweets = max_tweets if isinstance(max_tweets, int) else 10 ** 15
+        self.max_results = max_results if isinstance(max_results, int) else 10 ** 15
 
         self.total_results = 0
         self.n_requests = 0
@@ -150,15 +150,15 @@ class ResultStream:
         self.next_token = None
         self.stream_started = False
         self._tweet_func = Tweet if tweetify else lambda x: x
-        self.max_pages = max_pages if max_pages is not None else 10 ** 9 # magic number of pages!
+        self.max_requests = max_requests if max_requests is not None else 10 ** 9 # magic number of requests!
         validate_count_api(self.rule_payload, self.url)
 
 
     def stream(self):
         """
         Main entry point for the data from the API. Will automatically paginate
-        through the results via the 'next' token and return up to `max_tweets`
-        tweets or up to `max_pages` api calls, whichever is lower.
+        through the results via the 'next' token and return up to `max_results`
+        tweets or up to `max_requests` api calls, whichever is lower.
 
         Usage:
             >>> result_stream = ResultStream(**kwargs)
@@ -173,12 +173,12 @@ class ResultStream:
         self.stream_started = True
         while True:
             for tweet in self.current_tweets:
-                if self.total_results >= self.max_tweets:
+                if self.total_results >= self.max_results:
                     break
                 yield self._tweet_func(tweet)
                 self.total_results += 1
 
-            if self.next_token and self.total_results < self.max_tweets and self.n_requests <= self.max_pages:
+            if self.next_token and self.total_results < self.max_results and self.n_requests <= self.max_requests:
                 self.rule_payload = merge_dicts(self.rule_payload, ({"next": self.next_token}))
                 logger.info("paging; total requests read so far: {}".format(self.n_requests))
                 self.execute_request()
@@ -222,13 +222,13 @@ class ResultStream:
         self.current_tweets = resp["results"]
 
     def __repr__(self):
-        repr_keys = ["username", "url", "rule_payload", "tweetify", "max_tweets"]
+        repr_keys = ["username", "url", "rule_payload", "tweetify", "max_results"]
         str_ = json.dumps(dict([(k, self.__dict__.get(k)) for k in repr_keys]), indent=4)
         str_ = "ResultStream: \n\t" + str_
         return str_
 
 
-def collect_results(rule, max_tweets=500, result_stream_args=None):
+def collect_results(rule, max_results=500, result_stream_args=None):
     """Utility function to quickly get a list of tweets from a resultstream
     without keeping the object around. Rqequires your args to be configured
     prior to using.
@@ -240,5 +240,5 @@ def collect_results(rule, max_tweets=500, result_stream_args=None):
 
     rs = ResultStream(**result_stream_args,
                       rule_payload=rule,
-                      max_tweets=max_tweets)
+                      max_results=max_results)
     return list(rs.stream())
