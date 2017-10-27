@@ -24,12 +24,10 @@ logger = logging.getLogger()
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "ERROR"))
 
 from twittersearch.result_stream import ResultStream
-from twittersearch.utils import gen_endpoint
+from twittersearch.api_utils import *
 from twittersearch.utils import *
 
 
-
-# REQUIRED_KEYS = {"account_name", "username", "password", "pt_rule", "endpoint_label", "search_api"}
 REQUIRED_KEYS = {"pt_rule", "endpoint_label",}
 
 def parse_cmd_args():
