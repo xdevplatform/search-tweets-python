@@ -73,7 +73,7 @@ Let's create a result stream:
 
 
 ```python
-rs = ResultStream(**search_args, rule_payload=rule, max_tweets=500, max_pages=1)
+rs = ResultStream(**search_args, rule_payload=rule, max_results=500, max_pages=1, )
 ```
 
 
@@ -90,7 +90,7 @@ print(str(rs).replace(os.environ["TWITTER_SEARCH_ACCOUNT_NAME"], '<account_name>
             "maxResults":500
         },
         "tweetify":true,
-        "max_tweets":500
+        "max_results":500
     }
 
 
@@ -145,7 +145,7 @@ from twittersearch import collect_results
 
 
 ```python
-tweets = collect_results(rule, max_tweets=500, result_stream_args=search_args)
+tweets = collect_results(rule, max_results=500, result_stream_args=search_args)
 ```
 
     using username and password for authentication
