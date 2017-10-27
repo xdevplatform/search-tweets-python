@@ -24,12 +24,11 @@ logger = logging.getLogger()
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "ERROR"))
 
 from twittersearch.result_stream import ResultStream
-from twittersearch.utils import gen_endpoint
+from twittersearch.api_utils import *
 from twittersearch.utils import *
 
 
-
-REQUIRED_KEYS = {"account_name", "username", "password", "pt_rule", "endpoint_label", "search_api"}
+REQUIRED_KEYS = {"pt_rule", "endpoint_label",}
 
 def parse_cmd_args():
     twitter_parser = argparse.ArgumentParser()
@@ -44,6 +43,12 @@ def parse_cmd_args():
                                       "will overrule args found in the config",
                                       "file."))
 
+
+    twitter_parser.add_argument("--account_type",
+                                dest="account_type",
+                                default=None,
+                                help="Enterprise or Premium account")
+
     twitter_parser.add_argument("--account-name",
                                 dest="account_name",
                                 default=None,
@@ -52,12 +57,17 @@ def parse_cmd_args():
     twitter_parser.add_argument("--user-name",
                                 dest="username",
                                 default=None,
-                                help="User name")
+                                help="User name for Enterprise API access")
 
     twitter_parser.add_argument("--password",
                                 dest="password",
                                 default=None,
-                                help="Password")
+                                help="Password for Enterprise API access")
+
+    twitter_parser.add_argument("--bearer_token",
+                                dest="bearer_token",
+                                default=None,
+                                help="bearer token for premium API access")
 
     twitter_parser.add_argument("--count-bucket",
                                 dest="count_bucket",
@@ -86,7 +96,8 @@ def parse_cmd_args():
     twitter_parser.add_argument("--stream-endpoint",
                                 dest="endpoint_label",
                                 default=None,
-                                help="Url of search endpoint. (See your Gnip console.)")
+                                help=("Label for your environment. Find in your gnip"
+                                      " console or developer dashboard"))
 
     twitter_parser.add_argument("--max-results", dest="max_results",
                                 default=500,
