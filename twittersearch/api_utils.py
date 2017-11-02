@@ -11,7 +11,7 @@ except ImportError:
     import json
 
 __all__ = ["gen_endpoint", "gen_rule_payload", "gen_params_from_config",
-           "validate_count_api"]
+           "validate_count_api", "GNIP_RESP_CODES"]
 
 logger = logging.getLogger(__name__)
 
@@ -111,8 +111,8 @@ def gen_endpoint(kind="enterprise",
     Args:
         kind (str): supports both `enterprise` and `premium` access.
         search_api (str): the api to use, `30day` or `fullarchive`
-        account_name (str): the master account for the user
-        label (str): stream within an account to connect
+        account_name (str): the master account for the user for enterprise users
+        label (str): stream within an account to connect, also known as the end of your url
         count_endpoint (bool): defines using the Counts endpoint over the default data endpoint.
 
     Returns:
@@ -211,7 +211,7 @@ def gen_params_from_config(config_dict):
 
     endpoint = gen_endpoint(config_dict["account_type"],
                             config_dict["search_api"],
-                            config_dict["account_name"],
+                            config_dict.get("account_name"),
                             config_dict["endpoint_label"],
                             config_dict.get("count_bucket") # autoconfigures counts api
                            )
