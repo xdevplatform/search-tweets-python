@@ -47,7 +47,7 @@ def parse_cmd_args():
     twitter_parser.add_argument("--account_type",
                                 dest="account_type",
                                 default=None,
-                                help="Enterprise or Premium account")
+                                help="enterprise or premium account")
 
     twitter_parser.add_argument("--account-name",
                                 dest="account_name",
@@ -64,7 +64,7 @@ def parse_cmd_args():
                                 default=None,
                                 help="Password for Enterprise API access")
 
-    twitter_parser.add_argument("--bearer_token",
+    twitter_parser.add_argument("--bearer-token",
                                 dest="bearer_token",
                                 default=None,
                                 help="bearer token for premium API access")
@@ -160,6 +160,8 @@ def main():
     config_dict = merge_dicts(dict_filter(configfile_dict),
                               dict_filter(args_dict))
 
+    logger.debug(json.dumps(config_dict, indent=4))
+
     if len(dict_filter(config_dict).keys() & REQUIRED_KEYS) < len(REQUIRED_KEYS):
         print(REQUIRED_KEYS - dict_filter(config_dict).keys())
         logger.error("ERROR: not enough arguments present for the program to work")
@@ -167,7 +169,11 @@ def main():
 
     stream_params = gen_params_from_config(config_dict)
 
+    logger.debug(json.dumps(config_dict, indent=4))
+
     rs = ResultStream(**stream_params, tweetify=False)
+
+    logger.debug(str(rs))
 
     if config_dict.get("filename_prefix") is not None:
         stream = write_result_stream(rs,
