@@ -189,9 +189,9 @@ def gen_rule_payload(pt_rule, max_results=500,
     payload = {"query": pt_rule,
                "maxResults": max_results,
               }
-    if from_date:
-        payload["toDate"] = convert_utc_time(to_date)
     if to_date:
+        payload["toDate"] = convert_utc_time(to_date)
+    if from_date:
         payload["fromDate"] = convert_utc_time(from_date)
     if count_bucket:
         if set(["day", "hour", "minute"]) & set([count_bucket]):
