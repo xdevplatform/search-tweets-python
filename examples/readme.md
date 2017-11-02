@@ -24,44 +24,72 @@ The following cell demonstrates the basic setup that will be referenced througho
 import os
 import json
 from twittersearch import ResultStream, gen_endpoint, gen_rule_payload
+```
 
+## Enterprise setup
+
+If you are an enterprise customer, you'll need to authenticate with a basic username/password method. You can specify that here:
+
+
+```python
 # set your environment variables here for enterprise access if you need to
 # os.environ["TWITTER_SEARCH_ACCOUNT_NAME"] = ""
 # os.environ["TWITTER_SEARCH_PW"] = ""
-# os.environ["TWITTER_SEARCH_BEARER_TOKEN"] = ""
 
 
-username = "agonzales@twitter.com"
-search_api = "fullarchive"
-endpoint_label = "ogformat.json"
-account_kind = "enterprise"
+enterprise_search_endpoint = gen_endpoint(kind="enterprise", 
+                                          search_api="fullarchive",
+                                          account_name=os.environ["TWITTER_SEARCH_ACCOUNT_NAME"],
+                                          label="ogformat.json",
+                                          count_endpoint=False)
 
-search_endpoint = gen_endpoint(kind="enterprise", 
-                               search_api=search_api,
-                               account_name=os.environ["TWITTER_SEARCH_ACCOUNT_NAME"],
-                               label=endpoint_label,
-                               count_endpoint=False)
+enterprise_search_args = {"username": "agonzales@twitter.com",
+                          "password": os.environ["TWITTER_SEARCH_PW"],
+                          "url": enterprise_search_endpoint,
+                         }
 
-search_args = {"username": username,
-               "password": os.environ["TWITTER_SEARCH_PW"],
-               "url": search_endpoint,
-               }
 
-print(search_endpoint.replace(os.environ["TWITTER_SEARCH_ACCOUNT_NAME"], '<account_name>'))
+
+print(enterprise_search_endpoint.replace(os.environ["TWITTER_SEARCH_ACCOUNT_NAME"], '<account_name>'))
 ```
 
     https://gnip-api.twitter.com/search/fullarchive/accounts/<account_name>/ogformat.json
 
 
-There is a function that formats search API rules into valid json queries called `gen_rule_payload`. It has sensible defaults, such as pulling more tweets per call than the default 100, not including dates, and defaulting to hourly counts when using the counts api. Discussing the finer points of generating search rules is out of scope for these examples; I encourage you to see the docs to learn the nuances within, but for now let's see what a rule looks like.
+## Premium Setup
+
+Premium customers will use a bearer token for authentication. Use the following cell for setup:
 
 
 ```python
-rule = gen_rule_payload("@robotprincessfi")
+# set your environment variables here for premium access if you need to
+# os.environ["TWITTER_SEARCH_BEARER_TOKEN"] = ""
+
+
+premium_search_endpoint = gen_endpoint(kind="premium",
+                                       search_api="30day",
+                                       label="dev",
+                                       count_endpoint=False)
+
+premium_search_args = {"bearer_token": os.environ["TWITTER_SEARCH_BEARER_TOKEN"],
+                       "url": premium_search_endpoint,
+                      }
+
+print(premium_search_endpoint)
+```
+
+    https://api.twitter.com/1.1/tweets/search/30day/dev.json
+
+
+There is a function that formats search API rules into valid json queries called `gen_rule_payload`. It has sensible defaults, such as pulling more tweets per call than the default 100 (but note that a sandbox environment can only have a max of 100 here, so if you get errors, please check this) not including dates, and defaulting to hourly counts when using the counts api. Discussing the finer points of generating search rules is out of scope for these examples; I encourage you to see the docs to learn the nuances within, but for now let's see what a rule looks like.
+
+
+```python
+rule = gen_rule_payload("@robotprincessfi", max_results=100) # testing with a sandbox account
 print(rule)
 ```
 
-    {"query":"@robotprincessfi","maxResults":500}
+    {"query":"@robotprincessfi","maxResults":100}
 
 
 This rule will match tweets that mention `@robotprincessfi`.
@@ -79,6 +107,9 @@ We'll be using the `collect_results` function, which has three parameters.
 - max_results: as the api handles pagination, it will stop collecting when we get to this number
 - result_stream_args: configuration args that we've already specified.
 
+
+For the remaining examples, please change the args to either premium or enterprise depending on your usage.
+
 Let's see how it goes:
 
 
@@ -88,10 +119,10 @@ from twittersearch import collect_results
 
 
 ```python
-tweets = collect_results(rule, max_results=500, result_stream_args=search_args)
+tweets = collect_results(rule, max_results=500, result_stream_args=premium_search_args) # change this if you need to
 ```
 
-    using username and password for authentication
+    using bearer token for authentication
 
 
 
@@ -118,7 +149,7 @@ The ResultStream object will be powered by the `search_args`, and takes the rule
 
 
 ```python
-rs = ResultStream(**search_args, rule_payload=rule, max_results=500, max_pages=1, )
+rs = ResultStream(**premium_search_args, rule_payload=rule, max_results=500, max_pages=1, )
 ```
 
 
@@ -128,11 +159,11 @@ print(str(rs).replace(os.environ["TWITTER_SEARCH_ACCOUNT_NAME"], '<account_name>
 
     ResultStream: 
     	{
-        "username":"agonzales@twitter.com",
-        "url":"https:\/\/gnip-api.twitter.com\/search\/fullarchive\/accounts\/<account_name>\/ogformat.json",
+        "username":null,
+        "url":"https:\/\/api.twitter.com\/1.1\/tweets\/search\/30day\/dev.json",
         "rule_payload":{
             "query":"@robotprincessfi",
-            "maxResults":500
+            "maxResults":100
         },
         "tweetify":true,
         "max_results":500
@@ -146,7 +177,7 @@ There is a function, `.stream`, that seamlessly handles requests and pagination 
 tweets = list(rs.stream())
 ```
 
-    using username and password for authentication
+    using bearer token for authentication
 
 
 Tweets are lazily parsed using our Tweet Parser, so tweet data is very easily extractable.
@@ -166,20 +197,20 @@ Tweets are lazily parsed using our Tweet Parser, so tweet data is very easily ex
 
 
 
-Let's make a new rule and pass it dates this time. `gen_rule_payload` takes dates of the forms `YYYY-mm-DD` and `YYYYmmDD`.
+Let's make a new rule and pass it dates this time. `gen_rule_payload` takes dates of the forms `YYYY-mm-DD` and `YYYYmmDD`. Note that this will only work with the full archive search option, which is available to my account only via the enterprise options.
 
 
 ```python
-rule = gen_rule_payload("from:jack", from_date="2017-09-01", to_date="2017-10-15")
+rule = gen_rule_payload("from:jack", from_date="2017-09-01", to_date="2017-10-15", max_results=100)
 print(rule)
 ```
 
-    {"query":"from:jack","maxResults":500,"toDate":"201710150000","fromDate":"201709010000"}
+    {"query":"from:jack","maxResults":100,"toDate":"201710150000","fromDate":"201709010000"}
 
 
 
 ```python
-tweets = collect_results(rule, max_results=500, result_stream_args=search_args)
+tweets = collect_results(rule, max_results=500, result_stream_args=enterprise_search_args)
 ```
 
     using username and password for authentication
