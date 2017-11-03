@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Twitter Search API &#8212; twitter search api 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="twittersearch package" href="twittersearch.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+          Twitter Search API</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/tw-ddis/twitter_search_api">Github</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Twitter Search API <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python Twitter Search API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twittersearch.html">twittersearch package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch.api_utils">twittersearch.api_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch.result_stream">twittersearch.result_stream module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch.utils">twittersearch.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Python Twitter Search API</a></li>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#command-line-examples">Command line examples</a></li>
+<li><a class="reference internal" href="#command-line-options">Command-line options</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="twittersearch.html" title="Next Chapter: twittersearch package"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">twittersearch package &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/index.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="python-twitter-search-api">
+<h1>Python Twitter Search API<a class="headerlink" href="#python-twitter-search-api" title="Permalink to this headline">¶</a></h1>
+<p>This library serves as a python interface to the Twitter/GNIP Search API. It allows use both from a command-line utility and from with a python program. It comes with tools for assisting in dynamic generation of search rules and for parsing tweets.</p>
+</div>
+<div class="section" id="features">
+<h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>delivers a stream of data to the user for low in-memory requirements</li>
+<li>automatically handles pagination of results with specifiable limits</li>
+<li>will handle both token authentication and basic username/password authentication</li>
+<li>quick to handle in a standalone program or interactive environment</li>
+<li>compatible with our group&#8217;s Tweet Parser for extraction of relevant data fields from each tweet payload</li>
+<li>supports the Search Counts API to estimate volumes for queries without using many API calls</li>
+<li>command-line utility is pipeable to other tools (e.g., <code class="docutils literal"><span class="pre">jq</span></code>).</li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>We will soon handle releases via PyPy, but you can also install the current master version via:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">tw</span><span class="o">-</span><span class="n">ddis</span><span class="o">/</span><span class="n">twitter_search_api</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Or the development version locally via::</dt>
+<dd>git clone <a class="reference external" href="https://github.com/tw-ddis/twitter_search_api.git">https://github.com/tw-ddis/twitter_search_api.git</a>
+cd twitter_search_api
+pip install -e .</dd>
+</dl>
+</div>
+<div class="section" id="command-line-examples">
+<h1>Command line examples<a class="headerlink" href="#command-line-examples" title="Permalink to this headline">¶</a></h1>
+<p>Stream json results to stdout without saving:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search_api</span><span class="o">.</span><span class="n">py</span> \
+  <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="n">account</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">ACCOUNT</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="n">stream</span><span class="o">-</span><span class="n">endpoint</span> <span class="n">ogformat</span><span class="o">.</span><span class="n">json</span> \
+  <span class="o">--</span><span class="n">search</span><span class="o">-</span><span class="n">api</span> <span class="n">fullarchive</span> \
+  <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">tweets</span> <span class="mi">1000</span> \
+  <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:geo&quot;</span> \
+  <span class="o">--</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
+</pre></div>
+</div>
+<p>Stream json results to stdout and save to a file:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search_api</span><span class="o">.</span><span class="n">py</span> \
+  <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="n">account</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">ACCOUNT</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="n">stream</span><span class="o">-</span><span class="n">endpoint</span> <span class="n">ogformat</span><span class="o">.</span><span class="n">json</span> \
+  <span class="o">--</span><span class="n">search</span><span class="o">-</span><span class="n">api</span> <span class="n">fullarchive</span> \
+  <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">tweets</span> <span class="mi">1000</span> \
+  <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:geo&quot;</span> \
+  <span class="o">--</span><span class="n">filename</span><span class="o">-</span><span class="n">prefix</span> <span class="n">beyonce_geo</span> \
+  <span class="o">--</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
+</pre></div>
+</div>
+<p>Save to file without output:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search_api</span><span class="o">.</span><span class="n">py</span> \
+  <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="n">account</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">ACCOUNT</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="n">stream</span><span class="o">-</span><span class="n">endpoint</span> <span class="n">ogformat</span><span class="o">.</span><span class="n">json</span> \
+  <span class="o">--</span><span class="n">search</span><span class="o">-</span><span class="n">api</span> <span class="n">fullarchive</span> \
+  <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">tweets</span> <span class="mi">1000</span> \
+  <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:geo&quot;</span> \
+  <span class="o">--</span><span class="n">filename</span><span class="o">-</span><span class="n">prefix</span> <span class="n">beyonce_geo</span> \
+  <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
+</pre></div>
+</div>
+<p>It can be far easier to specify your information in a configuration file. An example file can be found in the <code class="docutils literal"><span class="pre">tools/api_config_example.config</span></code> file, but will look something like this:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">credentials</span><span class="p">]</span>
+<span class="n">account_name</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">account_name</span><span class="o">&gt;</span>
+<span class="n">username</span> <span class="o">=</span>  <span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">morrisey_on_twitter</span>
+
+
+<span class="p">[</span><span class="n">api_info</span><span class="p">]</span>
+<span class="n">search_api</span> <span class="o">=</span> <span class="n">fullarchive</span>
+<span class="n">endpoint_label</span> <span class="o">=</span> <span class="n">ogformat</span><span class="o">.</span><span class="n">json</span>
+
+<span class="p">[</span><span class="n">gnip_search_rules</span><span class="p">]</span>
+<span class="n">from_date</span> <span class="o">=</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">01</span>
+<span class="n">to_date</span> <span class="o">=</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span>
+<span class="n">max_results</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">pt_rule</span> <span class="o">=</span> <span class="n">beyonce</span> <span class="n">has</span><span class="p">:</span><span class="n">geo</span>
+
+
+<span class="p">[</span><span class="n">search_params</span><span class="p">]</span>
+<span class="n">max_tweets</span> <span class="o">=</span> <span class="mi">500</span>
+
+<span class="p">[</span><span class="n">output_params</span><span class="p">]</span>
+<span class="n">output_file_prefix</span> <span class="o">=</span> <span class="n">beyonce</span>
+</pre></div>
+</div>
+<p>When using a config file in conjunction with the command-line utility, you need to specify your config file via the <code class="docutils literal"><span class="pre">--config-file</span></code> parameter. Additional command-line arguments will either be <em>added</em> to the config file args or <strong>overwrite</strong> the config file args if both are specified and present.</p>
+<p>example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search_api</span><span class="o">.</span><span class="n">py</span> \
+  <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">file</span> <span class="n">myapiconfig</span><span class="o">.</span><span class="n">config</span> \
+  <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="command-line-options">
+<h1>Command-line options<a class="headerlink" href="#command-line-options" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>&#8211;config-file
+* the configuration file with variable numbers of these parameters filled out.</li>
+<li>&#8211;account-name
+* the search api account name</li>
+<li>&#8211;user-name
+* your username for this session</li>
+<li>&#8211;password
+* your password for this session</li>
+<li>&#8211;count-bucket
+* If specified, the result will be passed to the Counts API with the specified bucket. Valid options are
+&#8220;hour&#8221;, &#8220;day&#8221;, and &#8220;minute&#8221;</li>
+<li>&#8211;start-datetime
+* the starttime of the query</li>
+<li>&#8211;end-datetime
+* the end-time of the query</li>
+<li>&#8211;filter-rule
+* a valid PowerTrack rule.</li>
+<li>&#8211;search-api
+* the api to use, 30day, fullarchive, or 7 day</li>
+<li>&#8211;stream-endpoint
+* the endpoint for your session. See your console.</li>
+<li>&#8211;max-results
+* gnip api payload parameter. Defines the number of results returned per API call. Program defaults to 500, and this can vary between 100 and 500.</li>
+<li>&#8211;max-tweets
+* hard number of tweets to return from this session.</li>
+<li>&#8211;max-pages
+* maxiumum pages to use this session. Setting this to 0 or 1 will effectively disable pagination, which is valuable for testing.</li>
+<li>&#8211;results-per-file
+* when saving results to a file, this provides a mechanism to split the files up into chunks. Defaults to 10000000.</li>
+<li>&#8211;filename-prefix
+* defines the filename for saving tweets.</li>
+<li>&#8211;no-print-stream
+* disables the stdout printstream. Good when using this to save tweets.</li>
+<li>&#8211;print-stream
+* defaults to True and prints each retrieved tweet to JSON on stdout. Useful for inspection or for piping to other utilities.</li>
+<li>&#8211;debug
+* prints debugging and info messages within the program.</li>
+</ul>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python Twitter Search API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twittersearch.html">twittersearch package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch.api_utils">twittersearch.api_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch.result_stream">twittersearch.result_stream module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch.utils">twittersearch.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, tw-ddis.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

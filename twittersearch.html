@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>twittersearch package &#8212; twitter search api 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Python Twitter Search API" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Twitter Search API</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/tw-ddis/twitter_search_api">Github</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Twitter Search API <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Python Twitter Search API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">twittersearch package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-twittersearch.api_utils">twittersearch.api_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-twittersearch.result_stream">twittersearch.result_stream module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-twittersearch.utils">twittersearch.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-twittersearch">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">twittersearch package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-twittersearch.api_utils">twittersearch.api_utils module</a></li>
+<li><a class="reference internal" href="#module-twittersearch.result_stream">twittersearch.result_stream module</a></li>
+<li><a class="reference internal" href="#module-twittersearch.utils">twittersearch.utils module</a></li>
+<li><a class="reference internal" href="#module-twittersearch">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="index.html" title="Previous Chapter: Python Twitter Search API"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Python Twitte...</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="_sources/twittersearch.rst.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="twittersearch-package">
+<h1>twittersearch package<a class="headerlink" href="#twittersearch-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-twittersearch.api_utils">
+<span id="twittersearch-api-utils-module"></span><h2>twittersearch.api_utils module<a class="headerlink" href="#module-twittersearch.api_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="twittersearch.api_utils.gen_endpoint">
+<code class="descclassname">twittersearch.api_utils.</code><code class="descname">gen_endpoint</code><span class="sig-paren">(</span><em>kind='enterprise'</em>, <em>search_api=None</em>, <em>account_name=None</em>, <em>label=None</em>, <em>count_endpoint=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#gen_endpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.gen_endpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the endpoint URL from discrete information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; supports both <cite>enterprise</cite> and <cite>premium</cite> access.</li>
+<li><strong>search_api</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the api to use, <cite>30day</cite> or <cite>fullarchive</cite></li>
+<li><strong>account_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the master account for the user for enterprise users</li>
+<li><strong>label</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; stream within an account to connect, also known as the end of your url</li>
+<li><strong>count_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; defines using the Counts endpoint over the default data endpoint.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">well-formed url for a connection.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">twittersearch.utils</span> <span class="k">import</span> <span class="n">gen_endpoint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_api</span> <span class="o">=</span> <span class="s2">&quot;30day&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">account_name</span> <span class="o">=</span> <span class="s2">&quot;montypython&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">endpoint_label</span> <span class="o">=</span> <span class="s2">&quot;python.json&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_endpoint</span><span class="p">(</span><span class="s2">&quot;enterprise&quot;</span><span class="p">,</span>
+<span class="go">        search_api, account_name, endpoint_label, count_endpoint=False)</span>
+<span class="go">&#39;https://gnip-api.twitter.com/search/30day/accounts/montypython/python.json&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_endpoint</span><span class="p">(</span><span class="s2">&quot;enterprise&quot;</span><span class="p">,</span>
+<span class="go">        search_api, account_name, endpoint_label, count_endpoint=True)</span>
+<span class="go">&#39;https://gnip-api.twitter.com/search/30day/accounts/montypython/python/counts.json&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_endpoint</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span><span class="p">,</span> <span class="n">count_endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&#39;https://api.twitter.com/1.1/tweets/search/30day/dev.json&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.api_utils.gen_rule_payload">
+<code class="descclassname">twittersearch.api_utils.</code><code class="descname">gen_rule_payload</code><span class="sig-paren">(</span><em>pt_rule</em>, <em>max_results=500</em>, <em>from_date=None</em>, <em>to_date=None</em>, <em>count_bucket=None</em>, <em>stringify=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#gen_rule_payload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.gen_rule_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the dict or json payload for a PowerTrack rule.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pt_rule</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the string version of a powertrack rule, e.g., &#8220;kanye west has:geo&#8221;. Accepts multi-line strings for ease of entry.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; max results for the batch. Defaults to 500 to reduce API call usage.</li>
+<li><strong>from_date</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; date format as specified by <cite>convert_utc_time</cite> for the starting time of your search.</li>
+<li><strong>to_date</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; date format as specified by <cite>convert_utc_time</cite> for the end time of your search.</li>
+<li><strong>count_bucket</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; if using the counts api endpoint, will define the count bucket for which tweets are aggregated.</li>
+<li><strong>stringify</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; specifies the return type, <cite>dict</cite> or json-formatted <cite>str</cite>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">twittersearch.utils</span> <span class="k">import</span> <span class="n">gen_rule_payload</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;kanye west has:geo&quot;</span><span class="p">,</span>
+<span class="go">    ...              from_date=&quot;2017-08-21&quot;,</span>
+<span class="go">    ...              to_date=&quot;2017-08-22&quot;)</span>
+<span class="go">&#39;{&quot;query&quot;:&quot;kanye west has:geo&quot;,&quot;maxResults&quot;:100,&quot;toDate&quot;:&quot;201708220000&quot;,&quot;fromDate&quot;:&quot;201708210000&quot;}&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.api_utils.gen_params_from_config">
+<code class="descclassname">twittersearch.api_utils.</code><code class="descname">gen_params_from_config</code><span class="sig-paren">(</span><em>config_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#gen_params_from_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.gen_params_from_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates parameters for a ResultStream from a dictionary.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.api_utils.validate_count_api">
+<code class="descclassname">twittersearch.api_utils.</code><code class="descname">validate_count_api</code><span class="sig-paren">(</span><em>rule_payload</em>, <em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#validate_count_api"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.validate_count_api" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-twittersearch.result_stream">
+<span id="twittersearch-result-stream-module"></span><h2>twittersearch.result_stream module<a class="headerlink" href="#module-twittersearch.result_stream" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="twittersearch.result_stream.ResultStream">
+<em class="property">class </em><code class="descclassname">twittersearch.result_stream.</code><code class="descname">ResultStream</code><span class="sig-paren">(</span><em>url</em>, <em>rule_payload</em>, <em>username=None</em>, <em>password=None</em>, <em>bearer_token=None</em>, <em>max_results=1000</em>, <em>tweetify=True</em>, <em>max_requests=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#ResultStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.ResultStream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Class to represent an API query that handles two major functionality
+pieces: wrapping metadata around a specific API call and automatic
+pagination of results.</p>
+<dl class="method">
+<dt id="twittersearch.result_stream.ResultStream.check_counts">
+<code class="descname">check_counts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#ResultStream.check_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.ResultStream.check_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disables tweet parsing if the count api is used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="twittersearch.result_stream.ResultStream.execute_request">
+<code class="descname">execute_request</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#ResultStream.execute_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.ResultStream.execute_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends the request to the api and parses the json response.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="twittersearch.result_stream.ResultStream.init_session">
+<code class="descname">init_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#ResultStream.init_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.ResultStream.init_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines a session object for passing requests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="twittersearch.result_stream.ResultStream.stream">
+<code class="descname">stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#ResultStream.stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.ResultStream.stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main entry point for the data from the API. Will automatically paginate
+through the results via the &#8216;next&#8217; token and return up to <cite>max_results</cite>
+tweets or up to <cite>max_requests</cite> api calls, whichever is lower.</p>
+<dl class="docutils">
+<dt>Usage:</dt>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">result_stream</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># or for faster usage...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ResultStream</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">stream</span><span class="p">())</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.result_stream.collect_results">
+<code class="descclassname">twittersearch.result_stream.</code><code class="descname">collect_results</code><span class="sig-paren">(</span><em>rule</em>, <em>max_results=500</em>, <em>result_stream_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#collect_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.collect_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function to quickly get a list of tweets from a resultstream
+without keeping the object around. Rqequires your args to be configured
+prior to using.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.result_stream.make_session">
+<code class="descclassname">twittersearch.result_stream.</code><code class="descname">make_session</code><span class="sig-paren">(</span><em>username=None</em>, <em>password=None</em>, <em>bearer_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#make_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.make_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Requests Session for use. Accepts a bearer token
+for freemium users and will override username and password information if
+present.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>username</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; username for the session</li>
+<li><strong>password</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; password for the user</li>
+<li><strong>bearer_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; token for the session for freemium.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.result_stream.request">
+<code class="descclassname">twittersearch.result_stream.</code><code class="descname">request</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.request" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.result_stream.retry">
+<code class="descclassname">twittersearch.result_stream.</code><code class="descname">retry</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#retry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.retry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to handle API retries and exceptions. Defaults to three retries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>func</strong> (<em>function</em>) &#8211; function for decoration</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">decorated function</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-twittersearch.utils">
+<span id="twittersearch-utils-module"></span><h2>twittersearch.utils module<a class="headerlink" href="#module-twittersearch.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="twittersearch.utils.take">
+<code class="descclassname">twittersearch.utils.</code><code class="descname">take</code><span class="sig-paren">(</span><em>n</em>, <em>iterable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/utils.html#take"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.utils.take" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return first n items of the iterable as a list</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.utils.partition">
+<code class="descclassname">twittersearch.utils.</code><code class="descname">partition</code><span class="sig-paren">(</span><em>iterable</em>, <em>chunk_size</em>, <em>pad_none=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/utils.html#partition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.utils.partition" title="Permalink to this definition">¶</a></dt>
+<dd><p>adapted from Toolz. Breaks an iterable into n iterables up to the
+certain chunk size, padding with Nones if availble.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">twittersearch.utils</span> <span class="k">import</span> <span class="n">partition</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iter_</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">partition</span><span class="p">(</span><span class="n">iter_</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">[(0, 1, 2), (3, 4, 5), (6, 7, 8)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">partition</span><span class="p">(</span><span class="n">iter_</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">pad_none</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="go">[(0, 1, 2), (3, 4, 5), (6, 7, 8), (9, None, None)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.utils.merge_dicts">
+<code class="descclassname">twittersearch.utils.</code><code class="descname">merge_dicts</code><span class="sig-paren">(</span><em>*dicts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/utils.html#merge_dicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.utils.merge_dicts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helpful function to merge / combine dictionaries and return a new
+dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dicts</strong> (<em>list</em><em> or </em><em>Iterable</em>) &#8211; iterable set of dictionarys for merging.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dict with all keys from the passed list. Later dictionaries in
+the sequence will override duplicate keys from previous dictionaries.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">twittersearch.utils</span> <span class="k">import</span> <span class="n">merge_dicts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="s2">&quot;something has:geo&quot;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;maxResults&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">merge_dicts</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">])</span>
+<span class="go">{&quot;maxResults&quot;: 1000, &quot;rule&quot;: &quot;something has:geo&quot;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.utils.write_result_stream">
+<code class="descclassname">twittersearch.utils.</code><code class="descname">write_result_stream</code><span class="sig-paren">(</span><em>result_stream</em>, <em>filename_prefix=None</em>, <em>results_per_file=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/utils.html#write_result_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.utils.write_result_stream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps a resultstream object to save it to a file. This function will still
+return all data from the result stream as a generator that wraps the
+<cite>write_ndjson</cite> method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>result_stream</strong> (<a class="reference internal" href="#twittersearch.result_stream.ResultStream" title="twittersearch.result_stream.ResultStream"><em>ResultStream</em></a>) &#8211; the unstarted ResultStream object</li>
+<li><strong>filename_prefix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; the base name for file writing</li>
+<li><strong>results_per_file</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; the maximum number of tweets to write</li>
+<li><strong>file. Defaults to having no max</strong><strong>, </strong><strong>which means one file. Multiple</strong> (<em>per</em>) &#8211; </li>
+<li><strong>will be named by datetime</strong><strong>, </strong><strong>according to</strong> (<em>files</em>) &#8211; </li>
+<li><strong>&quot;&lt;prefix&gt;_YYY-mm-ddTHH_MM_SS.json&quot;.</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.utils.read_configfile">
+<code class="descclassname">twittersearch.utils.</code><code class="descname">read_configfile</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/utils.html#read_configfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.utils.read_configfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>reads and flattens a configuration file into a single dictionary for ease of use.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-twittersearch">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-twittersearch" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, tw-ddis.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

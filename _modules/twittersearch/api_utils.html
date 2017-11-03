@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>twittersearch.api_utils &#8212; twitter search api 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          Twitter Search API</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/tw-ddis/twitter_search_api">Github</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Twitter Search API <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Python Twitter Search API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../twittersearch.html">twittersearch package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.api_utils">twittersearch.api_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.result_stream">twittersearch.result_stream module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.utils">twittersearch.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for twittersearch.api_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">ConfigParser</span> <span class="k">as</span> <span class="nn">configparser</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">configparser</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">ujson</span> <span class="k">as</span> <span class="nn">json</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gen_endpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;gen_rule_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;gen_params_from_config&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;validate_count_api&quot;</span><span class="p">,</span> <span class="s2">&quot;GNIP_RESP_CODES&quot;</span><span class="p">]</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">GNIP_RESP_CODES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;200&#39;</span><span class="p">:</span> <span class="s1">&#39;OK: The request was successful. The JSON response will be similar to the following:&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;400&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Bad Request: Generally, this response occurs due to the presence of &quot;</span>
+            <span class="s2">&quot;invalid JSON in the request, or where the request failed to send any JSON payload.&quot;</span><span class="p">),</span>
+
+    <span class="s1">&#39;401&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Unauthorized: HTTP authentication failed due to invalid &quot;</span>
+            <span class="s2">&quot;credentials. Log in to console.gnip.com with your credentials to ensure&quot;</span>
+            <span class="s2">&quot; you are using them correctly with your request. &quot;</span><span class="p">),</span>
+    <span class="s1">&#39;404&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Not Found: The resource was not found at the URL to which the &quot;</span>
+            <span class="s2">&quot;request was sent, likely because an incorrect URL was used.&quot;</span><span class="p">),</span>
+    <span class="s1">&#39;422&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Unprocessable Entity: This is returned due to invalid parameters &quot;</span>
+            <span class="s2">&quot;in a query or when a query is too complex for us to process. – e.g. &quot;</span>
+            <span class="s2">&quot; invalid PowerTrack rules or too many phrase operators, rendering a &quot;</span>
+            <span class="s2">&quot; query too complex.&quot;</span><span class="p">),</span>
+    <span class="s1">&#39;429&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Unknown Code: Your app has exceeded the limit on connection &quot;</span>
+            <span class="s2">&quot;requests. The corresponding JSON message will look similar to the &quot;</span>
+            <span class="s2">&quot;following:&quot;</span><span class="p">),</span>
+    <span class="s1">&#39;500&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Internal Server Error: There was an error on Gnip&#39;s side. Retry &quot;</span>
+            <span class="s2">&quot;your request using an exponential backoff pattern.&quot;</span><span class="p">),</span>
+    <span class="s1">&#39;502&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Proxy Error: There was an error on Gnip&#39;s side. Retry your request &quot;</span>
+            <span class="s2">&quot;using an exponential backoff pattern.&quot;</span><span class="p">),</span>
+    <span class="s1">&#39;503&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Service Unavailable: There was an error on Gnip&#39;s side. Retry your &quot;</span>
+            <span class="s2">&quot;request using an exponential backoff pattern.&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">convert_utc_time</span><span class="p">(</span><span class="n">datetime_str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handles datetime argument conversion to the GNIP API format, which is</span>
+<span class="sd">    `YYYYMMDDHHSS`. Flexible passing of date formats.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        datetime_str (str): the datestring, which can either be in GNIP API</span>
+<span class="sd">        Format (YYYYmmDDHHSS), ISO date format (YYYY-mm-DD), ISO datetime</span>
+<span class="sd">        format (YYYY-mm-DD HH:mm), or command-line ISO format (YYYY-mm-DDTHH:mm)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        string of GNIP API formatted date.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; from twittersearch.utils import convert_utc_time</span>
+<span class="sd">        &gt;&gt;&gt; convert_utc_time(&quot;201708020000&quot;)</span>
+<span class="sd">        &#39;201708020000&#39;</span>
+<span class="sd">        &gt;&gt;&gt; convert_utc_time(&quot;2017-08-02&quot;)</span>
+<span class="sd">        &#39;201708020000&#39;</span>
+<span class="sd">        &gt;&gt;&gt; convert_utc_time(&quot;2017-08-02 00:00&quot;)</span>
+<span class="sd">        &#39;201708020000&#39;</span>
+<span class="sd">        &gt;&gt;&gt; convert_utc_time(&quot;2017-08-02T00:00&quot;)</span>
+<span class="sd">        &#39;201708020000&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">datetime_str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">datetime_str</span><span class="p">):</span>
+        <span class="n">_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">datetime_str</span><span class="p">,</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;T&quot;</span> <span class="ow">in</span> <span class="n">datetime_str</span><span class="p">:</span>
+                <span class="n">datetime_str</span> <span class="o">=</span> <span class="n">datetime_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="c1"># command line with &#39;T&#39;</span>
+            <span class="n">_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">datetime_str</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">datetime_str</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_gen_premium_endpoint</span><span class="p">(</span><span class="n">env_name</span><span class="p">,</span> <span class="n">count_endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates the endpoint URL for a premium account. Early stage and will</span>
+<span class="sd">    anticipate changes, particularly around the search API or version?</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">freemium_baseurl</span> <span class="o">=</span> <span class="s2">&quot;https://api.twitter.com/1.1/tweets/search/30day/</span><span class="si">{ENV}</span><span class="s2">&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">freemium_baseurl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ENV</span><span class="o">=</span><span class="n">env_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">url</span>
+
+
+<span class="k">def</span> <span class="nf">_gen_enterprise_endpoint</span><span class="p">(</span><span class="n">search_api</span><span class="p">,</span> <span class="n">account_name</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates the endpoint URL for an enterprise account.&quot;&quot;&quot;</span>
+
+    <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://gnip-api.twitter.com/search/&quot;</span>
+    <span class="n">base_endpoint</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{api}</span><span class="s2">/accounts/</span><span class="si">{account_name}</span><span class="s2">/</span><span class="si">{label}</span><span class="s2">&quot;</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">label</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">label</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">label</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">base_endpoint</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="n">search_api</span><span class="p">,</span>
+                                    <span class="n">account_name</span><span class="o">=</span><span class="n">account_name</span><span class="p">,</span>
+                                    <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">endpoint</span>
+
+
+<div class="viewcode-block" id="gen_endpoint"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.gen_endpoint">[docs]</a><span class="k">def</span> <span class="nf">gen_endpoint</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;enterprise&quot;</span><span class="p">,</span>
+                 <span class="n">search_api</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">account_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">count_endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates the endpoint URL from discrete information.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        kind (str): supports both `enterprise` and `premium` access.</span>
+<span class="sd">        search_api (str): the api to use, `30day` or `fullarchive`</span>
+<span class="sd">        account_name (str): the master account for the user for enterprise users</span>
+<span class="sd">        label (str): stream within an account to connect, also known as the end of your url</span>
+<span class="sd">        count_endpoint (bool): defines using the Counts endpoint over the default data endpoint.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: well-formed url for a connection.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; from twittersearch.utils import gen_endpoint</span>
+<span class="sd">        &gt;&gt;&gt; search_api = &quot;30day&quot;</span>
+<span class="sd">        &gt;&gt;&gt; account_name = &quot;montypython&quot;</span>
+<span class="sd">        &gt;&gt;&gt; endpoint_label = &quot;python.json&quot;</span>
+<span class="sd">        &gt;&gt;&gt; gen_endpoint(&quot;enterprise&quot;,</span>
+<span class="sd">                search_api, account_name, endpoint_label, count_endpoint=False)</span>
+<span class="sd">        &#39;https://gnip-api.twitter.com/search/30day/accounts/montypython/python.json&#39;</span>
+<span class="sd">        &gt;&gt;&gt; gen_endpoint(&quot;enterprise&quot;,</span>
+<span class="sd">                search_api, account_name, endpoint_label, count_endpoint=True)</span>
+<span class="sd">        &#39;https://gnip-api.twitter.com/search/30day/accounts/montypython/python/counts.json&#39;</span>
+<span class="sd">        &gt;&gt;&gt; gen_endpoint(kind=&quot;premium&quot;, label=&quot;dev&quot;, count_endpoint=False)</span>
+<span class="sd">        &#39;https://api.twitter.com/1.1/tweets/search/30day/dev.json&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;enterprise&#39;</span><span class="p">:</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="n">_gen_enterprise_endpoint</span><span class="p">(</span><span class="n">search_api</span><span class="o">=</span><span class="n">search_api</span><span class="p">,</span>
+                                            <span class="n">account_name</span><span class="o">=</span><span class="n">account_name</span><span class="p">,</span>
+                                            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;premium&#39;</span><span class="p">:</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="n">_gen_premium_endpoint</span><span class="p">(</span><span class="n">env_name</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;only two types of access are supported here; Enterprise and Premium&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
+
+    <span class="k">if</span> <span class="n">count_endpoint</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;premium&#39;</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;premium sandbox envionments do not have counts&quot;</span>
+                        <span class="s2">&quot;API access. You might receive errors downstream.&quot;</span><span class="p">)</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="n">endpoint</span> <span class="o">+</span> <span class="s2">&quot;/counts.json&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="n">endpoint</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span>
+
+    <span class="k">return</span> <span class="n">endpoint</span></div>
+
+
+<div class="viewcode-block" id="gen_rule_payload"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.gen_rule_payload">[docs]</a><span class="k">def</span> <span class="nf">gen_rule_payload</span><span class="p">(</span><span class="n">pt_rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                     <span class="n">from_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count_bucket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">stringify</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates the dict or json payload for a PowerTrack rule.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pt_rule (str): the string version of a powertrack rule, e.g., &quot;kanye west has:geo&quot;. Accepts multi-line strings for ease of entry.</span>
+<span class="sd">        max_results (int): max results for the batch. Defaults to 500 to reduce API call usage.</span>
+<span class="sd">        from_date (str or None): date format as specified by `convert_utc_time` for the starting time of your search.</span>
+
+<span class="sd">        to_date (str or None): date format as specified by `convert_utc_time` for the end time of your search.</span>
+
+<span class="sd">        count_bucket (str or None): if using the counts api endpoint, will define the count bucket for which tweets are aggregated.</span>
+<span class="sd">        stringify (bool): specifies the return type, `dict` or json-formatted `str`.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        &gt;&gt;&gt; from twittersearch.utils import gen_rule_payload</span>
+<span class="sd">        &gt;&gt;&gt; gen_rule_payload(&quot;kanye west has:geo&quot;,</span>
+<span class="sd">            ...              from_date=&quot;2017-08-21&quot;,</span>
+<span class="sd">            ...              to_date=&quot;2017-08-22&quot;)</span>
+<span class="sd">        &#39;{&quot;query&quot;:&quot;kanye west has:geo&quot;,&quot;maxResults&quot;:100,&quot;toDate&quot;:&quot;201708220000&quot;,&quot;fromDate&quot;:&quot;201708210000&quot;}&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pt_rule</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pt_rule</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="c1"># allows multi-line strings</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">pt_rule</span><span class="p">,</span>
+               <span class="s2">&quot;maxResults&quot;</span><span class="p">:</span> <span class="n">max_results</span><span class="p">,</span>
+              <span class="p">}</span>
+    <span class="k">if</span> <span class="n">to_date</span><span class="p">:</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;toDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">convert_utc_time</span><span class="p">(</span><span class="n">to_date</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">from_date</span><span class="p">:</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;fromDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">convert_utc_time</span><span class="p">(</span><span class="n">from_date</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">count_bucket</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="s2">&quot;minute&quot;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">([</span><span class="n">count_bucket</span><span class="p">]):</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;bucket&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">count_bucket</span>
+            <span class="k">del</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;maxResults&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;invalid count bucket: provided </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">count_bucket</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span> <span class="k">if</span> <span class="n">stringify</span> <span class="k">else</span> <span class="n">payload</span></div>
+
+
+<div class="viewcode-block" id="gen_params_from_config"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.gen_params_from_config">[docs]</a><span class="k">def</span> <span class="nf">gen_params_from_config</span><span class="p">(</span><span class="n">config_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates parameters for a ResultStream from a dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">gen_endpoint</span><span class="p">(</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;account_type&quot;</span><span class="p">],</span>
+                            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;search_api&quot;</span><span class="p">],</span>
+                            <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;account_name&quot;</span><span class="p">),</span>
+                            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;endpoint_label&quot;</span><span class="p">],</span>
+                            <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;count_bucket&quot;</span><span class="p">)</span> <span class="c1"># autoconfigures counts api</span>
+                           <span class="p">)</span>
+
+    <span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="n">pt_rule</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;pt_rule&quot;</span><span class="p">],</span>
+                            <span class="n">from_date</span><span class="o">=</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;from_date&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                            <span class="n">to_date</span><span class="o">=</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;to_date&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                            <span class="n">max_results</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_results&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+                            <span class="n">count_bucket</span><span class="o">=</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;count_bucket&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                           <span class="p">)</span>
+
+
+    <span class="n">_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">endpoint</span><span class="p">,</span>
+             <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">),</span>
+             <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">),</span>
+             <span class="s2">&quot;bearer_token&quot;</span><span class="p">:</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bearer_token&quot;</span><span class="p">),</span>
+             <span class="s2">&quot;rule_payload&quot;</span><span class="p">:</span> <span class="n">rule</span><span class="p">,</span>
+             <span class="s2">&quot;results_per_file&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results_per_file&quot;</span><span class="p">)),</span>
+             <span class="s2">&quot;max_tweets&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_tweets&quot;</span><span class="p">)),</span>
+             <span class="s2">&quot;max_pages&quot;</span><span class="p">:</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_pages&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="p">}</span>
+    <span class="k">return</span> <span class="n">_dict</span></div>
+
+
+<div class="viewcode-block" id="validate_count_api"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.validate_count_api">[docs]</a><span class="k">def</span> <span class="nf">validate_count_api</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+    <span class="n">rule</span> <span class="o">=</span> <span class="n">rule_payload</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">)</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bucket&#39;</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">{</span><span class="s2">&quot;counts.json&quot;</span><span class="p">}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">bucket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&quot;&quot;there is a count bucket present in your payload,</span>
+<span class="s2">                   but you are using not using the counts API.</span>
+<span class="s2">                   Please check your endpoints and try again&quot;&quot;&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, tw-ddis.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
