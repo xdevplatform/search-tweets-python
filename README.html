@@ -93,7 +93,13 @@
 <li><a class="reference internal" href="#features">Features</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#command-line-examples">Command line examples</a></li>
-<li><a class="reference internal" href="#command-line-options">Command-line options</a></li>
+<li><a class="reference internal" href="#using-the-twitter-search-api-within-a-python-program">Using the Twitter Search API Within a Python Program</a><ul>
+<li><a class="reference internal" href="#enterprise-setup">Enterprise setup</a></li>
+<li><a class="reference internal" href="#premium-setup">Premium Setup</a></li>
+<li><a class="reference internal" href="#fast-way">Fast Way</a></li>
+<li><a class="reference internal" href="#working-with-the-resultstream">Working with the ResultStream</a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -106,12 +112,6 @@
             
             
             
-            
-              <li class="hidden-sm">
-<div id="sourcelink">
-  <a href="_sources/README.rst.txt"
-     rel="nofollow">Source</a>
-</div></li>
             
           </ul>
 
@@ -136,6 +136,7 @@
   <div class="section" id="python-twitter-search-api">
 <h1>Python Twitter Search API<a class="headerlink" href="#python-twitter-search-api" title="Permalink to this headline">¶</a></h1>
 <p>This library serves as a python interface to the Twitter/GNIP Search API. It allows use both from a command-line utility and from with a python program. It comes with tools for assisting in dynamic generation of search rules and for parsing tweets.</p>
+<p>Pretty docs can be seen <a class="reference external" href="https://tw-ddis.github.io/twitter_search_api/index.html">here</a>.</p>
 </div>
 <div class="section" id="features">
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
@@ -151,21 +152,22 @@
 </div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>We will soon handle releases via PyPy, but you can also install the current master version via:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">tw</span><span class="o">-</span><span class="n">ddis</span><span class="o">/</span><span class="n">twitter_search_api</span><span class="o">.</span><span class="n">git</span>
+<p>We will soon handle releases via PyPy, but you can also install the current master version via</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">tw</span><span class="o">-</span><span class="n">ddis</span><span class="o">/</span><span class="n">twitter_search_api</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt>Or the development version locally via::</dt>
-<dd>git clone <a class="reference external" href="https://github.com/tw-ddis/twitter_search_api.git">https://github.com/tw-ddis/twitter_search_api.git</a>
-cd twitter_search_api
-pip install -e .</dd>
-</dl>
+<p>Or the development version locally via</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">tw</span><span class="o">-</span><span class="n">ddis</span><span class="o">/</span><span class="n">twitter_search_api</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">twitter_search_api</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="command-line-examples">
 <h1>Command line examples<a class="headerlink" href="#command-line-examples" title="Permalink to this headline">¶</a></h1>
-<p>Stream json results to stdout without saving:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search_api</span><span class="o">.</span><span class="n">py</span> \
+<p>We provide a utility, <code class="docutils literal"><span class="pre">twitter_search.py</span></code>, that provides rapid access to getting some tweets.</p>
+<p><strong>Stream json results to stdout without saving</strong></p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">account</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">ACCOUNT</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
@@ -176,8 +178,8 @@ pip install -e .</dd>
   <span class="o">--</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
 </div>
-<p>Stream json results to stdout and save to a file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search_api</span><span class="o">.</span><span class="n">py</span> \
+<p><strong>Stream json results to stdout and save to a file</strong></p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">account</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">ACCOUNT</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
@@ -189,8 +191,8 @@ pip install -e .</dd>
   <span class="o">--</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
 </div>
-<p>Save to file without output:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search_api</span><span class="o">.</span><span class="n">py</span> \
+<p><strong>Save to file without output</strong></p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">account</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">ACCOUNT</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
@@ -203,11 +205,11 @@ pip install -e .</dd>
 </pre></div>
 </div>
 <p>It can be far easier to specify your information in a configuration file. An example file can be found in the <code class="docutils literal"><span class="pre">tools/api_config_example.config</span></code> file, but will look something like this:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">credentials</span><span class="p">]</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">credentials</span><span class="p">]</span>
 <span class="n">account_name</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">account_name</span><span class="o">&gt;</span>
 <span class="n">username</span> <span class="o">=</span>  <span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span>
-<span class="n">password</span> <span class="o">=</span> <span class="n">morrisey_on_twitter</span>
-
+<span class="n">password</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span>
+<span class="n">bearer_token</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">token</span><span class="o">&gt;</span>
 
 <span class="p">[</span><span class="n">api_info</span><span class="p">]</span>
 <span class="n">search_api</span> <span class="o">=</span> <span class="n">fullarchive</span>
@@ -235,47 +237,244 @@ pip install -e .</dd>
 </pre></div>
 </div>
 </div>
-<div class="section" id="command-line-options">
-<h1>Command-line options<a class="headerlink" href="#command-line-options" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="using-the-twitter-search-api-within-a-python-program">
+<h1>Using the Twitter Search API Within a Python Program<a class="headerlink" href="#using-the-twitter-search-api-within-a-python-program" title="Permalink to this headline">¶</a></h1>
+<p>Working with the API within a Python program is straightforward both for
+Premium and Enterprise clients.</p>
+<p>Our group&#8217;s python <a class="reference external" href="https://github.com/tw-ddis/tweet_parser">tweet parser library</a> is a requirement.</p>
+<p>Prior to starting your program, an easy way to define your secrets will
+be setting an environment variable.</p>
+<dl class="docutils">
+<dt>Enterprise Clients</dt>
+<dd>Your authentication will be a (username, password) pair.</dd>
+<dt>Premium clients</dt>
+<dd>You will need a bearer token that will be passed with each call for authentication.</dd>
+</dl>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">TWITTER_SEARCH_PW</span><span class="o">=&lt;</span><span class="n">password</span><span class="o">&gt;</span>
+<span class="n">export</span> <span class="n">TWITTER_SEARCH_ACCOUNT_NAME</span><span class="o">=&lt;</span><span class="n">account_name</span><span class="o">&gt;</span>
+<span class="n">export</span> <span class="n">TWITTER_SEARCH_BEARER_TOKEN</span><span class="o">=&lt;</span><span class="n">token</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The other points that you will have to set in the program are your
+endpoint, the api you want to use. There are functions to generate
+correct API endpoints from this info as well as flags to use the
+<code class="docutils literal"><span class="pre">counts</span></code> endpoint instead of the regular endpoint.</p>
+<p>The following cell demonstrates the basic setup that will be referenced
+throughout your program&#8217;s session. Note that any method of storing your
+credentials is valid here; I am using environment variables for ease of
+use.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">twittersearch</span> <span class="k">import</span> <span class="n">ResultStream</span><span class="p">,</span> <span class="n">gen_endpoint</span><span class="p">,</span> <span class="n">gen_rule_payload</span>
+</pre></div>
+</div>
+<div class="section" id="enterprise-setup">
+<h2>Enterprise setup<a class="headerlink" href="#enterprise-setup" title="Permalink to this headline">¶</a></h2>
+<p>If you are an enterprise customer, you&#8217;ll need to authenticate with a
+basic username/password method. You can specify that here:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># set your environment variables here for enterprise access if you need to</span>
+<span class="c1"># os.environ[&quot;TWITTER_SEARCH_ACCOUNT_NAME&quot;] = &quot;&quot;</span>
+<span class="c1"># os.environ[&quot;TWITTER_SEARCH_PW&quot;] = &quot;&quot;</span>
+
+
+<span class="n">enterprise_search_endpoint</span> <span class="o">=</span> <span class="n">gen_endpoint</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;enterprise&quot;</span><span class="p">,</span>
+                                          <span class="n">search_api</span><span class="o">=</span><span class="s2">&quot;fullarchive&quot;</span><span class="p">,</span>
+                                          <span class="n">account_name</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TWITTER_SEARCH_ACCOUNT_NAME&quot;</span><span class="p">],</span>
+                                          <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ogformat.json&quot;</span><span class="p">,</span>
+                                          <span class="n">count_endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">enterprise_search_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;agonzales@twitter.com&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TWITTER_SEARCH_PW&quot;</span><span class="p">],</span>
+                          <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">enterprise_search_endpoint</span><span class="p">,</span>
+                         <span class="p">}</span>
+
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">enterprise_search_endpoint</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TWITTER_SEARCH_ACCOUNT_NAME&quot;</span><span class="p">],</span> <span class="s1">&#39;&lt;account_name&gt;&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">gnip</span><span class="o">-</span><span class="n">api</span><span class="o">.</span><span class="n">twitter</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">search</span><span class="o">/</span><span class="n">fullarchive</span><span class="o">/</span><span class="n">accounts</span><span class="o">/&lt;</span><span class="n">account_name</span><span class="o">&gt;/</span><span class="n">ogformat</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="premium-setup">
+<h2>Premium Setup<a class="headerlink" href="#premium-setup" title="Permalink to this headline">¶</a></h2>
+<p>Premium customers will use a bearer token for authentication. Use the
+following cell for setup:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># set your environment variables here for premium access if you need to</span>
+<span class="c1"># os.environ[&quot;TWITTER_SEARCH_BEARER_TOKEN&quot;] = &quot;&quot;</span>
+
+
+<span class="n">premium_search_endpoint</span> <span class="o">=</span> <span class="n">gen_endpoint</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span>
+                                       <span class="n">search_api</span><span class="o">=</span><span class="s2">&quot;30day&quot;</span><span class="p">,</span>
+                                       <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span><span class="p">,</span>
+                                       <span class="n">count_endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">premium_search_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bearer_token&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TWITTER_SEARCH_BEARER_TOKEN&quot;</span><span class="p">],</span>
+                       <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">premium_search_endpoint</span><span class="p">,</span>
+                      <span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">premium_search_endpoint</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">.</span><span class="n">twitter</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="mf">1.1</span><span class="o">/</span><span class="n">tweets</span><span class="o">/</span><span class="n">search</span><span class="o">/</span><span class="mi">30</span><span class="n">day</span><span class="o">/</span><span class="n">dev</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>There is a function that formats search API rules into valid json
+queries called <code class="docutils literal"><span class="pre">gen_rule_payload</span></code>. It has sensible defaults, such as
+pulling more tweets per call than the default 100 (but note that a
+sandbox environment can only have a max of 100 here, so if you get
+errors, please check this) not including dates, and defaulting to hourly
+counts when using the counts api. Discussing the finer points of
+generating search rules is out of scope for these examples; I encourage
+you to see the docs to learn the nuances within, but for now let&#8217;s see
+what a rule looks like.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;@robotprincessfi&quot;</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># testing with a sandbox account</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;@robotprincessfi&quot;</span><span class="p">,</span><span class="s2">&quot;maxResults&quot;</span><span class="p">:</span><span class="mi">100</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This rule will match tweets that mention <code class="docutils literal"><span class="pre">&#64;robotprincessfi</span></code>.</p>
+<p>From this point, there are two ways to interact with the API. There is a
+quick method to collect smaller amounts of tweets to memory that
+requires less thought and knowledge, and interaction with the
+<code class="docutils literal"><span class="pre">ResultStream</span></code> object which will be introduced later.</p>
+</div>
+<div class="section" id="fast-way">
+<h2>Fast Way<a class="headerlink" href="#fast-way" title="Permalink to this headline">¶</a></h2>
+<p>We&#8217;ll use the <code class="docutils literal"><span class="pre">search_args</span></code> variable to power the configuration point
+for the API. The object also takes a valid PowerTrack rule and has
+options to cutoff search when hitting limits on both number of tweets
+and API calls.</p>
+<p>We&#8217;ll be using the <code class="docutils literal"><span class="pre">collect_results</span></code> function, which has three
+parameters.</p>
 <ul class="simple">
-<li>&#8211;config-file
-* the configuration file with variable numbers of these parameters filled out.</li>
-<li>&#8211;account-name
-* the search api account name</li>
-<li>&#8211;user-name
-* your username for this session</li>
-<li>&#8211;password
-* your password for this session</li>
-<li>&#8211;count-bucket
-* If specified, the result will be passed to the Counts API with the specified bucket. Valid options are
-&#8220;hour&#8221;, &#8220;day&#8221;, and &#8220;minute&#8221;</li>
-<li>&#8211;start-datetime
-* the starttime of the query</li>
-<li>&#8211;end-datetime
-* the end-time of the query</li>
-<li>&#8211;filter-rule
-* a valid PowerTrack rule.</li>
-<li>&#8211;search-api
-* the api to use, 30day, fullarchive, or 7 day</li>
-<li>&#8211;stream-endpoint
-* the endpoint for your session. See your console.</li>
-<li>&#8211;max-results
-* gnip api payload parameter. Defines the number of results returned per API call. Program defaults to 500, and this can vary between 100 and 500.</li>
-<li>&#8211;max-tweets
-* hard number of tweets to return from this session.</li>
-<li>&#8211;max-pages
-* maxiumum pages to use this session. Setting this to 0 or 1 will effectively disable pagination, which is valuable for testing.</li>
-<li>&#8211;results-per-file
-* when saving results to a file, this provides a mechanism to split the files up into chunks. Defaults to 10000000.</li>
-<li>&#8211;filename-prefix
-* defines the filename for saving tweets.</li>
-<li>&#8211;no-print-stream
-* disables the stdout printstream. Good when using this to save tweets.</li>
-<li>&#8211;print-stream
-* defaults to True and prints each retrieved tweet to JSON on stdout. Useful for inspection or for piping to other utilities.</li>
-<li>&#8211;debug
-* prints debugging and info messages within the program.</li>
+<li>rule: a valid powertrack rule, referenced earlier</li>
+<li>max_results: as the api handles pagination, it will stop collecting
+when we get to this number</li>
+<li>result_stream_args: configuration args that we&#8217;ve already
+specified.</li>
 </ul>
+<p>For the remaining examples, please change the args to either premium or
+enterprise depending on your usage.</p>
+<p>Let&#8217;s see how it goes:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twittersearch</span> <span class="k">import</span> <span class="n">collect_results</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">premium_search_args</span><span class="p">)</span> <span class="c1"># change this if you need to</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="n">tweet</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">hashtags</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]]</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="s1">&#39;920754829873606657&#39;</span><span class="p">,</span> <span class="s2">&quot;@ericmbudd I&#39;m super cute.&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;920754352716783616&#39;</span><span class="p">,</span> <span class="s2">&quot;@RobotPrincessFi that&#39;s super cute&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;920543141614067712&#39;</span><span class="p">,</span> <span class="s1">&#39;@RobotPrincessFi https://t.co/z6AioxZkwE&#39;</span><span class="p">,</span> <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;920383435209891841&#39;</span><span class="p">,</span> <span class="s1">&#39;@robotprincessfi hi there Fiona&#39;</span><span class="p">,</span> <span class="p">[])]</span>
+</pre></div>
+</div>
+<p>Voila, we have some tweets. For interactive environments and other cases
+where you don&#8217;t care about collecting your data in a single load or
+don&#8217;t need to operate on the stream of tweets or counts directly, I
+recommend using this convenience function.</p>
+</div>
+<div class="section" id="working-with-the-resultstream">
+<h2>Working with the ResultStream<a class="headerlink" href="#working-with-the-resultstream" title="Permalink to this headline">¶</a></h2>
+<p>The ResultStream object will be powered by the <code class="docutils literal"><span class="pre">search_args</span></code>, and
+takes the rules and other configuration parameters, including a hard
+stop on number of pages to limit your API call usage.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rs</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="o">**</span><span class="n">premium_search_args</span><span class="p">,</span> <span class="n">rule_payload</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">max_pages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TWITTER_SEARCH_ACCOUNT_NAME&quot;</span><span class="p">],</span> <span class="s1">&#39;&lt;account_name&gt;&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ResultStream</span><span class="p">:</span>
+    <span class="p">{</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span>
+    <span class="s2">&quot;url&quot;</span><span class="p">:</span><span class="s2">&quot;https:\/\/api.twitter.com\/1.1\/tweets\/search\/30day\/dev.json&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rule_payload&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;@robotprincessfi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;maxResults&quot;</span><span class="p">:</span><span class="mi">100</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;tweetify&quot;</span><span class="p">:</span><span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;max_results&quot;</span><span class="p">:</span><span class="mi">500</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>There is a function, <code class="docutils literal"><span class="pre">.stream</span></code>, that seamlessly handles requests and
+pagination for a given query. It returns a generator, and to grab our
+500 tweets that mention <code class="docutils literal"><span class="pre">&#64;robotprincessfi</span></code> we can do this:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">stream</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">using</span> <span class="n">bearer</span> <span class="n">token</span> <span class="k">for</span> <span class="n">authentication</span>
+</pre></div>
+</div>
+<p>Tweets are lazily parsed using our Tweet Parser, so tweet data is very
+easily extractable.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="n">tweet</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">hashtags</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]]</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="s1">&#39;920754829873606657&#39;</span><span class="p">,</span> <span class="s2">&quot;@ericmbudd I&#39;m super cute.&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;920754352716783616&#39;</span><span class="p">,</span> <span class="s2">&quot;@RobotPrincessFi that&#39;s super cute&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;920543141614067712&#39;</span><span class="p">,</span> <span class="s1">&#39;@RobotPrincessFi https://t.co/z6AioxZkwE&#39;</span><span class="p">,</span> <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;920383435209891841&#39;</span><span class="p">,</span> <span class="s1">&#39;@robotprincessfi hi there Fiona&#39;</span><span class="p">,</span> <span class="p">[])]</span>
+</pre></div>
+</div>
+<p>Let&#8217;s make a new rule and pass it dates this time. <code class="docutils literal"><span class="pre">gen_rule_payload</span></code>
+takes dates of the forms <code class="docutils literal"><span class="pre">YYYY-mm-DD</span></code> and <code class="docutils literal"><span class="pre">YYYYmmDD</span></code>. Note that this
+will only work with the full archive search option, which is available
+to my account only via the enterprise options.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span> <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;2017-09-01&quot;</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="s2">&quot;2017-10-15&quot;</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span><span class="s2">&quot;maxResults&quot;</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="s2">&quot;toDate&quot;</span><span class="p">:</span><span class="s2">&quot;201710150000&quot;</span><span class="p">,</span><span class="s2">&quot;fromDate&quot;</span><span class="p">:</span><span class="s2">&quot;201709010000&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">using</span> <span class="n">username</span> <span class="ow">and</span> <span class="n">password</span> <span class="k">for</span> <span class="n">authentication</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="nb">str</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">created_at_datetime</span><span class="p">),</span> <span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">hashtags</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]]</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="s1">&#39;2017-10-14 22:57:23&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;I love to see Palestinians dancing and having fun. Good &amp;amp;positive stories deserve to go viral as well. Watch this: https://t.co/42vOrC40Fu&#39;</span><span class="p">,</span>
+  <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;2017-10-14 22:55:25&#39;</span><span class="p">,</span>
+  <span class="s2">&quot;But don&#39;t argue with people on twitter about whether policies and laws are racist. Argue with your City Council and your state reps and senators and Mayor and alderman. And if you don&#39;t like how that argument went</span><span class="se">\n</span><span class="s2">fire em.&quot;</span><span class="p">,</span>
+  <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;2017-10-14 21:30:26&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;I saw @solangeknowles perform at Chinati last weekend. It was the most beautiful thing I’ve ever seen. Can’t stop thinking about it. https://t.co/1wNLiNCaxb&#39;</span><span class="p">,</span>
+  <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;2017-10-14 19:17:33&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;2017-10-14 17:30:01&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;@monteiro @JohnPaczkowski @cwarzel Never asked for credit Mike&#39;</span><span class="p">,</span>
+  <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;2017-10-14 17:26:00&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;@cwarzel @JohnPaczkowski Will keep everyone updated on the original thread&#39;</span><span class="p">,</span>
+  <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;2017-10-14 17:03:38&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;@davewiner Listened to it all. Doesn’t mean we are going to implement everything! ;)&#39;</span><span class="p">,</span>
+  <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;2017-10-14 17:00:56&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;@davewiner @realDonaldTrump Also not true. It’s a moment in time&#39;</span><span class="p">,</span>
+  <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;2017-10-14 17:00:20&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;@davewiner Come on. This isn’t true. We care. We have to build a business to fund the service&#39;</span><span class="p">,</span>
+  <span class="p">[]),</span>
+ <span class="p">(</span><span class="s1">&#39;2017-10-14 16:59:21&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;@yaelwrites @JohnPaczkowski @cwarzel @jilliancyork Never said that. We are considering. Need to prioritize.&#39;</span><span class="p">,</span>
+  <span class="p">[])]</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
