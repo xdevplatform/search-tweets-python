@@ -4,6 +4,14 @@ twittersearch package
 Submodules
 ----------
 
+twittersearch\.api\_utils module
+--------------------------------
+
+.. automodule:: twittersearch.api_utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 twittersearch\.result\_stream module
 ------------------------------------
 

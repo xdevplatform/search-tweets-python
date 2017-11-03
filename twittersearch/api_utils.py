@@ -43,13 +43,15 @@ GNIP_RESP_CODES = {
 
 
 def convert_utc_time(datetime_str):
-    """Handles datetime argument conversion to the GNIP API format, which is
+    """
+    Handles datetime argument conversion to the GNIP API format, which is
     `YYYYMMDDHHSS`. Flexible passing of date formats.
 
     Args:
         datetime_str (str): the datestring, which can either be in GNIP API
         Format (YYYYmmDDHHSS), ISO date format (YYYY-mm-DD), ISO datetime
         format (YYYY-mm-DD HH:mm), or command-line ISO format (YYYY-mm-DDTHH:mm)
+
     Returns:
         string of GNIP API formatted date.
 
@@ -158,23 +160,18 @@ def gen_rule_payload(pt_rule, max_results=500,
                      from_date=None, to_date=None, count_bucket=None,
                      stringify=True):
 
-    """Generates the dict or json payload for a PowerTrack rule.
+    """
+    Generates the dict or json payload for a PowerTrack rule.
 
     Args:
-        pt_rule (str): the string version of a powertrack rule, e.g., "kanye
-            west has:geo". Accepts multi-line strings for ease of entry.
-        max_results (int): max results for the batch. Defaults to 500 to reduce
-                           API call usage.
-        from_date (str or None): date format as specified by
-            `convert_utc_time` for the starting time of your search.
+        pt_rule (str): the string version of a powertrack rule, e.g., "kanye west has:geo". Accepts multi-line strings for ease of entry.
+        max_results (int): max results for the batch. Defaults to 500 to reduce API call usage.
+        from_date (str or None): date format as specified by `convert_utc_time` for the starting time of your search.
 
-        to_date (str or None): date format as specified by
-            `convert_utc_time` for the end time of your search.
+        to_date (str or None): date format as specified by `convert_utc_time` for the end time of your search.
 
-        count_bucket (str or None): if using the counts api endpoint, will
-            define the count bucket for which tweets are aggregated.
-        stringify (bool): specifies the return type, `dict` or json-formatted
-            `str`.
+        count_bucket (str or None): if using the counts api endpoint, will define the count bucket for which tweets are aggregated.
+        stringify (bool): specifies the return type, `dict` or json-formatted `str`.
 
     Example:
 
