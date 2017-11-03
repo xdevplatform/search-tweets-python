@@ -23,11 +23,16 @@ Features
 Installation
 ============
 
-We will soon handle releases via PyPy, but you can also install the current master version via::
+We will soon handle releases via PyPy, but you can also install the current master version via
+
+.. code:: bash
 
   pip install git+https://github.com/tw-ddis/twitter_search_api.git
 
-Or the development version locally via::
+Or the development version locally via
+
+.. code:: bash
+
   git clone https://github.com/tw-ddis/twitter_search_api.git
   cd twitter_search_api
   pip install -e .
@@ -37,9 +42,13 @@ Or the development version locally via::
 Command line examples
 =====================
 
-Stream json results to stdout without saving::
+We provide a utility, ``twitter_search.py``, that provides rapid access to getting some tweets. 
 
-  python twitter_search_api.py \
+**Stream json results to stdout without saving**
+
+.. code:: bash
+
+  python twitter_search.py \
     --user-name <USERNAME> \
     --account-name <ACCOUNT> \
     --password <PW> \
@@ -50,9 +59,11 @@ Stream json results to stdout without saving::
     --print-stream
 
 
-Stream json results to stdout and save to a file::
+**Stream json results to stdout and save to a file**
 
-  python twitter_search_api.py \
+.. code:: bash
+
+  python twitter_search.py \
     --user-name <USERNAME> \
     --account-name <ACCOUNT> \
     --password <PW> \
@@ -64,9 +75,11 @@ Stream json results to stdout and save to a file::
     --print-stream
 
 
-Save to file without output::
+**Save to file without output**
 
-  python twitter_search_api.py \
+.. code:: bash
+
+  python twitter_search.py \
     --user-name <USERNAME> \
     --account-name <ACCOUNT> \
     --password <PW> \
@@ -79,13 +92,15 @@ Save to file without output::
 
 
 
-It can be far easier to specify your information in a configuration file. An example file can be found in the ``tools/api_config_example.config`` file, but will look something like this::
+It can be far easier to specify your information in a configuration file. An example file can be found in the ``tools/api_config_example.config`` file, but will look something like this:
+
+.. code:: bash
 
   [credentials]
   account_name = <account_name>
   username =  <user_name>
-  password = morrisey_on_twitter
-
+  password = <password>
+  bearer_token = <token>
 
   [api_info]
   search_api = fullarchive
@@ -114,8 +129,8 @@ example::
     --no-print-stream
 
 
-Using the Twitter Search API
-============================
+Using the Twitter Search API Within a Python Program
+====================================================
 
 Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.
@@ -123,12 +138,15 @@ Premium and Enterprise clients.
 Our group's python `tweet parser library <https://github.com/tw-ddis/tweet_parser>`__ is a requirement.
 
 Prior to starting your program, an easy way to define your secrets will
-be setting an environment variable. If you are an enterprise client,
-your authentication will be a (username, password) pair. If you are a
-premium client, you'll need to get a bearer token that will be passed
-with each call for authentication.
+be setting an environment variable. 
 
-::
+Enterprise Clients
+  Your authentication will be a (username, password) pair.
+
+Premium clients
+  You will need a bearer token that will be passed with each call for authentication.
+
+.. code:: bash
 
     export TWITTER_SEARCH_PW=<password>
     export TWITTER_SEARCH_ACCOUNT_NAME=<account_name>
@@ -150,6 +168,7 @@ use.
     import json
     from twittersearch import ResultStream, gen_endpoint, gen_rule_payload
 
+
 Enterprise setup
 ----------------
 
@@ -163,7 +182,7 @@ basic username/password method. You can specify that here:
     # os.environ["TWITTER_SEARCH_PW"] = ""
 
 
-    enterprise_search_endpoint = gen_endpoint(kind="enterprise", 
+    enterprise_search_endpoint = gen_endpoint(kind="enterprise",
                                               search_api="fullarchive",
                                               account_name=os.environ["TWITTER_SEARCH_ACCOUNT_NAME"],
                                               label="ogformat.json",
@@ -209,6 +228,7 @@ following cell for setup:
 
     https://api.twitter.com/1.1/tweets/search/30day/dev.json
 
+
 There is a function that formats search API rules into valid json
 queries called ``gen_rule_payload``. It has sensible defaults, such as
 pulling more tweets per call than the default 100 (but note that a
@@ -234,6 +254,7 @@ From this point, there are two ways to interact with the API. There is a
 quick method to collect smaller amounts of tweets to memory that
 requires less thought and knowledge, and interaction with the
 ``ResultStream`` object which will be introduced later.
+
 
 Fast Way
 --------
@@ -265,9 +286,6 @@ Let's see how it goes:
 
     tweets = collect_results(rule, max_results=500, result_stream_args=premium_search_args) # change this if you need to
 
-::
-
-    using bearer token for authentication
 
 .. code:: python
 
@@ -280,10 +298,12 @@ Let's see how it goes:
      ('920543141614067712', '@RobotPrincessFi https://t.co/z6AioxZkwE', []),
      ('920383435209891841', '@robotprincessfi hi there Fiona', [])]
 
+
 Voila, we have some tweets. For interactive environments and other cases
 where you don't care about collecting your data in a single load or
 don't need to operate on the stream of tweets or counts directly, I
 recommend using this convenience function.
+
 
 Working with the ResultStream
 -----------------------------
@@ -365,7 +385,7 @@ to my account only via the enterprise options.
 .. code:: python
 
     [(str(tweet.created_at_datetime), tweet.all_text, tweet.hashtags) for tweet in tweets[0:10]]
-      
+
 
 ::
 
