@@ -23,7 +23,7 @@ rm -rf *.egg-info
 git pull origin gh-pages
 rm -r *.html *.js
 touch .nojekyll
-git checkout $BRANCH_NAME docs $REPO_NAME README.md
+git checkout $BRANCH_NAME docs $REPO_NAME README.rst
 # need to do this step because the readme will be overwritten
 cp README.rst docs/source/README.rst
 mv docs/* .
