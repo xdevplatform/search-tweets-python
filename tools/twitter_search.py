@@ -3,20 +3,8 @@ import argparse
 import json
 import sys
 import logging
-
-if sys.version_info.major == 2:
-    import ConfigParser as configparser
-else:
-    import configparser
-import logging
-
-try:
-    from cStringIO import StringIO
-except ImportError:
-    try:
-        from StringIO import StringIO
-    except ModuleNotFoundError:
-        from io import StringIO
+import configparser
+from io import StringIO
 
 logger = logging.getLogger()
 # we want to leave this here and have it command-line configurable via the

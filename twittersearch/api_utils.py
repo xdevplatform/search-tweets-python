@@ -1,10 +1,7 @@
 import datetime
 import logging
 import sys
-if sys.version_info.major == 2:
-    import ConfigParser as configparser
-else:
-    import configparser
+import configparser
 try:
     import ujson as json
 except ImportError:
