@@ -92,7 +92,7 @@
 <li><a class="reference internal" href="#">Python Twitter Search API</a></li>
 <li><a class="reference internal" href="#features">Features</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
-<li><a class="reference internal" href="#command-line-examples">Command line examples</a></li>
+<li><a class="reference internal" href="#using-the-comand-line-application">Using the Comand Line Application</a></li>
 <li><a class="reference internal" href="#using-the-twitter-search-api-within-a-python-program">Using the Twitter Search API Within a Python Program</a><ul>
 <li><a class="reference internal" href="#enterprise-setup">Enterprise setup</a></li>
 <li><a class="reference internal" href="#premium-setup">Premium Setup</a></li>
@@ -135,19 +135,19 @@
       
   <div class="section" id="python-twitter-search-api">
 <h1>Python Twitter Search API<a class="headerlink" href="#python-twitter-search-api" title="Permalink to this headline">¶</a></h1>
-<p>This library serves as a python interface to the Twitter/GNIP Search API. It allows use both from a command-line utility and from with a python program. It comes with tools for assisting in dynamic generation of search rules and for parsing tweets.</p>
+<p>This library serves as a python interface to the <a class="reference external" href="https://developer.twitter.com/en/docs/tweets/search/overview/30-day-search">Twitter premium and enterprise search APIs</a>. It provides a command-line utility and a library usable from within python. It comes with tools for assisting in dynamic generation of search rules and for parsing tweets.</p>
 <p>Pretty docs can be seen <a class="reference external" href="https://tw-ddis.github.io/twitter_search_api/index.html">here</a>.</p>
 </div>
 <div class="section" id="features">
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li>delivers a stream of data to the user for low in-memory requirements</li>
-<li>automatically handles pagination of results with specifiable limits</li>
-<li>will handle both token authentication and basic username/password authentication</li>
-<li>quick to handle in a standalone program or interactive environment</li>
-<li>compatible with our group&#8217;s Tweet Parser for extraction of relevant data fields from each tweet payload</li>
-<li>supports the Search Counts API to estimate volumes for queries without using many API calls</li>
-<li>command-line utility is pipeable to other tools (e.g., <code class="docutils literal"><span class="pre">jq</span></code>).</li>
+<li>Command-line utility is pipeable to other tools (e.g., <code class="docutils literal"><span class="pre">jq</span></code>).</li>
+<li>Delivers a stream of data to the user for low in-memory requirements</li>
+<li>Automatically handles pagination of results with specifiable limits</li>
+<li>Handles Enterprise and Premium authentication methods</li>
+<li>Flexible usage within a python program</li>
+<li>Compatible with our group&#8217;s Tweet Parser for rapid extraction of relevant data fields from each tweet payload</li>
+<li>Supports the Counts API, which can reduce API call usage and provide rapid insights if you only need volumes and not tweet payloads</li>
 </ul>
 </div>
 <div class="section" id="installation">
@@ -163,9 +163,10 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="command-line-examples">
-<h1>Command line examples<a class="headerlink" href="#command-line-examples" title="Permalink to this headline">¶</a></h1>
-<p>We provide a utility, <code class="docutils literal"><span class="pre">twitter_search.py</span></code>, that provides rapid access to getting some tweets.</p>
+<div class="section" id="using-the-comand-line-application">
+<h1>Using the Comand Line Application<a class="headerlink" href="#using-the-comand-line-application" title="Permalink to this headline">¶</a></h1>
+<p>We provide a utility, <code class="docutils literal"><span class="pre">twitter_search.py</span></code>, in the <code class="docutils literal"><span class="pre">tools</span></code> directory that provides rapid access to tweets.
+Premium customers should use <code class="docutils literal"><span class="pre">--bearer-token</span></code> instead of <code class="docutils literal"><span class="pre">--user-name</span></code> and <code class="docutils literal"><span class="pre">--password</span></code>.</p>
 <p><strong>Stream json results to stdout without saving</strong></p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
@@ -198,7 +199,7 @@
   <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">stream</span><span class="o">-</span><span class="n">endpoint</span> <span class="n">ogformat</span><span class="o">.</span><span class="n">json</span> \
   <span class="o">--</span><span class="n">search</span><span class="o">-</span><span class="n">api</span> <span class="n">fullarchive</span> \
-  <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">tweets</span> <span class="mi">1000</span> \
+  <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">tweets</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:geo&quot;</span> \
   <span class="o">--</span><span class="n">filename</span><span class="o">-</span><span class="n">prefix</span> <span class="n">beyonce_geo</span> \
   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
