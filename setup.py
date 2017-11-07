@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='twittersearch',
-      description="Wrapper for the Twitter/GNIP search API",
+      description="Wrapper for Twitter's Premium and Enterprise search APIs",
       url='https://github.com/tw-ddis/twitter_search_api',
       author='Fiona Pigott, Jeff Kolb, Josh Montague, Aaron Gonzales',
       long_description=open('README.rst', 'r').read(),
