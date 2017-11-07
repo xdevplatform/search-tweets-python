@@ -2,7 +2,7 @@ Python Twitter Search API
 =========================
 
 
-This library serves as a python interface to the Twitter/GNIP Search API. It allows use both from a command-line utility and from with a python program. It comes with tools for assisting in dynamic generation of search rules and for parsing tweets.
+This library serves as a python interface to the `Twitter premium and enterprise search APIs <https://developer.twitter.com/en/docs/tweets/search/overview/30-day-search>`_. It provides a command-line utility and a library usable from within python. It comes with tools for assisting in dynamic generation of search rules and for parsing tweets.
 
 Pretty docs can be seen `here <https://tw-ddis.github.io/twitter_search_api/index.html>`_.
 
@@ -10,13 +10,13 @@ Pretty docs can be seen `here <https://tw-ddis.github.io/twitter_search_api/inde
 Features
 ========
 
-- delivers a stream of data to the user for low in-memory requirements
-- automatically handles pagination of results with specifiable limits
-- will handle both token authentication and basic username/password authentication
-- quick to handle in a standalone program or interactive environment
-- compatible with our group's Tweet Parser for extraction of relevant data fields from each tweet payload
-- supports the Search Counts API to estimate volumes for queries without using many API calls
-- command-line utility is pipeable to other tools (e.g., ``jq``).
+- Command-line utility is pipeable to other tools (e.g., ``jq``).
+- Delivers a stream of data to the user for low in-memory requirements
+- Automatically handles pagination of results with specifiable limits
+- Handles Enterprise and Premium authentication methods
+- Flexible usage within a python program
+- Compatible with our group's Tweet Parser for rapid extraction of relevant data fields from each tweet payload
+- Supports the Counts API, which can reduce API call usage and provide rapid insights if you only need volumes and not tweet payloads
 
 
 
@@ -39,10 +39,11 @@ Or the development version locally via
 
 
 
-Command line examples
-=====================
+Using the Comand Line Application
+=================================
 
-We provide a utility, ``twitter_search.py``, that provides rapid access to getting some tweets. 
+We provide a utility, ``twitter_search.py``, in the ``tools`` directory that provides rapid access to tweets.
+Premium customers should use ``--bearer-token`` instead of ``--user-name`` and ``--password``.
 
 **Stream json results to stdout without saving**
 
@@ -85,7 +86,7 @@ We provide a utility, ``twitter_search.py``, that provides rapid access to getti
     --password <PW> \
     --stream-endpoint ogformat.json \
     --search-api fullarchive \
-    --max-tweets 1000 \
+    --max-tweets 100 \
     --filter-rule "beyonce has:geo" \
     --filename-prefix beyonce_geo \
     --no-print-stream
@@ -200,6 +201,7 @@ basic username/password method. You can specify that here:
 ::
 
     https://gnip-api.twitter.com/search/fullarchive/accounts/<account_name>/ogformat.json
+
 
 Premium Setup
 -------------
