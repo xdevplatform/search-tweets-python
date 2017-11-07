@@ -158,6 +158,7 @@ def gen_endpoint(kind="enterprise",
 
 def gen_rule_payload(pt_rule, max_results=500,
                      from_date=None, to_date=None, count_bucket=None,
+                     tag=None,
                      stringify=True):
 
     """
@@ -197,6 +198,8 @@ def gen_rule_payload(pt_rule, max_results=500,
         else:
             logger.error("invalid count bucket: provided {}".format(count_bucket))
             raise ValueError
+    if tag:
+        payload["tag"] = tag
 
     return json.dumps(payload) if stringify else payload
 
