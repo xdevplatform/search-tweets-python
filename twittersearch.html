@@ -143,48 +143,6 @@
 <div class="section" id="module-twittersearch.api_utils">
 <span id="twittersearch-api-utils-module"></span><h2>twittersearch.api_utils module<a class="headerlink" href="#module-twittersearch.api_utils" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="twittersearch.api_utils.gen_endpoint">
-<code class="descclassname">twittersearch.api_utils.</code><code class="descname">gen_endpoint</code><span class="sig-paren">(</span><em>kind='enterprise'</em>, <em>search_api=None</em>, <em>account_name=None</em>, <em>label=None</em>, <em>count_endpoint=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#gen_endpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.gen_endpoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates the endpoint URL from discrete information.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; supports both <cite>enterprise</cite> and <cite>premium</cite> access.</li>
-<li><strong>search_api</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the api to use, <cite>30day</cite> or <cite>fullarchive</cite></li>
-<li><strong>account_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the master account for the user for enterprise users</li>
-<li><strong>label</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; stream within an account to connect, also known as the end of your url</li>
-<li><strong>count_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; defines using the Counts endpoint over the default data endpoint.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">well-formed url for a connection.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">twittersearch.utils</span> <span class="k">import</span> <span class="n">gen_endpoint</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">search_api</span> <span class="o">=</span> <span class="s2">&quot;30day&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">account_name</span> <span class="o">=</span> <span class="s2">&quot;montypython&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">endpoint_label</span> <span class="o">=</span> <span class="s2">&quot;python.json&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_endpoint</span><span class="p">(</span><span class="s2">&quot;enterprise&quot;</span><span class="p">,</span>
-<span class="go">        search_api, account_name, endpoint_label, count_endpoint=False)</span>
-<span class="go">&#39;https://gnip-api.twitter.com/search/30day/accounts/montypython/python.json&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_endpoint</span><span class="p">(</span><span class="s2">&quot;enterprise&quot;</span><span class="p">,</span>
-<span class="go">        search_api, account_name, endpoint_label, count_endpoint=True)</span>
-<span class="go">&#39;https://gnip-api.twitter.com/search/30day/accounts/montypython/python/counts.json&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_endpoint</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dev&quot;</span><span class="p">,</span> <span class="n">count_endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="go">&#39;https://api.twitter.com/1.1/tweets/search/30day/dev.json&#39;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
 <dt id="twittersearch.api_utils.gen_rule_payload">
 <code class="descclassname">twittersearch.api_utils.</code><code class="descname">gen_rule_payload</code><span class="sig-paren">(</span><em>pt_rule</em>, <em>max_results=500</em>, <em>from_date=None</em>, <em>to_date=None</em>, <em>count_bucket=None</em>, <em>tag=None</em>, <em>stringify=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#gen_rule_payload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.gen_rule_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates the dict or json payload for a PowerTrack rule.</p>
@@ -222,7 +180,7 @@
 
 <dl class="function">
 <dt id="twittersearch.api_utils.validate_count_api">
-<code class="descclassname">twittersearch.api_utils.</code><code class="descname">validate_count_api</code><span class="sig-paren">(</span><em>rule_payload</em>, <em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#validate_count_api"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.validate_count_api" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">twittersearch.api_utils.</code><code class="descname">validate_count_api</code><span class="sig-paren">(</span><em>rule_payload</em>, <em>endpoint</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#validate_count_api"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.validate_count_api" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -230,7 +188,7 @@
 <span id="twittersearch-result-stream-module"></span><h2>twittersearch.result_stream module<a class="headerlink" href="#module-twittersearch.result_stream" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="twittersearch.result_stream.ResultStream">
-<em class="property">class </em><code class="descclassname">twittersearch.result_stream.</code><code class="descname">ResultStream</code><span class="sig-paren">(</span><em>url</em>, <em>rule_payload</em>, <em>username=None</em>, <em>password=None</em>, <em>bearer_token=None</em>, <em>max_results=1000</em>, <em>tweetify=True</em>, <em>max_requests=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#ResultStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.ResultStream" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">twittersearch.result_stream.</code><code class="descname">ResultStream</code><span class="sig-paren">(</span><em>endpoint</em>, <em>rule_payload</em>, <em>username=None</em>, <em>password=None</em>, <em>bearer_token=None</em>, <em>max_results=1000</em>, <em>tweetify=True</em>, <em>max_requests=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#ResultStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.ResultStream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Class to represent an API query that handles two major functionality
 pieces: wrapping metadata around a specific API call and automatic
@@ -243,7 +201,7 @@ pagination of results.</p>
 <li><strong>username</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; username for enterprise customers</li>
 <li><strong>password</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; password for enterprise customers</li>
 <li><strong>bearer_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; bearer token for premium users</li>
-<li><strong>url</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; API endpoint; should be generated using the <cite>gen_endpoint</cite> function.</li>
+<li><strong>endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; API endpoint; see your console at developer.twitter.com</li>
 <li><strong>rule_payload</strong> (<a class="reference external" href="https://docs.python.org/2/library/json.html#module-json" title="(in Python v2.7)"><em>json</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; payload for the post request</li>
 <li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; max number results that will be returned from this</li>
 <li><strong>Note that this can be slightly lower than the total returned</strong> (<em>instance.</em>) &#8211; </li>
