@@ -118,7 +118,7 @@ class ResultStream:
         username (str): username for enterprise customers
         password (str): password for enterprise customers
         bearer_token (str): bearer token for premium users
-        url (str): API endpoint; should be generated using the `gen_endpoint` function.
+        endpoint (str): API endpoint; see your console at developer.twitter.com
         rule_payload (json or dict): payload for the post request
         max_results (int): max number results that will be returned from this
         instance. Note that this can be slightly lower than the total returned
@@ -136,14 +136,14 @@ class ResultStream:
 
     """
 
-    def __init__(self, url, rule_payload, username=None, password=None,
+    def __init__(self, endpoint, rule_payload, username=None, password=None,
                  bearer_token=None, max_results=1000,
                  tweetify=True, max_requests=None, **kwargs):
 
         self.username = username
         self.password = password
         self.bearer_token = bearer_token
-        self.url = url
+        self.endpoint = endpoint
         if isinstance(rule_payload, str):
             rule_payload = json.loads(rule_payload)
         self.rule_payload = rule_payload
@@ -159,7 +159,7 @@ class ResultStream:
         self.stream_started = False
         self._tweet_func = Tweet if tweetify else lambda x: x
         self.max_requests = max_requests if max_requests is not None else 10 ** 9 # magic number of requests!
-        validate_count_api(self.rule_payload, self.url)
+        validate_count_api(self.rule_payload, self.endpoint)
 
 
     def stream(self):
@@ -208,7 +208,7 @@ class ResultStream:
         """
         Disables tweet parsing if the count api is used.
         """
-        if "counts" in re.split("[/.]", self.url):
+        if "counts" in re.split("[/.]", self.endpoint):
             logger.info("disabling tweet parsing due to counts api usage")
             self._tweet_func = lambda x: x
 
@@ -222,7 +222,7 @@ class ResultStream:
             logger.info("refreshing session")
             self.init_session()
         resp = request(session=self.session,
-                       url=self.url,
+                       url=self.endpoint,
                        rule_payload=self.rule_payload,
                       )
         self.n_requests += 1
@@ -231,7 +231,7 @@ class ResultStream:
         self.current_tweets = resp["results"]
 
     def __repr__(self):
-        repr_keys = ["username", "url", "rule_payload", "tweetify", "max_results"]
+        repr_keys = ["username", "endpoint", "rule_payload", "tweetify", "max_results"]
         str_ = json.dumps(dict([(k, self.__dict__.get(k)) for k in repr_keys]), indent=4)
         str_ = "ResultStream: \n\t" + str_
         return str_
