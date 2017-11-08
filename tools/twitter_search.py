@@ -16,7 +16,7 @@ from twittersearch.api_utils import *
 from twittersearch.utils import *
 
 
-REQUIRED_KEYS = {"pt_rule", "endpoint_label",}
+REQUIRED_KEYS = {"pt_rule", "endpoint"}
 
 def parse_cmd_args():
     twitter_parser = argparse.ArgumentParser()
@@ -31,16 +31,10 @@ def parse_cmd_args():
                                       "will overrule args found in the config",
                                       "file."))
 
-
-    twitter_parser.add_argument("--account_type",
-                                dest="account_type",
+    twitter_parser.add_argument("--endpoint",
+                                dest="endpoint",
                                 default=None,
-                                help="enterprise or premium account")
-
-    twitter_parser.add_argument("--account-name",
-                                dest="account_name",
-                                default=None,
-                                help="Gnip API account name")
+                                help="The API endpoint you are going to use.")
 
     twitter_parser.add_argument("--user-name",
                                 dest="username",
@@ -75,17 +69,6 @@ def parse_cmd_args():
     twitter_parser.add_argument("--filter-rule", dest="pt_rule",
                                 default=None,
                                 help="PowerTrack filter rule (See: http://support.gnip.com/customer/portal/articles/901152-powertrack-operators)")
-
-    twitter_parser.add_argument("--search-api",
-                                dest="search_api",
-                                default=None,
-                                help="which api to use")
-
-    twitter_parser.add_argument("--stream-endpoint",
-                                dest="endpoint_label",
-                                default=None,
-                                help=("Label for your environment. Find in your gnip"
-                                      " console or developer dashboard"))
 
     twitter_parser.add_argument("--max-results", dest="max_results",
                                 default=500,

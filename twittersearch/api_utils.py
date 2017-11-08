@@ -1,3 +1,4 @@
+import re
 import datetime
 import logging
 import sys
@@ -7,7 +8,7 @@ try:
 except ImportError:
     import json
 
-__all__ = ["gen_endpoint", "gen_rule_payload", "gen_params_from_config",
+__all__ = ["gen_rule_payload", "gen_params_from_config",
            "validate_count_api", "GNIP_RESP_CODES"]
 
 logger = logging.getLogger(__name__)
@@ -77,80 +78,16 @@ def convert_utc_time(datetime_str):
     return _date.strftime("%Y%m%d%H%M")
 
 
-def _gen_premium_endpoint(env_name, count_endpoint=False):
-    """Generates the endpoint URL for a premium account. Early stage and will
-    anticipate changes, particularly around the search API or version?
-    """
-    freemium_baseurl = "https://api.twitter.com/1.1/tweets/search/30day/{ENV}"
-    url = freemium_baseurl.format(ENV=env_name)
-    return url
-
-
-def _gen_enterprise_endpoint(search_api, account_name, label):
-    """Generates the endpoint URL for an enterprise account."""
-
-    base_url = "https://gnip-api.twitter.com/search/"
-    base_endpoint = "{api}/accounts/{account_name}/{label}"
-    label = label if not label.endswith(".json") else label.split(".")[0]
-    endpoint = base_endpoint.format(api=search_api,
-                                    account_name=account_name,
-                                    label=label)
-    return base_url + endpoint
-
-
-def gen_endpoint(kind="enterprise",
-                 search_api=None,
-                 account_name=None,
-                 label=None,
-                 count_endpoint=False,
-                 **kwargs):
-    """
-    Creates the endpoint URL from discrete information.
-
-    Args:
-        kind (str): supports both `enterprise` and `premium` access.
-        search_api (str): the api to use, `30day` or `fullarchive`
-        account_name (str): the master account for the user for enterprise users
-        label (str): stream within an account to connect, also known as the end of your url
-        count_endpoint (bool): defines using the Counts endpoint over the default data endpoint.
-
-    Returns:
-        str: well-formed url for a connection.
-
-    Example:
-        >>> from twittersearch.utils import gen_endpoint
-        >>> search_api = "30day"
-        >>> account_name = "montypython"
-        >>> endpoint_label = "python.json"
-        >>> gen_endpoint("enterprise",
-                search_api, account_name, endpoint_label, count_endpoint=False)
-        'https://gnip-api.twitter.com/search/30day/accounts/montypython/python.json'
-        >>> gen_endpoint("enterprise",
-                search_api, account_name, endpoint_label, count_endpoint=True)
-        'https://gnip-api.twitter.com/search/30day/accounts/montypython/python/counts.json'
-        >>> gen_endpoint(kind="premium", label="dev", count_endpoint=False)
-        'https://api.twitter.com/1.1/tweets/search/30day/dev.json'
-    """
-    if kind == 'enterprise':
-        endpoint = _gen_enterprise_endpoint(search_api=search_api,
-                                            account_name=account_name,
-                                            label=label)
-    elif kind == 'premium':
-        endpoint = _gen_premium_endpoint(env_name=label)
-
+def change_to_count_endpoint(endpoint):
+    tokens = filter(lambda x: x != '', re.split("[/:]", endpoint))
+    tokens = list(filter(lambda x: x != "https", tokens))
+    last = tokens[-1].split('.')[0] # removes .json on the endpoint, saving 
+    tokens[-1] = last # changes from *.json -> '' since we are going to change the input
+    if last == 'counts':
+        return endpoint
     else:
-        logger.error("only two types of access are supported here; Enterprise and Premium")
-        raise ValueError
+        return "https://" + '/'.join(tokens) + '/' + "counts.json"
 
-    if count_endpoint:
-        if kind == 'premium':
-            logger.warn("premium sandbox envionments do not have counts"
-                        "API access. You might receive errors downstream.")
-        endpoint = endpoint + "/counts.json"
-    else:
-        endpoint = endpoint + ".json"
-
-    return endpoint
 
 
 def gen_rule_payload(pt_rule, max_results=500,
@@ -206,12 +143,13 @@ def gen_params_from_config(config_dict):
     Generates parameters for a ResultStream from a dictionary.
     """
 
-    endpoint = gen_endpoint(config_dict["account_type"],
-                            config_dict["search_api"],
-                            config_dict.get("account_name"),
-                            config_dict["endpoint_label"],
-                            config_dict.get("count_bucket") # autoconfigures counts api
-                           )
+    if config_dict.get("count_bucket"):
+        logger.warn("change your endpoint to the count endpoint; this is"
+                    " default behavior when the count bucket field is defined")
+        endpoint = change_to_count_endpoint(config_dict.get("endpoint"))
+    else:
+        endpoint = config_dict.get("endpoint")
+
 
     rule = gen_rule_payload(pt_rule=config_dict["pt_rule"],
                             from_date=config_dict.get("from_date", None),
@@ -221,7 +159,7 @@ def gen_params_from_config(config_dict):
                            )
 
 
-    _dict = {"url": endpoint,
+    _dict = {"endpoint": endpoint,
              "username": config_dict.get("username"),
              "password": config_dict.get("password"),
              "bearer_token": config_dict.get("bearer_token"),
@@ -233,13 +171,13 @@ def gen_params_from_config(config_dict):
     return _dict
 
 
-def validate_count_api(rule_payload, url):
+def validate_count_api(rule_payload, endpoint):
     rule = rule_payload if isinstance(rule_payload, dict) else json.loads(rule_payload)
     bucket = rule.get('bucket')
-    counts = set(url.split("/")) & {"counts.json"}
+    counts = set(endpoint.split("/")) & {"counts.json"}
     if len(counts) == 0:
         if bucket is not None:
-            msg = ("""there is a count bucket present in your payload,
+            msg = ("""There is a count bucket present in your payload,
                    but you are using not using the counts API.
                    Please check your endpoints and try again""")
             logger.error(msg)
