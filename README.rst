@@ -153,7 +153,7 @@ throughout your program's session. Note that any method of storing your
 credentials is valid here; I am using environment variables for ease of
 use.
 
-.. code:: ipython3
+.. code:: python
 
     import os
     import json
@@ -165,7 +165,7 @@ Enterprise setup
 If you are an enterprise customer, you'll need to authenticate with a
 basic username/password method. You can specify that here:
 
-.. code:: ipython3
+.. code:: python
 
     # set your environment variables here for enterprise access if you need to
     # os.environ["TWITTER_SEARCH_ACCOUNT_NAME"] = ""
@@ -183,7 +183,7 @@ Premium Setup
 Premium customers will use a bearer token for authentication. Use the
 following cell for setup:
 
-.. code:: ipython3
+.. code:: python
 
     # set your environment variables here for premium access if you need to
     # os.environ["TWITTER_SEARCH_BEARER_TOKEN"] = ""
@@ -212,7 +212,7 @@ generating search rules is out of scope for these examples; I encourage
 you to see the docs to learn the nuances within, but for now let's see
 what a rule looks like.
 
-.. code:: ipython3
+.. code:: python
 
     rule = gen_rule_payload("@robotprincessfi", max_results=100) # testing with a sandbox account
     print(rule)
@@ -252,11 +252,11 @@ enterprise depending on your usage.
 
 Let's see how it goes:
 
-.. code:: ipython3
+.. code:: python
 
     from twittersearch import collect_results
 
-.. code:: ipython3
+.. code:: python
 
     tweets = collect_results(rule, max_results=500, result_stream_args=premium_search_args) # change this if you need to
 
@@ -266,7 +266,7 @@ Let's see how it goes:
     using bearer token for authentication
 
 
-.. code:: ipython3
+.. code:: python
 
     [(tweet.id, tweet.all_text, tweet.hashtags) for tweet in tweets[0:10]]
 
@@ -294,11 +294,11 @@ The ResultStream object will be powered by the ``search_args``, and
 takes the rules and other configuration parameters, including a hard
 stop on number of pages to limit your API call usage.
 
-.. code:: ipython3
+.. code:: python
 
     rs = ResultStream(**premium_search_args, rule_payload=rule, max_results=500, max_pages=1, )
 
-.. code:: ipython3
+.. code:: python
 
     print(rs)
 
@@ -322,7 +322,7 @@ There is a function, ``.stream``, that seamlessly handles requests and
 pagination for a given query. It returns a generator, and to grab our
 500 tweets that mention ``@robotprincessfi`` we can do this:
 
-.. code:: ipython3
+.. code:: python
 
     tweets = list(rs.stream())
 
@@ -335,7 +335,7 @@ pagination for a given query. It returns a generator, and to grab our
 Tweets are lazily parsed using our Tweet Parser, so tweet data is very
 easily extractable.
 
-.. code:: ipython3
+.. code:: python
 
     [(tweet.id, tweet.all_text, tweet.hashtags) for tweet in tweets[0:10]]
 
@@ -356,7 +356,7 @@ takes dates of the forms ``YYYY-mm-DD`` and ``YYYYmmDD``. Note that this
 will only work with the full archive search option, which is available
 to my account only via the enterprise options.
 
-.. code:: ipython3
+.. code:: python
 
     rule = gen_rule_payload("from:jack", from_date="2017-09-01", to_date="2017-10-30", max_results=100)
     print(rule)
@@ -367,7 +367,7 @@ to my account only via the enterprise options.
     {"query":"from:jack","maxResults":100,"toDate":"201710300000","fromDate":"201709010000"}
 
 
-.. code:: ipython3
+.. code:: python
 
     tweets = collect_results(rule, max_results=500, result_stream_args=enterprise_search_args)
 
@@ -377,7 +377,7 @@ to my account only via the enterprise options.
     using username and password for authentication
 
 
-.. code:: ipython3
+.. code:: python
 
     [(str(tweet.created_at_datetime), tweet.all_text, tweet.hashtags) for tweet in tweets[0:10]]
       
