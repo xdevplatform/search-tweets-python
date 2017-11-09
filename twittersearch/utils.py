@@ -1,10 +1,13 @@
+"""
+Utility functions that are used in various parts of the program.
+"""
+
 from functools import reduce
 import itertools as it
 import types
 import codecs
 import datetime
 import logging
-import sys
 import configparser
 try:
     import ujson as json
@@ -16,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 __all__ = ["take", "partition", "merge_dicts", "write_result_stream",
            "read_configfile"]
+
 
 def take(n, iterable):
     "Return first n items of the iterable as a list"
@@ -110,19 +114,22 @@ def write_result_stream(result_stream, filename_prefix=None,
         chunked_stream = partition(stream, results_per_file, pad_none=True)
         for chunk in chunked_stream:
             chunk = filter(lambda x: x is not None, chunk)
-            curr_datetime = datetime.datetime.utcnow().strftime(file_time_formatter)
+            curr_datetime = (datetime.datetime.utcnow()
+                             .strftime(file_time_formatter))
             _filename = "{}_{}.json".format(filename_prefix, curr_datetime)
             yield from write_ndjson(_filename, chunk)
 
     else:
-        curr_datetime = datetime.datetime.utcnow().strftime(file_time_formatter)
+        curr_datetime = (datetime.datetime.utcnow()
+                         .strftime(file_time_formatter))
         _filename = "{}.json".format(filename_prefix)
         yield from write_ndjson(_filename, stream)
 
 
 def read_configfile(filename):
     """
-    reads and flattens a configuration file into a single dictionary for ease of use.
+    reads and flattens a configuration file into a single
+    dictionary for ease of use.
     """
     config = configparser.ConfigParser()
 
@@ -131,5 +138,3 @@ def read_configfile(filename):
 
     config_dict = merge_dicts(*[dict(config[s]) for s in config.sections()])
     return config_dict
-
-

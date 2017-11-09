@@ -1,42 +1,49 @@
+# -*- coding: utf-8 -*-
+"""
+Module containing the various functions that are used for API calls,
+rule generation, and related.
+"""
+
 import re
 import datetime
 import logging
-import sys
-import configparser
 try:
     import ujson as json
 except ImportError:
     import json
 
 __all__ = ["gen_rule_payload", "gen_params_from_config",
-           "validate_count_api", "GNIP_RESP_CODES"]
+           "validate_count_api", "GNIP_RESP_CODES", "change_to_count_endpoint"]
 
 logger = logging.getLogger(__name__)
 
 GNIP_RESP_CODES = {
-    '200': 'OK: The request was successful. The JSON response will be similar to the following:',
+    '200': ("OK: The request was successful. "
+            "The JSON response will be similar to the following:"),
 
-    '400': ("Bad Request: Generally, this response occurs due to the presence of "
-            "invalid JSON in the request, or where the request failed to send any JSON payload."),
+    '400': ("Bad Request: Generally, this response occurs due "
+            "to the presence of invalid JSON in the request, "
+            "or where the request failed to send any JSON payload."),
 
     '401': ("Unauthorized: HTTP authentication failed due to invalid "
-            "credentials. Log in to console.gnip.com with your credentials to ensure"
-            " you are using them correctly with your request. "),
+            "credentials. Log in to console.gnip.com with your credentials "
+            "to ensure you are using them correctly with your request. "),
     '404': ("Not Found: The resource was not found at the URL to which the "
             "request was sent, likely because an incorrect URL was used."),
+
     '422': ("Unprocessable Entity: This is returned due to invalid parameters "
-            "in a query or when a query is too complex for us to process. – e.g. "
-            " invalid PowerTrack rules or too many phrase operators, rendering a "
-            " query too complex."),
+            "in a query or when a query is too complex for us to process. "
+            "–e.g. invalid PowerTrack rules or too many phrase operators,"
+            " rendering a query too complex."),
     '429': ("Unknown Code: Your app has exceeded the limit on connection "
-            "requests. The corresponding JSON message will look similar to the "
-            "following:"),
+            "requests. The corresponding JSON message will look "
+            "similar to the following:"),
     '500': ("Internal Server Error: There was an error on Gnip's side. Retry "
             "your request using an exponential backoff pattern."),
-    '502': ("Proxy Error: There was an error on Gnip's side. Retry your request "
-            "using an exponential backoff pattern."),
-    '503': ("Service Unavailable: There was an error on Gnip's side. Retry your "
-            "request using an exponential backoff pattern.")
+    '502': ("Proxy Error: There was an error on Gnip's side. Retry your "
+            "request using an exponential backoff pattern."),
+    '503': ("Service Unavailable: There was an error on Gnip's side. "
+            "Retry your request using an exponential backoff pattern.")
 }
 
 
@@ -48,7 +55,8 @@ def convert_utc_time(datetime_str):
     Args:
         datetime_str (str): the datestring, which can either be in GNIP API
         Format (YYYYmmDDHHSS), ISO date format (YYYY-mm-DD), ISO datetime
-        format (YYYY-mm-DD HH:mm), or command-line ISO format (YYYY-mm-DDTHH:mm)
+        format (YYYY-mm-DD HH:mm),
+        or command-line ISO format (YYYY-mm-DDTHH:mm)
 
     Returns:
         string of GNIP API formatted date.
@@ -71,7 +79,8 @@ def convert_utc_time(datetime_str):
     else:
         try:
             if "T" in datetime_str:
-                datetime_str = datetime_str.replace('T', ' ') # command line with 'T'
+                # command line with 'T'
+                datetime_str = datetime_str.replace('T', ' ')
             _date = datetime.datetime.strptime(datetime_str, "%Y-%m-%d %H:%M")
         except ValueError:
             _date = datetime.datetime.strptime(datetime_str, "%Y-%m-%d")
@@ -79,15 +88,23 @@ def convert_utc_time(datetime_str):
 
 
 def change_to_count_endpoint(endpoint):
+    """Utility function to change a normal endpoint to a ``count`` api
+    endpoint. Returns the same endpoint if it's already a valid count endpoint.
+    Args:
+        endpoint (str): your api endpoint
+
+    Returns:
+        str: the modified endpoint for a count endpoint.
+    """
+
     tokens = filter(lambda x: x != '', re.split("[/:]", endpoint))
-    tokens = list(filter(lambda x: x != "https", tokens))
-    last = tokens[-1].split('.')[0] # removes .json on the endpoint, saving 
-    tokens[-1] = last # changes from *.json -> '' since we are going to change the input
+    filt_tokens = list(filter(lambda x: x != "https", tokens))
+    last = filt_tokens[-1].split('.')[0]  # removes .json on the endpoint
+    filt_tokens[-1] = last  # changes from *.json -> '' for changing input
     if last == 'counts':
         return endpoint
     else:
-        return "https://" + '/'.join(tokens) + '/' + "counts.json"
-
+        return "https://" + '/'.join(filt_tokens) + '/' + "counts.json"
 
 
 def gen_rule_payload(pt_rule, max_results=500,
@@ -99,14 +116,19 @@ def gen_rule_payload(pt_rule, max_results=500,
     Generates the dict or json payload for a PowerTrack rule.
 
     Args:
-        pt_rule (str): the string version of a powertrack rule, e.g., "kanye west has:geo". Accepts multi-line strings for ease of entry.
-        max_results (int): max results for the batch. Defaults to 500 to reduce API call usage.
-        from_date (str or None): date format as specified by `convert_utc_time` for the starting time of your search.
-
-        to_date (str or None): date format as specified by `convert_utc_time` for the end time of your search.
-
-        count_bucket (str or None): if using the counts api endpoint, will define the count bucket for which tweets are aggregated.
-        stringify (bool): specifies the return type, `dict` or json-formatted `str`.
+        pt_rule (str): The string version of a powertrack rule,
+            e.g., "kanye west has:geo". Accepts multi-line strings
+            for ease of entry.
+        max_results (int): max results for the batch.
+            Defaults to 500 to reduce API call usage.
+        from_date (str or None): Date format as specified by
+            `convert_utc_time` for the starting time of your search.
+        to_date (str or None): date format as specified by `convert_utc_time`
+            for the end time of your search.
+        count_bucket (str or None): If using the counts api endpoint,
+            will define the count bucket for which tweets are aggregated.
+        stringify (bool): specifies the return type, `dict`
+            or json-formatted `str`.
 
     Example:
 
@@ -117,10 +139,8 @@ def gen_rule_payload(pt_rule, max_results=500,
         '{"query":"kanye west has:geo","maxResults":100,"toDate":"201708220000","fromDate":"201708210000"}'
     """
 
-    pt_rule = ' '.join(pt_rule.split()) # allows multi-line strings
-    payload = {"query": pt_rule,
-               "maxResults": max_results,
-              }
+    pt_rule = ' '.join(pt_rule.split())  # allows multi-line strings
+    payload = {"query": pt_rule, "maxResults": max_results}
     if to_date:
         payload["toDate"] = convert_utc_time(to_date)
     if from_date:
@@ -130,7 +150,8 @@ def gen_rule_payload(pt_rule, max_results=500,
             payload["bucket"] = count_bucket
             del payload["maxResults"]
         else:
-            logger.error("invalid count bucket: provided {}".format(count_bucket))
+            logger.error("invalid count bucket: provided {}"
+                         .format(count_bucket))
             raise ValueError
     if tag:
         payload["tag"] = tag
@@ -144,20 +165,18 @@ def gen_params_from_config(config_dict):
     """
 
     if config_dict.get("count_bucket"):
-        logger.warn("change your endpoint to the count endpoint; this is"
-                    " default behavior when the count bucket field is defined")
+        logger.warning("change your endpoint to the count endpoint; this is "
+                       "default behavior when the count bucket "
+                       "field is defined")
         endpoint = change_to_count_endpoint(config_dict.get("endpoint"))
     else:
         endpoint = config_dict.get("endpoint")
 
-
     rule = gen_rule_payload(pt_rule=config_dict["pt_rule"],
                             from_date=config_dict.get("from_date", None),
                             to_date=config_dict.get("to_date", None),
-                            max_results=int(config_dict.get("max_results", None)),
-                            count_bucket=config_dict.get("count_bucket", None)
-                           )
-
+                            max_results=int(config_dict.get("max_results")),
+                            count_bucket=config_dict.get("count_bucket", None))
 
     _dict = {"endpoint": endpoint,
              "username": config_dict.get("username"),
@@ -166,13 +185,16 @@ def gen_params_from_config(config_dict):
              "rule_payload": rule,
              "results_per_file": int(config_dict.get("results_per_file")),
              "max_tweets": int(config_dict.get("max_tweets")),
-             "max_pages": config_dict.get("max_pages", None)
-            }
+             "max_pages": config_dict.get("max_pages", None)}
     return _dict
 
 
 def validate_count_api(rule_payload, endpoint):
-    rule = rule_payload if isinstance(rule_payload, dict) else json.loads(rule_payload)
+    """
+    Ensures that the counts api is set correctly in a payload.
+    """
+    rule = (rule_payload if isinstance(rule_payload, dict)
+            else json.loads(rule_payload))
     bucket = rule.get('bucket')
     counts = set(endpoint.split("/")) & {"counts.json"}
     if len(counts) == 0:

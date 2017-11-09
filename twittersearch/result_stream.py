@@ -1,4 +1,10 @@
-# This Python file uses the following encoding: utf-8
+# -*- coding: utf-8 -*-
+"""
+This module contains the request handing and actual api wrapping functionality.
+
+It's core method is the ``ResultStream`` object, which takes the API call
+arguments and returns a stream of results to the user.
+"""
 
 import time
 import re
@@ -15,6 +21,7 @@ from .api_utils import *
 
 logger = logging.getLogger(__name__)
 
+
 def make_session(username=None, password=None, bearer_token=None):
     """Creates a Requests Session for use. Accepts a bearer token
     for freemium users and will override username and password information if
@@ -27,7 +34,8 @@ def make_session(username=None, password=None, bearer_token=None):
     """
 
     if password is None and bearer_token is None:
-        logger.error("No authentication information provided; please check your object")
+        logger.error("No authentication information provided; "
+                     "please check your object")
         raise KeyError
 
     session = requests.Session()
@@ -149,7 +157,8 @@ class ResultStream:
         self.rule_payload = rule_payload
         self.tweetify = tweetify
         # magic number of max tweets if you pass a non_int
-        self.max_results = max_results if isinstance(max_results, int) else 10 ** 15
+        self.max_results = (max_results if isinstance(max_results, int)
+                            else 10 ** 15)
 
         self.total_results = 0
         self.n_requests = 0
@@ -158,9 +167,10 @@ class ResultStream:
         self.next_token = None
         self.stream_started = False
         self._tweet_func = Tweet if tweetify else lambda x: x
-        self.max_requests = max_requests if max_requests is not None else 10 ** 9 # magic number of requests!
+        # magic number of requests!
+        self.max_requests = (max_requests if max_requests is not None
+                             else 10 ** 9)
         validate_count_api(self.rule_payload, self.endpoint)
-
 
     def stream(self):
         """
@@ -187,8 +197,10 @@ class ResultStream:
                 self.total_results += 1
 
             if self.next_token and self.total_results < self.max_results and self.n_requests <= self.max_requests:
-                self.rule_payload = merge_dicts(self.rule_payload, ({"next": self.next_token}))
-                logger.info("paging; total requests read so far: {}".format(self.n_requests))
+                self.rule_payload = merge_dicts(self.rule_payload,
+                                                {"next": self.next_token})
+                logger.info("paging; total requests read so far: {}"
+                            .format(self.n_requests))
                 self.execute_request()
             else:
                 break
@@ -202,7 +214,9 @@ class ResultStream:
         """
         if self.session:
             self.session.close()
-        self.session = make_session(self.username, self.password, self.bearer_token)
+        self.session = make_session(self.username,
+                                    self.password,
+                                    self.bearer_token)
 
     def check_counts(self):
         """
@@ -223,16 +237,17 @@ class ResultStream:
             self.init_session()
         resp = request(session=self.session,
                        url=self.endpoint,
-                       rule_payload=self.rule_payload,
-                      )
+                       rule_payload=self.rule_payload)
         self.n_requests += 1
         resp = json.loads(resp.content.decode(resp.encoding))
         self.next_token = resp.get("next", None)
         self.current_tweets = resp["results"]
 
     def __repr__(self):
-        repr_keys = ["username", "endpoint", "rule_payload", "tweetify", "max_results"]
-        str_ = json.dumps(dict([(k, self.__dict__.get(k)) for k in repr_keys]), indent=4)
+        repr_keys = ["username", "endpoint", "rule_payload",
+                     "tweetify", "max_results"]
+        str_ = json.dumps(dict([(k, self.__dict__.get(k)) for k in repr_keys]),
+                          indent=4)
         str_ = "ResultStream: \n\t" + str_
         return str_
 
@@ -256,7 +271,9 @@ def collect_results(rule, max_results=500, result_stream_args=None):
 
     Example:
         >>> from twittersearch import collect_results
-        >>> tweets = collect_results(rule, max_results=500, result_stream_args=search_args)
+        >>> tweets = collect_results(rule,
+                                     max_results=500,
+                                     result_stream_args=search_args)
 
     """
     if result_stream_args is None:
