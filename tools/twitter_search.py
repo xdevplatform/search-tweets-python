@@ -145,7 +145,7 @@ def main():
 
     logger.debug(json.dumps(config_dict, indent=4))
 
-    rs = ResultStream(**stream_params, tweetify=False)
+    rs = ResultStream(tweetify=False, **stream_params)
 
     logger.debug(str(rs))
 
