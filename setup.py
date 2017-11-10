@@ -11,5 +11,4 @@ setup(name='twittersearch',
       install_requires=["requests", "tweet_parser"],
       packages=find_packages(),
       scripts=["tools/twitter_search.py"],
-      install_requires=[],
       )
