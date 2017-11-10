@@ -41,11 +41,11 @@ def make_session(username=None, password=None, bearer_token=None):
     session = requests.Session()
     headers = {'Accept-encoding': 'gzip'}
     if bearer_token:
-        logger.warning("using bearer token for authentication")
+        logger.info("using bearer token for authentication")
         headers['Authorization'] = "Bearer {}".format(bearer_token)
         session.headers = headers
     else:
-        logger.warning("using username and password for authentication")
+        logger.info("using username and password for authentication")
         session.auth = username, password
         session.headers = headers
     return session
@@ -112,6 +112,7 @@ def request(session, url, rule_payload, **kwargs):
     """
     if isinstance(rule_payload, dict):
         rule_payload = json.dumps(rule_payload)
+    logger.debug("sending request")
     result = session.post(url, data=rule_payload, **kwargs)
     return result
 
@@ -235,6 +236,7 @@ class ResultStream:
         if self.n_requests % 20 == 0 and self.n_requests > 1:
             logger.info("refreshing session")
             self.init_session()
+
         resp = request(session=self.session,
                        url=self.endpoint,
                        rule_payload=self.rule_payload)
