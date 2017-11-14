@@ -10,8 +10,8 @@ Features
 ========
 
 - Command-line utility is pipeable to other tools (e.g., ``jq``).
-- Delivers a stream of data to the user for low in-memory requirements
 - Automatically handles pagination of results with specifiable limits
+- Delivers a stream of data to the user for low in-memory requirements
 - Handles Enterprise and Premium authentication methods
 - Flexible usage within a python program
 - Compatible with our group's Tweet Parser for rapid extraction of relevant data fields from each tweet payload
@@ -42,15 +42,14 @@ Using the Comand Line Application
 =================================
 
 We provide a utility, ``twitter_search.py``, in the ``tools`` directory that provides rapid access to tweets.
-Premium customers should use ``--bearer-token`` instead of ``--user-name`` and ``--password``.
+Premium customers should use ``--bearer-token``; enterprise customers should use ``--user-name`` and ``--password``.
 
 **Stream json results to stdout without saving**
 
 .. code:: bash
 
   python twitter_search.py \
-    --user-name <USERNAME> \
-    --password <PW> \
+    --bearer-token <BEARER_TOKEN> \
     --endpoint <MY_ENDPOINT> \
     --max-tweets 1000 \
     --filter-rule "beyonce has:geo" \
@@ -115,7 +114,8 @@ It can be far easier to specify your information in a configuration file. An exa
 
 When using a config file in conjunction with the command-line utility, you need to specify your config file via the ``--config-file`` parameter. Additional command-line arguments will either be *added* to the config file args or **overwrite** the config file args if both are specified and present.
 
-example::
+
+Example::
 
   python twitter_search_api.py \
     --config-file myapiconfig.config \
@@ -187,13 +187,13 @@ following cell for setup:
 
     # set your environment variables here for premium access if you need to
     # os.environ["TWITTER_SEARCH_BEARER_TOKEN"] = ""
-    
+
     premium_search_endpoint = "https://api.twitter.com/1.1/tweets/search/30day/dev.json"
-    
+
     premium_search_args = {"bearer_token": os.environ["TWITTER_SEARCH_BEARER_TOKEN"],
                            "endpoint": premium_search_endpoint,
                           }
-    
+
     print(premium_search_endpoint)
 
 
