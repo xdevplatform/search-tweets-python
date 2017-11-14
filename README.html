@@ -169,12 +169,19 @@
 <h1>Using the Comand Line Application<a class="headerlink" href="#using-the-comand-line-application" title="Permalink to this headline">¶</a></h1>
 <p>We provide a utility, <code class="docutils literal"><span class="pre">twitter_search.py</span></code>, in the <code class="docutils literal"><span class="pre">tools</span></code> directory that provides rapid access to tweets.
 Premium customers should use <code class="docutils literal"><span class="pre">--bearer-token</span></code>; enterprise customers should use <code class="docutils literal"><span class="pre">--user-name</span></code> and <code class="docutils literal"><span class="pre">--password</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">--endpoint</span></code> flag will specify the full URL of your connection, e.g.:</p>
+<p>Note that the <code class="docutils literal"><span class="pre">--max-results</span></code> flag specifies an argument to the API call (results returned per CALL), not as a hard max to number of results returned from this program. use <code class="docutils literal"><span class="pre">--max-tweets</span></code> for that for now.</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">.</span><span class="n">twitter</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="mf">1.1</span><span class="o">/</span><span class="n">tweets</span><span class="o">/</span><span class="n">search</span><span class="o">/</span><span class="mi">30</span><span class="n">day</span><span class="o">/</span><span class="n">dev</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>You can find this url in your developer console.</p>
 <p><strong>Stream json results to stdout without saving</strong></p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">bearer</span><span class="o">-</span><span class="n">token</span> <span class="o">&lt;</span><span class="n">BEARER_TOKEN</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">endpoint</span> <span class="o">&lt;</span><span class="n">MY_ENDPOINT</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">tweets</span> <span class="mi">1000</span> \
-  <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:geo&quot;</span> \
+  <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">100</span> \
+  <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
   <span class="o">--</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
 </div>
@@ -184,7 +191,8 @@ Premium customers should use <code class="docutils literal"><span class="pre">--
   <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">endpoint</span> <span class="o">&lt;</span><span class="n">MY_ENDPOINT</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">tweets</span> <span class="mi">1000</span> \
-  <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:geo&quot;</span> \
+  <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">100</span> \
+  <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
   <span class="o">--</span><span class="n">filename</span><span class="o">-</span><span class="n">prefix</span> <span class="n">beyonce_geo</span> \
   <span class="o">--</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
@@ -195,7 +203,8 @@ Premium customers should use <code class="docutils literal"><span class="pre">--
   <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">endpoint</span> <span class="o">&lt;</span><span class="n">MY_ENDPOINT</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">tweets</span> <span class="mi">100</span> \
-  <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:geo&quot;</span> \
+  <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">100</span> \
+  <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
   <span class="o">--</span><span class="n">filename</span><span class="o">-</span><span class="n">prefix</span> <span class="n">beyonce_geo</span> \
   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
@@ -213,8 +222,8 @@ Premium customers should use <code class="docutils literal"><span class="pre">--
 <span class="p">[</span><span class="n">gnip_search_rules</span><span class="p">]</span>
 <span class="n">from_date</span> <span class="o">=</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">01</span>
 <span class="n">to_date</span> <span class="o">=</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span>
-<span class="n">max_results</span> <span class="o">=</span> <span class="mi">500</span>
-<span class="n">pt_rule</span> <span class="o">=</span> <span class="n">beyonce</span> <span class="n">has</span><span class="p">:</span><span class="n">geo</span>
+<span class="n">max_results</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">pt_rule</span> <span class="o">=</span> <span class="n">beyonce</span> <span class="n">has</span><span class="p">:</span><span class="n">hashtags</span>
 
 
 <span class="p">[</span><span class="n">search_params</span><span class="p">]</span>

@@ -44,6 +44,17 @@ Using the Comand Line Application
 We provide a utility, ``twitter_search.py``, in the ``tools`` directory that provides rapid access to tweets.
 Premium customers should use ``--bearer-token``; enterprise customers should use ``--user-name`` and ``--password``.
 
+The ``--endpoint`` flag will specify the full URL of your connection, e.g.:
+
+Note that the ``--max-results`` flag specifies an argument to the API call (results returned per CALL), not as a hard max to number of results returned from this program. use ``--max-tweets`` for that for now.
+
+.. code:: bash
+
+  https://api.twitter.com/1.1/tweets/search/30day/dev.json
+
+You can find this url in your developer console.
+
+
 **Stream json results to stdout without saving**
 
 .. code:: bash
@@ -52,7 +63,8 @@ Premium customers should use ``--bearer-token``; enterprise customers should use
     --bearer-token <BEARER_TOKEN> \
     --endpoint <MY_ENDPOINT> \
     --max-tweets 1000 \
-    --filter-rule "beyonce has:geo" \
+    --max-results 100 \
+    --filter-rule "beyonce has:hashtags" \
     --print-stream
 
 
@@ -65,7 +77,8 @@ Premium customers should use ``--bearer-token``; enterprise customers should use
     --password <PW> \
     --endpoint <MY_ENDPOINT> \
     --max-tweets 1000 \
-    --filter-rule "beyonce has:geo" \
+    --max-results 100 \
+    --filter-rule "beyonce has:hashtags" \
     --filename-prefix beyonce_geo \
     --print-stream
 
@@ -79,7 +92,8 @@ Premium customers should use ``--bearer-token``; enterprise customers should use
     --password <PW> \
     --endpoint <MY_ENDPOINT> \
     --max-tweets 100 \
-    --filter-rule "beyonce has:geo" \
+    --max-results 100 \
+    --filter-rule "beyonce has:hashtags" \
     --filename-prefix beyonce_geo \
     --no-print-stream
 
@@ -101,8 +115,8 @@ It can be far easier to specify your information in a configuration file. An exa
   [gnip_search_rules]
   from_date = 2017-06-01
   to_date = 2017-09-01
-  max_results = 500
-  pt_rule = beyonce has:geo
+  max_results = 100
+  pt_rule = beyonce has:hashtags
 
 
   [search_params]
