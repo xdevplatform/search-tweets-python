@@ -46,13 +46,15 @@ Premium customers should use ``--bearer-token``; enterprise customers should use
 
 The ``--endpoint`` flag will specify the full URL of your connection, e.g.:
 
-Note that the ``--max-results`` flag specifies an argument to the API call (results returned per CALL), not as a hard max to number of results returned from this program. use ``--max-tweets`` for that for now.
 
 .. code:: bash
 
   https://api.twitter.com/1.1/tweets/search/30day/dev.json
 
 You can find this url in your developer console.
+
+Note that the ``--max-results`` flag specifies an argument to the API call (results returned per CALL), not as a hard max to number of results returned from this program. use ``--max-tweets`` for that for now.
+
 
 
 **Stream json results to stdout without saving**
