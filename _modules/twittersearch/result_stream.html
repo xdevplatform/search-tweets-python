@@ -100,8 +100,6 @@
             
             
             
-              <li class="hidden-sm"></li>
-            
           </ul>
 
           
@@ -123,7 +121,13 @@
     <div class="col-md-12 content">
       
   <h1>Source code for twittersearch.result_stream</h1><div class="highlight"><pre>
-<span></span><span class="c1"># This Python file uses the following encoding: utf-8</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains the request handing and actual api wrapping functionality.</span>
+
+<span class="sd">It&#39;s core method is the ``ResultStream`` object, which takes the API call</span>
+<span class="sd">arguments and returns a stream of results to the user.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">re</span>
@@ -140,8 +144,9 @@
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
+
 <div class="viewcode-block" id="make_session"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.make_session">[docs]</a><span class="k">def</span> <span class="nf">make_session</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bearer_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Creates a Requests Session for use. Accepts a bearer token </span>
+    <span class="sd">&quot;&quot;&quot;Creates a Requests Session for use. Accepts a bearer token</span>
 <span class="sd">    for freemium users and will override username and password information if</span>
 <span class="sd">    present.</span>
 
@@ -152,17 +157,18 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">bearer_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No authentication information provided; please check your object&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No authentication information provided; &quot;</span>
+                     <span class="s2">&quot;please check your object&quot;</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">KeyError</span>
 
     <span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Accept-encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;gzip&#39;</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">bearer_token</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;using bearer token for authentication&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;using bearer token for authentication&quot;</span><span class="p">)</span>
         <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Authorization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Bearer </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bearer_token</span><span class="p">)</span>
         <span class="n">session</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;using username and password for authentication&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;using username and password for authentication&quot;</span><span class="p">)</span>
         <span class="n">session</span><span class="o">.</span><span class="n">auth</span> <span class="o">=</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span>
         <span class="n">session</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
     <span class="k">return</span> <span class="n">session</span></div>
@@ -198,7 +204,7 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;retrying request; current status code: </span><span class="si">{}</span><span class="s2">&quot;</span>
                                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
                 <span class="n">tries</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="c1"># mini exponential backoff here. </span>
+                <span class="c1"># mini exponential backoff here.</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">tries</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
                 <span class="k">continue</span>
 
@@ -229,44 +235,54 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">rule_payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;sending request&quot;</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">rule_payload</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="ResultStream"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.ResultStream">[docs]</a><span class="k">class</span> <span class="nc">ResultStream</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Class to represent an API query that handles two major functionality</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to represent an API query that handles two major functionality</span>
 <span class="sd">    pieces: wrapping metadata around a specific API call and automatic</span>
 <span class="sd">    pagination of results.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        username (str): username for enterprise customers</span>
+<span class="sd">        password (str): password for enterprise customers</span>
+<span class="sd">        bearer_token (str): bearer token for premium users</span>
+<span class="sd">        endpoint (str): API endpoint; see your console at developer.twitter.com</span>
+<span class="sd">        rule_payload (json or dict): payload for the post request</span>
+<span class="sd">        max_results (int): max number results that will be returned from this</span>
+<span class="sd">        instance. Note that this can be slightly lower than the total returned</span>
+<span class="sd">        from the API call  - e.g., setting ``max_results = 10`` would return</span>
+<span class="sd">        ten results, but an API call will return at minimum 100 results.</span>
+<span class="sd">        tweetify (bool): If you are grabbing tweets and not counts, use the</span>
+<span class="sd">            tweet parser library to convert each raw tweet package to a Tweet</span>
+<span class="sd">            with lazy properties.</span>
+<span class="sd">        max_requests (int): A hard cutoff for the number of API calls this</span>
+<span class="sd">        instance will make. Good for testing in sandbox premium environments.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; rs = ResultStream(**search_args, rule_payload=rule, max_pages=1)</span>
+<span class="sd">        &gt;&gt;&gt; results = list(rs.stream())</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">rule_payload</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">rule_payload</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">bearer_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
                  <span class="n">tweetify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_requests</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Args:</span>
-<span class="sd">            username (str): username</span>
-<span class="sd">            password (str): password</span>
-<span class="sd">            bearer_token (str): bearer token for freemium users</span>
-<span class="sd">            url (str): API endpoint; should be generated using the</span>
-<span class="sd">                `gen_endpoint` function.</span>
-<span class="sd">            rule_payload (json or dict): payload for the post request</span>
-<span class="sd">            max_results (int): max results that will be fetched from the API.</span>
-<span class="sd">            tweetify (bool): If you are grabbing tweets and not counts, use the</span>
-<span class="sd">                tweet parser library to convert each raw tweet package to a Tweet</span>
-<span class="sd">                with lazy properties.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bearer_token</span> <span class="o">=</span> <span class="n">bearer_token</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">=</span> <span class="n">endpoint</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">rule_payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span> <span class="o">=</span> <span class="n">rule_payload</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tweetify</span> <span class="o">=</span> <span class="n">tweetify</span>
         <span class="c1"># magic number of max tweets if you pass a non_int</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="o">=</span> <span class="n">max_results</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">max_results</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_results</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">max_results</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+                            <span class="k">else</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">15</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">total_results</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_requests</span> <span class="o">=</span> <span class="mi">0</span>
@@ -275,9 +291,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">next_token</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stream_started</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tweet_func</span> <span class="o">=</span> <span class="n">Tweet</span> <span class="k">if</span> <span class="n">tweetify</span> <span class="k">else</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span> <span class="o">=</span> <span class="n">max_requests</span> <span class="k">if</span> <span class="n">max_requests</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">9</span> <span class="c1"># magic number of requests!</span>
-        <span class="n">validate_count_api</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
-
+        <span class="c1"># magic number of requests!</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_requests</span> <span class="k">if</span> <span class="n">max_requests</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                             <span class="k">else</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">9</span><span class="p">)</span>
+        <span class="n">validate_count_api</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ResultStream.stream"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.ResultStream.stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -304,8 +321,10 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">total_results</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_token</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_results</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_requests</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span> <span class="o">=</span> <span class="n">merge_dicts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span><span class="p">,</span> <span class="p">({</span><span class="s2">&quot;next&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_token</span><span class="p">}))</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;paging; total requests read so far: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_requests</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span> <span class="o">=</span> <span class="n">merge_dicts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span><span class="p">,</span>
+                                                <span class="p">{</span><span class="s2">&quot;next&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_token</span><span class="p">})</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;paging; total requests read so far: </span><span class="si">{}</span><span class="s2">&quot;</span>
+                            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_requests</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">execute_request</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">break</span>
@@ -319,44 +338,68 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">make_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bearer_token</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">make_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">bearer_token</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ResultStream.check_counts"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.ResultStream.check_counts">[docs]</a>    <span class="k">def</span> <span class="nf">check_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disables tweet parsing if the count api is used.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s2">&quot;counts&quot;</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[/.]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;counts&quot;</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[/.]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;disabling tweet parsing due to counts api usage&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tweet_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span></div>
 
 <div class="viewcode-block" id="ResultStream.execute_request"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.ResultStream.execute_request">[docs]</a>    <span class="k">def</span> <span class="nf">execute_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sends the request to the api and parses the json response.</span>
-
+<span class="sd">        Makes some assumptions about the session length and sets the presence</span>
+<span class="sd">        of a &quot;next&quot; token.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_requests</span> <span class="o">%</span> <span class="mi">20</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_requests</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;refreshing session&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">init_session</span><span class="p">()</span>
+
         <span class="n">resp</span> <span class="o">=</span> <span class="n">request</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span>
-                       <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
-                       <span class="n">rule_payload</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span><span class="p">,</span>
-                      <span class="p">)</span>
+                       <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span>
+                       <span class="n">rule_payload</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_requests</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">resp</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">encoding</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_token</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_tweets</span> <span class="o">=</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]</span></div>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">repr_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;rule_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;tweetify&quot;</span><span class="p">,</span> <span class="s2">&quot;max_results&quot;</span><span class="p">]</span>
-        <span class="n">str_</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">repr_keys</span><span class="p">]),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">repr_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;endpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;rule_payload&quot;</span><span class="p">,</span>
+                     <span class="s2">&quot;tweetify&quot;</span><span class="p">,</span> <span class="s2">&quot;max_results&quot;</span><span class="p">]</span>
+        <span class="n">str_</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">repr_keys</span><span class="p">]),</span>
+                          <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
         <span class="n">str_</span> <span class="o">=</span> <span class="s2">&quot;ResultStream: </span><span class="se">\n\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">str_</span>
         <span class="k">return</span> <span class="n">str_</span></div>
 
 
 <div class="viewcode-block" id="collect_results"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.collect_results">[docs]</a><span class="k">def</span> <span class="nf">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Utility function to quickly get a list of tweets from a resultstream</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Utility function to quickly get a list of tweets from a resultstream</span>
 <span class="sd">    without keeping the object around. Rqequires your args to be configured</span>
 <span class="sd">    prior to using.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        rule (str): valid powertrack rule for your account, preferably</span>
+<span class="sd">        generated by the `gen_rule_payload` function.</span>
+<span class="sd">        max_results (int): maximum number of tweets or counts to return from</span>
+<span class="sd">        the API / underlying resultstream object.</span>
+<span class="sd">        result_stream_args (dict): configuration dict that has connection</span>
+<span class="sd">        information for a ``ResultStream`` object.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of results</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; from twittersearch import collect_results</span>
+<span class="sd">        &gt;&gt;&gt; tweets = collect_results(rule,</span>
+<span class="sd">                                     max_results=500,</span>
+<span class="sd">                                     result_stream_args=search_args)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">result_stream_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;This function requires a configuration dict for the &quot;</span>

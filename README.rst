@@ -10,8 +10,8 @@ Features
 ========
 
 - Command-line utility is pipeable to other tools (e.g., ``jq``).
-- Delivers a stream of data to the user for low in-memory requirements
 - Automatically handles pagination of results with specifiable limits
+- Delivers a stream of data to the user for low in-memory requirements
 - Handles Enterprise and Premium authentication methods
 - Flexible usage within a python program
 - Compatible with our group's Tweet Parser for rapid extraction of relevant data fields from each tweet payload
@@ -42,15 +42,14 @@ Using the Comand Line Application
 =================================
 
 We provide a utility, ``twitter_search.py``, in the ``tools`` directory that provides rapid access to tweets.
-Premium customers should use ``--bearer-token`` instead of ``--user-name`` and ``--password``.
+Premium customers should use ``--bearer-token``; enterprise customers should use ``--user-name`` and ``--password``.
 
 **Stream json results to stdout without saving**
 
 .. code:: bash
 
   python twitter_search.py \
-    --user-name <USERNAME> \
-    --password <PW> \
+    --bearer-token <BEARER_TOKEN> \
     --endpoint <MY_ENDPOINT> \
     --max-tweets 1000 \
     --filter-rule "beyonce has:geo" \
@@ -115,15 +114,16 @@ It can be far easier to specify your information in a configuration file. An exa
 
 When using a config file in conjunction with the command-line utility, you need to specify your config file via the ``--config-file`` parameter. Additional command-line arguments will either be *added* to the config file args or **overwrite** the config file args if both are specified and present.
 
-example::
+
+Example::
 
   python twitter_search_api.py \
     --config-file myapiconfig.config \
     --no-print-stream
 
 
-Using the Twitter Search API Within a Python Program
-====================================================
+Using the Twitter Search API within Python
+==========================================
 
 Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.
@@ -153,7 +153,7 @@ throughout your program's session. Note that any method of storing your
 credentials is valid here; I am using environment variables for ease of
 use.
 
-.. code:: ipython3
+.. code:: python
 
     import os
     import json
@@ -165,7 +165,7 @@ Enterprise setup
 If you are an enterprise customer, you'll need to authenticate with a
 basic username/password method. You can specify that here:
 
-.. code:: ipython3
+.. code:: python
 
     # set your environment variables here for enterprise access if you need to
     # os.environ["TWITTER_SEARCH_ACCOUNT_NAME"] = ""
@@ -183,17 +183,17 @@ Premium Setup
 Premium customers will use a bearer token for authentication. Use the
 following cell for setup:
 
-.. code:: ipython3
+.. code:: python
 
     # set your environment variables here for premium access if you need to
     # os.environ["TWITTER_SEARCH_BEARER_TOKEN"] = ""
-    
+
     premium_search_endpoint = "https://api.twitter.com/1.1/tweets/search/30day/dev.json"
-    
+
     premium_search_args = {"bearer_token": os.environ["TWITTER_SEARCH_BEARER_TOKEN"],
                            "endpoint": premium_search_endpoint,
                           }
-    
+
     print(premium_search_endpoint)
 
 
@@ -212,7 +212,7 @@ generating search rules is out of scope for these examples; I encourage
 you to see the docs to learn the nuances within, but for now let's see
 what a rule looks like.
 
-.. code:: ipython3
+.. code:: python
 
     rule = gen_rule_payload("@robotprincessfi", max_results=100) # testing with a sandbox account
     print(rule)
@@ -252,11 +252,11 @@ enterprise depending on your usage.
 
 Let's see how it goes:
 
-.. code:: ipython3
+.. code:: python
 
     from twittersearch import collect_results
 
-.. code:: ipython3
+.. code:: python
 
     tweets = collect_results(rule, max_results=500, result_stream_args=premium_search_args) # change this if you need to
 
@@ -266,7 +266,11 @@ Let's see how it goes:
     using bearer token for authentication
 
 
-.. code:: ipython3
+By default, tweet payloads are lazily parsed into a ``Tweet`` object. An
+overwhelming number of tweet attributes are made available directly, as
+such:
+
+.. code:: python
 
     [(tweet.id, tweet.all_text, tweet.hashtags) for tweet in tweets[0:10]]
 
@@ -294,11 +298,11 @@ The ResultStream object will be powered by the ``search_args``, and
 takes the rules and other configuration parameters, including a hard
 stop on number of pages to limit your API call usage.
 
-.. code:: ipython3
+.. code:: python
 
     rs = ResultStream(**premium_search_args, rule_payload=rule, max_results=500, max_pages=1, )
 
-.. code:: ipython3
+.. code:: python
 
     print(rs)
 
@@ -322,7 +326,7 @@ There is a function, ``.stream``, that seamlessly handles requests and
 pagination for a given query. It returns a generator, and to grab our
 500 tweets that mention ``@robotprincessfi`` we can do this:
 
-.. code:: ipython3
+.. code:: python
 
     tweets = list(rs.stream())
 
@@ -335,7 +339,7 @@ pagination for a given query. It returns a generator, and to grab our
 Tweets are lazily parsed using our Tweet Parser, so tweet data is very
 easily extractable.
 
-.. code:: ipython3
+.. code:: python
 
     [(tweet.id, tweet.all_text, tweet.hashtags) for tweet in tweets[0:10]]
 
@@ -351,12 +355,98 @@ easily extractable.
 
 
 
-Let's make a new rule and pass it dates this time. ``gen_rule_payload``
-takes dates of the forms ``YYYY-mm-DD`` and ``YYYYmmDD``. Note that this
-will only work with the full archive search option, which is available
-to my account only via the enterprise options.
+Counts API
+----------
 
-.. code:: ipython3
+We can also use the counts api to get counts of tweets that match our
+rule. Each request will return up to *30* results, and each count
+request can be done on a minutely, hourly, or daily basis. There is a
+utility function that will convert your regular endpoint to the count
+endpoint.
+
+The process is very similar to grabbing tweets, but has some minor
+differneces.
+
+**Caveat - premium sandbox environments do NOT have access to the counts
+API.**
+
+.. code:: python
+
+    from twittersearch import change_to_count_endpoint
+    count_endpoint = change_to_count_endpoint("https://gnip-api.twitter.com/search/fullarchive/accounts/shendrickson/ogformat.json")
+    
+    count_args = {"username": "agonzales@twitter.com",
+                              "password": os.environ["TWITTER_SEARCH_PW"],
+                              "endpoint": count_endpoint,
+                             }
+    
+    count_rule = gen_rule_payload("beyonce", count_bucket="day")
+    
+    counts = collect_results(count_rule, result_stream_args=count_args)
+
+
+.. parsed-literal::
+
+    using username and password for authentication
+
+
+Our results are pretty straightforward and can be rapidly used.
+
+.. code:: python
+
+    counts
+
+
+.. parsed-literal::
+
+    [{'count': 135320, 'timePeriod': '201711100000'},
+     {'count': 68532, 'timePeriod': '201711090000'},
+     {'count': 67138, 'timePeriod': '201711080000'},
+     {'count': 73017, 'timePeriod': '201711070000'},
+     {'count': 52290, 'timePeriod': '201711060000'},
+     {'count': 79338, 'timePeriod': '201711050000'},
+     {'count': 200519, 'timePeriod': '201711040000'},
+     {'count': 160512, 'timePeriod': '201711030000'},
+     {'count': 220683, 'timePeriod': '201711020000'},
+     {'count': 190959, 'timePeriod': '201711010000'},
+     {'count': 121580, 'timePeriod': '201710310000'},
+     {'count': 39473, 'timePeriod': '201710300000'},
+     {'count': 35441, 'timePeriod': '201710290000'},
+     {'count': 36198, 'timePeriod': '201710280000'},
+     {'count': 36149, 'timePeriod': '201710270000'},
+     {'count': 34197, 'timePeriod': '201710260000'},
+     {'count': 41497, 'timePeriod': '201710250000'},
+     {'count': 47648, 'timePeriod': '201710240000'},
+     {'count': 49087, 'timePeriod': '201710230000'},
+     {'count': 44945, 'timePeriod': '201710220000'},
+     {'count': 54865, 'timePeriod': '201710210000'},
+     {'count': 74324, 'timePeriod': '201710200000'},
+     {'count': 76643, 'timePeriod': '201710190000'},
+     {'count': 115587, 'timePeriod': '201710180000'},
+     {'count': 82581, 'timePeriod': '201710170000'},
+     {'count': 72372, 'timePeriod': '201710160000'},
+     {'count': 64522, 'timePeriod': '201710150000'},
+     {'count': 56092, 'timePeriod': '201710140000'},
+     {'count': 80265, 'timePeriod': '201710130000'},
+     {'count': 137717, 'timePeriod': '201710120000'},
+     {'count': 86203, 'timePeriod': '201710110000'}]
+
+
+
+Dated searches / Full Archive Search
+------------------------------------
+
+Let's make a new rule and pass it dates this time.
+
+``gen_rule_payload`` takes dates of the forms ``YYYY-mm-DD`` and
+``YYYYmmDD``.
+
+**Note that this will only work with the full archive search option**,
+which is available to my account only via the enterprise options. Full
+archive search will likely require a different endpoint or access
+method; please see your developer console for details.
+
+.. code:: python
 
     rule = gen_rule_payload("from:jack", from_date="2017-09-01", to_date="2017-10-30", max_results=100)
     print(rule)
@@ -367,7 +457,7 @@ to my account only via the enterprise options.
     {"query":"from:jack","maxResults":100,"toDate":"201710300000","fromDate":"201709010000"}
 
 
-.. code:: ipython3
+.. code:: python
 
     tweets = collect_results(rule, max_results=500, result_stream_args=enterprise_search_args)
 
@@ -377,12 +467,9 @@ to my account only via the enterprise options.
     using username and password for authentication
 
 
-.. code:: ipython3
+.. code:: python
 
     [(str(tweet.created_at_datetime), tweet.all_text, tweet.hashtags) for tweet in tweets[0:10]]
-      
-
-
 
 
 .. parsed-literal::
@@ -409,5 +496,3 @@ to my account only via the enterprise options.
      ('2017-10-25 20:15:19',
       'Setting up at @CampFlogGnaw https://t.co/nVq8QjkKsf',
       [])]
-
-

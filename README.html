@@ -93,11 +93,13 @@
 <li><a class="reference internal" href="#features">Features</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#using-the-comand-line-application">Using the Comand Line Application</a></li>
-<li><a class="reference internal" href="#using-the-twitter-search-api-within-a-python-program">Using the Twitter Search API Within a Python Program</a><ul>
+<li><a class="reference internal" href="#using-the-twitter-search-api-within-python">Using the Twitter Search API within Python</a><ul>
 <li><a class="reference internal" href="#enterprise-setup">Enterprise setup</a></li>
 <li><a class="reference internal" href="#premium-setup">Premium Setup</a></li>
 <li><a class="reference internal" href="#fast-way">Fast Way</a></li>
 <li><a class="reference internal" href="#working-with-the-resultstream">Working with the ResultStream</a></li>
+<li><a class="reference internal" href="#counts-api">Counts API</a></li>
+<li><a class="reference internal" href="#dated-searches-full-archive-search">Dated searches / Full Archive Search</a></li>
 </ul>
 </li>
 </ul>
@@ -142,8 +144,8 @@
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li>Command-line utility is pipeable to other tools (e.g., <code class="docutils literal"><span class="pre">jq</span></code>).</li>
-<li>Delivers a stream of data to the user for low in-memory requirements</li>
 <li>Automatically handles pagination of results with specifiable limits</li>
+<li>Delivers a stream of data to the user for low in-memory requirements</li>
 <li>Handles Enterprise and Premium authentication methods</li>
 <li>Flexible usage within a python program</li>
 <li>Compatible with our group&#8217;s Tweet Parser for rapid extraction of relevant data fields from each tweet payload</li>
@@ -166,11 +168,10 @@
 <div class="section" id="using-the-comand-line-application">
 <h1>Using the Comand Line Application<a class="headerlink" href="#using-the-comand-line-application" title="Permalink to this headline">¶</a></h1>
 <p>We provide a utility, <code class="docutils literal"><span class="pre">twitter_search.py</span></code>, in the <code class="docutils literal"><span class="pre">tools</span></code> directory that provides rapid access to tweets.
-Premium customers should use <code class="docutils literal"><span class="pre">--bearer-token</span></code> instead of <code class="docutils literal"><span class="pre">--user-name</span></code> and <code class="docutils literal"><span class="pre">--password</span></code>.</p>
+Premium customers should use <code class="docutils literal"><span class="pre">--bearer-token</span></code>; enterprise customers should use <code class="docutils literal"><span class="pre">--user-name</span></code> and <code class="docutils literal"><span class="pre">--password</span></code>.</p>
 <p><strong>Stream json results to stdout without saving</strong></p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search</span><span class="o">.</span><span class="n">py</span> \
-  <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
-  <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
+  <span class="o">--</span><span class="n">bearer</span><span class="o">-</span><span class="n">token</span> <span class="o">&lt;</span><span class="n">BEARER_TOKEN</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">endpoint</span> <span class="o">&lt;</span><span class="n">MY_ENDPOINT</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">tweets</span> <span class="mi">1000</span> \
   <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:geo&quot;</span> \
@@ -224,15 +225,15 @@ Premium customers should use <code class="docutils literal"><span class="pre">--
 </pre></div>
 </div>
 <p>When using a config file in conjunction with the command-line utility, you need to specify your config file via the <code class="docutils literal"><span class="pre">--config-file</span></code> parameter. Additional command-line arguments will either be <em>added</em> to the config file args or <strong>overwrite</strong> the config file args if both are specified and present.</p>
-<p>example:</p>
+<p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search_api</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">file</span> <span class="n">myapiconfig</span><span class="o">.</span><span class="n">config</span> \
   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="using-the-twitter-search-api-within-a-python-program">
-<h1>Using the Twitter Search API Within a Python Program<a class="headerlink" href="#using-the-twitter-search-api-within-a-python-program" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="using-the-twitter-search-api-within-python">
+<h1>Using the Twitter Search API within Python<a class="headerlink" href="#using-the-twitter-search-api-within-python" title="Permalink to this headline">¶</a></h1>
 <p>Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.</p>
 <p>Our group&#8217;s python <a class="reference external" href="https://github.com/tw-ddis/tweet_parser">tweet parser
@@ -255,7 +256,7 @@ correct API endpoints from this info as well as flags to use the
 throughout your program&#8217;s session. Note that any method of storing your
 credentials is valid here; I am using environment variables for ease of
 use.</p>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">twittersearch</span> <span class="k">import</span> <span class="n">ResultStream</span><span class="p">,</span> <span class="n">gen_rule_payload</span>
 </pre></div>
@@ -264,7 +265,7 @@ use.</p>
 <h2>Enterprise setup<a class="headerlink" href="#enterprise-setup" title="Permalink to this headline">¶</a></h2>
 <p>If you are an enterprise customer, you&#8217;ll need to authenticate with a
 basic username/password method. You can specify that here:</p>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="c1"># set your environment variables here for enterprise access if you need to</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># set your environment variables here for enterprise access if you need to</span>
 <span class="c1"># os.environ[&quot;TWITTER_SEARCH_ACCOUNT_NAME&quot;] = &quot;&quot;</span>
 <span class="c1"># os.environ[&quot;TWITTER_SEARCH_PW&quot;] = &quot;&quot;</span>
 
@@ -280,7 +281,7 @@ basic username/password method. You can specify that here:</p>
 <h2>Premium Setup<a class="headerlink" href="#premium-setup" title="Permalink to this headline">¶</a></h2>
 <p>Premium customers will use a bearer token for authentication. Use the
 following cell for setup:</p>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="c1"># set your environment variables here for premium access if you need to</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># set your environment variables here for premium access if you need to</span>
 <span class="c1"># os.environ[&quot;TWITTER_SEARCH_BEARER_TOKEN&quot;] = &quot;&quot;</span>
 
 <span class="n">premium_search_endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://api.twitter.com/1.1/tweets/search/30day/dev.json&quot;</span>
@@ -304,7 +305,7 @@ counts when using the counts api. Discussing the finer points of
 generating search rules is out of scope for these examples; I encourage
 you to see the docs to learn the nuances within, but for now let&#8217;s see
 what a rule looks like.</p>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;@robotprincessfi&quot;</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># testing with a sandbox account</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;@robotprincessfi&quot;</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># testing with a sandbox account</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -335,16 +336,19 @@ specified.</li>
 <p>For the remaining examples, please change the args to either premium or
 enterprise depending on your usage.</p>
 <p>Let&#8217;s see how it goes:</p>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twittersearch</span> <span class="k">import</span> <span class="n">collect_results</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twittersearch</span> <span class="k">import</span> <span class="n">collect_results</span>
 </pre></div>
 </div>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">premium_search_args</span><span class="p">)</span> <span class="c1"># change this if you need to</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">premium_search_args</span><span class="p">)</span> <span class="c1"># change this if you need to</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">using</span> <span class="n">bearer</span> <span class="n">token</span> <span class="k">for</span> <span class="n">authentication</span>
 </pre></div>
 </div>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="n">tweet</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">hashtags</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]]</span>
+<p>By default, tweet payloads are lazily parsed into a <code class="docutils literal"><span class="pre">Tweet</span></code> object. An
+overwhelming number of tweet attributes are made available directly, as
+such:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="n">tweet</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">hashtags</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]]</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="s1">&#39;920754829873606657&#39;</span><span class="p">,</span> <span class="s2">&quot;@ericmbudd I&#39;m super cute.&quot;</span><span class="p">,</span> <span class="p">[]),</span>
@@ -363,10 +367,10 @@ recommend using this convenience function.</p>
 <p>The ResultStream object will be powered by the <code class="docutils literal"><span class="pre">search_args</span></code>, and
 takes the rules and other configuration parameters, including a hard
 stop on number of pages to limit your API call usage.</p>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="n">rs</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="o">**</span><span class="n">premium_search_args</span><span class="p">,</span> <span class="n">rule_payload</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">max_pages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rs</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="o">**</span><span class="n">premium_search_args</span><span class="p">,</span> <span class="n">rule_payload</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">max_pages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="p">)</span>
 </pre></div>
 </div>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span>
 </pre></div>
 </div>
 <pre class="literal-block">
@@ -385,7 +389,7 @@ ResultStream:
 <p>There is a function, <code class="docutils literal"><span class="pre">.stream</span></code>, that seamlessly handles requests and
 pagination for a given query. It returns a generator, and to grab our
 500 tweets that mention <code class="docutils literal"><span class="pre">&#64;robotprincessfi</span></code> we can do this:</p>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">stream</span><span class="p">())</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">stream</span><span class="p">())</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">using</span> <span class="n">bearer</span> <span class="n">token</span> <span class="k">for</span> <span class="n">authentication</span>
@@ -393,7 +397,7 @@ pagination for a given query. It returns a generator, and to grab our
 </div>
 <p>Tweets are lazily parsed using our Tweet Parser, so tweet data is very
 easily extractable.</p>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="n">tweet</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">hashtags</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]]</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="n">tweet</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">hashtags</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]]</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="s1">&#39;920754829873606657&#39;</span><span class="p">,</span> <span class="s2">&quot;@ericmbudd I&#39;m super cute.&quot;</span><span class="p">,</span> <span class="p">[]),</span>
@@ -402,24 +406,95 @@ easily extractable.</p>
  <span class="p">(</span><span class="s1">&#39;920383435209891841&#39;</span><span class="p">,</span> <span class="s1">&#39;@robotprincessfi hi there Fiona&#39;</span><span class="p">,</span> <span class="p">[])]</span>
 </pre></div>
 </div>
-<p>Let&#8217;s make a new rule and pass it dates this time. <code class="docutils literal"><span class="pre">gen_rule_payload</span></code>
-takes dates of the forms <code class="docutils literal"><span class="pre">YYYY-mm-DD</span></code> and <code class="docutils literal"><span class="pre">YYYYmmDD</span></code>. Note that this
-will only work with the full archive search option, which is available
-to my account only via the enterprise options.</p>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span> <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;2017-09-01&quot;</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="s2">&quot;2017-10-30&quot;</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</div>
+<div class="section" id="counts-api">
+<h2>Counts API<a class="headerlink" href="#counts-api" title="Permalink to this headline">¶</a></h2>
+<p>We can also use the counts api to get counts of tweets that match our
+rule. Each request will return up to <em>30</em> results, and each count
+request can be done on a minutely, hourly, or daily basis. There is a
+utility function that will convert your regular endpoint to the count
+endpoint.</p>
+<p>The process is very similar to grabbing tweets, but has some minor
+differneces.</p>
+<p><strong>Caveat - premium sandbox environments do NOT have access to the counts
+API.</strong></p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twittersearch</span> <span class="k">import</span> <span class="n">change_to_count_endpoint</span>
+<span class="n">count_endpoint</span> <span class="o">=</span> <span class="n">change_to_count_endpoint</span><span class="p">(</span><span class="s2">&quot;https://gnip-api.twitter.com/search/fullarchive/accounts/shendrickson/ogformat.json&quot;</span><span class="p">)</span>
+
+<span class="n">count_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;agonzales@twitter.com&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TWITTER_SEARCH_PW&quot;</span><span class="p">],</span>
+                          <span class="s2">&quot;endpoint&quot;</span><span class="p">:</span> <span class="n">count_endpoint</span><span class="p">,</span>
+                         <span class="p">}</span>
+
+<span class="n">count_rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;beyonce&quot;</span><span class="p">,</span> <span class="n">count_bucket</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">)</span>
+
+<span class="n">counts</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">count_rule</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">count_args</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">using</span> <span class="n">username</span> <span class="ow">and</span> <span class="n">password</span> <span class="k">for</span> <span class="n">authentication</span>
+</pre></div>
+</div>
+<p>Our results are pretty straightforward and can be rapidly used.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">counts</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">135320</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711100000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">68532</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711090000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">67138</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711080000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">73017</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711070000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">52290</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711060000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">79338</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711050000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">200519</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711040000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">160512</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711030000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">220683</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711020000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">190959</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711010000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">121580</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710310000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">39473</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710300000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">35441</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710290000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">36198</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710280000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">36149</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710270000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">34197</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710260000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">41497</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710250000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">47648</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710240000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">49087</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710230000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">44945</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710220000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">54865</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710210000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">74324</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710200000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">76643</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710190000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">115587</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710180000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">82581</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710170000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">72372</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710160000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">64522</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710150000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">56092</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710140000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">80265</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710130000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">137717</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710120000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">86203</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710110000&#39;</span><span class="p">}]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dated-searches-full-archive-search">
+<h2>Dated searches / Full Archive Search<a class="headerlink" href="#dated-searches-full-archive-search" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s make a new rule and pass it dates this time.</p>
+<p><code class="docutils literal"><span class="pre">gen_rule_payload</span></code> takes dates of the forms <code class="docutils literal"><span class="pre">YYYY-mm-DD</span></code> and
+<code class="docutils literal"><span class="pre">YYYYmmDD</span></code>.</p>
+<p><strong>Note that this will only work with the full archive search option</strong>,
+which is available to my account only via the enterprise options. Full
+archive search will likely require a different endpoint or access
+method; please see your developer console for details.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span> <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;2017-09-01&quot;</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="s2">&quot;2017-10-30&quot;</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span><span class="s2">&quot;maxResults&quot;</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="s2">&quot;toDate&quot;</span><span class="p">:</span><span class="s2">&quot;201710300000&quot;</span><span class="p">,</span><span class="s2">&quot;fromDate&quot;</span><span class="p">:</span><span class="s2">&quot;201709010000&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">using</span> <span class="n">username</span> <span class="ow">and</span> <span class="n">password</span> <span class="k">for</span> <span class="n">authentication</span>
 </pre></div>
 </div>
-<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="nb">str</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">created_at_datetime</span><span class="p">),</span> <span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">hashtags</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]]</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="nb">str</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">created_at_datetime</span><span class="p">),</span> <span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">tweet</span><span class="o">.</span><span class="n">hashtags</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]]</span>
 </pre></div>
 </div>
 <pre class="literal-block">
