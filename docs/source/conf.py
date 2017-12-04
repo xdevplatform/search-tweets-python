@@ -56,8 +56,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'twitter search api'
-copyright = '2017, tw-ddis'
-author = 'tw-ddis'
+copyright = '2017, twitterdev'
+author = 'twitterdev'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -140,7 +140,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'twittersearch.tex', 'twitter search api Documentation',
-     'tw-ddis', 'manual'),
+     'twitterdev', 'manual'),
 ]
 
 
@@ -186,7 +186,7 @@ html_theme_options = {
     # Note the "1" or "True" value above as the third argument to indicate
     # an arbitrary url.
     'navbar_links': [
-        ("Github", "https://github.com/tw-ddis/twitter_search_api", True),
+        ("Github", "https://github.com/twitterdev/twitter_search_api", True),
     ],
 
     # Render the next and previous page links in navbar. (Default: true)

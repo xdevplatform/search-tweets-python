@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(name='twittersearch',
       description="Wrapper for Twitter's Premium and Enterprise search APIs",
-      url='https://github.com/tw-ddis/twitter_search_api',
+      url='https://github.com/twitterdev/twitter_search_api',
       author='Fiona Pigott, Jeff Kolb, Josh Montague, Aaron Gonzales',
       long_description=open('README.rst', 'r').read(),
       author_email='agonzales@twitter.com',

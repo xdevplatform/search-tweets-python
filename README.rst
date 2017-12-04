@@ -26,13 +26,13 @@ We will soon handle releases via PyPy, but you can also install the current mast
 
 .. code:: bash
 
-  pip install git+https://github.com/tw-ddis/twitter_search_api.git
+  pip install git+https://github.com/twitterdev/twitter_search_api.git
 
 Or the development version locally via
 
 .. code:: bash
 
-  git clone https://github.com/tw-ddis/twitter_search_api.git
+  git clone https://github.com/twitterdev/twitter_search_api.git
   cd twitter_search_api
   pip install -e .
 
@@ -145,7 +145,7 @@ Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.
 
 Our group's python `tweet parser
-library <https://github.com/tw-ddis/tweet_parser>`__ is a requirement.
+library <https://github.com/twitterdev/tweet_parser>`__ is a requirement.
 
 Prior to starting your program, an easy way to define your secrets will
 be setting an environment variable. If you are an enterprise client,
