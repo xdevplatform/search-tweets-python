@@ -244,7 +244,7 @@ class ResultStream:
                        url=self.endpoint,
                        rule_payload=self.rule_payload)
         self.n_requests += 1
-        ResultStream._session_request_counter += 1
+        ResultStream.session_request_counter += 1
         resp = json.loads(resp.content.decode(resp.encoding))
         self.next_token = resp.get("next", None)
         self.current_tweets = resp["results"]
