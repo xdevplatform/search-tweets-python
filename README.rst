@@ -3,7 +3,7 @@ Python Twitter Search API
 
 This library serves as a python interface to the `Twitter premium and enterprise search APIs <https://developer.twitter.com/en/docs/tweets/search/overview/30-day-search>`_. It provides a command-line utility and a library usable from within python. It comes with tools for assisting in dynamic generation of search rules and for parsing tweets.
 
-Pretty docs can be seen `here <https://tw-ddis.github.io/twitter_search_api/index.html>`_.
+Pretty docs can be seen `here <https://twitterdev.github.io/twitter_search_api/>`_.
 
 
 Features
