@@ -144,6 +144,9 @@ class ResultStream:
         >>> results = list(rs.stream())
 
     """
+    # leaving this here to have an API call counter for ALL objects in your
+    # session, helping with usage of the convenience functions in the library.
+    session_request_counter = 0
 
     def __init__(self, endpoint, rule_payload, username=None, password=None,
                  bearer_token=None, max_results=1000,
@@ -241,6 +244,7 @@ class ResultStream:
                        url=self.endpoint,
                        rule_payload=self.rule_payload)
         self.n_requests += 1
+        ResultStream.session_request_counter += 1
         resp = json.loads(resp.content.decode(resp.encoding))
         self.next_token = resp.get("next", None)
         self.current_tweets = resp["results"]
