@@ -53,7 +53,7 @@ The ``--endpoint`` flag will specify the full URL of your connection, e.g.:
 
 You can find this url in your developer console.
 
-Note that the ``--max-results`` flag specifies an argument to the API call (results returned per CALL), not as a hard max to number of results returned from this program. use ``--max-tweets`` for that for now.
+Note that the ``--results-per-call`` flag specifies an argument to the API call ( ``maxResults``, results returned per CALL), not as a hard max to number of results returned from this program. use ``--max-results`` for that for now.
 
 
 
@@ -64,8 +64,8 @@ Note that the ``--max-results`` flag specifies an argument to the API call (resu
   python twitter_search.py \
     --bearer-token <BEARER_TOKEN> \
     --endpoint <MY_ENDPOINT> \
-    --max-tweets 1000 \
-    --max-results 100 \
+    --max-results 1000 \
+    --results-per-call 100 \
     --filter-rule "beyonce has:hashtags" \
     --print-stream
 
@@ -78,8 +78,8 @@ Note that the ``--max-results`` flag specifies an argument to the API call (resu
     --user-name <USERNAME> \
     --password <PW> \
     --endpoint <MY_ENDPOINT> \
-    --max-tweets 1000 \
-    --max-results 100 \
+    --max-results 1000 \
+    --results-per-call 100 \
     --filter-rule "beyonce has:hashtags" \
     --filename-prefix beyonce_geo \
     --print-stream
@@ -93,8 +93,8 @@ Note that the ``--max-results`` flag specifies an argument to the API call (resu
     --user-name <USERNAME> \
     --password <PW> \
     --endpoint <MY_ENDPOINT> \
-    --max-tweets 100 \
     --max-results 100 \
+    --results-per-call 100 \
     --filter-rule "beyonce has:hashtags" \
     --filename-prefix beyonce_geo \
     --no-print-stream
@@ -122,7 +122,7 @@ It can be far easier to specify your information in a configuration file. An exa
 
 
   [search_params]
-  max_tweets = 500
+  max_results = 500
 
   [output_params]
   output_file_prefix = beyonce

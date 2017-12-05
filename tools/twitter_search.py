@@ -71,11 +71,13 @@ def parse_cmd_args():
                                 default=None,
                                 help="PowerTrack filter rule (See: http://support.gnip.com/customer/portal/articles/901152-powertrack-operators)")
 
-    twitter_parser.add_argument("--max-results", dest="max_results",
+    twitter_parser.add_argument("--results-per-call", dest="results_per_call",
                                 default=100,
-                                help="Maximum results to return per api call (default 100; max 500)")
+                                help="Number of results to return per call "
+                                "(default 100; max 500) - corresponds to "
+                                "'maxResults' in the API")
 
-    twitter_parser.add_argument("--max-tweets", dest="max_tweets",
+    twitter_parser.add_argument("--max-results", dest="max_results",
                                 default=500,
                                 type=int,
                                 help="Maximum results to return for this "
@@ -86,8 +88,8 @@ def parse_cmd_args():
                                 dest="max_pages",
                                 type=int,
                                 default=None,
-                                help="Maximum number of pages to use "
-                                "for this session.")
+                                help="Maximum number of pages/api calls to "
+                                "use for this session.")
 
     twitter_parser.add_argument("--results-per-file", dest="results_per_file",
                                 default=0,
