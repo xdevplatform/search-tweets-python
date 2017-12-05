@@ -55,7 +55,7 @@
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
             
-                <li><a href="https://github.com/tw-ddis/twitter_search_api">Github</a></li>
+                <li><a href="https://github.com/twitterdev/twitter_search_api">Github</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -146,7 +146,7 @@
 rule generation, and related.</p>
 <dl class="function">
 <dt id="twittersearch.api_utils.gen_rule_payload">
-<code class="descclassname">twittersearch.api_utils.</code><code class="descname">gen_rule_payload</code><span class="sig-paren">(</span><em>pt_rule</em>, <em>max_results=500</em>, <em>from_date=None</em>, <em>to_date=None</em>, <em>count_bucket=None</em>, <em>tag=None</em>, <em>stringify=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#gen_rule_payload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.gen_rule_payload" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">twittersearch.api_utils.</code><code class="descname">gen_rule_payload</code><span class="sig-paren">(</span><em>pt_rule</em>, <em>results_per_call=500</em>, <em>from_date=None</em>, <em>to_date=None</em>, <em>count_bucket=None</em>, <em>tag=None</em>, <em>stringify=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#gen_rule_payload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.gen_rule_payload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates the dict or json payload for a PowerTrack rule.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -156,8 +156,8 @@ rule generation, and related.</p>
 <li><strong>pt_rule</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The string version of a powertrack rule,
 e.g., &#8220;kanye west has:geo&#8221;. Accepts multi-line strings
 for ease of entry.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; max results for the batch.
-Defaults to 500 to reduce API call usage.</li>
+<li><strong>results_per_call</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of tweets or counts returned per API</li>
+<li><strong>This maps to the maxResults search API parameter.</strong> (<em>call.</em>) &#8211; Defaults to 500 to reduce API call usage.</li>
 <li><strong>from_date</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; Date format as specified by
 <cite>convert_utc_time</cite> for the starting time of your search.</li>
 <li><strong>to_date</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; date format as specified by <cite>convert_utc_time</cite>
@@ -273,6 +273,11 @@ of a &#8220;next&#8221; token.</p>
 <code class="descname">init_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/result_stream.html#ResultStream.init_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.result_stream.ResultStream.init_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines a session object for passing requests.</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="twittersearch.result_stream.ResultStream.session_request_counter">
+<code class="descname">session_request_counter</code><em class="property"> = 0</em><a class="headerlink" href="#twittersearch.result_stream.ResultStream.session_request_counter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="twittersearch.result_stream.ResultStream.stream">
@@ -474,7 +479,7 @@ dictionary for ease of use.</p>
       
     </p>
     <p>
-        &copy; Copyright 2017, tw-ddis.<br/>
+        &copy; Copyright 2017, twitterdev.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.<br/>
     </p>
   </div>
