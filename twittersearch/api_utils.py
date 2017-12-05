@@ -185,7 +185,7 @@ def gen_params_from_config(config_dict):
              "bearer_token": config_dict.get("bearer_token"),
              "rule_payload": rule,
              "results_per_file": int(config_dict.get("results_per_file")),
-             "max_tweets": int(config_dict.get("max_tweets")),
+             "max_results": int(config_dict.get("max_results")),
              "max_pages": config_dict.get("max_pages", None)}
     return _dict
 
