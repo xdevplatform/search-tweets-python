@@ -3,7 +3,7 @@ Python Twitter Search API
 
 This library serves as a python interface to the `Twitter premium and enterprise search APIs <https://developer.twitter.com/en/docs/tweets/search/overview/30-day-search>`_. It provides a command-line utility and a library usable from within python. It comes with tools for assisting in dynamic generation of search rules and for parsing tweets.
 
-Pretty docs can be seen `here <https://tw-ddis.github.io/twitter_search_api/index.html>`_.
+Pretty docs can be seen `here <https://twitterdev.github.io/twitter_search_api/>`_.
 
 
 Features
@@ -26,13 +26,13 @@ We will soon handle releases via PyPy, but you can also install the current mast
 
 .. code:: bash
 
-  pip install git+https://github.com/tw-ddis/twitter_search_api.git
+  pip install git+https://github.com/twitterdev/twitter_search_api.git
 
 Or the development version locally via
 
 .. code:: bash
 
-  git clone https://github.com/tw-ddis/twitter_search_api.git
+  git clone https://github.com/twitterdev/twitter_search_api.git
   cd twitter_search_api
   pip install -e .
 
@@ -53,7 +53,7 @@ The ``--endpoint`` flag will specify the full URL of your connection, e.g.:
 
 You can find this url in your developer console.
 
-Note that the ``--max-results`` flag specifies an argument to the API call (results returned per CALL), not as a hard max to number of results returned from this program. use ``--max-tweets`` for that for now.
+Note that the ``--results-per-call`` flag specifies an argument to the API call ( ``maxResults``, results returned per CALL), not as a hard max to number of results returned from this program. use ``--max-results`` for that for now.
 
 
 
@@ -64,8 +64,8 @@ Note that the ``--max-results`` flag specifies an argument to the API call (resu
   python twitter_search.py \
     --bearer-token <BEARER_TOKEN> \
     --endpoint <MY_ENDPOINT> \
-    --max-tweets 1000 \
-    --max-results 100 \
+    --max-results 1000 \
+    --results-per-call 100 \
     --filter-rule "beyonce has:hashtags" \
     --print-stream
 
@@ -78,8 +78,8 @@ Note that the ``--max-results`` flag specifies an argument to the API call (resu
     --user-name <USERNAME> \
     --password <PW> \
     --endpoint <MY_ENDPOINT> \
-    --max-tweets 1000 \
-    --max-results 100 \
+    --max-results 1000 \
+    --results-per-call 100 \
     --filter-rule "beyonce has:hashtags" \
     --filename-prefix beyonce_geo \
     --print-stream
@@ -93,8 +93,8 @@ Note that the ``--max-results`` flag specifies an argument to the API call (resu
     --user-name <USERNAME> \
     --password <PW> \
     --endpoint <MY_ENDPOINT> \
-    --max-tweets 100 \
     --max-results 100 \
+    --results-per-call 100 \
     --filter-rule "beyonce has:hashtags" \
     --filename-prefix beyonce_geo \
     --no-print-stream
@@ -117,12 +117,12 @@ It can be far easier to specify your information in a configuration file. An exa
   [gnip_search_rules]
   from_date = 2017-06-01
   to_date = 2017-09-01
-  max_results = 100
+  results_per_call = 100
   pt_rule = beyonce has:hashtags
 
 
   [search_params]
-  max_tweets = 500
+  max_results = 500
 
   [output_params]
   output_file_prefix = beyonce
@@ -145,7 +145,7 @@ Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.
 
 Our group's python `tweet parser
-library <https://github.com/tw-ddis/tweet_parser>`__ is a requirement.
+library <https://github.com/twitterdev/tweet_parser>`__ is a requirement.
 
 Prior to starting your program, an easy way to define your secrets will
 be setting an environment variable. If you are an enterprise client,
@@ -230,7 +230,7 @@ what a rule looks like.
 
 .. code:: python
 
-    rule = gen_rule_payload("@robotprincessfi", max_results=100) # testing with a sandbox account
+    rule = gen_rule_payload("@robotprincessfi", results_per_call=100) # testing with a sandbox account
     print(rule)
 
 
@@ -334,7 +334,7 @@ stop on number of pages to limit your API call usage.
             "maxResults":100
         },
         "tweetify":true,
-        "max_results":500
+        "results_per_call":500
     }
 
 
@@ -464,7 +464,7 @@ method; please see your developer console for details.
 
 .. code:: python
 
-    rule = gen_rule_payload("from:jack", from_date="2017-09-01", to_date="2017-10-30", max_results=100)
+    rule = gen_rule_payload("from:jack", from_date="2017-09-01", to_date="2017-10-30", results_per_call=100)
     print(rule)
 
 
