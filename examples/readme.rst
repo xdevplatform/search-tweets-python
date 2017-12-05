@@ -91,7 +91,7 @@ what a rule looks like.
 
 .. code:: python
 
-    rule = gen_rule_payload("@robotprincessfi", max_results=100) # testing with a sandbox account
+    rule = gen_rule_payload("@robotprincessfi", results_per_call=100) # testing with a sandbox account
     print(rule)
 
 
@@ -135,7 +135,7 @@ Let's see how it goes:
 
 .. code:: python
 
-    tweets = collect_results(rule, max_results=500, result_stream_args=premium_search_args) # change this if you need to
+    tweets = collect_results(rule, results_per_call=500, result_stream_args=premium_search_args) # change this if you need to
 
 
 .. parsed-literal::
@@ -195,7 +195,7 @@ stop on number of pages to limit your API call usage.
             "maxResults":100
         },
         "tweetify":true,
-        "max_results":500
+        "results_per_call":500
     }
 
 
@@ -327,7 +327,7 @@ method; please see your developer console for details.
 
 .. code:: python
 
-    rule = gen_rule_payload("from:jack", from_date="2017-09-01", to_date="2017-10-30", max_results=100)
+    rule = gen_rule_payload("from:jack", from_date="2017-09-01", to_date="2017-10-30", results_per_call=100)
     print(rule)
 
 

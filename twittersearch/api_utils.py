@@ -107,7 +107,7 @@ def change_to_count_endpoint(endpoint):
         return "https://" + '/'.join(filt_tokens) + '/' + "counts.json"
 
 
-def gen_rule_payload(pt_rule, max_results=500,
+def gen_rule_payload(pt_rule, results_per_call=500,
                      from_date=None, to_date=None, count_bucket=None,
                      tag=None,
                      stringify=True):
@@ -119,7 +119,8 @@ def gen_rule_payload(pt_rule, max_results=500,
         pt_rule (str): The string version of a powertrack rule,
             e.g., "kanye west has:geo". Accepts multi-line strings
             for ease of entry.
-        max_results (int): max results for the batch.
+        results_per_call (int): number of tweets or counts returned per API
+        call. This maps to the ``maxResults`` search API parameter.
             Defaults to 500 to reduce API call usage.
         from_date (str or None): Date format as specified by
             `convert_utc_time` for the starting time of your search.
@@ -140,7 +141,7 @@ def gen_rule_payload(pt_rule, max_results=500,
     """
 
     pt_rule = ' '.join(pt_rule.split())  # allows multi-line strings
-    payload = {"query": pt_rule, "maxResults": max_results}
+    payload = {"query": pt_rule, "maxResults": results_per_call}
     if to_date:
         payload["toDate"] = convert_utc_time(to_date)
     if from_date:
@@ -175,7 +176,7 @@ def gen_params_from_config(config_dict):
     rule = gen_rule_payload(pt_rule=config_dict["pt_rule"],
                             from_date=config_dict.get("from_date", None),
                             to_date=config_dict.get("to_date", None),
-                            max_results=int(config_dict.get("max_results")),
+                            results_per_call=int(config_dict.get("results_per_call")),
                             count_bucket=config_dict.get("count_bucket", None))
 
     _dict = {"endpoint": endpoint,

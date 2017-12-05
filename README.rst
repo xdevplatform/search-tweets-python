@@ -117,7 +117,7 @@ It can be far easier to specify your information in a configuration file. An exa
   [gnip_search_rules]
   from_date = 2017-06-01
   to_date = 2017-09-01
-  max_results = 100
+  results_per_call = 100
   pt_rule = beyonce has:hashtags
 
 
@@ -230,7 +230,7 @@ what a rule looks like.
 
 .. code:: python
 
-    rule = gen_rule_payload("@robotprincessfi", max_results=100) # testing with a sandbox account
+    rule = gen_rule_payload("@robotprincessfi", results_per_call=100) # testing with a sandbox account
     print(rule)
 
 
@@ -334,7 +334,7 @@ stop on number of pages to limit your API call usage.
             "maxResults":100
         },
         "tweetify":true,
-        "max_results":500
+        "results_per_call":500
     }
 
 
@@ -464,7 +464,7 @@ method; please see your developer console for details.
 
 .. code:: python
 
-    rule = gen_rule_payload("from:jack", from_date="2017-09-01", to_date="2017-10-30", max_results=100)
+    rule = gen_rule_payload("from:jack", from_date="2017-09-01", to_date="2017-10-30", results_per_call=100)
     print(rule)
 
 
