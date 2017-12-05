@@ -54,7 +54,7 @@
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
             
-                <li><a href="https://github.com/tw-ddis/twitter_search_api">Github</a></li>
+                <li><a href="https://github.com/twitterdev/twitter_search_api">Github</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -230,7 +230,7 @@
         <span class="k">return</span> <span class="s2">&quot;https://&quot;</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filt_tokens</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s2">&quot;counts.json&quot;</span></div>
 
 
-<div class="viewcode-block" id="gen_rule_payload"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.gen_rule_payload">[docs]</a><span class="k">def</span> <span class="nf">gen_rule_payload</span><span class="p">(</span><span class="n">pt_rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<div class="viewcode-block" id="gen_rule_payload"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.gen_rule_payload">[docs]</a><span class="k">def</span> <span class="nf">gen_rule_payload</span><span class="p">(</span><span class="n">pt_rule</span><span class="p">,</span> <span class="n">results_per_call</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
                      <span class="n">from_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count_bucket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">stringify</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -242,7 +242,8 @@
 <span class="sd">        pt_rule (str): The string version of a powertrack rule,</span>
 <span class="sd">            e.g., &quot;kanye west has:geo&quot;. Accepts multi-line strings</span>
 <span class="sd">            for ease of entry.</span>
-<span class="sd">        max_results (int): max results for the batch.</span>
+<span class="sd">        results_per_call (int): number of tweets or counts returned per API</span>
+<span class="sd">        call. This maps to the ``maxResults`` search API parameter.</span>
 <span class="sd">            Defaults to 500 to reduce API call usage.</span>
 <span class="sd">        from_date (str or None): Date format as specified by</span>
 <span class="sd">            `convert_utc_time` for the starting time of your search.</span>
@@ -263,7 +264,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">pt_rule</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pt_rule</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>  <span class="c1"># allows multi-line strings</span>
-    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">pt_rule</span><span class="p">,</span> <span class="s2">&quot;maxResults&quot;</span><span class="p">:</span> <span class="n">max_results</span><span class="p">}</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">pt_rule</span><span class="p">,</span> <span class="s2">&quot;maxResults&quot;</span><span class="p">:</span> <span class="n">results_per_call</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">to_date</span><span class="p">:</span>
         <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;toDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">convert_utc_time</span><span class="p">(</span><span class="n">to_date</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">from_date</span><span class="p">:</span>
@@ -298,7 +299,7 @@
     <span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="n">pt_rule</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;pt_rule&quot;</span><span class="p">],</span>
                             <span class="n">from_date</span><span class="o">=</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;from_date&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
                             <span class="n">to_date</span><span class="o">=</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;to_date&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-                            <span class="n">max_results</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_results&quot;</span><span class="p">)),</span>
+                            <span class="n">results_per_call</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results_per_call&quot;</span><span class="p">)),</span>
                             <span class="n">count_bucket</span><span class="o">=</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;count_bucket&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 
     <span class="n">_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;endpoint&quot;</span><span class="p">:</span> <span class="n">endpoint</span><span class="p">,</span>
@@ -307,7 +308,7 @@
              <span class="s2">&quot;bearer_token&quot;</span><span class="p">:</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bearer_token&quot;</span><span class="p">),</span>
              <span class="s2">&quot;rule_payload&quot;</span><span class="p">:</span> <span class="n">rule</span><span class="p">,</span>
              <span class="s2">&quot;results_per_file&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results_per_file&quot;</span><span class="p">)),</span>
-             <span class="s2">&quot;max_tweets&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_tweets&quot;</span><span class="p">)),</span>
+             <span class="s2">&quot;max_results&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_results&quot;</span><span class="p">)),</span>
              <span class="s2">&quot;max_pages&quot;</span><span class="p">:</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_pages&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)}</span>
     <span class="k">return</span> <span class="n">_dict</span></div>
 
@@ -340,7 +341,7 @@
       
     </p>
     <p>
-        &copy; Copyright 2017, tw-ddis.<br/>
+        &copy; Copyright 2017, twitterdev.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.<br/>
     </p>
   </div>
