@@ -15,6 +15,7 @@ except ImportError:
     import json
 
 __all__ = ["gen_rule_payload", "gen_params_from_config", "load_credentials",
+           "infer_endpoint",
            "validate_count_api", "GNIP_RESP_CODES", "change_to_count_endpoint"]
 
 logger = logging.getLogger(__name__)
@@ -192,6 +193,15 @@ def gen_params_from_config(config_dict):
     return _dict
 
 
+def infer_endpoint(rule_payload):
+    """
+    Infer which endpoint should be used for a given rule payload.
+    """
+    bucket = (rule_payload if isinstance(rule_payload, dict)
+              else json.loads(rule_payload)).get("bucket")
+    return "counts" if bucket else "search"
+
+
 def validate_count_api(rule_payload, endpoint):
     """
     Ensures that the counts api is set correctly in a payload.
@@ -230,11 +240,13 @@ def load_credentials(filename=None, account_type=None):
                         default '~/.twitter_keys.yaml'
         account_type (str): pass your account type, "premium" or "enterprise"
 
-    returns: tuple of (dict, dict), both search_api args and count_api args.
+    Returns: dict of your access credentials.
 
     Example:
     >>> from twittersearch.api_utils import load_credentials
-    >>> search_args, count_args = load_credentials(account_type="enterprise")
+    >>> search_args = load_credentials(account_type="premium")
+    >>> search_args.keys()
+    dict_keys(['bearer_token', 'endpoint'])
 
     """
     if account_type is None or account_type not in {"premium", "enterprise"}:
@@ -251,6 +263,4 @@ def load_credentials(filename=None, account_type=None):
         search_args = {"username": search_creds["username"],
                        "password": search_creds["password"],
                        "endpoint": search_creds["endpoint"]}
-    count_args = {**search_args,
-                  **{"endpoint": change_to_count_endpoint(search_args["endpoint"])}}
-    return search_args, count_args
+    return search_args
