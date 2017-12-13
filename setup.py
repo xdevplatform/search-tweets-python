@@ -8,7 +8,7 @@ setup(name='twittersearch',
       author_email='agonzales@twitter.com',
       license='MIT',
       version='0.1.2',
-      install_requires=["requests", "tweet_parser"],
+      install_requires=["requests", "tweet_parser", "yaml"],
       packages=find_packages(),
       scripts=["tools/twitter_search.py"],
       )
