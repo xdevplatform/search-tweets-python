@@ -127,6 +127,7 @@ It can be far easier to specify your information in a configuration file. An exa
   [output_params]
   output_file_prefix = beyonce
 
+Soon, we will update this behavior and remove the credentials section from the config file to be handled differently.
 
 When using a config file in conjunction with the command-line utility, you need to specify your config file via the ``--config-file`` parameter. Additional command-line arguments will either be *added* to the config file args or **overwrite** the config file args if both are specified and present.
 
