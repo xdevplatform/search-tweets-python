@@ -4,6 +4,8 @@ Module containing the various functions that are used for API calls,
 rule generation, and related.
 """
 
+import os
+import yaml
 import re
 import datetime
 import logging
@@ -12,7 +14,7 @@ try:
 except ImportError:
     import json
 
-__all__ = ["gen_rule_payload", "gen_params_from_config",
+__all__ = ["gen_rule_payload", "gen_params_from_config", "load_credentials",
            "validate_count_api", "GNIP_RESP_CODES", "change_to_count_endpoint"]
 
 logger = logging.getLogger(__name__)
@@ -205,3 +207,50 @@ def validate_count_api(rule_payload, endpoint):
                    Please check your endpoints and try again""")
             logger.error(msg)
             raise ValueError
+
+
+def load_credentials(filename=None, account_type=None):
+    """
+    handlles credeintial managmenet via a YAML file. YAML files should look
+    like this:
+
+    .. code:: yaml
+
+        twitter_search_api:
+          endpoint: <FULL_URL_OF_ENDPOINT>
+          account: <ACCOUNT_NAME>
+          username: <USERNAME>
+          password: <PW>
+          bearer_token: <TOKEN>
+
+    with the appropriate fields filled out for your account.
+
+    Args:
+        filename (str): pass a filename here if you do not want to use the
+                        default '~/.twitter_keys.yaml'
+        account_type (str): pass your account type, "premium" or "enterprise"
+
+    returns: tuple of (dict, dict), both search_api args and count_api args.
+
+    Example:
+    >>> from twittersearch.api_utils import load_credentials
+    >>> search_args, count_args = load_credentials(account_type="enterprise")
+
+    """
+    if account_type is None or account_type not in {"premium", "enterprise"}:
+        logger.error("You must provide either 'premium' or 'enterprise' here")
+        raise KeyError
+    filename = "~/.twitter_keys.yaml" if filename is None else filename
+    with open(os.path.expanduser(filename)) as f:
+        search_creds = yaml.load(f)["twitter_search_api"]
+
+    if account_type == "premium":
+        search_args = {"bearer_token": search_creds["bearer_token"],
+                       "endpoint": search_creds["endpoint"]}
+    if account_type == "enterprise":
+        search_args = {"username": search_creds["username"],
+                       "password": search_creds["password"],
+                       "endpoint": search_creds["endpoint"]}
+    count_args = {**search_args,
+                  **{"endpoint": change_to_count_endpoint(search_args["endpoint"])}}
+    return search_args, count_args
