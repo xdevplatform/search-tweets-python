@@ -195,8 +195,12 @@ basic username/password method. You can specify that here:
 
 .. code:: python
 
-    enterprise_search_args, enterprise_count_args = load_credentials("~/.twitter_keys.yaml",
-                                                                     account_type="enterprise")
+    from twittersearch import infer_endpoint
+
+.. code:: python
+
+    enterprise_search_args = load_credentials("~/.twitter_keys.yaml",
+                                              account_type="enterprise")
 
 Premium Setup
 -------------
@@ -206,8 +210,8 @@ following cell for setup:
 
 .. code:: python
 
-    premium_search_args, premium_count_args = load_credentials("~/.twitter_keys.yaml",
-                                                               account_type="premium")
+    premium_search_args = load_credentials("~/.twitter_keys.yaml",
+                                           account_type="premium")
 
 There is a function that formats search API rules into valid json
 queries called ``gen_rule_payload``. It has sensible defaults, such as
@@ -267,7 +271,7 @@ Let's see how it goes:
 
     tweets = collect_results(rule,
                              max_results=100,
-                             resut_stream_args=enterprise_search_args) # change this if you need to
+                             result_stream_args=enterprise_search_args) # change this if you need to
 
 By default, tweet payloads are lazily parsed into a ``Tweet`` object. An
 overwhelming number of tweet attributes are made available directly, as
@@ -275,22 +279,37 @@ such:
 
 .. code:: python
 
-    [print(unidecode(tweet.all_text)) for tweet in tweets[0:10]];
+    [print(tweet.all_text) for tweet in tweets[0:10]];
 
 
 .. parsed-literal::
 
-    3 years ago today, beyonce surprise dropped the fastest selling album on itunes EVER then posted this on instagram like nothing happened https://t.co/F416MG2aCZ
-    .@Beyonce sells OVER 80,000 copies of her new album in 3 hours: http://t.co/PKSARIvE67
-    Perfect Duet with Beyonce and Ed Sheeran is the perfect combo ughhh
-    As we celebrate the anniversary of 'BEYONCE,' I would just like to say that it is easily THE swankiest vinyl I own.
-    Beyonce talks about natural disasters and climate change at 'Hand In Hand' Harvey Relief Telethon https://t.co/rP0wTIoUGx
-    Perfect Duet (with Beyonce) by Ed Sheeran is number 2 in Austria #iTunes top 100 songs https://t.co/qqlBFLHpzl
-    beyonce has truly delivered within the past week https://t.co/DDboQFBIgG
-    I'll never forget waking up in the morning to a number of tweets from my friends. I was so confused. I switched on my computer, got onto iTunes and there it was... Beyonce EVERYWHERE! I screamed &amp; jumped up &amp; down in excitement and disbelief! Iconic! https://t.co/peN7Oyc5po
-    Beyonce explaining her intent behind the BEYONCE visual album &amp; how she wanted to reinstate the idea of an album release as a significant, exciting event which had lost meaning in the face of hype created around singles.  https://t.co/pK2MB35vYl
-    i had like 25 dollars in my account and used half of them to buy that album. songs AND VIDEOS??? BEYONCE WYD???? Man what a night.
-    Ed Sheeran released the song without Beyonce and it didn't go #1. He released the song with Beyonce and it did go #1. it's clear and simple. he needed her to go #1 https://t.co/RteEZBzJu8
+    That deep sigh Beyoncé took once she realized she wouldn’t be able to get the earpiece out of her hair before the dance break 😂.  https://t.co/dU1K2KMT7i
+    4 Years ago today, "BEYONCÉ" by Beyoncé was surprise released. It received acclaim from critics,  debuted at #1 and certified 2x Platinum in the US. https://t.co/wB3C7DuX9o
+    me mata la gente que se cree superior por sus gustos de música escuches queen beyonce o el polaco no sos mas ni menos que nadie
+    I’m literally not Beyoncé https://t.co/LwIkllCx6P
+    #BEYONCÉ ‣ 𝐌𝐄𝐀𝐃𝐃𝐅𝐀𝐍 𝐎𝐅𝐈𝐂𝐈𝐀𝐋 - I Am... 𝐖𝐎𝐑𝐋𝐃 𝐓𝐎𝐔𝐑! https://t.co/TyyeDdXKiM
+    Beyoncé on how nervous she was to release her self-titled... https://t.co/fru23c6DYC
+    AAAA ansiosa por esse feat da Beyoncé com Jorge Ben Jor &lt;3 https://t.co/NkKJhC9JUd
+    I am world tour, the Beyonce experience, revamped hmt. https://t.co/pb07eMyNka
+    Tell me what studio versions of any artists would u like me to do? https://t.co/Z6YWsAJuhU
+    Billboard's best female artists over the last decade:
+    
+    2017: Ariana Grande
+    2016: Adele
+    2015: Taylor Swift
+    2014: Katy Perry
+    2013: Taylor Swift
+    2012: Adele
+    2011: Adele
+    2010: Lady Gaga
+    2009: Taylor Swift
+    2008: Rihanna
+    
+    Beyonce = 0
+    
+    Taylor Swift = 3 👑
+    Beyoncé explaining her intent behind the BEYONCÉ visual album &amp; how she wanted to reinstate the idea of an album release as a significant, exciting event which had lost meaning in the face of hype created around singles. 👑 https://t.co/pK2MB35vYl
 
 
 .. code:: python
@@ -300,16 +319,16 @@ such:
 
 .. parsed-literal::
 
-    2017-10-27 18:22:07
-    2017-10-27 18:17:37
-    2017-10-27 01:25:39
-    2017-10-26 14:24:05
-    2017-10-26 13:50:40
-    2017-10-26 13:36:19
-    2017-10-26 13:35:57
-    2017-10-26 02:40:25
-    2017-10-26 00:07:23
-    2017-10-25 20:15:19
+    2017-12-13 21:18:17
+    2017-12-13 21:18:16
+    2017-12-13 21:18:16
+    2017-12-13 21:18:15
+    2017-12-13 21:18:15
+    2017-12-13 21:18:13
+    2017-12-13 21:18:12
+    2017-12-13 21:18:12
+    2017-12-13 21:18:11
+    2017-12-13 21:18:10
 
 
 .. code:: python
@@ -319,16 +338,16 @@ such:
 
 .. parsed-literal::
 
+    Twitter for Android
+    Twitter for Android
+    Twitter for Android
+    Twitter for iPhone
+    Meadd
+    Twitter for iPhone
+    Twitter for Android
     Twitter for iPhone
     Twitter for iPhone
-    Twitter for iPhone
-    Twitter for iPhone
-    Twitter for iPhone
-    Twitter for iPhone
-    Twitter for iPhone
-    Twitter for iPhone
-    Twitter for iPhone
-    Twitter for iPhone
+    Twitter for Android
 
 
 Voila, we have some tweets. For interactive environments and other cases
@@ -349,9 +368,7 @@ stop on number of pages to limit your API call usage.
                       max_results=500,
                       max_pages=1,
                       **premium_search_args)
-
-.. code:: python
-
+    
     print(rs)
 
 
@@ -384,29 +401,31 @@ easily extractable.
 .. code:: python
 
     # using unidecode to prevent emoji/accents printing 
-    [print(unidecode(tweet.all_text)) for tweet in tweets[0:10]];
+    [print(tweet.all_text) for tweet in tweets[0:10]];
 
 
 .. parsed-literal::
 
-    BEYONCE WANTS ME DEAD https://t.co/6ztOJpz9dt
-    in my college dorm and the Beyonce album popped up on iTunes and I thought it was fake because there was a Drake feature and I was like "bey would never" LITTLE DID I KNOW.... then this bitch gon post vegan cupcakes on instagram like she didn't just fuck the industry up... https://t.co/tRNo4O11uh
-    When in doubt , watch a Beyonce documentary .
-    Beyonce changed the game w/ that digital drop 4 years ago today! 
-    
-    * #1 debut on Billboard
-    * Sold 617K in the US / over 828K WW in only 3 days
-    * Fastest-selling album on iTunes of all time
-    * Reached #1 in 118 countries
-    * Widespread acclaim; hailed as her magnum opus https://t.co/lDCdVs6em3
-    Beyonce x JAY Z  https://t.co/czJoAwt4eJ
-    On this very day 4 years ago, as we were finishing up Scandal season finale and putting on our bonnets and Durags to sleep Beyonce said https://t.co/YFBGRmTWVY
     Everyone: *still dragging Jay for cheating*
     
-    Beyonce: https://t.co/2z1ltlMQiJ
-    quem e que tem dificuldades a admitir que a beyonce e a voz mais iconica da nossa geracao
-    Beyonce on how nervous she was to release her self-titled... https://t.co/fru23c6DYC
-    i'm bout to jump into my feelings because four years ago today i was so broke and dusty and beyonce came into my life and took the pain away.
+    Beyoncé: https://t.co/2z1ltlMQiJ
+    Beyoncé changed the game w/ that digital drop 4 years ago today! 🎉
+    
+    • #1 debut on Billboard
+    • Sold 617K in the US / over 828K WW in only 3 days
+    • Fastest-selling album on iTunes of all time
+    • Reached #1 in 118 countries
+    • Widespread acclaim; hailed as her magnum opus https://t.co/lDCdVs6em3
+    Beyoncé 🔥 #444Tour https://t.co/sCvZzjLwqx
+    Se presentan casos de feminismo pop basado en sugerencias de artistas famosos en turno, Emma Watson, Beyoncé.
+    Beyonce. Are you kidding me with this?! #Supreme #love #everything
+    Dear Beyoncé, https://t.co/5visfVK2LR
+    At this time 4 years ago today, Beyoncé released her self-titled album BEYONCÉ exclusively on the iTunes Store without any prior announcement. The album remains the ONLY album in history to reach #1 in 118 countries &amp; the fastest-selling album in the history of the iTunes Store. https://t.co/ZZb4QyQYf0
+    4 years ago today, Beyoncé released her self-titled visual album "BEYONCÉ" and shook up the music world forever. 🙌🏿 https://t.co/aGtUSq9R3u
+    Everyone: *still dragging Jay for cheating*
+    
+    Beyoncé: https://t.co/2z1ltlMQiJ
+    And Beyonce hasn't had a solo #1 hit since the Bush administration soooo... https://t.co/WCd7ni8DwN
 
 
 Counts API
@@ -414,9 +433,10 @@ Counts API
 
 We can also use the counts api to get counts of tweets that match our
 rule. Each request will return up to *30* results, and each count
-request can be done on a minutely, hourly, or daily basis. There is a
-utility function that will convert your regular endpoint to the count
-endpoint.
+request can be done on a minutely, hourly, or daily basis. The
+underlying ``ResultStream`` object will handle converting your endpoint
+to the count endpoint, and you have to specify the ``count_bucket``
+argument when making a rule to use it.
 
 The process is very similar to grabbing tweets, but has some minor
 differneces.
@@ -428,7 +448,7 @@ API.**
 
     count_rule = gen_rule_payload("beyonce", count_bucket="day")
     
-    counts = collect_results(count_rule, result_stream_args=enterprise_count_args)
+    counts = collect_results(count_rule, result_stream_args=enterprise_search_args)
 
 Our results are pretty straightforward and can be rapidly used.
 
@@ -441,27 +461,27 @@ Our results are pretty straightforward and can be rapidly used.
 
 .. parsed-literal::
 
-    [{'count': 68745, 'timePeriod': '201712130000'},
-     {'count': 95305, 'timePeriod': '201712120000'},
-     {'count': 114641, 'timePeriod': '201712110000'},
-     {'count': 166070, 'timePeriod': '201712100000'},
-     {'count': 102049, 'timePeriod': '201712090000'},
-     {'count': 87710, 'timePeriod': '201712080000'},
-     {'count': 196157, 'timePeriod': '201712070000'},
-     {'count': 210664, 'timePeriod': '201712060000'},
-     {'count': 88572, 'timePeriod': '201712050000'},
-     {'count': 96794, 'timePeriod': '201712040000'},
+    [{'count': 85660, 'timePeriod': '201712130000'},
+     {'count': 95231, 'timePeriod': '201712120000'},
+     {'count': 114540, 'timePeriod': '201712110000'},
+     {'count': 165964, 'timePeriod': '201712100000'},
+     {'count': 102022, 'timePeriod': '201712090000'},
+     {'count': 87630, 'timePeriod': '201712080000'},
+     {'count': 195794, 'timePeriod': '201712070000'},
+     {'count': 209629, 'timePeriod': '201712060000'},
+     {'count': 88742, 'timePeriod': '201712050000'},
+     {'count': 96795, 'timePeriod': '201712040000'},
      {'count': 177595, 'timePeriod': '201712030000'},
      {'count': 120102, 'timePeriod': '201712020000'},
-     {'count': 186758, 'timePeriod': '201712010000'},
+     {'count': 186759, 'timePeriod': '201712010000'},
      {'count': 151212, 'timePeriod': '201711300000'},
      {'count': 79311, 'timePeriod': '201711290000'},
      {'count': 107175, 'timePeriod': '201711280000'},
      {'count': 58192, 'timePeriod': '201711270000'},
      {'count': 48327, 'timePeriod': '201711260000'},
-     {'count': 59638, 'timePeriod': '201711250000'},
+     {'count': 59639, 'timePeriod': '201711250000'},
      {'count': 85201, 'timePeriod': '201711240000'},
-     {'count': 91542, 'timePeriod': '201711230000'},
+     {'count': 91544, 'timePeriod': '201711230000'},
      {'count': 64129, 'timePeriod': '201711220000'},
      {'count': 92065, 'timePeriod': '201711210000'},
      {'count': 101617, 'timePeriod': '201711200000'},
@@ -471,7 +491,7 @@ Our results are pretty straightforward and can be rapidly used.
      {'count': 81849, 'timePeriod': '201711160000'},
      {'count': 58423, 'timePeriod': '201711150000'},
      {'count': 78004, 'timePeriod': '201711140000'},
-     {'count': 118078, 'timePeriod': '201711130000'}]
+     {'count': 118077, 'timePeriod': '201711130000'}]
 
 
 
@@ -505,24 +525,105 @@ method; please see your developer console for details.
 
 .. code:: python
 
-    # using unidecode only to 
-    [print(unidecode(tweet.all_text)) for tweet in tweets[0:10]];
+    # usiing unidecode only to 
+    [print(tweet.all_text) for tweet in tweets[0:10]];
 
 
 .. parsed-literal::
 
     More clarity on our private information policy and enforcement. Working to build as much direct context into the product too https://t.co/IrwBexPrBA
-    To provide more clarity on our private information policy, we've added specific examples of what is/is not a violation and insight into what we need to remove this type of content from the service. https://t.co/NGx5hh2tTQ
+    To provide more clarity on our private information policy, we’ve added specific examples of what is/is not a violation and insight into what we need to remove this type of content from the service. https://t.co/NGx5hh2tTQ
     Launching violent groups and hateful images/symbols policy on November 22nd https://t.co/NaWuBPxyO5
-    We will now launch our policies on violent groups and hateful imagery and hate symbols on Nov 22. During the development process, we received valuable feedback that we're implementing before these are published and enforced. See more on our policy development process here  https://t.co/wx3EeH39BI
+    We will now launch our policies on violent groups and hateful imagery and hate symbols on Nov 22. During the development process, we received valuable feedback that we’re implementing before these are published and enforced. See more on our policy development process here 👇 https://t.co/wx3EeH39BI
     @WillStick @lizkelley Happy birthday Liz!
     Off-boarding advertising from all accounts owned by Russia Today (RT) and Sputnik.
     
-    We're donating all projected earnings ($1.9mm) to support external research into the use of Twitter in elections, including use of malicious automation and misinformation. https://t.co/zIxfqqXCZr
+    We’re donating all projected earnings ($1.9mm) to support external research into the use of Twitter in elections, including use of malicious automation and misinformation. https://t.co/zIxfqqXCZr
     @TMFJMo @anthonynoto Thank you
     @gasca @stratechery @Lefsetz letter
-    @gasca @stratechery Bridgewater's Daily Observations
-    Yup!!!! [?][?][?][?] #davechappelle https://t.co/ybSGNrQpYF
+    @gasca @stratechery Bridgewater’s Daily Observations
+    Yup!!!! ❤️❤️❤️❤️ #davechappelle https://t.co/ybSGNrQpYF
     @ndimichino Sometimes
     Setting up at @CampFlogGnaw https://t.co/nVq8QjkKsf
+
+
+.. code:: python
+
+    premium_search_args.keys()
+
+
+
+
+.. parsed-literal::
+
+    dict_keys(['bearer_token', 'endpoint'])
+
+
+
+.. code:: python
+
+    rule = gen_rule_payload("from:jack",
+                            from_date="2017-09-20",
+                            to_date="2017-10-30",
+                            count_bucket="day",
+                            results_per_call=500)
+    print(rule)
+
+
+.. parsed-literal::
+
+    {"query":"from:jack","toDate":"201710300000","fromDate":"201709200000","bucket":"day"}
+
+
+.. code:: python
+
+    counts = collect_results(rule, max_results=500, result_stream_args=enterprise_search_args)
+
+.. code:: python
+
+    [print(c) for c in counts];
+
+
+.. parsed-literal::
+
+    {'timePeriod': '201710290000', 'count': 0}
+    {'timePeriod': '201710280000', 'count': 0}
+    {'timePeriod': '201710270000', 'count': 3}
+    {'timePeriod': '201710260000', 'count': 6}
+    {'timePeriod': '201710250000', 'count': 4}
+    {'timePeriod': '201710240000', 'count': 4}
+    {'timePeriod': '201710230000', 'count': 0}
+    {'timePeriod': '201710220000', 'count': 0}
+    {'timePeriod': '201710210000', 'count': 3}
+    {'timePeriod': '201710200000', 'count': 2}
+    {'timePeriod': '201710190000', 'count': 1}
+    {'timePeriod': '201710180000', 'count': 6}
+    {'timePeriod': '201710170000', 'count': 2}
+    {'timePeriod': '201710160000', 'count': 2}
+    {'timePeriod': '201710150000', 'count': 1}
+    {'timePeriod': '201710140000', 'count': 64}
+    {'timePeriod': '201710130000', 'count': 3}
+    {'timePeriod': '201710120000', 'count': 4}
+    {'timePeriod': '201710110000', 'count': 8}
+    {'timePeriod': '201710100000', 'count': 4}
+    {'timePeriod': '201710090000', 'count': 1}
+    {'timePeriod': '201710080000', 'count': 0}
+    {'timePeriod': '201710070000', 'count': 0}
+    {'timePeriod': '201710060000', 'count': 1}
+    {'timePeriod': '201710050000', 'count': 3}
+    {'timePeriod': '201710040000', 'count': 5}
+    {'timePeriod': '201710030000', 'count': 8}
+    {'timePeriod': '201710020000', 'count': 5}
+    {'timePeriod': '201710010000', 'count': 0}
+    {'timePeriod': '201709300000', 'count': 0}
+    {'timePeriod': '201709290000', 'count': 0}
+    {'timePeriod': '201709280000', 'count': 9}
+    {'timePeriod': '201709270000', 'count': 41}
+    {'timePeriod': '201709260000', 'count': 13}
+    {'timePeriod': '201709250000', 'count': 6}
+    {'timePeriod': '201709240000', 'count': 7}
+    {'timePeriod': '201709230000', 'count': 3}
+    {'timePeriod': '201709220000', 'count': 0}
+    {'timePeriod': '201709210000', 'count': 1}
+    {'timePeriod': '201709200000', 'count': 7}
 
