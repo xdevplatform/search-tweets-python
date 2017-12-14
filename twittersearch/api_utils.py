@@ -256,11 +256,17 @@ def load_credentials(filename=None, account_type=None):
     with open(os.path.expanduser(filename)) as f:
         search_creds = yaml.load(f)["twitter_search_api"]
 
-    if account_type == "premium":
-        search_args = {"bearer_token": search_creds["bearer_token"],
-                       "endpoint": search_creds["endpoint"]}
-    if account_type == "enterprise":
-        search_args = {"username": search_creds["username"],
-                       "password": search_creds["password"],
-                       "endpoint": search_creds["endpoint"]}
+    try:
+
+        if account_type == "premium":
+            search_args = {"bearer_token": search_creds["bearer_token"],
+                           "endpoint": search_creds["endpoint"]}
+        if account_type == "enterprise":
+            search_args = {"username": search_creds["username"],
+                           "password": search_creds["password"],
+                           "endpoint": search_creds["endpoint"]}
+    except KeyError:
+        logger.error("Your YAML file ({}) is not configured correctly and "
+                     " is missing a required field. Please see the "
+                     " readme for proper configuration".format(filename))
     return search_args
