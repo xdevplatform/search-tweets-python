@@ -155,7 +155,6 @@ class ResultStream:
         self.username = username
         self.password = password
         self.bearer_token = bearer_token
-        self.endpoint = endpoint
         if isinstance(rule_payload, str):
             rule_payload = json.loads(rule_payload)
         self.rule_payload = rule_payload
@@ -174,7 +173,10 @@ class ResultStream:
         # magic number of requests!
         self.max_requests = (max_requests if max_requests is not None
                              else 10 ** 9)
-        validate_count_api(self.rule_payload, self.endpoint)
+        self.endpoint = (change_to_count_endpoint(endpoint)
+                         if infer_endpoint(rule_payload) == "counts"
+                         else endpoint)
+        # validate_count_api(self.rule_payload, self.endpoint)
 
     def stream(self):
         """
@@ -287,7 +289,7 @@ def collect_results(rule, max_results=500, result_stream_args=None):
                      "inner ResultStream object.")
         raise KeyError
 
-    rs = ResultStream(**result_stream_args,
-                      rule_payload=rule,
-                      max_results=max_results)
+    rs = ResultStream(rule_payload=rule,
+                      max_results=max_results,
+                      **result_stream_args)
     return list(rs.stream())
