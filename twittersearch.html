@@ -188,6 +188,47 @@ or json-formatted <cite>str</cite>.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="twittersearch.api_utils.load_credentials">
+<code class="descclassname">twittersearch.api_utils.</code><code class="descname">load_credentials</code><span class="sig-paren">(</span><em>filename=None</em>, <em>account_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#load_credentials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.load_credentials" title="Permalink to this definition">¶</a></dt>
+<dd><p>handlles credeintial managmenet via a YAML file. YAML files should look
+like this:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">twitter_search_api</span><span class="p">:</span>
+  <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
+  <span class="n">account</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">ACCOUNT_NAME</span><span class="o">&gt;</span>
+  <span class="n">username</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span>
+  <span class="n">password</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span>
+  <span class="n">bearer_token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">TOKEN</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>with the appropriate fields filled out for your account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; pass a filename here if you do not want to use the
+default &#8216;~/.twitter_keys.yaml&#8217;</li>
+<li><strong>account_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; pass your account type, &#8220;premium&#8221; or &#8220;enterprise&#8221;</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns: dict of your access credentials.</p>
+<p>Example:
+&gt;&gt;&gt; from twittersearch.api_utils import load_credentials
+&gt;&gt;&gt; search_args = load_credentials(account_type=&#8221;premium&#8221;)
+&gt;&gt;&gt; search_args.keys()
+dict_keys([&#8216;bearer_token&#8217;, &#8216;endpoint&#8217;])</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="twittersearch.api_utils.infer_endpoint">
+<code class="descclassname">twittersearch.api_utils.</code><code class="descname">infer_endpoint</code><span class="sig-paren">(</span><em>rule_payload</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#infer_endpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.infer_endpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Infer which endpoint should be used for a given rule payload.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="twittersearch.api_utils.validate_count_api">
 <code class="descclassname">twittersearch.api_utils.</code><code class="descname">validate_count_api</code><span class="sig-paren">(</span><em>rule_payload</em>, <em>endpoint</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/twittersearch/api_utils.html#validate_count_api"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#twittersearch.api_utils.validate_count_api" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ensures that the counts api is set correctly in a payload.</p>

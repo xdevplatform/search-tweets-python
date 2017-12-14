@@ -278,7 +278,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bearer_token</span> <span class="o">=</span> <span class="n">bearer_token</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">=</span> <span class="n">endpoint</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">rule_payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span> <span class="o">=</span> <span class="n">rule_payload</span>
@@ -297,7 +296,10 @@
         <span class="c1"># magic number of requests!</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_requests</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_requests</span> <span class="k">if</span> <span class="n">max_requests</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                              <span class="k">else</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">9</span><span class="p">)</span>
-        <span class="n">validate_count_api</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">=</span> <span class="p">(</span><span class="n">change_to_count_endpoint</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span>
+                         <span class="k">if</span> <span class="n">infer_endpoint</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;counts&quot;</span>
+                         <span class="k">else</span> <span class="n">endpoint</span><span class="p">)</span>
+        <span class="c1"># validate_count_api(self.rule_payload, self.endpoint)</span>
 
 <div class="viewcode-block" id="ResultStream.stream"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.ResultStream.stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -410,9 +412,9 @@
                      <span class="s2">&quot;inner ResultStream object.&quot;</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">KeyError</span>
 
-    <span class="n">rs</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="o">**</span><span class="n">result_stream_args</span><span class="p">,</span>
-                      <span class="n">rule_payload</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span>
-                      <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
+    <span class="n">rs</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="n">rule_payload</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span>
+                      <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+                      <span class="o">**</span><span class="n">result_stream_args</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">stream</span><span class="p">())</span></div>
 </pre></div>
 

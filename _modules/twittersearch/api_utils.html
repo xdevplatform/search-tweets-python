@@ -127,6 +127,8 @@
 <span class="sd">rule generation, and related.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -135,7 +137,8 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gen_rule_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;gen_params_from_config&quot;</span><span class="p">,</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gen_rule_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;gen_params_from_config&quot;</span><span class="p">,</span> <span class="s2">&quot;load_credentials&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;infer_endpoint&quot;</span><span class="p">,</span>
            <span class="s2">&quot;validate_count_api&quot;</span><span class="p">,</span> <span class="s2">&quot;GNIP_RESP_CODES&quot;</span><span class="p">,</span> <span class="s2">&quot;change_to_count_endpoint&quot;</span><span class="p">]</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -313,6 +316,15 @@
     <span class="k">return</span> <span class="n">_dict</span></div>
 
 
+<div class="viewcode-block" id="infer_endpoint"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.infer_endpoint">[docs]</a><span class="k">def</span> <span class="nf">infer_endpoint</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Infer which endpoint should be used for a given rule payload.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="p">(</span><span class="n">rule_payload</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+              <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">))</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bucket&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;counts&quot;</span> <span class="k">if</span> <span class="n">bucket</span> <span class="k">else</span> <span class="s2">&quot;search&quot;</span></div>
+
+
 <div class="viewcode-block" id="validate_count_api"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.validate_count_api">[docs]</a><span class="k">def</span> <span class="nf">validate_count_api</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Ensures that the counts api is set correctly in a payload.</span>
@@ -328,6 +340,59 @@
 <span class="s2">                   Please check your endpoints and try again&quot;&quot;&quot;</span><span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span></div>
+
+
+<div class="viewcode-block" id="load_credentials"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.load_credentials">[docs]</a><span class="k">def</span> <span class="nf">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">account_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    handlles credeintial managmenet via a YAML file. YAML files should look</span>
+<span class="sd">    like this:</span>
+
+<span class="sd">    .. code:: yaml</span>
+
+<span class="sd">        twitter_search_api:</span>
+<span class="sd">          endpoint: &lt;FULL_URL_OF_ENDPOINT&gt;</span>
+<span class="sd">          account: &lt;ACCOUNT_NAME&gt;</span>
+<span class="sd">          username: &lt;USERNAME&gt;</span>
+<span class="sd">          password: &lt;PW&gt;</span>
+<span class="sd">          bearer_token: &lt;TOKEN&gt;</span>
+
+<span class="sd">    with the appropriate fields filled out for your account.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filename (str): pass a filename here if you do not want to use the</span>
+<span class="sd">                        default &#39;~/.twitter_keys.yaml&#39;</span>
+<span class="sd">        account_type (str): pass your account type, &quot;premium&quot; or &quot;enterprise&quot;</span>
+
+<span class="sd">    Returns: dict of your access credentials.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; from twittersearch.api_utils import load_credentials</span>
+<span class="sd">    &gt;&gt;&gt; search_args = load_credentials(account_type=&quot;premium&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; search_args.keys()</span>
+<span class="sd">    dict_keys([&#39;bearer_token&#39;, &#39;endpoint&#39;])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">account_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">account_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="s2">&quot;enterprise&quot;</span><span class="p">}:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You must provide either &#39;premium&#39; or &#39;enterprise&#39; here&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;~/.twitter_keys.yaml&quot;</span> <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">filename</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">search_creds</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s2">&quot;twitter_search_api&quot;</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">account_type</span> <span class="o">==</span> <span class="s2">&quot;premium&quot;</span><span class="p">:</span>
+            <span class="n">search_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bearer_token&quot;</span><span class="p">:</span> <span class="n">search_creds</span><span class="p">[</span><span class="s2">&quot;bearer_token&quot;</span><span class="p">],</span>
+                           <span class="s2">&quot;endpoint&quot;</span><span class="p">:</span> <span class="n">search_creds</span><span class="p">[</span><span class="s2">&quot;endpoint&quot;</span><span class="p">]}</span>
+        <span class="k">if</span> <span class="n">account_type</span> <span class="o">==</span> <span class="s2">&quot;enterprise&quot;</span><span class="p">:</span>
+            <span class="n">search_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">search_creds</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">],</span>
+                           <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">search_creds</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">],</span>
+                           <span class="s2">&quot;endpoint&quot;</span><span class="p">:</span> <span class="n">search_creds</span><span class="p">[</span><span class="s2">&quot;endpoint&quot;</span><span class="p">]}</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Your YAML file (</span><span class="si">{}</span><span class="s2">) is not configured correctly and &quot;</span>
+                     <span class="s2">&quot; is missing a required field. Please see the &quot;</span>
+                     <span class="s2">&quot; readme for proper configuration&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">search_args</span></div>
 </pre></div>
 
     </div>
