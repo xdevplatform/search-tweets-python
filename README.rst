@@ -157,7 +157,7 @@ with each call for authentication.
 
 Your credentials should be put into a YAML file that looks like this:
 
-.. code:: .yaml
+.. code:: yaml
 
 
     twitter_search_api:
