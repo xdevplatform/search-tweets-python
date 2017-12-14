@@ -183,8 +183,7 @@ throughout your program's session.
 
     import os
     import json
-    from unidecode import unidecode
-    
+
     from twittersearch import ResultStream, gen_rule_payload, load_credentials
 
 Enterprise setup
@@ -192,10 +191,6 @@ Enterprise setup
 
 If you are an enterprise customer, you'll need to authenticate with a
 basic username/password method. You can specify that here:
-
-.. code:: python
-
-    from twittersearch import infer_endpoint
 
 .. code:: python
 
