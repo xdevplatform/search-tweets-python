@@ -15,7 +15,7 @@ your authentication will be a (username, password) pair. If you are a
 premium client, you'll need to get a bearer token that will be passed
 with each call for authentication.
 
-We advocate putting your API info in a yaml file such as this:
+Your credentials should be put into a YAML file that looks like this:
 
 .. code:: .yaml
 
@@ -32,7 +32,7 @@ Premium users should only have the ``endpoint`` and ``bearer_token``;
 Enterprise customers should have ``account``, ``username``,
 ``endpoint``, and ``password``.
 
-Our credential reader will default to expecing this file in
+Our credential reader expects this file at
 ``"~/.twitter_search.yaml"``, but you can pass the relevant location as
 needed.
 
@@ -41,10 +41,6 @@ throughout your program's session.
 
 .. code:: python
 
-    import os
-    import json
-    from unidecode import unidecode
-    
     from twittersearch import ResultStream, gen_rule_payload, load_credentials
 
 Enterprise setup
@@ -52,10 +48,6 @@ Enterprise setup
 
 If you are an enterprise customer, you'll need to authenticate with a
 basic username/password method. You can specify that here:
-
-.. code:: python
-
-    from twittersearch import infer_endpoint
 
 .. code:: python
 
@@ -405,19 +397,6 @@ method; please see your developer console for details.
     Yup!!!! ❤️❤️❤️❤️ #davechappelle https://t.co/ybSGNrQpYF
     @ndimichino Sometimes
     Setting up at @CampFlogGnaw https://t.co/nVq8QjkKsf
-
-
-.. code:: python
-
-    premium_search_args.keys()
-
-
-
-
-.. parsed-literal::
-
-    dict_keys(['bearer_token', 'endpoint'])
-
 
 
 .. code:: python
