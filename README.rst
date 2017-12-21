@@ -173,7 +173,7 @@ Enterprise customers should have ``account``, ``username``,
 ``endpoint``, and ``password``.
 
 Our credential reader expects this file at
-``"~/.twitter_search.yaml"``, but you can pass the relevant location as
+``"~/.twitter_keys.yaml"``, but you can pass the relevant location as
 needed.
 
 The following cell demonstrates the basic setup that will be referenced
