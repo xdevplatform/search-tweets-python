@@ -65,7 +65,7 @@ def convert_utc_time(datetime_str):
         string of GNIP API formatted date.
 
     Example:
-        >>> from twittersearch.utils import convert_utc_time
+        >>> from searchtweets.utils import convert_utc_time
         >>> convert_utc_time("201708020000")
         '201708020000'
         >>> convert_utc_time("2017-08-02")
@@ -136,7 +136,7 @@ def gen_rule_payload(pt_rule, results_per_call=500,
 
     Example:
 
-        >>> from twittersearch.utils import gen_rule_payload
+        >>> from searchtweets.utils import gen_rule_payload
         >>> gen_rule_payload("kanye west has:geo",
             ...              from_date="2017-08-21",
             ...              to_date="2017-08-22")
@@ -243,7 +243,7 @@ def load_credentials(filename=None, account_type=None):
     Returns: dict of your access credentials.
 
     Example:
-    >>> from twittersearch.api_utils import load_credentials
+    >>> from searchtweets.api_utils import load_credentials
     >>> search_args = load_credentials(account_type="premium")
     >>> search_args.keys()
     dict_keys(['bearer_token', 'endpoint'])

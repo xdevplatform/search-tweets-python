@@ -16,8 +16,11 @@ except ImportError:
     import json
 from tweet_parser.tweet import Tweet
 
-from .utils import *
-from .api_utils import *
+from .utils import merge_dicts
+
+from .api_utils import (infer_endpoint, GNIP_RESP_CODES,
+                        change_to_count_endpoint)
+
 
 logger = logging.getLogger(__name__)
 
@@ -278,7 +281,7 @@ def collect_results(rule, max_results=500, result_stream_args=None):
         list of results
 
     Example:
-        >>> from twittersearch import collect_results
+        >>> from searchtweets import collect_results
         >>> tweets = collect_results(rule,
                                      max_results=500,
                                      result_stream_args=search_args)

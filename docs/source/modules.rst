@@ -1,7 +1,7 @@
-twittersearch
+searchtweets
 =============
 
 .. toctree::
    :maxdepth: 4
 
-   twittersearch
+   searchtweets

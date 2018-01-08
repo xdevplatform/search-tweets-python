@@ -181,7 +181,7 @@ throughout your program's session.
 
 .. code:: python
 
-    from twittersearch import ResultStream, gen_rule_payload, load_credentials
+    from searchtweets import ResultStream, gen_rule_payload, load_credentials
 
 Enterprise setup
 ----------------
@@ -257,7 +257,7 @@ Let's see how it goes:
 
 .. code:: python
 
-    from twittersearch import collect_results
+    from searchtweets import collect_results
 
 .. code:: python
 

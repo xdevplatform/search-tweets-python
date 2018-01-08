@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 
-setup(name='twittersearch',
+setup(name='searchtweets',
       description="Wrapper for Twitter's Premium and Enterprise search APIs",
       url='https://github.com/twitterdev/twitter_search_api',
       author='Fiona Pigott, Jeff Kolb, Josh Montague, Aaron Gonzales',
       long_description=open('README.rst', 'r').read(),
       author_email='agonzales@twitter.com',
       license='MIT',
-      version='0.1.3',
+      version='1.0',
       install_requires=["requests", "tweet_parser", "pyyaml"],
       packages=find_packages(),
-      scripts=["tools/twitter_search.py"],
+      scripts=["tools/search_tweets.py"],
       )

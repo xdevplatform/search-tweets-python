@@ -3,9 +3,9 @@ import argparse
 import json
 import sys
 import logging
-from twittersearch.result_stream import ResultStream
-from twittersearch.api_utils import *
-from twittersearch.utils import *
+from searchtweets.result_stream import ResultStream
+from searchtweets.api_utils import *
+from searchtweets.utils import *
 
 logger = logging.getLogger()
 # we want to leave this here and have it command-line configurable via the
