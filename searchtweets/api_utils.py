@@ -221,12 +221,12 @@ def validate_count_api(rule_payload, endpoint):
 
 def load_credentials(filename=None, account_type=None):
     """
-    handlles credeintial managmenet via a YAML file. YAML files should look
+    Handles credeintial managmenet via a YAML file. YAML files should look
     like this:
 
     .. code:: yaml
 
-        twitter_search_api:
+        search_tweets_api:
           endpoint: <FULL_URL_OF_ENDPOINT>
           account: <ACCOUNT_NAME>
           username: <USERNAME>
@@ -254,7 +254,7 @@ def load_credentials(filename=None, account_type=None):
         raise KeyError
     filename = "~/.twitter_keys.yaml" if filename is None else filename
     with open(os.path.expanduser(filename)) as f:
-        search_creds = yaml.load(f)["twitter_search_api"]
+        search_creds = yaml.load(f)["search_tweets_api"]
 
     try:
 
