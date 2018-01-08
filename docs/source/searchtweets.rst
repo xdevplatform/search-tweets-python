@@ -1,29 +1,29 @@
-twittersearch package
+searchtweets package
 =====================
 
 Submodules
 ----------
 
-twittersearch\.api\_utils module
+searchtweets\.api\_utils module
 --------------------------------
 
-.. automodule:: twittersearch.api_utils
+.. automodule:: searchtweets.api_utils
     :members:
     :undoc-members:
     :show-inheritance:
 
-twittersearch\.result\_stream module
+searchtweets\.result\_stream module
 ------------------------------------
 
-.. automodule:: twittersearch.result_stream
+.. automodule:: searchtweets.result_stream
     :members:
     :undoc-members:
     :show-inheritance:
 
-twittersearch\.utils module
+searchtweets\.utils module
 ---------------------------
 
-.. automodule:: twittersearch.utils
+.. automodule:: searchtweets.utils
     :members:
     :undoc-members:
     :show-inheritance:
@@ -32,7 +32,7 @@ twittersearch\.utils module
 Module contents
 ---------------
 
-.. automodule:: twittersearch
+.. automodule:: searchtweets
     :members:
     :undoc-members:
     :show-inheritance:

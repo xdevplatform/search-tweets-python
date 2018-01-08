@@ -22,7 +22,12 @@ __all__ = ["take", "partition", "merge_dicts", "write_result_stream",
 
 
 def take(n, iterable):
-    "Return first n items of the iterable as a list"
+    """Return first n items of the iterable as a list
+    
+    Args:
+        n (int): number of items to return
+        iterable (iterable): the object to select
+    """
     return it.islice(iterable, n)
 
 
@@ -31,7 +36,7 @@ def partition(iterable, chunk_size, pad_none=False):
     certain chunk size, padding with Nones if availble.
 
     Example:
-        >>> from twittersearch.utils import partition
+        >>> from searchtweets.utils import partition
         >>> iter_ = range(10)
         >>> list(partition(iter_, 3))
         [(0, 1, 2), (3, 4, 5), (6, 7, 8)]
@@ -58,7 +63,7 @@ def merge_dicts(*dicts):
         the sequence will override duplicate keys from previous dictionaries.
 
     Example:
-        >>> from twittersearch.utils import merge_dicts
+        >>> from searchtweets.utils import merge_dicts
         >>> d1 = {"rule": "something has:geo"}
         >>> d2 = {"maxResults": 1000}
         >>> merge_dicts(*[d1, d2])

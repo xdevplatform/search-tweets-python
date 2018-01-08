@@ -15,7 +15,7 @@ except ImportError:
     import json
 
 __all__ = ["gen_rule_payload", "gen_params_from_config", "load_credentials",
-           "infer_endpoint",
+           "infer_endpoint", "convert_utc_time",
            "validate_count_api", "GNIP_RESP_CODES", "change_to_count_endpoint"]
 
 logger = logging.getLogger(__name__)
@@ -65,7 +65,7 @@ def convert_utc_time(datetime_str):
         string of GNIP API formatted date.
 
     Example:
-        >>> from twittersearch.utils import convert_utc_time
+        >>> from searchtweets.utils import convert_utc_time
         >>> convert_utc_time("201708020000")
         '201708020000'
         >>> convert_utc_time("2017-08-02")
@@ -136,7 +136,7 @@ def gen_rule_payload(pt_rule, results_per_call=500,
 
     Example:
 
-        >>> from twittersearch.utils import gen_rule_payload
+        >>> from searchtweets.utils import gen_rule_payload
         >>> gen_rule_payload("kanye west has:geo",
             ...              from_date="2017-08-21",
             ...              to_date="2017-08-22")
@@ -221,12 +221,12 @@ def validate_count_api(rule_payload, endpoint):
 
 def load_credentials(filename=None, account_type=None):
     """
-    handlles credeintial managmenet via a YAML file. YAML files should look
+    Handles credeintial managmenet via a YAML file. YAML files should look
     like this:
 
     .. code:: yaml
 
-        twitter_search_api:
+        search_tweets_api:
           endpoint: <FULL_URL_OF_ENDPOINT>
           account: <ACCOUNT_NAME>
           username: <USERNAME>
@@ -240,13 +240,14 @@ def load_credentials(filename=None, account_type=None):
                         default '~/.twitter_keys.yaml'
         account_type (str): pass your account type, "premium" or "enterprise"
 
-    Returns: dict of your access credentials.
+    Returns:
+        dict of your access credentials.
 
     Example:
-    >>> from twittersearch.api_utils import load_credentials
-    >>> search_args = load_credentials(account_type="premium")
-    >>> search_args.keys()
-    dict_keys(['bearer_token', 'endpoint'])
+        >>> from searchtweets.api_utils import load_credentials
+        >>> search_args = load_credentials(account_type="premium")
+        >>> search_args.keys()
+        dict_keys(['bearer_token', 'endpoint'])
 
     """
     if account_type is None or account_type not in {"premium", "enterprise"}:
@@ -254,7 +255,7 @@ def load_credentials(filename=None, account_type=None):
         raise KeyError
     filename = "~/.twitter_keys.yaml" if filename is None else filename
     with open(os.path.expanduser(filename)) as f:
-        search_creds = yaml.load(f)["twitter_search_api"]
+        search_creds = yaml.load(f)["search_tweets_api"]
 
     try:
 

@@ -16,8 +16,11 @@ except ImportError:
     import json
 from tweet_parser.tweet import Tweet
 
-from .utils import *
-from .api_utils import *
+from .utils import merge_dicts
+
+from .api_utils import (infer_endpoint, GNIP_RESP_CODES,
+                        change_to_count_endpoint)
+
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +33,7 @@ def make_session(username=None, password=None, bearer_token=None):
     Args:
         username (str): username for the session
         password (str): password for the user
-        bearer_token (str): token for the session for freemium.
+        bearer_token (str): token for a premium API user.
     """
 
     if password is None and bearer_token is None:
@@ -226,7 +229,7 @@ class ResultStream:
 
     def check_counts(self):
         """
-        Disables tweet parsing if the count api is used.
+        Disables tweet parsing if the count API is used.
         """
         if "counts" in re.split("[/.]", self.endpoint):
             logger.info("disabling tweet parsing due to counts api usage")
@@ -278,7 +281,7 @@ def collect_results(rule, max_results=500, result_stream_args=None):
         list of results
 
     Example:
-        >>> from twittersearch import collect_results
+        >>> from searchtweets import collect_results
         >>> tweets = collect_results(rule,
                                      max_results=500,
                                      result_stream_args=search_args)
