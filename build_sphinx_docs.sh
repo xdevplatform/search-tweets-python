@@ -29,7 +29,7 @@ cp README.rst docs/source/README.rst
 mv docs/* .
 make html
 mv -fv build/html/* ./
-rm -r $REPO_NAME docs build Makefile source README.md __pycache__/
+rm -r $REPO_NAME docs build Makefile source README.md __pycache__/ dist/
 echo "--------------------------------------------------------------------"
 echo " docs built; please review these changes and then run the following:"
 echo "--------------------------------------------------------------------"
