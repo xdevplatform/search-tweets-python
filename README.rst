@@ -3,7 +3,7 @@ Python Twitter Search API
 
 This library serves as a python interface to the `Twitter premium and enterprise search APIs <https://developer.twitter.com/en/docs/tweets/search/overview/30-day-search>`_. It provides a command-line utility and a library usable from within python. It comes with tools for assisting in dynamic generation of search rules and for parsing tweets.
 
-Pretty docs can be seen `here <https://twitterdev.github.io/twitter_search_api/>`_.
+Pretty docs can be seen `here <https://twitterdev.github.io/search_tweets_api/>`_.
 
 
 Features
@@ -22,18 +22,18 @@ Features
 Installation
 ============
 
-We will soon handle releases via PyPy, but you can also install the current master version via
+We will host the package on PyPi so it's pip-friendly.
 
 .. code:: bash
 
-  pip install git+https://github.com/twitterdev/twitter_search_api.git
+  pip install searchtweets
 
 Or the development version locally via
 
 .. code:: bash
 
-  git clone https://github.com/twitterdev/twitter_search_api.git
-  cd twitter_search_api
+  git clone https://github.com/twitterdev/search-tweets-python
+  cd search-tweets-python
   pip install -e .
 
 
@@ -41,7 +41,7 @@ Or the development version locally via
 Using the Comand Line Application
 =================================
 
-We provide a utility, ``twitter_search.py``, in the ``tools`` directory that provides rapid access to tweets.
+We provide a utility, ``search_tweets.py``, in the ``tools`` directory that provides rapid access to tweets.
 Premium customers should use ``--bearer-token``; enterprise customers should use ``--user-name`` and ``--password``.
 
 The ``--endpoint`` flag will specify the full URL of your connection, e.g.:
@@ -61,7 +61,7 @@ Note that the ``--results-per-call`` flag specifies an argument to the API call 
 
 .. code:: bash
 
-  python twitter_search.py \
+  python search_tweets.py \
     --bearer-token <BEARER_TOKEN> \
     --endpoint <MY_ENDPOINT> \
     --max-results 1000 \
@@ -74,7 +74,7 @@ Note that the ``--results-per-call`` flag specifies an argument to the API call 
 
 .. code:: bash
 
-  python twitter_search.py \
+  python search_tweets.py \
     --user-name <USERNAME> \
     --password <PW> \
     --endpoint <MY_ENDPOINT> \
@@ -89,7 +89,7 @@ Note that the ``--results-per-call`` flag specifies an argument to the API call 
 
 .. code:: bash
 
-  python twitter_search.py \
+  python search_tweets.py \
     --user-name <USERNAME> \
     --password <PW> \
     --endpoint <MY_ENDPOINT> \
@@ -134,7 +134,7 @@ When using a config file in conjunction with the command-line utility, you need 
 
 Example::
 
-  python twitter_search_api.py \
+  python search_tweets.py \
     --config-file myapiconfig.config \
     --no-print-stream
 
@@ -160,7 +160,7 @@ Your credentials should be put into a YAML file that looks like this:
 .. code:: yaml
 
 
-    twitter_search_api:
+    search_tweets_api:
       endpoint: <FULL_URL_OF_ENDPOINT>
       account: <ACCOUNT_NAME>
       username: <USERNAME>
