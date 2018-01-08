@@ -33,7 +33,7 @@ def make_session(username=None, password=None, bearer_token=None):
     Args:
         username (str): username for the session
         password (str): password for the user
-        bearer_token (str): token for the session for freemium.
+        bearer_token (str): token for a premium API user.
     """
 
     if password is None and bearer_token is None:
@@ -229,7 +229,7 @@ class ResultStream:
 
     def check_counts(self):
         """
-        Disables tweet parsing if the count api is used.
+        Disables tweet parsing if the count API is used.
         """
         if "counts" in re.split("[/.]", self.endpoint):
             logger.info("disabling tweet parsing due to counts api usage")

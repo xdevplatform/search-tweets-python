@@ -15,7 +15,7 @@ except ImportError:
     import json
 
 __all__ = ["gen_rule_payload", "gen_params_from_config", "load_credentials",
-           "infer_endpoint",
+           "infer_endpoint", "convert_utc_time",
            "validate_count_api", "GNIP_RESP_CODES", "change_to_count_endpoint"]
 
 logger = logging.getLogger(__name__)
@@ -240,13 +240,14 @@ def load_credentials(filename=None, account_type=None):
                         default '~/.twitter_keys.yaml'
         account_type (str): pass your account type, "premium" or "enterprise"
 
-    Returns: dict of your access credentials.
+    Returns:
+        dict of your access credentials.
 
     Example:
-    >>> from searchtweets.api_utils import load_credentials
-    >>> search_args = load_credentials(account_type="premium")
-    >>> search_args.keys()
-    dict_keys(['bearer_token', 'endpoint'])
+        >>> from searchtweets.api_utils import load_credentials
+        >>> search_args = load_credentials(account_type="premium")
+        >>> search_args.keys()
+        dict_keys(['bearer_token', 'endpoint'])
 
     """
     if account_type is None or account_type not in {"premium", "enterprise"}:
