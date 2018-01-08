@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>twittersearch.utils &#8212; twitter search api 0.1 documentation</title>
+    <title>searchtweets.utils &#8212; Twitter Search APIs Python Wrapper 1.0b documentation</title>
     
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -13,7 +13,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.1',
+        VERSION:     '1.0b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -48,7 +48,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           Twitter Search API</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,12 +68,12 @@
       aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Python Twitter Search API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../twittersearch.html">twittersearch package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.api_utils">twittersearch.api_utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.result_stream">twittersearch.result_stream module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.utils">twittersearch.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../searchtweets.html">searchtweets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets.api_utils">searchtweets.api_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets.result_stream">searchtweets.result_stream module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets.utils">searchtweets.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -120,7 +120,7 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <h1>Source code for twittersearch.utils</h1><div class="highlight"><pre>
+  <h1>Source code for searchtweets.utils</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Utility functions that are used in various parts of the program.</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -144,17 +144,22 @@
            <span class="s2">&quot;read_configfile&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="take"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.utils.take">[docs]</a><span class="k">def</span> <span class="nf">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
-    <span class="s2">&quot;Return first n items of the iterable as a list&quot;</span>
+<div class="viewcode-block" id="take"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.utils.take">[docs]</a><span class="k">def</span> <span class="nf">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return first n items of the iterable as a list</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        n (int): number of items to return</span>
+<span class="sd">        iterable (iterable): the object to select</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">it</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="partition"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.utils.partition">[docs]</a><span class="k">def</span> <span class="nf">partition</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">pad_none</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="partition"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.utils.partition">[docs]</a><span class="k">def</span> <span class="nf">partition</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">pad_none</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;adapted from Toolz. Breaks an iterable into n iterables up to the</span>
 <span class="sd">    certain chunk size, padding with Nones if availble.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; from twittersearch.utils import partition</span>
+<span class="sd">        &gt;&gt;&gt; from searchtweets.utils import partition</span>
 <span class="sd">        &gt;&gt;&gt; iter_ = range(10)</span>
 <span class="sd">        &gt;&gt;&gt; list(partition(iter_, 3))</span>
 <span class="sd">        [(0, 1, 2), (3, 4, 5), (6, 7, 8)]</span>
@@ -168,7 +173,7 @@
         <span class="k">return</span> <span class="n">it</span><span class="o">.</span><span class="n">zip_longest</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="merge_dicts"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.utils.merge_dicts">[docs]</a><span class="k">def</span> <span class="nf">merge_dicts</span><span class="p">(</span><span class="o">*</span><span class="n">dicts</span><span class="p">):</span>
+<div class="viewcode-block" id="merge_dicts"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.utils.merge_dicts">[docs]</a><span class="k">def</span> <span class="nf">merge_dicts</span><span class="p">(</span><span class="o">*</span><span class="n">dicts</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helpful function to merge / combine dictionaries and return a new</span>
 <span class="sd">    dictionary.</span>
@@ -181,7 +186,7 @@
 <span class="sd">        the sequence will override duplicate keys from previous dictionaries.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; from twittersearch.utils import merge_dicts</span>
+<span class="sd">        &gt;&gt;&gt; from searchtweets.utils import merge_dicts</span>
 <span class="sd">        &gt;&gt;&gt; d1 = {&quot;rule&quot;: &quot;something has:geo&quot;}</span>
 <span class="sd">        &gt;&gt;&gt; d2 = {&quot;maxResults&quot;: 1000}</span>
 <span class="sd">        &gt;&gt;&gt; merge_dicts(*[d1, d2])</span>
@@ -206,7 +211,7 @@
             <span class="k">yield</span> <span class="n">item</span>
 
 
-<div class="viewcode-block" id="write_result_stream"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.utils.write_result_stream">[docs]</a><span class="k">def</span> <span class="nf">write_result_stream</span><span class="p">(</span><span class="n">result_stream</span><span class="p">,</span> <span class="n">filename_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="write_result_stream"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.utils.write_result_stream">[docs]</a><span class="k">def</span> <span class="nf">write_result_stream</span><span class="p">(</span><span class="n">result_stream</span><span class="p">,</span> <span class="n">filename_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">results_per_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wraps a resultstream object to save it to a file. This function will still</span>
@@ -249,7 +254,7 @@
         <span class="k">yield from</span> <span class="n">write_ndjson</span><span class="p">(</span><span class="n">_filename</span><span class="p">,</span> <span class="n">stream</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="read_configfile"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.utils.read_configfile">[docs]</a><span class="k">def</span> <span class="nf">read_configfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="read_configfile"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.utils.read_configfile">[docs]</a><span class="k">def</span> <span class="nf">read_configfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    reads and flattens a configuration file into a single</span>
 <span class="sd">    dictionary for ease of use.</span>

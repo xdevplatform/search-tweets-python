@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Python Twitter Search API &#8212; twitter search api 0.1 documentation</title>
+    <title>Python Twitter Search API &#8212; Twitter Search APIs Python Wrapper 1.0b documentation</title>
     
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -13,7 +13,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1',
+        VERSION:     '1.0b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -48,7 +48,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           Twitter Search API</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,12 +68,12 @@
       aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="index.html">Python Twitter Search API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="twittersearch.html">twittersearch package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch.api_utils">twittersearch.api_utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch.result_stream">twittersearch.result_stream module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch.utils">twittersearch.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="twittersearch.html#module-twittersearch">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="searchtweets.html">searchtweets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searchtweets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searchtweets.html#module-searchtweets.api_utils">searchtweets.api_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searchtweets.html#module-searchtweets.result_stream">searchtweets.result_stream module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searchtweets.html#module-searchtweets.utils">searchtweets.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searchtweets.html#module-searchtweets">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -138,7 +138,7 @@
   <div class="section" id="python-twitter-search-api">
 <h1>Python Twitter Search API<a class="headerlink" href="#python-twitter-search-api" title="Permalink to this headline">¶</a></h1>
 <p>This library serves as a python interface to the <a class="reference external" href="https://developer.twitter.com/en/docs/tweets/search/overview/30-day-search">Twitter premium and enterprise search APIs</a>. It provides a command-line utility and a library usable from within python. It comes with tools for assisting in dynamic generation of search rules and for parsing tweets.</p>
-<p>Pretty docs can be seen <a class="reference external" href="https://twitterdev.github.io/twitter_search_api/">here</a>.</p>
+<p>Pretty docs can be seen <a class="reference external" href="https://twitterdev.github.io/search_tweets_api/">here</a>.</p>
 </div>
 <div class="section" id="features">
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
@@ -154,20 +154,20 @@
 </div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>We will soon handle releases via PyPy, but you can also install the current master version via</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">twitterdev</span><span class="o">/</span><span class="n">twitter_search_api</span><span class="o">.</span><span class="n">git</span>
+<p>We will host the package on PyPi so it&#8217;s pip-friendly.</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">searchtweets</span>
 </pre></div>
 </div>
 <p>Or the development version locally via</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">twitterdev</span><span class="o">/</span><span class="n">twitter_search_api</span><span class="o">.</span><span class="n">git</span>
-<span class="n">cd</span> <span class="n">twitter_search_api</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">twitterdev</span><span class="o">/</span><span class="n">search</span><span class="o">-</span><span class="n">tweets</span><span class="o">-</span><span class="n">python</span>
+<span class="n">cd</span> <span class="n">search</span><span class="o">-</span><span class="n">tweets</span><span class="o">-</span><span class="n">python</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="using-the-comand-line-application">
 <h1>Using the Comand Line Application<a class="headerlink" href="#using-the-comand-line-application" title="Permalink to this headline">¶</a></h1>
-<p>We provide a utility, <code class="docutils literal"><span class="pre">twitter_search.py</span></code>, in the <code class="docutils literal"><span class="pre">tools</span></code> directory that provides rapid access to tweets.
+<p>We provide a utility, <code class="docutils literal"><span class="pre">search_tweets.py</span></code>, in the <code class="docutils literal"><span class="pre">tools</span></code> directory that provides rapid access to tweets.
 Premium customers should use <code class="docutils literal"><span class="pre">--bearer-token</span></code>; enterprise customers should use <code class="docutils literal"><span class="pre">--user-name</span></code> and <code class="docutils literal"><span class="pre">--password</span></code>.</p>
 <p>The <code class="docutils literal"><span class="pre">--endpoint</span></code> flag will specify the full URL of your connection, e.g.:</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">.</span><span class="n">twitter</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="mf">1.1</span><span class="o">/</span><span class="n">tweets</span><span class="o">/</span><span class="n">search</span><span class="o">/</span><span class="mi">30</span><span class="n">day</span><span class="o">/</span><span class="n">dev</span><span class="o">.</span><span class="n">json</span>
@@ -176,7 +176,7 @@ Premium customers should use <code class="docutils literal"><span class="pre">--
 <p>You can find this url in your developer console.</p>
 <p>Note that the <code class="docutils literal"><span class="pre">--results-per-call</span></code> flag specifies an argument to the API call ( <code class="docutils literal"><span class="pre">maxResults</span></code>, results returned per CALL), not as a hard max to number of results returned from this program. use <code class="docutils literal"><span class="pre">--max-results</span></code> for that for now.</p>
 <p><strong>Stream json results to stdout without saving</strong></p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search</span><span class="o">.</span><span class="n">py</span> \
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">bearer</span><span class="o">-</span><span class="n">token</span> <span class="o">&lt;</span><span class="n">BEARER_TOKEN</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">endpoint</span> <span class="o">&lt;</span><span class="n">MY_ENDPOINT</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">1000</span> \
@@ -186,7 +186,7 @@ Premium customers should use <code class="docutils literal"><span class="pre">--
 </pre></div>
 </div>
 <p><strong>Stream json results to stdout and save to a file</strong></p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search</span><span class="o">.</span><span class="n">py</span> \
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">endpoint</span> <span class="o">&lt;</span><span class="n">MY_ENDPOINT</span><span class="o">&gt;</span> \
@@ -198,7 +198,7 @@ Premium customers should use <code class="docutils literal"><span class="pre">--
 </pre></div>
 </div>
 <p><strong>Save to file without output</strong></p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search</span><span class="o">.</span><span class="n">py</span> \
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="n">endpoint</span> <span class="o">&lt;</span><span class="n">MY_ENDPOINT</span><span class="o">&gt;</span> \
@@ -236,7 +236,7 @@ Premium customers should use <code class="docutils literal"><span class="pre">--
 <p>Soon, we will update this behavior and remove the credentials section from the config file to be handled differently.</p>
 <p>When using a config file in conjunction with the command-line utility, you need to specify your config file via the <code class="docutils literal"><span class="pre">--config-file</span></code> parameter. Additional command-line arguments will either be <em>added</em> to the config file args or <strong>overwrite</strong> the config file args if both are specified and present.</p>
 <p>Example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">twitter_search_api</span><span class="o">.</span><span class="n">py</span> \
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">file</span> <span class="n">myapiconfig</span><span class="o">.</span><span class="n">config</span> \
   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
@@ -255,7 +255,7 @@ your authentication will be a (username, password) pair. If you are a
 premium client, you&#8217;ll need to get a bearer token that will be passed
 with each call for authentication.</p>
 <p>Your credentials should be put into a YAML file that looks like this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">twitter_search_api</span><span class="p">:</span>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets_api</span><span class="p">:</span>
   <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
   <span class="n">account</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">ACCOUNT_NAME</span><span class="o">&gt;</span>
   <span class="n">username</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span>
@@ -268,11 +268,11 @@ Premium users should only have the <code class="docutils literal"><span class="p
 Enterprise customers should have <code class="docutils literal"><span class="pre">account</span></code>, <code class="docutils literal"><span class="pre">username</span></code>,
 <code class="docutils literal"><span class="pre">endpoint</span></code>, and <code class="docutils literal"><span class="pre">password</span></code>.</p>
 <p>Our credential reader expects this file at
-<code class="docutils literal"><span class="pre">&quot;~/.twitter_search.yaml&quot;</span></code>, but you can pass the relevant location as
+<code class="docutils literal"><span class="pre">&quot;~/.twitter_keys.yaml&quot;</span></code>, but you can pass the relevant location as
 needed.</p>
 <p>The following cell demonstrates the basic setup that will be referenced
 throughout your program&#8217;s session.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twittersearch</span> <span class="k">import</span> <span class="n">ResultStream</span><span class="p">,</span> <span class="n">gen_rule_payload</span><span class="p">,</span> <span class="n">load_credentials</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">ResultStream</span><span class="p">,</span> <span class="n">gen_rule_payload</span><span class="p">,</span> <span class="n">load_credentials</span>
 </pre></div>
 </div>
 <div class="section" id="enterprise-setup">
@@ -332,7 +332,7 @@ specified.</li>
 <p>For the remaining examples, please change the args to either premium or
 enterprise depending on your usage.</p>
 <p>Let&#8217;s see how it goes:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twittersearch</span> <span class="k">import</span> <span class="n">collect_results</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">collect_results</span>
 </pre></div>
 </div>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span>

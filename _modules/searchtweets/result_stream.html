@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>twittersearch.result_stream &#8212; twitter search api 0.1 documentation</title>
+    <title>searchtweets.result_stream &#8212; Twitter Search APIs Python Wrapper 1.0b documentation</title>
     
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -13,7 +13,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.1',
+        VERSION:     '1.0b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -48,7 +48,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           Twitter Search API</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,12 +68,12 @@
       aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Python Twitter Search API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../twittersearch.html">twittersearch package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.api_utils">twittersearch.api_utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.result_stream">twittersearch.result_stream module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.utils">twittersearch.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../searchtweets.html">searchtweets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets.api_utils">searchtweets.api_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets.result_stream">searchtweets.result_stream module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets.utils">searchtweets.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -120,7 +120,7 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <h1>Source code for twittersearch.result_stream</h1><div class="highlight"><pre>
+  <h1>Source code for searchtweets.result_stream</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module contains the request handing and actual api wrapping functionality.</span>
@@ -139,13 +139,16 @@
     <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">tweet_parser.tweet</span> <span class="k">import</span> <span class="n">Tweet</span>
 
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">.api_utils</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">merge_dicts</span>
+
+<span class="kn">from</span> <span class="nn">.api_utils</span> <span class="k">import</span> <span class="p">(</span><span class="n">infer_endpoint</span><span class="p">,</span> <span class="n">GNIP_RESP_CODES</span><span class="p">,</span>
+                        <span class="n">change_to_count_endpoint</span><span class="p">)</span>
+
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="make_session"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.make_session">[docs]</a><span class="k">def</span> <span class="nf">make_session</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bearer_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="make_session"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.make_session">[docs]</a><span class="k">def</span> <span class="nf">make_session</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bearer_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a Requests Session for use. Accepts a bearer token</span>
 <span class="sd">    for freemium users and will override username and password information if</span>
 <span class="sd">    present.</span>
@@ -153,7 +156,7 @@
 <span class="sd">    Args:</span>
 <span class="sd">        username (str): username for the session</span>
 <span class="sd">        password (str): password for the user</span>
-<span class="sd">        bearer_token (str): token for the session for freemium.</span>
+<span class="sd">        bearer_token (str): token for a premium API user.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">password</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">bearer_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -174,7 +177,7 @@
     <span class="k">return</span> <span class="n">session</span></div>
 
 
-<div class="viewcode-block" id="retry"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.retry">[docs]</a><span class="k">def</span> <span class="nf">retry</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<div class="viewcode-block" id="retry"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.retry">[docs]</a><span class="k">def</span> <span class="nf">retry</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorator to handle API retries and exceptions. Defaults to three retries.</span>
 
@@ -223,7 +226,7 @@
 
 
 <span class="nd">@retry</span>
-<div class="viewcode-block" id="request"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.request">[docs]</a><span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">rule_payload</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="request"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.request">[docs]</a><span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">rule_payload</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Executes a request with the given payload and arguments.</span>
 
@@ -240,7 +243,7 @@
     <span class="k">return</span> <span class="n">result</span></div>
 
 
-<div class="viewcode-block" id="ResultStream"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.ResultStream">[docs]</a><span class="k">class</span> <span class="nc">ResultStream</span><span class="p">:</span>
+<div class="viewcode-block" id="ResultStream"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.ResultStream">[docs]</a><span class="k">class</span> <span class="nc">ResultStream</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to represent an API query that handles two major functionality</span>
 <span class="sd">    pieces: wrapping metadata around a specific API call and automatic</span>
@@ -301,7 +304,7 @@
                          <span class="k">else</span> <span class="n">endpoint</span><span class="p">)</span>
         <span class="c1"># validate_count_api(self.rule_payload, self.endpoint)</span>
 
-<div class="viewcode-block" id="ResultStream.stream"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.ResultStream.stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ResultStream.stream"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.ResultStream.stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Main entry point for the data from the API. Will automatically paginate</span>
 <span class="sd">        through the results via the &#39;next&#39; token and return up to `max_results`</span>
@@ -337,7 +340,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">current_tweets</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ResultStream.init_session"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.ResultStream.init_session">[docs]</a>    <span class="k">def</span> <span class="nf">init_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ResultStream.init_session"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.ResultStream.init_session">[docs]</a>    <span class="k">def</span> <span class="nf">init_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Defines a session object for passing requests.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -347,15 +350,15 @@
                                     <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">bearer_token</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ResultStream.check_counts"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.ResultStream.check_counts">[docs]</a>    <span class="k">def</span> <span class="nf">check_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ResultStream.check_counts"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.ResultStream.check_counts">[docs]</a>    <span class="k">def</span> <span class="nf">check_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Disables tweet parsing if the count api is used.</span>
+<span class="sd">        Disables tweet parsing if the count API is used.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;counts&quot;</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[/.]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;disabling tweet parsing due to counts api usage&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tweet_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span></div>
 
-<div class="viewcode-block" id="ResultStream.execute_request"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.ResultStream.execute_request">[docs]</a>    <span class="k">def</span> <span class="nf">execute_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ResultStream.execute_request"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.ResultStream.execute_request">[docs]</a>    <span class="k">def</span> <span class="nf">execute_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sends the request to the api and parses the json response.</span>
 <span class="sd">        Makes some assumptions about the session length and sets the presence</span>
@@ -383,7 +386,7 @@
         <span class="k">return</span> <span class="n">str_</span></div>
 
 
-<div class="viewcode-block" id="collect_results"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.result_stream.collect_results">[docs]</a><span class="k">def</span> <span class="nf">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="collect_results"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.collect_results">[docs]</a><span class="k">def</span> <span class="nf">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Utility function to quickly get a list of tweets from a resultstream</span>
 <span class="sd">    without keeping the object around. Rqequires your args to be configured</span>
@@ -401,7 +404,7 @@
 <span class="sd">        list of results</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; from twittersearch import collect_results</span>
+<span class="sd">        &gt;&gt;&gt; from searchtweets import collect_results</span>
 <span class="sd">        &gt;&gt;&gt; tweets = collect_results(rule,</span>
 <span class="sd">                                     max_results=500,</span>
 <span class="sd">                                     result_stream_args=search_args)</span>

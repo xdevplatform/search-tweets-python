@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>twittersearch.api_utils &#8212; twitter search api 0.1 documentation</title>
+    <title>searchtweets.api_utils &#8212; Twitter Search APIs Python Wrapper 1.0b documentation</title>
     
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -13,7 +13,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.1',
+        VERSION:     '1.0b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -48,7 +48,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           Twitter Search API</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -68,12 +68,12 @@
       aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Python Twitter Search API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../twittersearch.html">twittersearch package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.api_utils">twittersearch.api_utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.result_stream">twittersearch.result_stream module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch.utils">twittersearch.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../twittersearch.html#module-twittersearch">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../searchtweets.html">searchtweets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets.api_utils">searchtweets.api_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets.result_stream">searchtweets.result_stream module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets.utils">searchtweets.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../searchtweets.html#module-searchtweets">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -120,7 +120,7 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <h1>Source code for twittersearch.api_utils</h1><div class="highlight"><pre>
+  <h1>Source code for searchtweets.api_utils</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module containing the various functions that are used for API calls,</span>
@@ -138,7 +138,7 @@
     <span class="kn">import</span> <span class="nn">json</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gen_rule_payload&quot;</span><span class="p">,</span> <span class="s2">&quot;gen_params_from_config&quot;</span><span class="p">,</span> <span class="s2">&quot;load_credentials&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;infer_endpoint&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;infer_endpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;convert_utc_time&quot;</span><span class="p">,</span>
            <span class="s2">&quot;validate_count_api&quot;</span><span class="p">,</span> <span class="s2">&quot;GNIP_RESP_CODES&quot;</span><span class="p">,</span> <span class="s2">&quot;change_to_count_endpoint&quot;</span><span class="p">]</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -173,7 +173,7 @@
 <span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">convert_utc_time</span><span class="p">(</span><span class="n">datetime_str</span><span class="p">):</span>
+<div class="viewcode-block" id="convert_utc_time"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.api_utils.convert_utc_time">[docs]</a><span class="k">def</span> <span class="nf">convert_utc_time</span><span class="p">(</span><span class="n">datetime_str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Handles datetime argument conversion to the GNIP API format, which is</span>
 <span class="sd">    `YYYYMMDDHHSS`. Flexible passing of date formats.</span>
@@ -188,7 +188,7 @@
 <span class="sd">        string of GNIP API formatted date.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; from twittersearch.utils import convert_utc_time</span>
+<span class="sd">        &gt;&gt;&gt; from searchtweets.utils import convert_utc_time</span>
 <span class="sd">        &gt;&gt;&gt; convert_utc_time(&quot;201708020000&quot;)</span>
 <span class="sd">        &#39;201708020000&#39;</span>
 <span class="sd">        &gt;&gt;&gt; convert_utc_time(&quot;2017-08-02&quot;)</span>
@@ -210,10 +210,10 @@
             <span class="n">_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">datetime_str</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="n">_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">datetime_str</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="change_to_count_endpoint"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.change_to_count_endpoint">[docs]</a><span class="k">def</span> <span class="nf">change_to_count_endpoint</span><span class="p">(</span><span class="n">endpoint</span><span class="p">):</span>
+<div class="viewcode-block" id="change_to_count_endpoint"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.api_utils.change_to_count_endpoint">[docs]</a><span class="k">def</span> <span class="nf">change_to_count_endpoint</span><span class="p">(</span><span class="n">endpoint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Utility function to change a normal endpoint to a ``count`` api</span>
 <span class="sd">    endpoint. Returns the same endpoint if it&#39;s already a valid count endpoint.</span>
 <span class="sd">    Args:</span>
@@ -233,7 +233,7 @@
         <span class="k">return</span> <span class="s2">&quot;https://&quot;</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filt_tokens</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s2">&quot;counts.json&quot;</span></div>
 
 
-<div class="viewcode-block" id="gen_rule_payload"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.gen_rule_payload">[docs]</a><span class="k">def</span> <span class="nf">gen_rule_payload</span><span class="p">(</span><span class="n">pt_rule</span><span class="p">,</span> <span class="n">results_per_call</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<div class="viewcode-block" id="gen_rule_payload"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.api_utils.gen_rule_payload">[docs]</a><span class="k">def</span> <span class="nf">gen_rule_payload</span><span class="p">(</span><span class="n">pt_rule</span><span class="p">,</span> <span class="n">results_per_call</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
                      <span class="n">from_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count_bucket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">stringify</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -259,7 +259,7 @@
 
 <span class="sd">    Example:</span>
 
-<span class="sd">        &gt;&gt;&gt; from twittersearch.utils import gen_rule_payload</span>
+<span class="sd">        &gt;&gt;&gt; from searchtweets.utils import gen_rule_payload</span>
 <span class="sd">        &gt;&gt;&gt; gen_rule_payload(&quot;kanye west has:geo&quot;,</span>
 <span class="sd">            ...              from_date=&quot;2017-08-21&quot;,</span>
 <span class="sd">            ...              to_date=&quot;2017-08-22&quot;)</span>
@@ -286,7 +286,7 @@
     <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span> <span class="k">if</span> <span class="n">stringify</span> <span class="k">else</span> <span class="n">payload</span></div>
 
 
-<div class="viewcode-block" id="gen_params_from_config"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.gen_params_from_config">[docs]</a><span class="k">def</span> <span class="nf">gen_params_from_config</span><span class="p">(</span><span class="n">config_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="gen_params_from_config"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.api_utils.gen_params_from_config">[docs]</a><span class="k">def</span> <span class="nf">gen_params_from_config</span><span class="p">(</span><span class="n">config_dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates parameters for a ResultStream from a dictionary.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -316,7 +316,7 @@
     <span class="k">return</span> <span class="n">_dict</span></div>
 
 
-<div class="viewcode-block" id="infer_endpoint"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.infer_endpoint">[docs]</a><span class="k">def</span> <span class="nf">infer_endpoint</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">):</span>
+<div class="viewcode-block" id="infer_endpoint"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.api_utils.infer_endpoint">[docs]</a><span class="k">def</span> <span class="nf">infer_endpoint</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Infer which endpoint should be used for a given rule payload.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -325,7 +325,7 @@
     <span class="k">return</span> <span class="s2">&quot;counts&quot;</span> <span class="k">if</span> <span class="n">bucket</span> <span class="k">else</span> <span class="s2">&quot;search&quot;</span></div>
 
 
-<div class="viewcode-block" id="validate_count_api"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.validate_count_api">[docs]</a><span class="k">def</span> <span class="nf">validate_count_api</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">):</span>
+<div class="viewcode-block" id="validate_count_api"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.api_utils.validate_count_api">[docs]</a><span class="k">def</span> <span class="nf">validate_count_api</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Ensures that the counts api is set correctly in a payload.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -342,14 +342,14 @@
             <span class="k">raise</span> <span class="ne">ValueError</span></div>
 
 
-<div class="viewcode-block" id="load_credentials"><a class="viewcode-back" href="../../twittersearch.html#twittersearch.api_utils.load_credentials">[docs]</a><span class="k">def</span> <span class="nf">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">account_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="load_credentials"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.api_utils.load_credentials">[docs]</a><span class="k">def</span> <span class="nf">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">account_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    handlles credeintial managmenet via a YAML file. YAML files should look</span>
+<span class="sd">    Handles credeintial managmenet via a YAML file. YAML files should look</span>
 <span class="sd">    like this:</span>
 
 <span class="sd">    .. code:: yaml</span>
 
-<span class="sd">        twitter_search_api:</span>
+<span class="sd">        search_tweets_api:</span>
 <span class="sd">          endpoint: &lt;FULL_URL_OF_ENDPOINT&gt;</span>
 <span class="sd">          account: &lt;ACCOUNT_NAME&gt;</span>
 <span class="sd">          username: &lt;USERNAME&gt;</span>
@@ -363,13 +363,14 @@
 <span class="sd">                        default &#39;~/.twitter_keys.yaml&#39;</span>
 <span class="sd">        account_type (str): pass your account type, &quot;premium&quot; or &quot;enterprise&quot;</span>
 
-<span class="sd">    Returns: dict of your access credentials.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        dict of your access credentials.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">    &gt;&gt;&gt; from twittersearch.api_utils import load_credentials</span>
-<span class="sd">    &gt;&gt;&gt; search_args = load_credentials(account_type=&quot;premium&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; search_args.keys()</span>
-<span class="sd">    dict_keys([&#39;bearer_token&#39;, &#39;endpoint&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; from searchtweets.api_utils import load_credentials</span>
+<span class="sd">        &gt;&gt;&gt; search_args = load_credentials(account_type=&quot;premium&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; search_args.keys()</span>
+<span class="sd">        dict_keys([&#39;bearer_token&#39;, &#39;endpoint&#39;])</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">account_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">account_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="s2">&quot;enterprise&quot;</span><span class="p">}:</span>
@@ -377,7 +378,7 @@
         <span class="k">raise</span> <span class="ne">KeyError</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;~/.twitter_keys.yaml&quot;</span> <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">filename</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">search_creds</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s2">&quot;twitter_search_api&quot;</span><span class="p">]</span>
+        <span class="n">search_creds</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s2">&quot;search_tweets_api&quot;</span><span class="p">]</span>
 
     <span class="k">try</span><span class="p">:</span>
 

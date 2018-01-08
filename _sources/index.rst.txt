@@ -11,7 +11,7 @@
    :caption: Contents:
 
    self
-   twittersearch
+   searchtweets
 
 
 
