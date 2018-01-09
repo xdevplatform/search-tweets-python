@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright 2018 Twitter, Inc.
+# Licensed under the MIT License
+# https://opensource.org/licenses/MIT
 """
 Module containing the various functions that are used for API calls,
 rule generation, and related.

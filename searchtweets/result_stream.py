@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# Copyright 2018 Twitter, Inc.
+# Licensed under the MIT License
+# https://opensource.org/licenses/MIT
 """
 This module contains the request handing and actual api wrapping functionality.
 
