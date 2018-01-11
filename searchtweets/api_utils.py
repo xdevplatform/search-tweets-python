@@ -222,7 +222,7 @@ def validate_count_api(rule_payload, endpoint):
             raise ValueError
 
 
-def load_credentials(filename=None, account_type=None):
+def load_credentials(filename=None, account_type=None, yaml_key=None):
     """
     Handles credeintial managmenet via a YAML file. YAML files should look
     like this:
@@ -236,12 +236,27 @@ def load_credentials(filename=None, account_type=None):
           password: <PW>
           bearer_token: <TOKEN>
 
-    with the appropriate fields filled out for your account.
+    with the appropriate fields filled out for your account. The top-level key
+    can be flexible, e.g.:
+
+    .. code:: yaml
+
+        twitter_search_api:
+          endpoint: <FULL_URL_OF_ENDPOINT>
+          account: <ACCOUNT_NAME>
+          username: <USERNAME>
+          password: <PW>
+          bearer_token: <TOKEN>
+
+    as this method supports a flexible interface for reading the
+    credential files.
 
     Args:
         filename (str): pass a filename here if you do not want to use the
                         default '~/.twitter_keys.yaml'
         account_type (str): pass your account type, "premium" or "enterprise"
+        yaml_key (str): the top-level key in the YAML file that has your
+        information. Defaults to `search_tweets_api`.
 
     Returns:
         dict of your access credentials.
@@ -256,9 +271,15 @@ def load_credentials(filename=None, account_type=None):
     if account_type is None or account_type not in {"premium", "enterprise"}:
         logger.error("You must provide either 'premium' or 'enterprise' here")
         raise KeyError
+    yaml_key = yaml_key if yaml_key is not None else "search_tweets_api"
     filename = "~/.twitter_keys.yaml" if filename is None else filename
-    with open(os.path.expanduser(filename)) as f:
-        search_creds = yaml.load(f)["search_tweets_api"]
+    try:
+        with open(os.path.expanduser(filename)) as f:
+            search_creds = yaml.load(f)[yaml_key]
+    except KeyError:
+        logger.error("{} is missing the provided key, which is {}"
+                     .format(filename, yaml_key))
+        raise KeyError
 
     try:
 
@@ -273,4 +294,5 @@ def load_credentials(filename=None, account_type=None):
         logger.error("Your YAML file ({}) is not configured correctly and "
                      " is missing a required field. Please see the "
                      " readme for proper configuration".format(filename))
+        raise KeyError
     return search_args
