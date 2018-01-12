@@ -16,8 +16,8 @@ logger = logging.getLogger()
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "ERROR"))
 
 
-
 REQUIRED_KEYS = {"pt_rule", "endpoint"}
+
 
 def parse_cmd_args():
     twitter_parser = argparse.ArgumentParser()
@@ -28,29 +28,29 @@ def parse_cmd_args():
           will overrule args found in the config,
           file."""
 
+    twitter_parser.add_argument("--credential-file",
+                                dest="credential_file",
+                                default=None,
+                                help=("Location of the yaml file used to hold "
+                                      "your credentials."))
+
+    twitter_parser.add_argument("--credential-file-key",
+                                dest="credential_yaml_key",
+                                default=None,
+                                help=("the key in the credential file used "
+                                      "for this session's credentials. "
+                                      "Defaults to search_tweets_api"))
+
     twitter_parser.add_argument("--config-file",
                                 dest="config_filename",
                                 default=None,
                                 help=help_msg)
-    twitter_parser.add_argument("--endpoint",
-                                dest="endpoint",
-                                default=None,
-                                help="The API endpoint you are going to use.")
 
-    twitter_parser.add_argument("--user-name",
-                                dest="username",
+    twitter_parser.add_argument("--account-type",
+                                dest="account_type",
                                 default=None,
-                                help="User name for Enterprise API access")
+                                help="The account type you are using")
 
-    twitter_parser.add_argument("--password",
-                                dest="password",
-                                default=None,
-                                help="Password for Enterprise API access")
-
-    twitter_parser.add_argument("--bearer-token",
-                                dest="bearer_token",
-                                default=None,
-                                help="bearer token for premium API access")
 
     twitter_parser.add_argument("--count-bucket",
                                 dest="count_bucket",
@@ -116,6 +116,8 @@ def parse_cmd_args():
                                 default=True,
                                 help="Print tweet stream to stdout")
 
+
+
     twitter_parser.add_argument("--debug",
                                 dest="debug",
                                 action="store_true",
@@ -136,9 +138,18 @@ def main():
     else:
         configfile_dict = {}
 
+
+    creds_dict = load_credentials(filename=args_dict["credential_file"],
+                                  account_type=args_dict["account_type"],
+                                  yaml_key=args_dict["credential_yaml_key"])
+
+
+
     dict_filter = lambda x: {k: v for k, v in x.items() if v is not None}
+
     config_dict = merge_dicts(dict_filter(configfile_dict),
-                              dict_filter(args_dict))
+                              dict_filter(args_dict),
+                              dict_filter(creds_dict))
 
     logger.debug(json.dumps(config_dict, indent=4))
 
@@ -170,3 +181,24 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+    # twitter_parser.add_argument("--user-name",
+    #                             dest="username",
+    #                             default=None,
+    #                             help="User name for Enterprise API access")
+
+    # twitter_parser.add_argument("--password",
+    #                             dest="password",
+    #                             default=None,
+    #                             help="Password for Enterprise API access")
+
+    # twitter_parser.add_argument("--bearer-token",
+    #                             dest="bearer_token",
+    #                             default=None,
+    #                             help="bearer token for premium API access")
+
+    # twitter_parser.add_argument("--endpoint",
+    #                             dest="endpoint",
+    #                             default=None,
+    #                             help="The API endpoint you are going to use.")
+
