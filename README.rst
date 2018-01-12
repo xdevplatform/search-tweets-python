@@ -139,7 +139,7 @@ Example::
     --no-print-stream
 
 
-Using the Twitter Search API within Python
+Using the Twitter Search APIs within Python
 ==========================================
 
 Working with the API within a Python program is straightforward both for
@@ -157,7 +157,7 @@ with each call for authentication.
 
 Your credentials should be put into a YAML file that looks like this:
 
-.. code:: yaml
+.. code:: .yaml
 
 
     search_tweets_api:
@@ -172,9 +172,23 @@ Premium users should only have the ``endpoint`` and ``bearer_token``;
 Enterprise customers should have ``account``, ``username``,
 ``endpoint``, and ``password``.
 
-Our credential reader expects this file at
+Our credential reader will default this file being in
 ``"~/.twitter_keys.yaml"``, but you can pass the relevant location as
-needed.
+needed. You can also specify a different key in the yaml file, which can
+be useful if you have different endpoints, e.g., ``dev``, ``test``,
+``prod``, etc. The file might look like this:
+
+.. code:: .yaml
+
+
+    search_tweets_dev:
+      endpoint: <FULL_URL_OF_ENDPOINT>
+      bearer_token: <TOKEN>
+      
+    search_tweets_prod:
+      endpoint: <FULL_URL_OF_ENDPOINT>
+      bearer_token: <TOKEN>
+      
 
 The following cell demonstrates the basic setup that will be referenced
 throughout your program's session.
@@ -203,6 +217,7 @@ following cell for setup:
 .. code:: python
 
     premium_search_args = load_credentials("~/.twitter_keys.yaml",
+                                           yaml_key="search_tweets_premium",
                                            account_type="premium")
 
 There is a function that formats search API rules into valid json
@@ -244,8 +259,8 @@ and API calls.
 We'll be using the ``collect_results`` function, which has three
 parameters.
 
--  rule: a valid powertrack rule, referenced earlier
--  max\_results: as the api handles pagination, it will stop collecting
+-  rule: a valid PowerTrack rule, referenced earlier
+-  max\_results: as the API handles pagination, it will stop collecting
    when we get to this number
 -  result\_stream\_args: configuration args that we've already
    specified.
@@ -271,37 +286,40 @@ such:
 
 .. code:: python
 
-    [print(tweet.all_text) for tweet in tweets[0:10]];
+    [print(tweet.all_text, end='\n\n') for tweet in tweets[0:10]];
 
 
 .. parsed-literal::
 
-    That deep sigh Beyoncé took once she realized she wouldn’t be able to get the earpiece out of her hair before the dance break 😂.  https://t.co/dU1K2KMT7i
-    4 Years ago today, "BEYONCÉ" by Beyoncé was surprise released. It received acclaim from critics,  debuted at #1 and certified 2x Platinum in the US. https://t.co/wB3C7DuX9o
-    me mata la gente que se cree superior por sus gustos de música escuches queen beyonce o el polaco no sos mas ni menos que nadie
-    I’m literally not Beyoncé https://t.co/LwIkllCx6P
-    #BEYONCÉ ‣ 𝐌𝐄𝐀𝐃𝐃𝐅𝐀𝐍 𝐎𝐅𝐈𝐂𝐈𝐀𝐋 - I Am... 𝐖𝐎𝐑𝐋𝐃 𝐓𝐎𝐔𝐑! https://t.co/TyyeDdXKiM
-    Beyoncé on how nervous she was to release her self-titled... https://t.co/fru23c6DYC
-    AAAA ansiosa por esse feat da Beyoncé com Jorge Ben Jor &lt;3 https://t.co/NkKJhC9JUd
-    I am world tour, the Beyonce experience, revamped hmt. https://t.co/pb07eMyNka
-    Tell me what studio versions of any artists would u like me to do? https://t.co/Z6YWsAJuhU
-    Billboard's best female artists over the last decade:
+    It was okay for Beyonce to stay when Jay Z cheated but not okay for Cardi to stay with Offset. You people and your double standards man.
     
-    2017: Ariana Grande
-    2016: Adele
-    2015: Taylor Swift
-    2014: Katy Perry
-    2013: Taylor Swift
-    2012: Adele
-    2011: Adele
-    2010: Lady Gaga
-    2009: Taylor Swift
-    2008: Rihanna
+    @Captivate 🔥🔥 Black Kings &amp; Queens🔥🔥 
+    https://t.co/RvpJNpKEA1
+    #tidal #Spotify #blackish #BlackTwitter #BlackExcellence #RevoltNow @BadBoyEnt @RocNation @djkhaled @S_C_ @DJInfamousATL @djenvy @Diddy @Beyonce #bmore #baltimorecity #share  IG; kingdavid_2022
     
-    Beyonce = 0
+    *Beyoncé comes on* Friends: please don't do it i swear it's so embarras-- 
     
-    Taylor Swift = 3 👑
-    Beyoncé explaining her intent behind the BEYONCÉ visual album &amp; how she wanted to reinstate the idea of an album release as a significant, exciting event which had lost meaning in the face of hype created around singles. 👑 https://t.co/pK2MB35vYl
+    Me: https://t.co/tqup7M67jI
+    
+    Somebody just said Beyoncé gone release the twins on tidal. https://t.co/4kmk8w9pFf
+    
+    los gringos tienen como 200k d rts acá tenemos 2k y nos sentimos beyoncé
+    
+    @BarbaraLafranc2 🔥🔥 Black Kings &amp; Queens🔥🔥 
+    https://t.co/RvpJNpKEA1
+    #tidal #Spotify #blackish #BlackTwitter #BlackExcellence #RevoltNow @BadBoyEnt @RocNation @djkhaled @S_C_ @DJInfamousATL @djenvy @Diddy @Beyonce #bmore #baltimorecity #share  IG; kingdavid_2022
+    
+    The president of the United States is busy calling this country a shithole, meanwhile Beyoncé’s charity is entering its EIGTH year of supporting their charities after a devastating earthquake killed thousands.  https://t.co/9qVtPQKp8W
+    8 years ago today an earthquake hit Haiti that devastated families. We responded and launched #BEYGOODHAITI to help revitalize Saint Damien Pediatric Hospital. We remain in partnership with them and encourage you to also support: https://t.co/Sb1AS8rA4g https://t.co/iMuk00Zllv
+    
+    So after a few days I finally figured out witch song has the best Intro and everyone agreed with me 😂 It has to be Beyoncé ... https://t.co/cc5rcJD1YJ
+    
+    Jay Z and Beyoncé don't even follow each other. That's a real relationship goal bitch mind ya business.
+    
+    Hold Up by Beyoncé 
+    #BadLiar #BestMusicVideo #iHeartAwards https://t.co/fTgMBccdc1
+    78. If Selena had to reenact and lip sync to this Music Video, which one you want it to be, 'Hold Up' by Beyonce or 'Side To Side' by Ariana
+    
 
 
 .. code:: python
@@ -311,16 +329,16 @@ such:
 
 .. parsed-literal::
 
-    2017-12-13 21:18:17
-    2017-12-13 21:18:16
-    2017-12-13 21:18:16
-    2017-12-13 21:18:15
-    2017-12-13 21:18:15
-    2017-12-13 21:18:13
-    2017-12-13 21:18:12
-    2017-12-13 21:18:12
-    2017-12-13 21:18:11
-    2017-12-13 21:18:10
+    2018-01-12 21:05:39
+    2018-01-12 21:05:39
+    2018-01-12 21:05:36
+    2018-01-12 21:05:34
+    2018-01-12 21:05:34
+    2018-01-12 21:05:33
+    2018-01-12 21:05:32
+    2018-01-12 21:05:31
+    2018-01-12 21:05:31
+    2018-01-12 21:05:30
 
 
 .. code:: python
@@ -330,16 +348,16 @@ such:
 
 .. parsed-literal::
 
-    Twitter for Android
-    Twitter for Android
-    Twitter for Android
     Twitter for iPhone
-    Meadd
     Twitter for iPhone
     Twitter for Android
     Twitter for iPhone
     Twitter for iPhone
-    Twitter for Android
+    Twitter for iPhone
+    Twitter for iPhone
+    Twitter for iPhone
+    Twitter for iPhone
+    Twitter for iPhone
 
 
 Voila, we have some tweets. For interactive environments and other cases
@@ -398,43 +416,42 @@ easily extractable.
 
 .. parsed-literal::
 
-    Everyone: *still dragging Jay for cheating*
+    Me when Beyoncé disappears for days. https://t.co/jPBt94K9xR
+    Why is it okay for
+    Beyoncé to make $50
+    million and not okay
+    for a CEO who has
+    3000 employees and
+    $100 million in profit to
+    make $5 million?
+    Just saw some dude say Tomi Lahren look better than Beyonce
     
-    Beyoncé: https://t.co/2z1ltlMQiJ
-    Beyoncé changed the game w/ that digital drop 4 years ago today! 🎉
-    
-    • #1 debut on Billboard
-    • Sold 617K in the US / over 828K WW in only 3 days
-    • Fastest-selling album on iTunes of all time
-    • Reached #1 in 118 countries
-    • Widespread acclaim; hailed as her magnum opus https://t.co/lDCdVs6em3
-    Beyoncé 🔥 #444Tour https://t.co/sCvZzjLwqx
-    Se presentan casos de feminismo pop basado en sugerencias de artistas famosos en turno, Emma Watson, Beyoncé.
-    Beyonce. Are you kidding me with this?! #Supreme #love #everything
-    Dear Beyoncé, https://t.co/5visfVK2LR
-    At this time 4 years ago today, Beyoncé released her self-titled album BEYONCÉ exclusively on the iTunes Store without any prior announcement. The album remains the ONLY album in history to reach #1 in 118 countries &amp; the fastest-selling album in the history of the iTunes Store. https://t.co/ZZb4QyQYf0
-    4 years ago today, Beyoncé released her self-titled visual album "BEYONCÉ" and shook up the music world forever. 🙌🏿 https://t.co/aGtUSq9R3u
-    Everyone: *still dragging Jay for cheating*
-    
-    Beyoncé: https://t.co/2z1ltlMQiJ
-    And Beyonce hasn't had a solo #1 hit since the Bush administration soooo... https://t.co/WCd7ni8DwN
+    ...boy https://t.co/9YsVVMcEqy
+    @writemombritt @GAPeachMeg @skb_sara @PaulLee85 @TheSlimSupreme @MistaBRONCO @TheBeard1611 @Redheaded_Jenn @Keque_Mage @Flewbys @W_C_Patriot Jay Z watches Beyoncé kissing Barack Obama
+    A partir du moment ou un homme qui était dans une télé-réalité et sur un ring de catch se retrouve a la tête de la 1ere puissance mondiale j'exclu plus rien dans ma vie, donc la j'ai comme objectif de baiser Beyoncé
+    23) ANYTHING FOR YOU BEYONCE
+    https://t.co/MoZNaAoT0i
+    Cardi B ties Beyonce’s Billboard Hot R&amp;B/Hip-Hop songs record https://t.co/wd2EIBC0zM https://t.co/S1Ul8wqO41
+    BEYONCÉ still holds the record for #1s in the most countries on iTunes when it topped 117 charts in 2013 simultaneously. https://t.co/XTcfncnWzj
+    I love Beyoncé but she is a beautiful demon Michelle looks like she’s in an abusive relationship https://t.co/HvGngt4iCk
+    future sings with way more passion that beyoncé if we keeping it a buck
 
 
-Counts API
-----------
+Counts Endpoint
+---------------
 
-We can also use the counts api to get counts of tweets that match our
-rule. Each request will return up to *30* results, and each count
-request can be done on a minutely, hourly, or daily basis. The
-underlying ``ResultStream`` object will handle converting your endpoint
-to the count endpoint, and you have to specify the ``count_bucket``
-argument when making a rule to use it.
+We can also use the Search API Counts endpoint to get counts of tweets
+that match our rule. Each request will return up to *30* results, and
+each count request can be done on a minutely, hourly, or daily basis.
+The underlying ``ResultStream`` object will handle converting your
+endpoint to the count endpoint, and you have to specify the
+``count_bucket`` argument when making a rule to use it.
 
 The process is very similar to grabbing tweets, but has some minor
-differneces.
+differences.
 
-**Caveat - premium sandbox environments do NOT have access to the counts
-API.**
+*Caveat - premium sandbox environments do NOT have access to the Search
+API counts endpoint.*
 
 .. code:: python
 
@@ -453,37 +470,37 @@ Our results are pretty straightforward and can be rapidly used.
 
 .. parsed-literal::
 
-    [{'count': 85660, 'timePeriod': '201712130000'},
-     {'count': 95231, 'timePeriod': '201712120000'},
-     {'count': 114540, 'timePeriod': '201712110000'},
-     {'count': 165964, 'timePeriod': '201712100000'},
-     {'count': 102022, 'timePeriod': '201712090000'},
-     {'count': 87630, 'timePeriod': '201712080000'},
-     {'count': 195794, 'timePeriod': '201712070000'},
-     {'count': 209629, 'timePeriod': '201712060000'},
-     {'count': 88742, 'timePeriod': '201712050000'},
-     {'count': 96795, 'timePeriod': '201712040000'},
-     {'count': 177595, 'timePeriod': '201712030000'},
-     {'count': 120102, 'timePeriod': '201712020000'},
-     {'count': 186759, 'timePeriod': '201712010000'},
-     {'count': 151212, 'timePeriod': '201711300000'},
-     {'count': 79311, 'timePeriod': '201711290000'},
-     {'count': 107175, 'timePeriod': '201711280000'},
-     {'count': 58192, 'timePeriod': '201711270000'},
-     {'count': 48327, 'timePeriod': '201711260000'},
-     {'count': 59639, 'timePeriod': '201711250000'},
-     {'count': 85201, 'timePeriod': '201711240000'},
-     {'count': 91544, 'timePeriod': '201711230000'},
-     {'count': 64129, 'timePeriod': '201711220000'},
-     {'count': 92065, 'timePeriod': '201711210000'},
-     {'count': 101617, 'timePeriod': '201711200000'},
-     {'count': 84733, 'timePeriod': '201711190000'},
-     {'count': 74887, 'timePeriod': '201711180000'},
-     {'count': 76091, 'timePeriod': '201711170000'},
-     {'count': 81849, 'timePeriod': '201711160000'},
-     {'count': 58423, 'timePeriod': '201711150000'},
-     {'count': 78004, 'timePeriod': '201711140000'},
-     {'count': 118077, 'timePeriod': '201711130000'}]
+    [{'count': 41513, 'timePeriod': '201801120000'},
+     {'count': 42012, 'timePeriod': '201801110000'},
+     {'count': 47334, 'timePeriod': '201801100000'},
+     {'count': 66070, 'timePeriod': '201801090000'},
+     {'count': 96729, 'timePeriod': '201801080000'},
+     {'count': 162544, 'timePeriod': '201801070000'},
+     {'count': 105965, 'timePeriod': '201801060000'},
+     {'count': 93191, 'timePeriod': '201801050000'},
+     {'count': 110430, 'timePeriod': '201801040000'},
+     {'count': 127657, 'timePeriod': '201801030000'},
+     {'count': 132053, 'timePeriod': '201801020000'},
+     {'count': 176279, 'timePeriod': '201801010000'},
+     {'count': 57287, 'timePeriod': '201712310000'},
+     {'count': 72341, 'timePeriod': '201712300000'},
+     {'count': 72151, 'timePeriod': '201712290000'},
+     {'count': 76440, 'timePeriod': '201712280000'},
+     {'count': 61644, 'timePeriod': '201712270000'},
+     {'count': 55203, 'timePeriod': '201712260000'},
+     {'count': 59181, 'timePeriod': '201712250000'},
+     {'count': 106356, 'timePeriod': '201712240000'},
+     {'count': 115224, 'timePeriod': '201712230000'},
+     {'count': 73473, 'timePeriod': '201712220000'},
+     {'count': 89280, 'timePeriod': '201712210000'},
+     {'count': 192571, 'timePeriod': '201712200000'},
+     {'count': 85625, 'timePeriod': '201712190000'},
+     {'count': 57924, 'timePeriod': '201712180000'},
+     {'count': 70558, 'timePeriod': '201712170000'},
+     {'count': 41087, 'timePeriod': '201712160000'},
+     {'count': 62799, 'timePeriod': '201712150000'},
+     {'count': 55363, 'timePeriod': '201712140000'},
+     {'count': 98255, 'timePeriod': '201712130000'}]
 
 
 
@@ -605,3 +622,4 @@ method; please see your developer console for details.
     {'timePeriod': '201709220000', 'count': 0}
     {'timePeriod': '201709210000', 'count': 1}
     {'timePeriod': '201709200000', 'count': 7}
+
