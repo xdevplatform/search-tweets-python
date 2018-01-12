@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Learning More With Twitter Data &#8212; Twitter Search APIs Python Wrapper 1.0b documentation</title>
+    
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0b',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Twitter Search API</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/twitterdev/twitter_search_api">Github</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Twitter Search API <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Python Twitter Search API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="searchtweets.html">searchtweets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="searchtweets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searchtweets.html#module-searchtweets.api_utils">searchtweets.api_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searchtweets.html#module-searchtweets.result_stream">searchtweets.result_stream module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searchtweets.html#module-searchtweets.utils">searchtweets.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="searchtweets.html#module-searchtweets">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Learning More With Twitter Data</a></li>
+<li><a class="reference internal" href="#thinking-about-trends-with-twitter-data">Thinking about trends with Twitter data</a><ul>
+<li><a class="reference internal" href="#goals">#Goals</a><ul>
+<li><a class="reference internal" href="#caveat">Caveat</a><ul>
+<li><a class="reference internal" href="#what-this-tutorial-is-not">What this tutorial is not</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#outline">Outline</a></li>
+<li><a class="reference internal" href="#whose-trend-is-it-anyway">Whose trend is it anyway?</a><ul>
+<li><a class="reference internal" href="#events-and-outcomes">Events and outcomes</a></li>
+<li><a class="reference internal" href="#running-this-notebook">Running This Notebook</a></li>
+<li><a class="reference internal" href="#notebook-setup">Notebook setup</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#working-with-the-twitter-search-api-counts-endpoint">Working with the Twitter Search API Counts Endpoint</a></li>
+<li><a class="reference internal" href="#resampling">Resampling</a></li>
+<li><a class="reference internal" href="#transformations-and-preliminary-work">Transformations and Preliminary Work</a><ul>
+<li><a class="reference internal" href="#scaling-methods">Scaling Methods</a><ul>
+<li><a class="reference internal" href="#standardization">Standardization</a></li>
+<li><a class="reference internal" href="#log-transformations">Log Transformations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#median-deviance">Median Deviance</a></li>
+<li><a class="reference internal" href="#differencing-methods">Differencing Methods</a><ul>
+<li><a class="reference internal" href="#simple-difference">Simple Difference</a></li>
+<li><a class="reference internal" href="#percentage-changed">Percentage changed</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#combining-transformations">Combining Transformations</a></li>
+<li><a class="reference internal" href="#moving-rolling-statistics">Moving/Rolling statistics</a><ul>
+<li><a class="reference internal" href="#exponentially-weighted-windows">Exponentially-weighted windows</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#detrending-a-time-series">Detrending a time series</a></li>
+<li><a class="reference internal" href="#recap">Recap</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#normalization">Normalization</a><ul>
+<li><a class="reference internal" href="#id1">Recap</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#wrap-up">Wrap-up</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="learning-more-with-twitter-data">
+<h1>Learning More With Twitter Data<a class="headerlink" href="#learning-more-with-twitter-data" title="Permalink to this headline">¶</a></h1>
+<p>Twitter is the place to find out and share what is happening, with
+hundreds of millions of Tweets sent each and every day. We are a team a
+data scientists at Twitter who are trying to help people do more with
+this vast amount of data in less time. In this spirit, we are starting a
+series of tutorials that aim to help people work with Twitter data
+effectively. Each of the posts in this series centers around a real-life
+example project and provides MIT-licensed code that you can use to
+bootstrap your projects with our enterprise and premium API products. We
+hope this series is fruitful for you and we are excited to see what
+you&#8217;ll build.</p>
+</div>
+<div class="section" id="thinking-about-trends-with-twitter-data">
+<h1>Thinking about trends with Twitter data<a class="headerlink" href="#thinking-about-trends-with-twitter-data" title="Permalink to this headline">¶</a></h1>
+<p>&#8211; by Aaron Gonzales (<a class="reference external" href="https://twitter.com/binary_aaron">&#64;binary_aaron</a>), Jan 2018</p>
+<div class="section" id="goals">
+<h2>#Goals<a class="headerlink" href="#goals" title="Permalink to this headline">¶</a></h2>
+<p>We have four high-level goals for this tutorial:</p>
+<ul class="simple">
+<li>Provide an introduction to thinking about Twitter data, particularly
+counts of Tweets, from a time-series perspective over longer
+horizons.</li>
+<li>Discuss interpretable, straightforward analyses to surface
+interesting points in Twitter data</li>
+<li>Provide reusable code for you to use in querying and working with
+time-series data</li>
+<li>Showcase some of the complexities and considerations of doing data
+science with Twitter (or any) time-series data.</li>
+</ul>
+<div class="section" id="caveat">
+<h3>Caveat<a class="headerlink" href="#caveat" title="Permalink to this headline">¶</a></h3>
+<p>If you have not read the <a class="reference external" href="https://twitterdev.github.io/search-tweets-python/collecting-and-filtering-tweets.html">first tutorial in this
+series</a>
+about how to work with the Twitter Search APIs or refine what rules you
+use to find Twitter data, please do so. We will not be covering to any
+depth rule iteration and filtration or the basics of working with the
+python <a class="reference external" href="https://github.com/twitterdev/twitter_search_api">twittersearch API</a>.</p>
+<p>This tutorial assumes familiarity with Python and Pydata programming,
+basic statistics, and data visualization techniques, though it will be
+somewhat beginner-friendly. I&#8217;ll be using the Python data stack
+throughout, but most technical users will likely be able to follow along
+with the methodology and use these concepts in other frameworks (R,
+Ruby, Julia, Scala, etc).</p>
+<div class="section" id="what-this-tutorial-is-not">
+<h4>What this tutorial is not<a class="headerlink" href="#what-this-tutorial-is-not" title="Permalink to this headline">¶</a></h4>
+<p>This notebook is not meant to be a tutorial in the Pydata ecosystem
+(python, pandas, scikit-learn, numpy) or a machine learning tutorial. We
+also will not cover building a system to detect &#8220;trending topics&#8221; at
+scale, discuss time-series modeling techniques (recurrent neural
+networks, probabilistic methods, distance-based measures, or using
+models to detect outliers, etc.), but focusing heavily on first
+principles of working with time-series data with the unique complexities
+of Twitter data.</p>
+<p>We hope to cover more advanced methods of analysis (complex outlier
+detection, motifs, time-series similarity, etc.) in another post.</p>
+</div>
+</div>
+</div>
+<div class="section" id="outline">
+<h2>Outline<a class="headerlink" href="#outline" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Whose trend is it anyway?</li>
+<li>Counting and displaying Tweet counts with the Search APIs&#8217; Counts
+endpoint</li>
+<li>Transformations</li>
+<li>Combining transformations</li>
+<li>Detrending</li>
+<li>Using transformations with thresholds to find &#8216;spikes&#8217;</li>
+<li>Normalizing with another signal</li>
+<li>Rapidly expanding to other signals</li>
+<li>Wrap up</li>
+</ul>
+</div>
+<div class="section" id="whose-trend-is-it-anyway">
+<h2>Whose trend is it anyway?<a class="headerlink" href="#whose-trend-is-it-anyway" title="Permalink to this headline">¶</a></h2>
+<p>Before we write any code - What is a trend? A trend is a time-dependent
+change in system behavior.</p>
+<p>Trends are context-specific as different phenomena are measured on
+different timescales. For example:</p>
+<ul class="simple">
+<li>CPU operations or physical particle experiments might be measured in
+nanoseconds</li>
+<li>reactive and reinforced sensor systems in robotics or vehicles might
+operate on millisecond or sub-millisecond time frames</li>
+<li>measuring virality on Twitter or changes in traffic patterns might be
+measured in minutes</li>
+<li>product launch measurements or business metrics might be collected in
+daily totals</li>
+<li>public-health or economic records like obesity rates or unemployment
+might be aggregated as monthly or yearly values</li>
+<li>geologic or astronomical phenomena might be measured in 10-1000s of
+years</li>
+</ul>
+<p>Finding the right time unit for measurement is crucial - using too wide
+of a time period to measure a phenomena will prevent you from learning
+about interesting patterns that exist within that bucket, such as
+cycles, and too small of time frames can make your data very large and
+quickly unworkable and can also introduce noise into your analysis.
+Twitter data can be bucketed into any time frame, but is typically done
+in minutely, hourly, or daily counts.</p>
+<p>Our group has written about trend detection <a class="reference external" href="https://github.com/tw-ddis/Gnip-Trend-Detection/blob/master/paper/trends.pdf">in a
+whitepaper</a>
+to far greater depth if you&#8217;re interested in more in-depth reading.</p>
+<div class="section" id="events-and-outcomes">
+<h3>Events and outcomes<a class="headerlink" href="#events-and-outcomes" title="Permalink to this headline">¶</a></h3>
+<p>Twitter data has often been used as a tool for finding sudden changes in
+signals. Many of these &#8220;trend detection&#8221; systems try to identify changes
+as quickly as possible, often in only a few minutes or hours.</p>
+<p>Common use cases include:</p>
+<ul class="simple">
+<li>notification systems for brands so they can manage a PR issue</li>
+<li>flu and disease monitoring systems</li>
+<li>increasing alpha in high-frequency trading or other financial
+services</li>
+</ul>
+<p>Other examples might be thinking about using Twitter data to monitor
+overall signal for a product or phenomenon, using this as a level of
+relevant interest. These systems will likely be looking at time frames
+over days-to-weeks (or years).</p>
+<ul class="simple">
+<li>quantifying interest in or reporting about popular musician over an
+album or tour cycle</li>
+<li>understanding long-term effects of ad campaigns or one-time events</li>
+</ul>
+<p>In this post, we&#8217;ll be using a retrospective sample of Tweet counts to
+investigate rapid change detection.</p>
+</div>
+<div class="section" id="running-this-notebook">
+<h3>Running This Notebook<a class="headerlink" href="#running-this-notebook" title="Permalink to this headline">¶</a></h3>
+<p>If you want to run this notebook, it is hosted
+<a class="reference external" href="https://github.com/twitterdev/learning_more_with_twitter_data">here</a>.
+Clone this repo and you&#8217;ll see this notebook in the <code class="docutils literal"><span class="pre">trends</span></code>
+directory. Please see the accompanying <code class="docutils literal"><span class="pre">README.md</span></code> file for full
+instructions. We&#8217;ve provided both a pip-ready
+<code class="docutils literal"><span class="pre">trends_requirements.txt</span></code> file and a conda environment file,
+<code class="docutils literal"><span class="pre">trends_example_conda_env.yml</span></code> that allows an easy virtual environment
+for this example. This example assumes python 3.6.</p>
+</div>
+<div class="section" id="notebook-setup">
+<h3>Notebook setup<a class="headerlink" href="#notebook-setup" title="Permalink to this headline">¶</a></h3>
+<p>Before we get going with our example, let&#8217;s set up our working
+environment. The following cell handles all the imports needed for the
+session and has some fun notebook tricks. There is a companion file
+called <code class="docutils literal"><span class="pre">trends_utils.py</span></code> that has code reused from other examples in
+our series and a few longer methods and rules that we&#8217;ll import to save
+space in our notebook.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># reloads libraries when their hash changes</span>
+<span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
+<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s2">&quot;WARN&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="kn">from</span> <span class="nn">tweet_parser.tweet</span> <span class="k">import</span> <span class="n">Tweet</span>
+<span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">ResultStream</span><span class="p">,</span> <span class="n">gen_rule_payload</span>
+
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<span class="kn">from</span> <span class="nn">IPython.core.interactiveshell</span> <span class="k">import</span> <span class="n">InteractiveShell</span>
+
+<span class="c1"># load the methods from our auxillary file</span>
+<span class="kn">from</span> <span class="nn">trends_utils</span> <span class="k">import</span> <span class="p">(</span><span class="n">get_frequent_terms</span><span class="p">,</span>
+                           <span class="n">plot_ts</span><span class="p">,</span>
+                           <span class="n">summarize_tweet_text</span><span class="p">,</span>
+                           <span class="n">make_normalplot</span><span class="p">,</span>
+                           <span class="n">pop_star_rules</span><span class="p">,</span>
+                           <span class="n">spotify_popular_artists_rule</span><span class="p">,</span>
+                           <span class="n">spotify_charts_rule</span><span class="p">)</span>
+
+<span class="c1"># the following makes working in a notebook a bit easier</span>
+<span class="c1"># as you don&#39;t have to have new cells for all output</span>
+<span class="n">InteractiveShell</span><span class="o">.</span><span class="n">ast_node_interactivity</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+
+<span class="c1"># allows for inline plotting</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+<span class="c1"># pretty plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;bmh&quot;</span><span class="p">)</span>
+
+<span class="c1"># better sizing for the notebook</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">autoreload</span> <span class="n">extension</span> <span class="ow">is</span> <span class="n">already</span> <span class="n">loaded</span><span class="o">.</span> <span class="n">To</span> <span class="n">reload</span> <span class="n">it</span><span class="p">,</span> <span class="n">use</span><span class="p">:</span>
+  <span class="o">%</span><span class="n">reload_ext</span> <span class="n">autoreload</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="working-with-the-twitter-search-api-counts-endpoint">
+<h2>Working with the Twitter Search API Counts Endpoint<a class="headerlink" href="#working-with-the-twitter-search-api-counts-endpoint" title="Permalink to this headline">¶</a></h2>
+<p>As said earlier, for deeper information on how to use the API, see our
+<a class="reference external" href="https://twitterdev.github.io/search-tweets-api/collecting-and-filtering-tweets.html">post on getting and filtering data with the search
+APIs</a></p>
+<p>I advocate putting your API connection info in a yaml file like this:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets_api</span><span class="p">:</span>
+  <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
+  <span class="n">account</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">ACCOUNT_NAME</span><span class="o">&gt;</span>
+  <span class="n">username</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span>
+  <span class="n">password</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span>
+  <span class="n">bearer_token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">TOKEN</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The rest of the example will assume you have put this in a file called
+<code class="docutils literal"><span class="pre">~/.twitter_keys.yaml</span></code>, though you can specify your connection
+information directing in the notebook or using an environment variable
+if you want.</p>
+<p>If you are a premium user (or testing out premium), please set
+<code class="docutils literal"><span class="pre">bearer_token</span></code>. If you have an enterprise account, please set your
+account name and password. In the following cell, be sure to only
+specify the relevant fields for your access method.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">load_credentials</span>
+
+<span class="n">search_args</span> <span class="o">=</span> <span class="n">load_credentials</span><span class="p">(</span><span class="n">account_type</span><span class="o">=</span><span class="s2">&quot;enterprise&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For the entirety of this post, we&#8217;ll be using <code class="docutils literal"><span class="pre">hourly</span></code> count data from
+the Search API&#8217;s counts endpoint , and set some arguments to make it
+easier to query data throughout our session.</p>
+<p>My preference is to make use of small functions to handle repetitive
+analysis tasks. Here, the functions</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">count_payload_maker</span></code></li>
+<li><code class="docutils literal"><span class="pre">count_collector</span></code></li>
+<li><code class="docutils literal"><span class="pre">tweet_rule_func</span></code></li>
+<li><code class="docutils literal"><span class="pre">tweet_sample_collector</span></code></li>
+</ul>
+<p>wrap arguments we&#8217;ll use throughout the session, namely start and end
+dates plus our common API connection information. We&#8217;ll do this to save
+some typing and to make a consistent environment, which is particularly
+useful in a notebook environment. <code class="docutils literal"><span class="pre">count_payload_maker</span></code> will convert a
+rule to a valid JSON payload with our dates and other arguments filled
+out. The <code class="docutils literal"><span class="pre">count_collector</span></code> function will retrieve up to a year&#8217;s worth
+of hourly count results.</p>
+<p>These functions work together to give us a valid JSON payload for the
+API and returning a bag of Tweets or Tweet counts easily.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">collect_results</span>
+
+<span class="n">from_date</span> <span class="o">=</span> <span class="s2">&quot;2017-01-01&quot;</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="s2">&quot;2017-11-20&quot;</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="s2">&quot;2017-12-31&quot;</span>
+
+<span class="n">count_payload_maker</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">gen_rule_payload</span><span class="p">,</span>
+                              <span class="n">from_date</span><span class="o">=</span><span class="n">from_date</span><span class="p">,</span>
+                              <span class="n">to_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span>
+                              <span class="n">count_bucket</span><span class="o">=</span><span class="s2">&quot;hour&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># partial allows you to creat a new function from an existing one with filled arguments</span>
+<span class="n">tweet_rule_func</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">gen_rule_payload</span><span class="p">,</span> <span class="n">from_date</span><span class="o">=</span><span class="n">from_date</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">)</span>
+<span class="n">count_collector</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">collect_results</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">search_args</span><span class="p">)</span>
+<span class="n">tweet_sample_collector</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">collect_results</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">search_args</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can also define a simple function that takes our count data and turns
+it into a nice datetime-indexed pandas <code class="docutils literal"><span class="pre">Dataframe</span></code>.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">df_from_counts</span><span class="p">(</span><span class="n">counts</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+             <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">timePeriod</span><span class="o">=</span><span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;timePeriod&quot;</span><span class="p">]))</span>
+             <span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;timePeriod&quot;</span><span class="p">)</span>
+             <span class="o">.</span><span class="n">sort_index</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">get_counts_from_rule</span><span class="p">(</span><span class="n">rule</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df_from_counts</span><span class="p">(</span><span class="n">count_collector</span><span class="p">(</span><span class="n">count_payload_maker</span><span class="p">(</span><span class="n">rule</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>We&#8217;ll be using a single sample of Tweet counts throughout most of our
+session, Tweets that mention <code class="docutils literal"><span class="pre">&quot;taylor</span> <span class="pre">swift&quot;</span></code> or her username,
+<code class="docutils literal"><span class="pre">&#64;taylorswift13</span></code> that are not Retweets. Our results can be obtained
+quickly by composing the functions as so:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">_taylor_rule</span> <span class="o">=</span> <span class="s1">&#39;@taylorswift13 OR &quot;taylor swift&quot; OR tswift -is:retweet lang:en&#39;</span>
+<span class="c1"># this is the payload</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">count_payload_maker</span><span class="p">(</span><span class="n">_taylor_rule</span><span class="p">))</span>
+</pre></div>
+</div>
+<pre class="literal-block">
+{&quot;query&quot;: &quot;&#64;taylorswift13 OR &quot;taylor swift&quot; OR tswift -is:retweet lang:en&quot;, &quot;toDate&quot;: &quot;201712310000&quot;, &quot;fromDate&quot;: &quot;201701010000&quot;, &quot;bucket&quot;: &quot;hour&quot;}
+</pre>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">get_counts_from_rule</span><span class="p">(</span><span class="n">_taylor_rule</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;API requests used so far: </span><span class="si">{ResultStream.session_request_counter}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">API</span> <span class="n">requests</span> <span class="n">used</span> <span class="n">so</span> <span class="n">far</span><span class="p">:</span> <span class="mi">141</span>
+</pre></div>
+</div>
+<p>It&#8217;s always a great idea to start with some description and
+visualization of your data, so let&#8217;s do that. There is a function,
+<code class="docutils literal"><span class="pre">plot_ts</span></code>, in the companion file <code class="docutils literal"><span class="pre">trends_utils.py</span></code> that serves as a
+flexible plotting function for our time series.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;total tweets counted: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hourly bin summary </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> --------- </span><span class="se">\n</span><span class="s2">daily bin summary&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+<span class="n">plot_ts</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;Hourly counts of &#39;</span><span class="si">{_taylor_rule}</span><span class="s2">&#39;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">total</span> <span class="n">tweets</span> <span class="n">counted</span><span class="p">:</span> <span class="n">count</span>    <span class="mi">21392427</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+<span class="n">hourly</span> <span class="nb">bin</span> <span class="n">summary</span>
+
+               <span class="n">count</span>
+<span class="n">count</span>    <span class="mf">8736.000000</span>
+<span class="n">mean</span>     <span class="mf">2448.766827</span>
+<span class="n">std</span>      <span class="mf">4655.849377</span>
+<span class="nb">min</span>       <span class="mf">324.000000</span>
+<span class="mi">25</span><span class="o">%</span>       <span class="mf">841.000000</span>
+<span class="mi">50</span><span class="o">%</span>      <span class="mf">1274.500000</span>
+<span class="mi">75</span><span class="o">%</span>      <span class="mf">2395.500000</span>
+<span class="nb">max</span>    <span class="mf">119416.000000</span>
+
+ <span class="o">---------</span>
+<span class="n">daily</span> <span class="nb">bin</span> <span class="n">summary</span>
+               <span class="n">count</span>
+<span class="n">count</span>     <span class="mf">364.000000</span>
+<span class="n">mean</span>    <span class="mf">58770.403846</span>
+<span class="n">std</span>     <span class="mf">85241.826873</span>
+<span class="nb">min</span>     <span class="mf">12963.000000</span>
+<span class="mi">25</span><span class="o">%</span>     <span class="mf">20839.250000</span>
+<span class="mi">50</span><span class="o">%</span>     <span class="mf">32388.000000</span>
+<span class="mi">75</span><span class="o">%</span>     <span class="mf">60671.750000</span>
+<span class="nb">max</span>    <span class="mf">985894.000000</span>
+</pre></div>
+</div>
+<img alt="_images/trends_17_1.png" src="_images/trends_17_1.png" />
+<p>Taylor Swift is popular - the minimum amount of Tweets per hour in the
+sample is ~325, and the max is ~120,000. Our total Tweet volume is ~21
+million Tweets! However, by visual inspection, her Tweet volumes are not
+at all &#8220;normal&#8221; and have very spiky behavior around certain dates,
+jumping several orders of magnitude from a median of about 1150 Tweets
+per hour.</p>
+<p>Given this very skewed distribution, it&#8217;s also difficult to discern a
+long-term trend with her data.</p>
+<p>Before we look at Tweets to see what is going on, we&#8217;ll continue talking
+about our series a bit.</p>
+<p>Let&#8217;s see what a histogram and a log-transformed histogram look like:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Histogram of Talor Swift hourly counts&quot;</span><span class="p">);</span>
+<span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Histogram of Talor Swift $log_2$ -transformed hourly counts&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="_images/trends_19_0.png" src="_images/trends_19_0.png" />
+<img alt="_images/trends_19_1.png" src="_images/trends_19_1.png" />
+<p>As with many phenomena on the internet, the data is highly skewed and
+not quite log-normal, with a huge volume of the overall data coming from
+a small number of days.</p>
+<p>Most analyses will require some type of filtering or transformations to
+be useful, similar to basically all of the data science world. Let&#8217;s
+examine a handful of basic methods.</p>
+</div>
+<div class="section" id="resampling">
+<h2>Resampling<a class="headerlink" href="#resampling" title="Permalink to this headline">¶</a></h2>
+<p>The Twitter Search API&#8217;s <code class="docutils literal"><span class="pre">Counts</span></code> endpoint can return data in daily,
+hourly, or minutely buckets. For the purpose of this example, we are
+sticking with hourly data, but in many cases there are reasons to get
+the highest-frequency data you can muster and do your own resampling as
+needed. Daily counts are great for getting a quick look at a Tweet
+volume or estimating / refining rules over longer periods, and might be
+useful for longer-term analyses, but are also clearly not fine enough to
+detect very changes in the data that occur within a 24h period. With
+hourly data, you&#8217;ll see natural patterns in the data (in our rule, Tweet
+volumes will peak in the US daytime and drop in the US evening hours,
+due to more English-speaking users being in North America than
+elsewhere).</p>
+<p>Obviously, we can downsample the hourly data for convenience, and we&#8217;ll
+use a daily version of this data a few times during the example, so I&#8217;ll
+save it to its own variable here.</p>
+<p>Note that the time returned is UTC. For example, see the below plot of a
+few days - mind the noticeable dip in Tweets during North American
+nighttime.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;2017-03-01&quot;</span><span class="p">:</span><span class="s2">&quot;2017-03-03&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="_images/trends_21_0.png" src="_images/trends_21_0.png" />
+<p>We can resample this to daily counts and see our longer-term trend info
+a bit more clearly, while losing some of the fidelity. In doing so, we
+do reduce the variance quite a bit and clear that daily seasonality.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">daily_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">plot_ts</span><span class="p">(</span><span class="n">daily_df</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;daily counts of </span><span class="si">{_taylor_rule}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s2">&quot;tweets per day&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="_images/trends_23_0.png" src="_images/trends_23_0.png" />
+</div>
+<div class="section" id="transformations-and-preliminary-work">
+<h2>Transformations and Preliminary Work<a class="headerlink" href="#transformations-and-preliminary-work" title="Permalink to this headline">¶</a></h2>
+<p>We&#8217;ll cover three classes of ways to transform your time-series data to
+deal with various issues that arise in time-series analysis. These areas
+are categorized as follows:</p>
+<ol class="arabic simple">
+<li>Scaling methods - Standardization, log-transforms, median absolute
+deviance</li>
+<li>Differencing - differences and percentage changes</li>
+<li>Rolling methods - rolling means and exponentially-weighted windows</li>
+</ol>
+<p>We will also discuss combining these methods.</p>
+<div class="section" id="scaling-methods">
+<h3>Scaling Methods<a class="headerlink" href="#scaling-methods" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="standardization">
+<h4>Standardization<a class="headerlink" href="#standardization" title="Permalink to this headline">¶</a></h4>
+<p>As with other data, we can put it into a <a class="reference external" href="https://en.wikipedia.org/wiki/Standard_score">standardized
+score</a> (or Z-score) so
+that we might compare it to other non-similarly based signals. Our
+transformed units are <span class="math">\(\sigma\)</span>, deviations from the mean. Recall
+that in both directions:</p>
+<ul class="simple">
+<li><span class="math">\(\pm 1 \sigma\)</span> covers ~68% of the data</li>
+<li><span class="math">\(\pm 2 \sigma\)</span> covers ~95% of the data</li>
+<li><span class="math">\(\pm 3 \sigma\)</span> covers ~99.7% of the data</li>
+</ul>
+<p>A plot of a random normal dataset after standardization will look like
+the following plot. I&#8217;ve added bands that correspond to 1, 2, and 3
+<span class="math">\(\sigma\)</span> from the mean.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">make_normalplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">random</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="_images/trends_25_0.png" src="_images/trends_25_0.png" />
+<p>We already know that our Tweet data is not normally distributed.
+Standardization does nothing to the <em>shape</em> of the Tweets, but does
+scale it down to a common value. Let&#8217;s see what it looks like:</p>
+<p>Note - my usage of pandas&#8217; <code class="docutils literal"><span class="pre">.pipe</span></code> notation might be confusing:
+<code class="docutils literal"><span class="pre">pipe</span></code> pushes the current <code class="docutils literal"><span class="pre">DataFrame</span></code> into a new function that takes
+a <code class="docutils literal"><span class="pre">DataFrame</span></code> as an argument. It&#8217;s wildly useful for chaining together
+operations, which is common in our line of work, and keeps our namespace
+clean, and is oft referred to as <a class="reference external" href="https://en.wikipedia.org/wiki/Method_chaining">method
+chaining</a>.
+<code class="docutils literal"><span class="pre">df.pipe(standardize)</span></code> is the same as <code class="docutils literal"><span class="pre">standardize(df)</span></code>, but as we
+add more complex processing chains, the <code class="docutils literal"><span class="pre">.pipe</span></code> function makes it very
+easy to follow what is happening. If you have worked with pipes in
+unix-based operating systems before, the concept is similar.</p>
+<p>The below function works in a <code class="docutils literal"><span class="pre">DataFrame</span></code> and will standardize all
+columns.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">standardize</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Put the data in the dataframe in units of deviation from the mean.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">df</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">df</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">plot_ts</span><span class="p">,</span>
+       <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Standardized tweets&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+<img alt="_images/trends_28_0.png" src="_images/trends_28_0.png" />
+<p>Clearly, there is a interesting pattern in our dataset. The standardized
+scores reflect our highly skewed set of Tweets, and we can also see a
+faint notion that the mean of the data is changing with time. This is
+very common in many real-life datasets, and will render many statistics
+quite meaningless or at least poor descriptors of the data.</p>
+<p>We can say that a time-series that has a non-time-dependent mean is
+<em>stationary</em>, and one whose mean varies with time is <em>non-stationary</em>.
+Many methods will depend on making series stationary. Often
+visualization can quickly identify a non-stationary dataset, and in our
+examples we&#8217;ll stick with that, but there is a statistical test called
+the <a class="reference external" href="https://en.wikipedia.org/wiki/Augmented_Dickey%E2%80%93Fuller_test">augmented Dickey-Fuller
+test</a>
+that will test if your series is stationary. We recommend reading about
+it and using it, though it may not handle extremely spiky data like this
+well.</p>
+</div>
+<div class="section" id="log-transformations">
+<h4>Log Transformations<a class="headerlink" href="#log-transformations" title="Permalink to this headline">¶</a></h4>
+<p>A log transformation converts any multiplicative patterns in our data to
+additive patterns, and the rescaling can be quite helpful for <em>visual</em>
+inspection as well. It now looks like there are a few patterns here -
+the big spikes in the data are preceded by a small ramp up period, and
+the drop-off after the peaks might have an upward tick trend for a while
+as well. It does seem that the mean does appear to vary over time,
+possibly 4x greater after September than in early parts of the year.</p>
+<p>(<span class="math">\(log_2\)</span> can be nice for plotting, as powers of two are easier to
+interpret quickly than powers of <span class="math">\(e\)</span>. For transforming or
+operations, natural logs can be preferred and often have nice numerical
+properties.)</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">plot_ts</span><span class="p">,</span>
+       <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;$log_2$- transformed tweets&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+<img alt="_images/trends_31_0.png" src="_images/trends_31_0.png" />
+<p>Combining the log transformation and standardization so the standardized
+values make a bit more sense, even if the log-transform isn&#8217;t quite
+enough to make this data normal. The plot below has the same
+<span class="math">\(\sigma\)</span> bands as demonstrated earlier for visual clarity.</p>
+<p>Notice that we haven&#8217;t yet dealt with our stationarity yet, and most of
+the below-average days are shifted due to the mean drift over time.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">make_normalplot</span><span class="p">,</span> <span class="n">random</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+<img alt="_images/trends_33_0.png" src="_images/trends_33_0.png" />
+</div>
+</div>
+<div class="section" id="median-deviance">
+<h3>Median Deviance<a class="headerlink" href="#median-deviance" title="Permalink to this headline">¶</a></h3>
+<p>Another important transform, we can use a metric like mean absolute
+deviance or its robust cousin, median absolute distance, to transform
+our signal into how far away a given time interval is from the median.
+Absolute measures of distance / deviance are far more tolerant of both
+larger values and outliers in the data than means / standard deviations.
+Recall that the sample standard deviation is</p>
+<div class="math">
+\[s = \sqrt{\frac{\sum_{i=1}^N (x_i - \overline{x})^2}{N-1} }\]</div>
+<p>and the median absolute deviation is</p>
+<div class="math">
+\[MAD = median( |X_i - median(X)|)\]</div>
+<p>The squared error in the standard deviation makes outliers have far
+greater influence on the overall statistic.</p>
+<p>The data can be put into units of deviance, similar to a z-score, by
+dividing each median-subtracted point by the overall median absolute
+deviation of the signal. These points are far more robust to outliers
+and shape than working with means and standard deviations, and have a
+rough correspondence to normalized z scores - values over &#8220;2&#8221; will be
+roughly &gt; 90% of other values and so forth. For more information, please
+see <a class="reference external" href="https://en.wikipedia.org/wiki/Median_absolute_deviation">here</a>.
+MAD is a key component in a time-series anomaly detection method that
+Twitter <a class="reference external" href="https://blog.twitter.com/engineering/en_us/a/2015/introducing-practical-and-robust-anomaly-detection-in-a-time-series.html">published a few years
+ago</a>.</p>
+<p>Enough chat, let&#8217;s see some plots.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">median_abs_dev</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">constant</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">constant</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">constant</span> <span class="o">=</span> <span class="mf">1.4826</span>
+    <span class="c1"># rolling will take numpy arrays</span>
+    <span class="n">abs_dev</span> <span class="o">=</span> <span class="n">constant</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">df</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">df</span><span class="p">))))</span>
+    <span class="k">return</span> <span class="n">abs_dev</span>
+
+
+<span class="k">def</span> <span class="nf">mad_normalize</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">constant</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># puts this into multiples of the MAD, similar to Zscoring</span>
+    <span class="c1"># abs(x - median(x)) / MAD(df)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">df</span>
+             <span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+             <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">)</span>
+             <span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">median_abs_dev</span><span class="p">(</span><span class="n">df</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;median abs deviation of total sample: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">median_abs_dev</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;median abs deviation of total ln-trans sample: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">median_abs_dev</span><span class="p">)))</span>
+<span class="c1">#print(&quot;median abs deviation of log-diff sampled: {}&quot;</span>
+      <span class="c1">#.format(df.pipe(np.log).diff().dropna().pipe(median_abs_dev)))</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1">#fig.tight_layout()</span>
+<span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">mad_normalize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+       <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;MAD-normalized units&quot;</span><span class="p">));</span>
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">mad_normalize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+       <span class="n">lw</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;ln-trans MAD-normalized units&quot;</span><span class="p">));</span>
+
+<span class="c1"># (df</span>
+ <span class="c1"># .diff()</span>
+ <span class="c1"># .dropna()</span>
+ <span class="c1"># .pipe(mad_normalize)</span>
+ <span class="c1"># .plot(ax=axes[1][0],</span>
+       <span class="c1"># lw=0.5,</span>
+       <span class="c1"># title=&quot;MAD-normalized diffs&quot;));</span>
+
+<span class="c1"># (df</span>
+ <span class="c1"># .pipe(np.log)</span>
+ <span class="c1"># .diff()</span>
+ <span class="c1"># .dropna()</span>
+ <span class="c1"># .pipe(mad_normalize)</span>
+ <span class="c1"># .plot(ax=axes[1][1],</span>
+       <span class="c1"># lw=0.5,</span>
+       <span class="c1"># title=&quot;MAD-normalized log-diffs&quot;));</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">median</span> <span class="nb">abs</span> <span class="n">deviation</span> <span class="n">of</span> <span class="n">total</span> <span class="n">sample</span><span class="p">:</span> <span class="mf">838.4103</span>
+<span class="n">median</span> <span class="nb">abs</span> <span class="n">deviation</span> <span class="n">of</span> <span class="n">total</span> <span class="n">ln</span><span class="o">-</span><span class="n">trans</span> <span class="n">sample</span><span class="p">:</span> <span class="mf">0.7413446237023601</span>
+</pre></div>
+</div>
+<img alt="_images/trends_36_1.png" src="_images/trends_36_1.png" />
+</div>
+<div class="section" id="differencing-methods">
+<h3>Differencing Methods<a class="headerlink" href="#differencing-methods" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="simple-difference">
+<h4>Simple Difference<a class="headerlink" href="#simple-difference" title="Permalink to this headline">¶</a></h4>
+<p>There are other ways we should think about our time series - we can
+transform it into a differenced series, where we subtract the previous
+observation (or <span class="math">\(t-t_{n}\)</span> observation) from the current
+observation. Differencing is a key method for making a non-stationary
+series stationary.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">plot_ts</span><span class="p">,</span>  <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;$\Delta$ tweets from previous hour&quot;</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span>              <span class="n">count</span>
+<span class="n">count</span>   <span class="mf">8735.000000</span>
+<span class="n">mean</span>       <span class="mf">0.073955</span>
+<span class="n">std</span>     <span class="mf">2750.112695</span>
+<span class="nb">min</span>   <span class="o">-</span><span class="mf">59761.000000</span>
+<span class="mi">25</span><span class="o">%</span>     <span class="o">-</span><span class="mf">173.000000</span>
+<span class="mi">50</span><span class="o">%</span>      <span class="o">-</span><span class="mf">22.000000</span>
+<span class="mi">75</span><span class="o">%</span>      <span class="mf">130.000000</span>
+<span class="nb">max</span>    <span class="mf">95792.000000</span>
+</pre></div>
+</div>
+<img alt="_images/trends_38_1.png" src="_images/trends_38_1.png" />
+</div>
+<div class="section" id="percentage-changed">
+<h4>Percentage changed<a class="headerlink" href="#percentage-changed" title="Permalink to this headline">¶</a></h4>
+<p>We can also think about Tweet count deltas as a percentage change over
+some period. Here, we show both the % change from the previous hour and
+the % change over the previous two days.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">plot_ts</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">pct_change</span><span class="p">(),</span>
+        <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;%$\Delta$ of tweets over previous hour&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="_images/trends_40_0.png" src="_images/trends_40_0.png" />
+</div>
+</div>
+<div class="section" id="combining-transformations">
+<h3>Combining Transformations<a class="headerlink" href="#combining-transformations" title="Permalink to this headline">¶</a></h3>
+<p>Combining our transformations is powerful and a common pre-processing
+technique. We can apply a difference transform and then normalize via
+standardization or MAD, and/or add a log-transform.</p>
+<p>Log-differences look somewhat more normally distributed, though we have
+some very large values still present in our data. The MAD-normalized
+values have far more large values present due to the MAD&#8217;s high
+sensitivity to outliers.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
+
+<span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()];</span>
+
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span>
+ <span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+       <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;$ln$ transformed standardized $\Delta$ Tweet histogram from previous hour&quot;</span><span class="p">));</span>
+
+<span class="n">plot_ts</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">),</span>
+        <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;$ln$ transformed standardized $\Delta$ Tweets from previous hour&quot;</span><span class="p">,</span>
+        <span class="n">y_label</span><span class="o">=</span><span class="s2">&quot;$\Delta (ln(Tweets)$)&quot;</span><span class="p">,</span> <span class="n">custom_ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+       <span class="p">);</span>
+
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">mad_normalize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+       <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;MAD-normalized diffs&quot;</span><span class="p">));</span>
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">mad_normalize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+       <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;MAD-normalized log-diffs&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+<img alt="_images/trends_42_0.png" src="_images/trends_42_0.png" />
+</div>
+<div class="section" id="moving-rolling-statistics">
+<h3>Moving/Rolling statistics<a class="headerlink" href="#moving-rolling-statistics" title="Permalink to this headline">¶</a></h3>
+<p>A moving window can be defined as a fixed-size array that moves over
+your data. Each window can define a function that operates on the
+current set of values within your data and returns a single (reduction)
+or range of values. Note that this is the same as a 1-dimensional
+convolution with a kernel of length <span class="math">\(k\)</span>, where <span class="math">\(k\)</span> is the
+length of your window.</p>
+<p>Moving averages are one of the most common transformations in
+time-series work. The moving average is a way to &#8220;smooth&#8221; your signal
+according to a the length of the window. The moving average at point
+<span class="math">\(t\)</span> is the mean value of all points prior to <span class="math">\(t\)</span> in your
+window. Longer windows will be slower to react to changes in the signal
+and reveal low-frequency information; shorter windows are faster to
+react to changes in the signal and reveal higher frequencies.</p>
+<p>Let&#8217;s take our signal and plot it with several moving average windows -
+1 day, 7 day, and 14 days.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;1D SMA&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.9</span><span class="p">);</span>
+<span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;7D SMA&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.9</span><span class="p">);</span>
+<span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;14D SMA&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.9</span><span class="p">);</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Three different simple moving averages for taylor swift rule&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="_images/trends_44_0.png" src="_images/trends_44_0.png" />
+<p>As stated before, longer moving windows represent lower-frequency
+signals and shorter windows represent higher-frequency signals. In the
+above chart, notice how the 14-day SMA doesn&#8217;t have a visible &#8220;peak&#8221;
+until far after both the 1 and 7-day SMAs.</p>
+<p>We can apply other statistics to the window, such as the median - giving
+us the simple moving median (SMM). Let&#8217;s compare a SMA with the SMM.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">24</span><span class="o">*</span><span class="mi">7</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+ <span class="p">[</span><span class="s2">&quot;2017-01&quot;</span><span class="p">:</span><span class="s2">&quot;2017-02&quot;</span><span class="p">]</span>
+ <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;7D SMA&quot;</span><span class="p">})</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.9</span><span class="p">));</span>
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">24</span><span class="o">*</span><span class="mi">7</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">median</span><span class="p">()</span>
+ <span class="p">[</span><span class="s2">&quot;2017-01&quot;</span><span class="p">:</span><span class="s2">&quot;2017-02&quot;</span><span class="p">]</span>
+ <span class="c1">#[&quot;2017-08&quot;]</span>
+ <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;7D SMM&quot;</span><span class="p">})</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.9</span><span class="p">));</span>
+
+<span class="n">axes</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;7DSMA vs 7DSMM for Taylor Swift Tweets&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="_images/trends_46_0.png" src="_images/trends_46_0.png" />
+<p>Notice how the SMA is more reactive than the SMM. The median is always
+less sensitive to outliers and spikes in our data.</p>
+<div class="section" id="exponentially-weighted-windows">
+<h4>Exponentially-weighted windows<a class="headerlink" href="#exponentially-weighted-windows" title="Permalink to this headline">¶</a></h4>
+<p>Exponentially-weighted moving windows (EWM) model the underlying data
+more closely, weighting more recent samples higher than samples earlier
+in the window. Let&#8217;s zoom in on a smaller date range and show the raw
+data, 8-hour span EWMA, and 48-hour EWMA.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">ewma12</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">ewm</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+ <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">ewma48</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ewm</span><span class="p">(</span><span class="mi">48</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+  <span class="p">[</span><span class="s2">&quot;2017-01-19&quot;</span><span class="p">:</span><span class="s2">&quot;2017-01-23&quot;</span><span class="p">]</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Raw counts and EWMAs; $log_2$ transformed hourly tweets&quot;</span><span class="p">)</span>
+
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x11807ffd0</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<img alt="_images/trends_48_1.png" src="_images/trends_48_1.png" />
+<p>The rest of this post will not make use of EWM windows, but they are an
+important transformation to various indicators in other domains, like
+finance. Financial indicators could be useful in Twitter data as well,
+and we might cover a post about them in the future. For the interested
+reader, we suggest reading about various indicators from
+<a class="reference external" href="http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators">StockCharts</a>.</p>
+</div>
+</div>
+<div class="section" id="detrending-a-time-series">
+<h3>Detrending a time series<a class="headerlink" href="#detrending-a-time-series" title="Permalink to this headline">¶</a></h3>
+<p>Remember our above discussion about stationarity in time-series? We&#8217;ve
+talked about differencing as a method for making a non-stationary series
+stationary, but there are other ways of detrending.</p>
+<p>Moving statistics are commonly used to help detrend a time-series. The
+moving window can be thought of as the trend itself, and taking the
+difference between the original data and its trend will take out the
+shifting mean and variance, allowing us to revisit standardization and
+model our series.</p>
+<p>The below function is a simple method to do this, and will default to a
+24-hour simple moving average. Let&#8217;s look at the visualizations below:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">detrender</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">periods</span> <span class="o">=</span> <span class="mi">24</span> <span class="k">if</span> <span class="n">periods</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">periods</span>
+    <span class="n">func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span> <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">method</span>
+
+    <span class="k">return</span> <span class="n">df</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span>
+ <span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;log-standardized histogram&quot;</span><span class="p">,</span>
+       <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="p">);</span>
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+       <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;log-standardized tweets per hour&quot;</span><span class="p">));</span>
+
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">detrender</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span>
+ <span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SMA-detrended, standardized, and $ln$ scores histogram&quot;</span><span class="p">,</span>
+       <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="p">);</span>
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">detrender</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+       <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SMA-Detrended and standardized tweets per hour&quot;</span><span class="p">));</span>
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">detrender</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">mad_normalize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+       <span class="c1">#lw=0.5,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;log-detrended-mad-normalized histogram&quot;</span><span class="p">));</span>
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">detrender</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">mad_normalize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+       <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;log-detrended-mad-normalized tweets per hour&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+<img alt="_images/trends_51_0.png" src="_images/trends_51_0.png" />
+<p>The scores are not quite normal and have a hair of skew left, but we
+have removed the problem of our longer-term trend in the data.</p>
+</div>
+<div class="section" id="recap">
+<h3>Recap<a class="headerlink" href="#recap" title="Permalink to this headline">¶</a></h3>
+<p>So, we have covered several methods of doing basic transformations:</p>
+<ul class="simple">
+<li>log transformation</li>
+<li>standardization (z-scoring)</li>
+<li>median absolute deviation</li>
+<li>differencing</li>
+<li>percentage changes</li>
+<li>rolling statistics</li>
+<li>mean</li>
+<li>median</li>
+<li>exponential weighting</li>
+<li>detrending</li>
+</ul>
+<p>All of these methods can be used to quickly put your signal into a new
+frame of reference, and are fundamental for detecting changes based on
+<em>thresholds</em>. Let&#8217;s consider three examples:</p>
+<ul class="simple">
+<li>Using our rolling MAD plot, we could say that if a value, say,
+<span class="math">\(\eta\)</span> exceeds some number of Tweets, we mark it as a major
+deviance from the series.</li>
+<li>If the basic percentage change of a time bin is &gt; 200% of the
+previous bucket, we signal it.</li>
+</ul>
+<p>Let&#8217;s demonstrate a few simple spike detectors. We&#8217;re going to:</p>
+<ul class="simple">
+<li><span class="math">\(ln\)</span>-transform the Tweet counts data</li>
+<li>detrend it by subtracting a rolling mean or median or via <code class="docutils literal"><span class="pre">.diff()</span></code></li>
+<li>standardize or MAD-normalized the results</li>
+<li>select anything that is over 4 units away from the mean</li>
+</ul>
+<p>Our <code class="docutils literal"><span class="pre">plot_ts</span></code> function will put point markers on our Tweet signal
+given a set of dates. The order of our threshold-based detectors goes
+from <em>least</em> sensitive to <em>most</em> sensitive, as you can see.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+
+<span class="n">plot_ts</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;spikes, log-SMA-detrended-standardized counts, $\sigma &gt;=4$&quot;</span><span class="p">,</span>
+        <span class="n">custom_ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">date_markers</span><span class="o">=</span><span class="p">(</span><span class="n">df</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">detrender</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;count &gt;= 4&quot;</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">index</span><span class="p">));</span>
+
+<span class="n">plot_ts</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;spikes, log-diff-standardized counts, $\sigma &gt;=4$&quot;</span><span class="p">,</span>
+        <span class="n">custom_ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">date_markers</span><span class="o">=</span><span class="p">(</span><span class="n">df</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;count &gt;= 4&quot;</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">index</span><span class="p">));</span>
+
+<span class="n">plot_ts</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;spike detector, log-detrended-mad-normalized counts, $MAD &gt;=4$&quot;</span><span class="p">,</span>
+        <span class="n">custom_ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">date_markers</span><span class="o">=</span><span class="p">(</span><span class="n">df</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">detrender</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">mad_normalize</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;count &gt;= 4&quot;</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">index</span><span class="p">));</span>
+
+<span class="n">plot_ts</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;spike detector, log-diff-mad-normalized counts, $MAD&gt;=4$&quot;</span><span class="p">,</span>
+        <span class="n">custom_ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">date_markers</span><span class="o">=</span><span class="p">(</span><span class="n">df</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+                      <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">mad_normalize</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;count &gt;= 4&quot;</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">index</span><span class="p">));</span>
+</pre></div>
+</div>
+<img alt="_images/trends_54_0.png" src="_images/trends_54_0.png" />
+<p>This process can be used to find an offline threshold value that works
+for your problem at hand. We personally prefer to use robust methods
+where possible, and like the simplicity of the log-diff-MAD
+normalization method. To be sure, our threshold for these plots was 4,
+which is interpreted as greater than four times the median absolute
+deviation for the dataset in a single hourly bin. Note that some of
+these scores are very high, in the 15+ range.</p>
+<p>We can take a quick look at some of the tweets from one of the top dates
+and summarize the text with the following code, most of which lives in
+the companion file, <code class="docutils literal"><span class="pre">trends_utils.py</span></code>.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">top_dates</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">mad_normalize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">sample_date</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)[:</span><span class="mi">16</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">top_dates</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
+
+<span class="n">sample_date</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s1">&#39;2017-12-30T23:00&#39;</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">TWEET_SAMPLE_SIZE</span> <span class="o">=</span> <span class="mi">7500</span>
+<span class="n">tweet_samp</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">gen_rule_payload</span><span class="p">(</span><span class="n">_taylor_rule</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="n">sample_date</span><span class="p">),</span>
+                             <span class="n">result_stream_args</span><span class="o">=</span><span class="n">search_args</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">TWEET_SAMPLE_SIZE</span><span class="p">,)</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">summarize_tweet_text</span><span class="p">(</span><span class="n">tweet_samp</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">-----------------</span><span class="n">start</span> <span class="n">summary</span><span class="o">-----------------------------</span>
+    <span class="o">----</span><span class="n">sample</span> <span class="n">tweets</span> <span class="o">----</span>
+<span class="n">tweet</span> <span class="n">text</span><span class="p">:</span>
+     <span class="nd">@PopCrave</span> <span class="nd">@taylorswift13</span> <span class="nd">@LuisFonsi</span> <span class="nd">@daddy_yankee</span> <span class="nd">@BTS_twt</span> <span class="nd">@RedOne_Official</span> <span class="nd">@FrencHMonTanA</span> <span class="nd">@dinahjane97</span> <span class="n">DNA</span> <span class="n">LEGEND</span>
+ <span class="n">favs</span><span class="p">:</span>       <span class="mi">700</span>
+
+<span class="n">tweet</span> <span class="n">text</span><span class="p">:</span>
+     <span class="nd">@PopCrave</span> <span class="nd">@taylorswift13</span> <span class="nd">@LuisFonsi</span> <span class="nd">@daddy_yankee</span> <span class="nd">@BTS_twt</span> <span class="nd">@RedOne_Official</span> <span class="nd">@FrencHMonTanA</span> <span class="nd">@dinahjane97</span> <span class="n">BTS</span> <span class="n">LEGENDS</span>
+ <span class="n">favs</span><span class="p">:</span>       <span class="mi">596</span>
+
+<span class="n">tweet</span> <span class="n">text</span><span class="p">:</span>
+     <span class="nd">@PopCrave</span> <span class="nd">@fetishwoIves</span> <span class="nd">@taylorswift13</span> <span class="nd">@LuisFonsi</span> <span class="nd">@daddy_yankee</span> <span class="nd">@BTS_twt</span> <span class="nd">@RedOne_Official</span> <span class="nd">@FrencHMonTanA</span> <span class="nd">@dinahjane97</span> <span class="n">BTS</span> <span class="n">KINGS</span>
+ <span class="n">favs</span><span class="p">:</span>       <span class="mi">480</span>
+
+<span class="n">tweet</span> <span class="n">text</span><span class="p">:</span>
+     <span class="nd">@cabellosang</span> <span class="nd">@PopCrave</span> <span class="nd">@taylorswift13</span> <span class="nd">@LuisFonsi</span> <span class="nd">@daddy_yankee</span> <span class="nd">@BTS_twt</span> <span class="nd">@RedOne_Official</span> <span class="nd">@FrencHMonTanA</span> <span class="nd">@dinahjane97</span> <span class="n">Not</span> <span class="n">when</span> <span class="n">Taylor</span> <span class="n">exists</span>
+ <span class="n">favs</span><span class="p">:</span>       <span class="mi">380</span>
+
+<span class="n">tweet</span> <span class="n">text</span><span class="p">:</span>
+     <span class="nd">@PopCrave</span> <span class="nd">@taylorswift13</span> <span class="nd">@LuisFonsi</span> <span class="nd">@daddy_yankee</span> <span class="nd">@BTS_twt</span> <span class="nd">@RedOne_Official</span> <span class="nd">@FrencHMonTanA</span> <span class="nd">@dinahjane97</span> <span class="n">Dinah</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">only</span> <span class="n">one</span> <span class="n">we</span> <span class="n">care</span> <span class="n">about</span>
+ <span class="n">favs</span><span class="p">:</span>       <span class="mi">373</span>
+
+<span class="n">tweet</span> <span class="n">text</span><span class="p">:</span>
+     <span class="nd">@PopCrave</span> <span class="nd">@taylorswift13</span> <span class="nd">@LuisFonsi</span> <span class="nd">@daddy_yankee</span> <span class="nd">@BTS_twt</span> <span class="nd">@RedOne_Official</span> <span class="nd">@FrencHMonTanA</span> <span class="nd">@dinahjane97</span> <span class="n">BTS</span> <span class="n">KINGS</span>
+ <span class="n">favs</span><span class="p">:</span>       <span class="mi">295</span>
+
+<span class="n">tweet</span> <span class="n">text</span><span class="p">:</span>
+     <span class="nd">@sometimeslyd</span> <span class="nd">@PopCrave</span> <span class="nd">@fetishwoIves</span> <span class="nd">@taylorswift13</span> <span class="nd">@LuisFonsi</span> <span class="nd">@daddy_yankee</span> <span class="nd">@BTS_twt</span> <span class="nd">@RedOne_Official</span> <span class="nd">@FrencHMonTanA</span> <span class="nd">@dinahjane97</span> <span class="n">Snake</span> <span class="ow">is</span> <span class="n">fine</span> <span class="k">with</span> <span class="n">almost</span> <span class="mi">50</span><span class="n">m</span> <span class="n">views</span>
+ <span class="n">favs</span><span class="p">:</span>       <span class="mi">291</span>
+
+    <span class="o">----</span><span class="n">sample</span> <span class="n">terms</span> <span class="o">----</span>
+<span class="n">taylor</span> <span class="n">swift</span><span class="p">,</span> <span class="n">demi</span> <span class="n">lovato</span><span class="p">,</span> <span class="n">dua</span> <span class="n">lipa</span><span class="p">,</span> <span class="n">louis</span> <span class="n">tomlinson</span><span class="p">,</span> <span class="n">lady</span> <span class="n">gaga</span><span class="p">,</span> <span class="n">miley</span> <span class="n">cyrus</span><span class="p">,</span> <span class="n">taylor</span> <span class="n">swift</span> <span class="n">demi</span><span class="p">,</span> <span class="n">swift</span> <span class="n">demi</span><span class="p">,</span> <span class="n">swift</span> <span class="n">demi</span> <span class="n">lovato</span><span class="p">,</span> <span class="n">sia</span> <span class="n">miley</span><span class="p">,</span> <span class="n">lovato</span> <span class="n">sia</span> <span class="n">miley</span><span class="p">,</span> <span class="n">lipa</span> <span class="n">taylor</span> <span class="n">swift</span><span class="p">,</span> <span class="n">lipa</span> <span class="n">taylor</span><span class="p">,</span> <span class="n">demi</span> <span class="n">lovato</span> <span class="n">sia</span><span class="p">,</span> <span class="n">gaga</span> <span class="n">zara</span> <span class="n">larsson</span><span class="p">,</span> <span class="n">lady</span> <span class="n">gaga</span> <span class="n">zara</span><span class="p">,</span> <span class="n">dua</span> <span class="n">lipa</span> <span class="n">taylor</span><span class="p">,</span> <span class="c1">#videomtv2017 lady, larsson louis tomlinson, tomlinson dua, tomlinson dua lipa, #videomtv2017 lady gaga, louis tomlinson dua, zara larsson, zara larsson louis, gaga zara, sia miley cyrus, lovato sia, larsson louis, taylor swift reputation, swift reputation, &lt;-url-&gt; &lt;-url-&gt;, swift &lt;-url-&gt;, &lt;-url-&gt; taylor swift, &lt;-url-&gt; taylor, taylor swift &lt;-url-&gt;, sheeran divide, kendrick lamar, 2017 sheeran divide, 2017 sheeran, swift reputation &lt;-url-&gt;, sheeran divide &lt;-url-&gt;, divide &lt;-url-&gt;, divide &lt;-url-&gt; taylor, reputation &lt;-url-&gt;, love 26k beautiful, beautiful trauma, beautiful trauma 738k, love 26k, trauma 738k</span>
+<span class="o">-----------------</span> <span class="n">end</span> <span class="n">summary</span><span class="o">------------------------------</span>
+</pre></div>
+</div>
+<p>Looks like Taylor Swift might have put out a new music video that day
+(confirmed by doing a quick Google about it).</p>
+</div>
+</div>
+<div class="section" id="normalization">
+<h2>Normalization<a class="headerlink" href="#normalization" title="Permalink to this headline">¶</a></h2>
+<p>What about providing some context to our Taylor Swift Tweet counts?</p>
+<p>How can we potentially increase the value of what we are measuring?
+Let&#8217;s introduce a way to &#8220;normalize&#8221; our time series, such that we find
+a reasonable baseline that is contextually related to our example. We
+will cover two ways to use a normalizing or contextual signal to
+understand Tweet counts: - division + transformation - distance-based
+methods</p>
+<p>Given that we are using Tweets about a pop star, perhaps a good starting
+point might to collect Tweet data from a bunch of popular musicians and
+use that as a &#8220;baseline&#8221; measure.</p>
+<p>The choice of a normalizing signal is crucial and should not be done
+without care. Use your domain knowledge or consult your experts about
+it, as a different signal may have wildly different effects on your
+results. Go through proper rule iteration and filtering to ensure you
+are measuring the right thing. You could also use multiple
+normalizations, using the mean between them to get a more robust and
+less noisy normalization signal.</p>
+<p>For starters, we&#8217;ll pull count data for an aggregate of popular artists
+on Spotify. The rule is defined in the <code class="docutils literal"><span class="pre">trends_utils.py</span></code> file, and
+we&#8217;ll show it here.</p>
+<p>This comprises what one can assume is a reasonable sample of popular
+musicians, though the genres are not always the same as Taylor Swift.
+This rule could use some iteration and filtering, but that will be left
+as an exercise for the reader.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">spotify_charts_rule</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;Post Malone&quot;</span> <span class="n">OR</span> <span class="nd">@PostMalone</span> <span class="n">OR</span>
+<span class="s2">&quot;Lil Pump&quot;</span> <span class="n">OR</span> <span class="nd">@lilpump</span> <span class="n">OR</span>
+<span class="s2">&quot;Camila Cabello&quot;</span> <span class="n">OR</span> <span class="nd">@Camila_Cabello</span> <span class="n">OR</span>
+<span class="s2">&quot;Offset&quot;</span> <span class="n">OR</span> <span class="nd">@OffsetYRN</span> <span class="n">OR</span>
+<span class="s2">&quot;G-Eazy&quot;</span> <span class="n">OR</span> <span class="nd">@G_Eazy</span> <span class="n">OR</span>
+<span class="s2">&quot;A$AP Ferg&quot;</span> <span class="n">OR</span> <span class="nd">@burdxkeyz</span> <span class="n">OR</span>
+<span class="s2">&quot;21 Savage&quot;</span> <span class="n">OR</span> <span class="nd">@21savage</span> <span class="n">OR</span>
+<span class="s2">&quot;Sam Smith&quot;</span> <span class="n">OR</span> <span class="nd">@samsmithworld</span> <span class="n">OR</span>
+<span class="s2">&quot;Migos&quot;</span> <span class="n">OR</span> <span class="nd">@Migos</span> <span class="n">OR</span>
+<span class="s2">&quot;Ed Sheeran&quot;</span> <span class="n">OR</span> <span class="nd">@edsheeran</span> <span class="n">OR</span>
+<span class="s2">&quot;Logic&quot;</span> <span class="n">OR</span> <span class="nd">@Logic301</span> <span class="n">OR</span>
+<span class="s2">&quot;Khalid&quot;</span> <span class="n">OR</span> <span class="nd">@thegreatkhalid</span> <span class="n">OR</span>
+<span class="s2">&quot;Gucci Mane&quot;</span> <span class="n">OR</span> <span class="nd">@gucci1017</span> <span class="n">OR</span>
+<span class="s2">&quot;Maroon 5&quot;</span> <span class="n">OR</span> <span class="nd">@maroon5</span> <span class="n">OR</span>
+<span class="s2">&quot;Bebe Rexha&quot;</span> <span class="n">OR</span> <span class="nd">@BebeRexha</span> <span class="n">OR</span>
+<span class="s2">&quot;Marshmello&quot;</span> <span class="n">OR</span> <span class="nd">@marshmellomusic</span> <span class="n">OR</span>
+<span class="s2">&quot;Hailee Steinfeld&quot;</span> <span class="n">OR</span> <span class="nd">@HaileeSteinfeld</span> <span class="n">OR</span>
+<span class="s2">&quot;Cardi B&quot;</span> <span class="n">OR</span> <span class="nd">@iamcardib</span> <span class="n">OR</span>
+<span class="s2">&quot;Halsey&quot;</span> <span class="n">OR</span> <span class="nd">@halsey</span> <span class="n">OR</span>
+<span class="s2">&quot;Kodak Black&quot;</span> <span class="n">OR</span> <span class="nd">@KodakBlack1k</span> <span class="n">OR</span>
+<span class="s2">&quot;Kendrick Lamar&quot;</span> <span class="n">OR</span> <span class="nd">@kendricklamar</span> <span class="n">OR</span>
+<span class="s2">&quot;Travis Scott&quot;</span> <span class="n">OR</span> <span class="nd">@trvisXX</span> <span class="n">OR</span>
+<span class="s2">&quot;XXXTENTACION&quot;</span> <span class="n">OR</span> <span class="nd">@xxxtentacion</span> <span class="n">OR</span>
+<span class="s2">&quot;French Montana&quot;</span> <span class="n">OR</span> <span class="nd">@FrencHMonTanA</span> <span class="n">OR</span>
+<span class="s2">&quot;Demi Lovato&quot;</span> <span class="n">OR</span> <span class="nd">@ddlovato</span> <span class="n">OR</span>
+<span class="s2">&quot;NAV&quot;</span> <span class="n">OR</span> <span class="nd">@beatsbynav</span> <span class="n">OR</span>
+<span class="s2">&quot;Imagine Dragons&quot;</span> <span class="n">OR</span> <span class="nd">@Imaginedragons</span> <span class="n">OR</span>
+<span class="s2">&quot;Charlie Puth&quot;</span> <span class="n">OR</span> <span class="nd">@charlieputh</span> <span class="n">OR</span>
+<span class="s2">&quot;ZAYN&quot;</span> <span class="n">OR</span> <span class="nd">@zaynmalik</span> <span class="n">OR</span>
+<span class="s2">&quot;Yo Gotti&quot;</span> <span class="n">OR</span> <span class="nd">@yogottikom</span> <span class="n">OR</span>
+<span class="s2">&quot;YBN Nahmir&quot;</span> <span class="n">OR</span> <span class="nd">@nahmir205</span> <span class="n">OR</span>
+<span class="s2">&quot;Portugal. The Man&quot;</span> <span class="n">OR</span> <span class="nd">@portugaltheman</span> <span class="n">OR</span>
+<span class="s2">&quot;Andy Williams&quot;</span> <span class="n">OR</span> <span class="nd">@ventriloquist29</span> <span class="n">OR</span>
+<span class="s2">&quot;Tay-K&quot;</span> <span class="n">OR</span> <span class="nd">@TAYK47USA</span> <span class="n">OR</span>
+<span class="s2">&quot;Luis Fonsi&quot;</span> <span class="n">OR</span> <span class="nd">@LuisFonsi</span> <span class="n">OR</span>
+<span class="s2">&quot;Clean Bandit&quot;</span> <span class="n">OR</span> <span class="nd">@cleanbandit</span> <span class="n">OR</span>
+<span class="s2">&quot;Wham!&quot;</span> <span class="n">OR</span> <span class="nd">@13WHAM</span> <span class="n">OR</span>
+<span class="s2">&quot;Playboi Carti&quot;</span> <span class="n">OR</span> <span class="nd">@damnbrandont</span> <span class="n">OR</span>
+<span class="s2">&quot;Childish Gambino&quot;</span> <span class="n">OR</span> <span class="nd">@donaldglover</span> <span class="n">OR</span>
+<span class="s2">&quot;SZA&quot;</span> <span class="n">OR</span> <span class="nd">@sza</span> <span class="n">OR</span>
+<span class="s2">&quot;J Balvin&quot;</span> <span class="n">OR</span> <span class="nd">@JBALVIN</span> <span class="n">OR</span>
+<span class="s2">&quot;Eminem&quot;</span> <span class="n">OR</span> <span class="nd">@Eminem</span> <span class="n">OR</span>
+<span class="s2">&quot;Future&quot;</span> <span class="n">OR</span> <span class="nd">@1future</span> <span class="n">OR</span>
+<span class="s2">&quot;2 Chainz&quot;</span> <span class="n">OR</span> <span class="nd">@2chainz</span> <span class="n">OR</span>
+<span class="s2">&quot;Kesha&quot;</span> <span class="n">OR</span> <span class="nd">@KeshaRose</span> <span class="n">OR</span>
+<span class="s2">&quot;Vince Guaraldi Trio&quot;</span> <span class="n">OR</span> <span class="nd">@RefinedPirate</span> <span class="n">OR</span>
+<span class="s2">&quot;Band Aid&quot;</span> <span class="n">OR</span> <span class="nd">@FirstAidKitBand</span> <span class="o">-</span><span class="ow">is</span><span class="p">:</span><span class="n">retweet</span> <span class="n">lang</span><span class="p">:</span><span class="n">en</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># This will take a minute or two.</span>
+<span class="n">spotify_df</span> <span class="o">=</span> <span class="n">get_counts_from_rule</span><span class="p">(</span><span class="n">spotify_popular_artists_rule</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When we take a look, we have roughly 567 million Tweets matched, with a
+median value of 66,000 Tweets per hour. The data still has big spikes,
+though not quite as huge as we might have seen with Taylor Swift&#8217;s data.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">spotify_df</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">spotify_df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+<span class="p">(</span><span class="n">spotify_df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">plot_ts</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+       <span class="n">custom_ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;popular artists tweets per hour&quot;</span><span class="p">));</span>
+<span class="p">(</span><span class="n">spotify_df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">plot_ts</span><span class="p">,</span>
+       <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+       <span class="n">custom_ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+       <span class="n">title</span><span class="o">=</span><span class="s2">&quot;$log_2$ pop artists tweets per hour&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">count</span>    <span class="mi">596524794</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+               <span class="n">count</span>
+<span class="n">count</span>    <span class="mf">8736.000000</span>
+<span class="n">mean</span>    <span class="mf">68283.515797</span>
+<span class="n">std</span>     <span class="mf">35666.154001</span>
+<span class="nb">min</span>     <span class="mf">21522.000000</span>
+<span class="mi">25</span><span class="o">%</span>     <span class="mf">47866.500000</span>
+<span class="mi">50</span><span class="o">%</span>     <span class="mf">62280.500000</span>
+<span class="mi">75</span><span class="o">%</span>     <span class="mf">79631.250000</span>
+<span class="nb">max</span>    <span class="mf">891481.000000</span>
+</pre></div>
+</div>
+<img alt="_images/trends_63_1.png" src="_images/trends_63_1.png" />
+<p>Let&#8217;s put our signals on the same scale to assess visual differences.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">spotify</span><span class="o">=</span><span class="n">spotify_df</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">])</span> <span class="c1"># creates a new column in the dataframe called &quot;spotify&quot;</span>
+ <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;tswift&quot;</span><span class="p">})</span>
+ <span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">median</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;rolling 24h-median, log standardized tweets per hour&quot;</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<img alt="_images/trends_65_0.png" src="_images/trends_65_0.png" />
+<p>Obviously, our signal has a lot of daily periodicity, but let&#8217;s start by
+dividing our Taylor Swift signal with this Spotify signal, using the
+Spotify signal as a baseline. We&#8217;ll show four ways of doing this
+point-by-point division -</p>
+<ol class="arabic simple">
+<li>simple division</li>
+<li>division after minor smoothing with a simple moving average</li>
+<li>simple division -&gt; log transform</li>
+<li>log-transform both signals, then divide by the <span class="math">\(SMA_{24}\)</span></li>
+</ol>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">spotify_df</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\frac{\mathrm</span><span class="si">{tswift}</span><span class="s2">}{\mathrm</span><span class="si">{spotifydf}</span><span class="s2">}$&quot;</span><span class="p">,</span>
+       <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+       <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]));</span>
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">spotify_df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\frac{\mathrm</span><span class="si">{tswift}</span><span class="s2">}{SMA_</span><span class="si">{24h}</span><span class="s2">(\mathrm</span><span class="si">{spotify}</span><span class="s2">))}$&quot;</span><span class="p">,</span>
+       <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+       <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]));</span>
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">spotify_df</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$\frac{ln(\mathrm</span><span class="si">{df}</span><span class="s2">)}{SMA_</span><span class="si">{24}</span><span class="s2">(ln(\mathrm{spotify))}}$&quot;</span><span class="p">,</span>
+       <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+       <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]));</span>
+
+<span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">spotify_df</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$ln(\frac</span><span class="si">{tswift}</span><span class="s2">{\mathrm</span><span class="si">{spotify}</span><span class="s2">})$&quot;</span><span class="p">,</span>
+       <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+       <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]));</span>
+</pre></div>
+</div>
+<img alt="_images/trends_67_0.png" src="_images/trends_67_0.png" />
+<p>Each choice of a numerator and denominator affects the overall shape,
+outcome scale, and minor variations. You will have to determine what
+makes sense for your data, but in general, you will want to think about
+putting your signal in context. This is also very useful for comparing
+two direct signals (direct signal being some specific phenomena with
+something else, like Taylor Swift vs Rihanna).</p>
+<p>In the below plot, notice how the normalized signal has an
+ever-so-slightly different shape and slightly more restrained spikes, on
+the same scale.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">df</span>
+ <span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">spotify_df</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;normalized_data&quot;</span><span class="p">})</span>
+ <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">raw</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+ <span class="c1">#.pipe(detrender)</span>
+ <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+ <span class="p">[</span><span class="s2">&quot;2017-08&quot;</span><span class="p">]</span>
+ <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;Normalized, and log-scaled $\frac{\mathrm</span><span class="si">{tswift}</span><span class="s2">}{\mathrm</span><span class="si">{spotify}</span><span class="s2">}$&quot;</span><span class="p">,</span>
+       <span class="c1">#lw=0.5,</span>
+       <span class="n">subplots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span>
+      <span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<img alt="_images/trends_69_0.png" src="_images/trends_69_0.png" />
+<p>Below, let&#8217;s compare the sample-normalized tweet counts to a
+non-sampled-normalized version and plot our detected spikes via the
+log-detrended-standardized method.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+
+<span class="n">plot_ts</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;spikes, log-detrended-standardized counts&quot;</span><span class="p">,</span>
+        <span class="n">custom_ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">date_markers</span><span class="o">=</span><span class="p">(</span><span class="n">df</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">detrender</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;count &gt;= 4&quot;</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">index</span><span class="p">));</span>
+
+<span class="n">plot_ts</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;spikes, sample-normalized, log-detrended-standardized counts&quot;</span><span class="p">,</span>
+        <span class="n">custom_ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">date_markers</span><span class="o">=</span><span class="p">(</span><span class="n">df</span>
+                      <span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">spotify_df</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">detrender</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">standardize</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;count &gt;= 4&quot;</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">index</span><span class="p">));</span>
+</pre></div>
+</div>
+<img alt="_images/trends_71_0.png" src="_images/trends_71_0.png" />
+<p>Mostly, we see that most of the points we&#8217;ve detected are the same, but
+there are some minor differences in the mix too. It would be wise to
+inspect the differing points to understand what differences are arising,
+which can help you either refine your normalization signal, understand
+your signal of interest, or refine your thresholds.</p>
+<div class="section" id="id1">
+<h3>Recap<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Social data is a bit messy. It&#8217;s not at all &#8220;normal&#8221;, often will have
+trends, and will have huge spikes in volume without seeming periodicity.</p>
+<p>We covered most of the basics of working with time-series data,
+including basic transformations, detrending, mean and median deviance,
+standardization, normalizing by another sample, and so forth. These
+methods all work well to detect abrupt changes in Twitter data via
+threshold-based methods and are easy to compute and understand.</p>
+<p>Note that we haven&#8217;t touched several big areas of time-series analysis
+that all apply to Twitter data: - <em>modeling</em> a time-series signal via
+autoregressive methods or other - distanced-based normalization -
+correlations - probabilistic methods for change detection - time series
+mining</p>
+<p>We also only looked at Tweet volumes, and not other interesting areas
+that also fit as time-series problems, e.g.:</p>
+<ul class="simple">
+<li>user-based signals (Tweets per user in buckets)</li>
+<li>language evolution</li>
+<li>favs data</li>
+</ul>
+<p>I hope to cover these methods and topics in future posts, but this
+information will be enough to get started with working with Twitter data
+from a time-series perspective.</p>
+<p>Before we go, let&#8217;s look at how you could quickly gather and compute
+these points for other signals of interest. I&#8217;ve defined a set of
+pop-star rules, so let&#8217;s collect those for the last six months or so and
+run one of our simple detectors.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">trends_utils</span> <span class="k">import</span> <span class="n">pop_star_rules</span>
+
+<span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">pop_star_rules</span><span class="p">];</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;artist&#39;</span><span class="p">:</span> <span class="s1">&#39;katy_perry&#39;</span><span class="p">,</span> <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;&quot;katy perry&quot; OR @katyperry -is:retweet lang:en&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;artist&#39;</span><span class="p">:</span> <span class="s1">&#39;rihanna&#39;</span><span class="p">,</span> <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;rihanna OR @rihanna -is:retweet lang:en&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;artist&#39;</span><span class="p">:</span> <span class="s1">&#39;lady_gaga&#39;</span><span class="p">,</span> <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;&quot;lady gaga&quot; OR @ladygaga -is:retweet lang:en&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;artist&#39;</span><span class="p">:</span> <span class="s1">&#39;ariana_grande&#39;</span><span class="p">,</span> <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;&quot;ariana grande&quot; OR @arianagrande -is:retweet lang:en&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;artist&#39;</span><span class="p">:</span> <span class="s1">&#39;beyonce&#39;</span><span class="p">,</span> <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;beyonce OR @beyonce -is:retweet lang:en&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;artist&#39;</span><span class="p">:</span> <span class="s1">&#39;selena_gomez&#39;</span><span class="p">,</span> <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;&quot;selena gomez&quot; OR @selenagomez -is:retweet lang:en&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Before you run this, know that it will use a good number of API calls.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gather_dfs</span><span class="p">(</span><span class="n">rule_list</span><span class="p">,</span> <span class="n">from_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Quick function to gather different counts endpoint</span>
+<span class="sd">    results to a single dataframe with multiple columns.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">from_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;collecting last 30 days counts by default&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;collecting data from </span><span class="si">{from_date}</span><span class="s2"> to </span><span class="si">{end_date}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">dfs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">rule_meta</span> <span class="ow">in</span> <span class="n">rule_list</span><span class="p">:</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="n">rule_meta</span><span class="p">[</span><span class="s2">&quot;rule&quot;</span><span class="p">],</span>
+                                   <span class="n">from_date</span><span class="o">=</span><span class="n">from_date</span><span class="p">,</span>
+                                   <span class="n">to_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span>
+                                   <span class="n">count_bucket</span><span class="o">=</span><span class="s2">&quot;hour&quot;</span><span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
+                              <span class="n">max_results</span><span class="o">=</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="p">,</span>
+                              <span class="n">result_stream_args</span><span class="o">=</span><span class="n">search_args</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_from_counts</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+              <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">rule_meta</span><span class="p">[</span><span class="s2">&quot;artist&quot;</span><span class="p">]}))</span>
+
+        <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">pop_stars</span> <span class="o">=</span> <span class="n">gather_dfs</span><span class="p">(</span><span class="n">pop_star_rules</span><span class="p">,</span> <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;2017-05-01&quot;</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;2017-12-31&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">collecting</span> <span class="n">data</span> <span class="kn">from</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">01</span> <span class="n">to</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;api calls used: </span><span class="si">{ResultStream.session_request_counter}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">api</span> <span class="n">calls</span> <span class="n">used</span><span class="p">:</span> <span class="mi">226</span>
+</pre></div>
+</div>
+<p>Let&#8217;s plot each of them with our logged, detrended, MAD-normalized
+threshold detector.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">));</span>
+<span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()];</span>
+
+<span class="k">for</span> <span class="n">star</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pop_stars</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">product</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])):</span>
+    <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">idx</span>
+    <span class="c1"># subsetting since there are a lot more dates in this df</span>
+    <span class="n">diver</span> <span class="o">=</span> <span class="n">spotify_df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">pop_stars</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">date_markers</span> <span class="o">=</span> <span class="p">(</span><span class="n">pop_stars</span><span class="p">[</span><span class="n">star</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+                    <span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">diver</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">detrender</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+                    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">mad_normalize</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> &gt;= 4&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">star</span><span class="p">))</span>
+                    <span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">plot_ts</span><span class="p">(</span><span class="n">pop_stars</span><span class="p">[</span><span class="n">star</span><span class="p">],</span>
+            <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">y_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">star</span><span class="p">,</span>
+            <span class="n">custom_ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">],</span>
+            <span class="n">date_markers</span><span class="o">=</span><span class="n">date_markers</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+</pre></div>
+</div>
+<img alt="_images/trends_80_1.png" src="_images/trends_80_1.png" />
+<p>There is something funny going on with Lady Gaga&#8217;s July/August data, but
+inspecting the Tweets will again be left as an exercise for the reader.</p>
+<p>We can expand this process out to anything you can imagine with Twitter
+data quickly. I&#8217;ll run through a few more examples - let&#8217;s make some
+quick rules that relate to data science, bitcoin, climate change</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">other_rules</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;artist&#39;</span><span class="p">:</span> <span class="s1">&#39;data_science&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;(data science) OR &quot;data scientists&quot; OR #datascience&#39;</span><span class="p">},</span>
+               <span class="p">{</span><span class="s1">&#39;artist&#39;</span><span class="p">:</span> <span class="s1">&#39;bitcoin&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;bitcoin OR ethereum OR blockchain OR btc OR (block chain)&#39;</span><span class="p">},</span>
+               <span class="p">{</span><span class="s1">&#39;artist&#39;</span><span class="p">:</span> <span class="s1">&#39;global_warming&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;(global warming) OR (climate change) OR climate OR (extreme weather)&#39;</span><span class="p">},</span>
+               <span class="p">{</span><span class="s1">&#39;artist&#39;</span><span class="p">:</span> <span class="s1">&#39;ai&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;rule&#39;</span><span class="p">:</span> <span class="s1">&#39;(machine learning) OR (artificial intelligence) OR #ai OR (&quot;deep learning&quot;)&#39;</span><span class="p">}</span>
+              <span class="p">]</span>
+</pre></div>
+</div>
+<p>And collect them:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">other_dfs</span> <span class="o">=</span> <span class="n">gather_dfs</span><span class="p">(</span><span class="n">other_rules</span><span class="p">,</span> <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;2017-05-01&quot;</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;2017-12-31&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">collecting</span> <span class="n">data</span> <span class="kn">from</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">01</span> <span class="n">to</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;api calls used: </span><span class="si">{ResultStream.session_request_counter}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">api</span> <span class="n">calls</span> <span class="n">used</span><span class="p">:</span> <span class="mi">258</span>
+</pre></div>
+</div>
+<p>And plot them like before, with our log-detrended-mad-normalized
+threshold detector, but notice that I&#8217;ve lowered the threshold a bit
+here to points &gt; 2.5.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">));</span>
+<span class="p">[</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()];</span>
+
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">other_dfs</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">it</span><span class="o">.</span><span class="n">product</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])):</span>
+    <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">idx</span>
+    <span class="n">date_markers</span> <span class="o">=</span> <span class="p">(</span><span class="n">other_dfs</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+                    <span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+                    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">detrender</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+                    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">mad_normalize</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> &gt;= 2.5&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">))</span>
+                    <span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">plot_ts</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">other_dfs</span><span class="p">[</span><span class="n">label</span><span class="p">]),</span>
+            <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">y_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">custom_ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">],</span>
+            <span class="n">date_markers</span><span class="o">=</span><span class="n">date_markers</span>
+           <span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+</pre></div>
+</div>
+<img alt="_images/trends_87_1.png" src="_images/trends_87_1.png" />
+</div>
+</div>
+<div class="section" id="wrap-up">
+<h2>Wrap-up<a class="headerlink" href="#wrap-up" title="Permalink to this headline">¶</a></h2>
+<p>I hope that you enjoyed this tutorial. Please feel free to reach out
+with questions or comments and to use this code as you see fit. We hope
+to write about more advanced time-series analysis methods soon.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, twitterdev.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
