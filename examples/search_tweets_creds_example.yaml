@@ -1,0 +1,11 @@
+search_tweets_ent_example:
+  account_type: enterprise
+  endpoint: <MY_ENDPOINT>
+  username: <MY_USERNAME>
+  password: <MY_PASSWORD>
+
+search_tweets_premium_example:
+  account_type: premium
+  endpoint: https://api.twitter.com/1.1/tweets/search/30day/dev.json
+  bearer_token: <A_VERY_LONG_MAGIC_STRING>
+
