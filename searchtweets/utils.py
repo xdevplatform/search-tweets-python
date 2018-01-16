@@ -13,6 +13,7 @@ import codecs
 import datetime
 import logging
 import configparser
+from configparser import MissingSectionHeaderError
 try:
     import ujson as json
 except ImportError:
@@ -23,7 +24,7 @@ import yaml
 logger = logging.getLogger(__name__)
 
 __all__ = ["take", "partition", "merge_dicts", "write_result_stream",
-           "read_configfile"]
+           "read_config"]
 
 
 def take(n, iterable):
@@ -137,28 +138,78 @@ def write_result_stream(result_stream, filename_prefix=None,
         yield from write_ndjson(_filename, stream)
 
 
-def read_configfile(filename):
+def read_config(filename):
+    """Reads and flattens a configuration file into a single
+    dictionary for ease of use. Works with both ``.config`` and 
+    ``.yaml`` files. Files should look like this:
+
+    .. code: yaml
+
+        search_rules:
+            from_date: 2017-06-01
+            to_date: 2017-09-01 01:01:00
+            pt_rule: beyonce has:geo
+
+        search_params:
+            results_per_call: 500
+            max_results: 500
+
+        output_params:
+            save_file: True
+            output_file_path: ./save_path/
+            output_file_prefix: beyonce
+            results_per_file: 10000000
+
+    or 
+
+    .. parsed-literal:
+
+        [search_rules]
+        from_date = 2017-06-01
+        to_date = 2017-09-01
+        pt_rule = beyonce has:geo
+
+        [search_params]
+        results_per_call = 500
+        max_results = 500
+
+        [output_params]
+        save_file = True
+        output_file_path = ./save_path/
+        output_file_prefix = beyonce
+        results_per_file = 10000000
+
+    Args:
+        filename (str): location of file with extension ('.config' or '.yaml')
+
+    Returns:
+        dict: parsed configuration dictionary.
     """
-    reads and flattens a configuration file into a single
-    dictionary for ease of use.
-    """
+    file_type = "yaml" if filename.endswith(".yaml") else "config"
     config = configparser.ConfigParser()
 
-    with open(filename) as f:
-        config.read_file(f)
+    if file_type == "yaml":
+        with open(os.path.expanduser(filename)) as f:
+            config_dict = yaml.load(f)
 
-    config_dict = merge_dicts(*[dict(config[s]) for s in config.sections()])
-    return config_dict
+        config_dict = merge_dicts(*[dict(config_dict[s]) for s
+                                    in config_dict.keys()])
 
+    elif file_type == "config":
+        with open(filename) as f:
+            config.read_file(f)
+            config_dict = merge_dicts(*[dict(config[s]) for s
+                                        in config.sections()])
+    else:
+        logger.error("Config files must be either in YAML or Config style.")
+        raise TypeError
 
-def read_yaml_config(filename):
-    """
-    reads and flattens a yaml file into a single
-    dictionary for ease of use.
-    """
-    with open(os.path.expanduser(filename)) as f:
-        search_creds = yaml.load(f)
-
-    config_dict = merge_dicts(*[dict(search_creds[s]) for s
-                              in search_creds.keys()])
+    # ensure args are renamed correctly:
+    config_dict = {k.replace('-', '_'): v for k, v in config_dict.items()}
+    # YAML will parse datestrings as datetimes; we'll convert them here if they
+    # exist
+    if config_dict.get("to_date") is not None:
+        config_dict["to_date"] = str(config_dict["to_date"])
+    if config_dict.get("from_date") is not None:
+        config_dict["from_date"] = str(config_dict["from_date"])
     return config_dict

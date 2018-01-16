@@ -9,7 +9,7 @@ import logging
 from searchtweets import (ResultStream,
                           load_credentials,
                           merge_dicts,
-                          read_configfile,
+                          read_config,
                           write_result_stream,
                           gen_params_from_config)
 
@@ -145,7 +145,7 @@ def main():
         logger.debug(json.dumps(args_dict, indent=4))
 
     if args_dict.get("config_filename") is not None:
-        configfile_dict = read_configfile(args_dict["config_filename"])
+        configfile_dict = read_config(args_dict["config_filename"])
     else:
         configfile_dict = {}
 
