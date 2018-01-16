@@ -7,8 +7,6 @@ Module containing the various functions that are used for API calls,
 rule generation, and related.
 """
 
-import os
-import yaml
 import re
 import datetime
 import logging
@@ -17,7 +15,7 @@ try:
 except ImportError:
     import json
 
-__all__ = ["gen_rule_payload", "gen_params_from_config", "load_credentials",
+__all__ = ["gen_rule_payload", "gen_params_from_config",
            "infer_endpoint", "convert_utc_time",
            "validate_count_api", "GNIP_RESP_CODES", "change_to_count_endpoint"]
 
@@ -222,82 +220,3 @@ def validate_count_api(rule_payload, endpoint):
             raise ValueError
 
 
-def load_credentials(filename=None, account_type=None, yaml_key=None):
-    """
-    Handles credeintial managmenet via a YAML file. YAML files should look
-    like this:
-
-    .. code:: yaml
-
-        search_tweets_api:
-          endpoint: <FULL_URL_OF_ENDPOINT>
-          account: <ACCOUNT_NAME>
-          username: <USERNAME>
-          password: <PW>
-          bearer_token: <TOKEN>
-          account_type: <enterprise OR premium>
-
-    with the appropriate fields filled out for your account. The top-level key
-    can be flexible, e.g.:
-
-    .. code:: yaml
-
-        search_tweets_dev:
-          endpoint: <FULL_URL_OF_ENDPOINT>
-          bearer_token: <TOKEN>
-          account_type: premium
-
-    as this method supports a flexible interface for reading the
-    credential files. You can keep all of your credentials in the same file.
-
-    Args:
-        filename (str): pass a filename here if you do not want to use the
-                        default '~/.twitter_keys.yaml'
-        account_type (str): pass your account type, "premium" or "enterprise"
-        yaml_key (str): the top-level key in the YAML file that has your
-        information. Defaults to `search_tweets_api`.
-
-    Returns:
-        dict of your access credentials.
-
-    Example:
-        >>> from searchtweets.api_utils import load_credentials
-        >>> search_args = load_credentials(account_type="premium")
-        >>> search_args.keys()
-        dict_keys(['bearer_token', 'endpoint'])
-
-    """
-    yaml_key = yaml_key if yaml_key is not None else "search_tweets_api"
-    filename = "~/.twitter_keys.yaml" if filename is None else filename
-    try:
-        with open(os.path.expanduser(filename)) as f:
-            search_creds = yaml.load(f)[yaml_key]
-    except KeyError:
-        logger.error("{} is missing the provided key, which is {}"
-                     .format(filename, yaml_key))
-        raise KeyError
-
-    if account_type is None:
-        account_type = search_creds.get("account_type", None)
-
-    if account_type not in {"premium", "enterprise"}:
-        logger.error("Account type cannot be inferred; please check your"
-                     " credential file, your arguments, or your "
-                     "endpoint information.")
-        raise KeyError
-
-    try:
-
-        if account_type == "premium":
-            search_args = {"bearer_token": search_creds["bearer_token"],
-                           "endpoint": search_creds["endpoint"]}
-        if account_type == "enterprise":
-            search_args = {"username": search_creds["username"],
-                           "password": search_creds["password"],
-                           "endpoint": search_creds["endpoint"]}
-    except KeyError:
-        logger.error("Your YAML file ({}) is not configured correctly and "
-                     " is missing a required field. Please see the "
-                     " readme for proper configuration".format(filename))
-        raise KeyError
-    return search_args
