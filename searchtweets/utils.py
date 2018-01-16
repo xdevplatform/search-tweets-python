@@ -7,6 +7,7 @@ Utility functions that are used in various parts of the program.
 
 from functools import reduce
 import itertools as it
+import os
 import types
 import codecs
 import datetime
@@ -16,6 +17,7 @@ try:
     import ujson as json
 except ImportError:
     import json
+import yaml
 
 
 logger = logging.getLogger(__name__)
@@ -146,4 +148,17 @@ def read_configfile(filename):
         config.read_file(f)
 
     config_dict = merge_dicts(*[dict(config[s]) for s in config.sections()])
+    return config_dict
+
+
+def read_yaml_config(filename):
+    """
+    reads and flattens a yaml file into a single
+    dictionary for ease of use.
+    """
+    with open(os.path.expanduser(filename)) as f:
+        search_creds = yaml.load(f)
+
+    config_dict = merge_dicts(*[dict(search_creds[s]) for s
+                              in search_creds.keys()])
     return config_dict

@@ -235,21 +235,20 @@ def load_credentials(filename=None, account_type=None, yaml_key=None):
           username: <USERNAME>
           password: <PW>
           bearer_token: <TOKEN>
+          account_type: <enterprise OR premium>
 
     with the appropriate fields filled out for your account. The top-level key
     can be flexible, e.g.:
 
     .. code:: yaml
 
-        twitter_search_api:
+        search_tweets_dev:
           endpoint: <FULL_URL_OF_ENDPOINT>
-          account: <ACCOUNT_NAME>
-          username: <USERNAME>
-          password: <PW>
           bearer_token: <TOKEN>
+          account_type: premium
 
     as this method supports a flexible interface for reading the
-    credential files.
+    credential files. You can keep all of your credentials in the same file.
 
     Args:
         filename (str): pass a filename here if you do not want to use the
@@ -268,9 +267,6 @@ def load_credentials(filename=None, account_type=None, yaml_key=None):
         dict_keys(['bearer_token', 'endpoint'])
 
     """
-    if account_type is None or account_type not in {"premium", "enterprise"}:
-        logger.error("You must provide either 'premium' or 'enterprise' here")
-        raise KeyError
     yaml_key = yaml_key if yaml_key is not None else "search_tweets_api"
     filename = "~/.twitter_keys.yaml" if filename is None else filename
     try:
@@ -279,6 +275,15 @@ def load_credentials(filename=None, account_type=None, yaml_key=None):
     except KeyError:
         logger.error("{} is missing the provided key, which is {}"
                      .format(filename, yaml_key))
+        raise KeyError
+
+    if account_type is None:
+        account_type = search_creds.get("account_type", None)
+
+    if account_type not in {"premium", "enterprise"}:
+        logger.error("Account type cannot be inferred; please check your"
+                     " credential file, your arguments, or your "
+                     "endpoint information.")
         raise KeyError
 
     try:
