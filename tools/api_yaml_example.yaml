@@ -9,6 +9,5 @@ search_params:
 
 output_params:
     save_file: True
-    output_file_path: ./save_path/
-    output_file_prefix: kanye
+    filename_prefix: kanye
     results_per_file: 10000000
