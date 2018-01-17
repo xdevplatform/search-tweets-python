@@ -140,27 +140,26 @@ def write_result_stream(result_stream, filename_prefix=None,
 
 def read_config(filename):
     """Reads and flattens a configuration file into a single
-    dictionary for ease of use. Works with both ``.config`` and 
+    dictionary for ease of use. Works with both ``.config`` and
     ``.yaml`` files. Files should look like this:
 
     .. code: yaml
 
         search_rules:
-            from_date: 2017-06-01
-            to_date: 2017-09-01 01:01:00
-            pt_rule: beyonce has:geo
+            from-date: 2017-06-01
+            to-date: 2017-09-01 01:01
+            pt-rule: kanye
 
         search_params:
-            results_per_call: 500
-            max_results: 500
+            results-per-call: 500
+            max-results: 500
 
         output_params:
             save_file: True
-            output_file_path: ./save_path/
-            output_file_prefix: beyonce
+            filename_prefix: kanye
             results_per_file: 10000000
 
-    or 
+    or
 
     .. parsed-literal:
 
@@ -175,8 +174,7 @@ def read_config(filename):
 
         [output_params]
         save_file = True
-        output_file_path = ./save_path/
-        output_file_prefix = beyonce
+        filename_prefix = beyonce
         results_per_file = 10000000
 
     Args:
