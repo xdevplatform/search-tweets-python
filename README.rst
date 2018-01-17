@@ -52,7 +52,7 @@ attempt to provide methods of seamless handling for all customers. The Python AP
 and the command-line app support YAML-file based methods and environment variables.
 
 A credential file can be stored anywhere, but the library will default to looking 
-for it at ``~/..twitter_keys.yaml``.
+for it at ``~/.twitter_keys.yaml``.
 
 .. code:: .yaml
 
