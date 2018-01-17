@@ -45,7 +45,7 @@ Credential Handling
 
 
 YAML
-~~~~
+----
 
 The premium and enterprise Search APIs use different authentication schemes and we
 attempt to provide methods of seamless handling for all customers. The Python API
@@ -89,7 +89,7 @@ Your credential file might look like this:
 
 
 Environment Variables
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 If you want or need to pass credentials via environment variables, you
 can set the appropriate variables of the following:
@@ -104,7 +104,7 @@ can set the appropriate variables of the following:
 
 
 Loading credentials
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 
 The ``load_credentials`` function will attempt to find these variables
@@ -153,7 +153,7 @@ The following cells demonstrates credential handling process within a Python pro
 
 
 Environment Variable Overrides
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------
 
 If we set our environment variables, the program will look for them
 regardless of a YAML file's validity or existence.
@@ -311,7 +311,7 @@ Search API usage
 We'll now load our proper credentials and move on with the example.
 
 Enterprise setup
-~~~~~~~~~~~~~~~~
+----------------
 
 .. code:: python
 
@@ -320,7 +320,7 @@ Enterprise setup
                                               env_overwrite=False)
 
 Premium Setup
-~~~~~~~~~~~~~
+-------------
 
 .. code:: python
 
