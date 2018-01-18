@@ -152,7 +152,7 @@ Example::
 
 Full options are listed below:
 
-.. parsed-literal::
+:: 
 
   $ search_tweets.py -h
   usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]

@@ -78,7 +78,7 @@ command line app and Python library.
 
 
 
-.. parsed-literal::
+::
 
     {'endpoint': '<MY_ENDPOINT>',
      'password': '<MY_PASSWORD>',
@@ -95,7 +95,7 @@ command line app and Python library.
 
 
 
-.. parsed-literal::
+:: 
 
     {'bearer_token': '<A_VERY_LONG_MAGIC_STRING>',
      'endpoint': 'https://api.twitter.com/1.1/tweets/search/30day/dev.json'}
@@ -117,7 +117,7 @@ regardless of a YAML file's validity or existence.
     load_credentials(filename="nothing", yaml_key="no_key_here")
 
 
-.. parsed-literal::
+:: 
 
     cannot read file nothing
     Error parsing YAML file; searching for valid environment variables
@@ -125,7 +125,7 @@ regardless of a YAML file's validity or existence.
 
 
 
-.. parsed-literal::
+:: 
 
     {'endpoint': 'https://endpoint',
      'password': 'ENV_PW',

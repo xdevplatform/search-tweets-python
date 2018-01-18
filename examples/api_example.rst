@@ -46,7 +46,7 @@ what a rule looks like.
     print(rule)
 
 
-.. parsed-literal::
+:: 
 
     {"query":"beyonce","maxResults":100}
 
@@ -99,7 +99,7 @@ such:
     [print(tweet.all_text, end='\n\n') for tweet in tweets[0:10]];
 
 
-.. parsed-literal::
+:: 
 
     Jay-Z &amp; Beyoncé sat across from us at dinner tonight and, at one point, I made eye contact with Beyoncé. My limbs turned to jello and I can no longer form a coherent sentence. I have seen the eyes of the lord.
     
@@ -130,7 +130,7 @@ such:
     [print(tweet.created_at_datetime) for tweet in tweets[0:10]];
 
 
-.. parsed-literal::
+:: 
 
     2018-01-17 00:08:50
     2018-01-17 00:08:49
@@ -149,7 +149,7 @@ such:
     [print(tweet.generator.get("name")) for tweet in tweets[0:10]];
 
 
-.. parsed-literal::
+:: 
 
     Twitter for iPhone
     Twitter for iPhone
@@ -185,7 +185,7 @@ stop on number of pages to limit your API call usage.
     print(rs)
 
 
-.. parsed-literal::
+:: 
 
     ResultStream: 
     	{
@@ -217,7 +217,7 @@ easily extractable.
     [print(tweet.all_text) for tweet in tweets[0:10]];
 
 
-.. parsed-literal::
+:: 
 
     gente socorro kkkkkkkkkk BEYONCE https://t.co/kJ9zubvKuf
     Jay-Z &amp; Beyoncé sat across from us at dinner tonight and, at one point, I made eye contact with Beyoncé. My limbs turned to jello and I can no longer form a coherent sentence. I have seen the eyes of the lord.
@@ -264,7 +264,7 @@ Our results are pretty straightforward and can be rapidly used.
 
 
 
-.. parsed-literal::
+:: 
 
     [{'count': 366, 'timePeriod': '201801170000'},
      {'count': 44580, 'timePeriod': '201801160000'},
@@ -322,7 +322,7 @@ method; please see your developer console for details.
     print(rule)
 
 
-.. parsed-literal::
+:: 
 
     {"query":"from:jack","maxResults":500,"toDate":"201710300000","fromDate":"201709010000"}
 
@@ -337,7 +337,7 @@ method; please see your developer console for details.
     [print(tweet.all_text) for tweet in tweets[0:10]];
 
 
-.. parsed-literal::
+:: 
 
     More clarity on our private information policy and enforcement. Working to build as much direct context into the product too https://t.co/IrwBexPrBA
     To provide more clarity on our private information policy, we’ve added specific examples of what is/is not a violation and insight into what we need to remove this type of content from the service. https://t.co/NGx5hh2tTQ
@@ -365,7 +365,7 @@ method; please see your developer console for details.
     print(rule)
 
 
-.. parsed-literal::
+:: 
 
     {"query":"from:jack","toDate":"201710300000","fromDate":"201709200000","bucket":"day"}
 
@@ -379,7 +379,7 @@ method; please see your developer console for details.
     [print(c) for c in counts];
 
 
-.. parsed-literal::
+:: 
 
     {'timePeriod': '201710290000', 'count': 0}
     {'timePeriod': '201710280000', 'count': 0}
