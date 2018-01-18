@@ -117,16 +117,11 @@ command line app and Python library.
                      yaml_key="search_tweets_ent_example",
                      env_overwrite=False)
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
-
-{'endpoint': '<MY_ENDPOINT>',
-    'password': '<MY_PASSWORD>', 'username': '<MY_USERNAME>'}
-
-.. raw:: html
-
-   </div>
+    {'endpoint': '<MY_ENDPOINT>',
+     'password': '<MY_PASSWORD>',
+     'username': '<MY_USERNAME>'}
 
 .. code:: python
 
@@ -134,17 +129,10 @@ command line app and Python library.
                      yaml_key="search_tweets_premium_example",
                      env_overwrite=False)
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
-
-{'bearer_token': '<A_VERY_LONG_MAGIC_STRING>',
-    'endpoint':
-    'https://api.twitter.com/1.1/tweets/search/30day/dev.json'}
-
-.. raw:: html
-
-   </div>
+    {'bearer_token': '<A_VERY_LONG_MAGIC_STRING>',
+     'endpoint': 'https://api.twitter.com/1.1/tweets/search/30day/dev.json'}
 
 Environment Variable Overrides
 ------------------------------
@@ -160,27 +148,16 @@ regardless of a YAML file's validity or existence.
 
     load_credentials(filename="nothing", yaml_key="no_key_here")
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
+    cannot read file nothing
+    Error parsing YAML file; searching for valid environment variables
 
-cannot read file nothing Error parsing YAML file; searching for valid
-environment variables
+::
 
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div class="parsed-literal">
-
-{'endpoint': 'https://endpoint',
-    'password': 'ENV_PW', 'username': 'ENV_USERNAME'}
-
-.. raw:: html
-
-   </div>
+    {'endpoint': 'https://endpoint',
+     'password': 'ENV_PW',
+     'username': 'ENV_USERNAME'}
 
 --------------
 
@@ -287,54 +264,72 @@ Example:
 
 Full options are listed below:
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
+    $ search_tweets.py -h
+    usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]
+                            [--credential-file-key CREDENTIAL_YAML_KEY]
+                            [--env-overwrite ENV_OVERWRITE]
+                            [--config-file CONFIG_FILENAME]
+                            [--account-type {premium,enterprise}]
+                            [--count-bucket COUNT_BUCKET]
+                            [--start-datetime FROM_DATE] [--end-datetime TO_DATE]
+                            [--filter-rule PT_RULE]
+                            [--results-per-call RESULTS_PER_CALL]
+                            [--max-results MAX_RESULTS] [--max-pages MAX_PAGES]
+                            [--results-per-file RESULTS_PER_FILE]
+                            [--filename-prefix FILENAME_PREFIX]
+                            [--no-print-stream] [--print-stream] [--debug]
 
-$ search_tweets.py -h usage: search_tweets.py [-h] [--credential-file
-CREDENTIAL_FILE] [--credential-file-key CREDENTIAL_YAML_KEY]
-[--env-overwrite ENV_OVERWRITE] [--config-file CONFIG_FILENAME]
-[--account-type {premium,enterprise}] [--count-bucket COUNT_BUCKET]
-[--start-datetime FROM_DATE] [--end-datetime TO_DATE] [--filter-rule
-PT_RULE] [--results-per-call RESULTS_PER_CALL] [--max-results
-MAX_RESULTS] [--max-pages MAX_PAGES] [--results-per-file
-RESULTS_PER_FILE] [--filename-prefix FILENAME_PREFIX]
-[--no-print-stream] [--print-stream] [--debug]
-
-optional arguments:
-    -h, --help show this help message and exit --credential-file
-    CREDENTIAL_FILE Location of the yaml file used to hold your
-    credentials. --credential-file-key CREDENTIAL_YAML_KEY the key in
-    the credential file used for this session's credentials. Defaults to
-    search_tweets_api --env-overwrite ENV_OVERWRITE Overwrite
-    YAML-parsed credentials with any set environment variables. See API
-    docs or readme for details. --config-file CONFIG_FILENAME
-    configuration file with all parameters. Far, easier to use than the
-    command-line args version., If a valid file is found, all args will
-    be populated, from there. Remaining command-line args, will overrule
-    args found in the config, file. --account-type {premium,enterprise}
-    The account type you are using --count-bucket COUNT_BUCKET Bucket
-    size for counts API. Options:, day, hour, minute (default is 'day').
-    --start-datetime FROM_DATE Start of datetime window, format
-    'YYYY-mm-DDTHH:MM' (default: -30 days) --end-datetime TO_DATE End of
-    datetime window, format 'YYYY-mm-DDTHH:MM' (default: most recent
-    date) --filter-rule PT_RULE PowerTrack filter rule (See:
-    http://support.gnip.com/c
-    ustomer/portal/articles/901152-powertrack-operators)
-    --results-per-call RESULTS_PER_CALL Number of results to return per
-    call (default 100; max 500) - corresponds to 'maxResults' in the API
-    --max-results MAX_RESULTS Maximum results to return for this session
-    (defaults to 500; see -a option --max-pages MAX_PAGES Maximum number
-    of pages/api calls to use for this session. --results-per-file
-    RESULTS_PER_FILE Maximum tweets to save per file. --filename-prefix
-    FILENAME_PREFIX prefix for the filename where tweet json data will
-    be stored. --no-print-stream disable print streaming --print-stream
-    Print tweet stream to stdout --debug print all info and warning
-    messages
-
-.. raw:: html
-
-   </div>
+    optional arguments:
+      -h, --help            show this help message and exit
+      --credential-file CREDENTIAL_FILE
+                            Location of the yaml file used to hold your
+                            credentials.
+      --credential-file-key CREDENTIAL_YAML_KEY
+                            the key in the credential file used for this session's
+                            credentials. Defaults to search_tweets_api
+      --env-overwrite ENV_OVERWRITE
+                            Overwrite YAML-parsed credentials with any set
+                            environment variables. See API docs or readme for
+                            details.
+      --config-file CONFIG_FILENAME
+                            configuration file with all parameters. Far, easier to
+                            use than the command-line args version., If a valid
+                            file is found, all args will be populated, from there.
+                            Remaining command-line args, will overrule args found
+                            in the config, file.
+      --account-type {premium,enterprise}
+                            The account type you are using
+      --count-bucket COUNT_BUCKET
+                            Bucket size for counts API. Options:, day, hour,
+                            minute (default is 'day').
+      --start-datetime FROM_DATE
+                            Start of datetime window, format 'YYYY-mm-DDTHH:MM'
+                            (default: -30 days)
+      --end-datetime TO_DATE
+                            End of datetime window, format 'YYYY-mm-DDTHH:MM'
+                            (default: most recent date)
+      --filter-rule PT_RULE
+                            PowerTrack filter rule (See: http://support.gnip.com/c
+                            ustomer/portal/articles/901152-powertrack-operators)
+      --results-per-call RESULTS_PER_CALL
+                            Number of results to return per call (default 100; max
+                            500) - corresponds to 'maxResults' in the API
+      --max-results MAX_RESULTS
+                            Maximum results to return for this session (defaults
+                            to 500; see -a option
+      --max-pages MAX_PAGES
+                            Maximum number of pages/api calls to use for this
+                            session.
+      --results-per-file RESULTS_PER_FILE
+                            Maximum tweets to save per file.
+      --filename-prefix FILENAME_PREFIX
+                            prefix for the filename where tweet json data will be
+                            stored.
+      --no-print-stream     disable print streaming
+      --print-stream        Print tweet stream to stdout
+      --debug               print all info and warning messages
 
 --------------
 
@@ -389,15 +384,9 @@ what a rule looks like.
     rule = gen_rule_payload("beyonce", results_per_call=100) # testing with a sandbox account
     print(rule)
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
-
-{"query":"beyonce","maxResults":100}
-
-.. raw:: html
-
-   </div>
+    {"query":"beyonce","maxResults":100}
 
 This rule will match tweets that have the text ``beyonce`` in them.
 
@@ -445,71 +434,63 @@ such:
 
     [print(tweet.all_text, end='\n\n') for tweet in tweets[0:10]];
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
+    Jay-Z &amp; Beyoncé sat across from us at dinner tonight and, at one point, I made eye contact with Beyoncé. My limbs turned to jello and I can no longer form a coherent sentence. I have seen the eyes of the lord.
 
-Jay-Z &amp; Beyoncé sat across from us at dinner tonight and, at one
-point, I made eye contact with Beyoncé. My limbs turned to jello and I
-can no longer form a coherent sentence. I have seen the eyes of the
-lord.
+    Beyoncé and it isn't close. https://t.co/UdOU9oUtuW
 
-Beyoncé and it isn't close. https://t.co/UdOU9oUtuW
+    As you could guess.. Signs by Beyoncé will always be my shit.
 
-As you could guess.. Signs by Beyoncé will always be my shit.
+    When Beyoncé adopts a dog 🙌🏾 https://t.co/U571HyLG4F
 
-When Beyoncé adopts a dog 🙌🏾 https://t.co/U571HyLG4F
+    Hold up, you can't just do that to Beyoncé
+    https://t.co/3p14DocGqA
 
-Hold up, you can't just do that to Beyoncé https://t.co/3p14DocGqA
+    Why y'all keep using Rihanna and Beyoncé gifs to promote the show when y'all let Bey lose the same award she deserved 3 times and let Rihanna leave with nothing but the clothes on her back? https://t.co/w38QpH0wma
 
-Why y'all keep using Rihanna and Beyoncé gifs to promote the show when
-y'all let Bey lose the same award she deserved 3 times and let Rihanna
-leave with nothing but the clothes on her back? https://t.co/w38QpH0wma
+    30) anybody tell you that you look like Beyoncé https://t.co/Vo4Z7bfSCi
 
-30) anybody tell you that you look like Beyoncé https://t.co/Vo4Z7bfSCi
+    Mi Beyoncé favorita https://t.co/f9Jp600l2B
+    Beyoncé necesita ver esto. Que diosa @TiniStoessel 🔥🔥🔥 https://t.co/gadVJbehQZ
 
-Mi Beyoncé favorita https://t.co/f9Jp600l2B Beyoncé necesita ver esto.
-Que diosa @TiniStoessel 🔥🔥🔥 https://t.co/gadVJbehQZ
+    Joanne Pearce Is now playing IF I WAS A BOY - BEYONCE.mp3 by !
 
-Joanne Pearce Is now playing IF I WAS A BOY - BEYONCE.mp3 by !
-
-I'm trynna see beyoncé's finsta before I die
-
-.. raw:: html
-
-   </div>
+    I'm trynna see beyoncé's finsta before I die
 
 .. code:: python
 
     [print(tweet.created_at_datetime) for tweet in tweets[0:10]];
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
-
-2018-01-17 00:08:50 2018-01-17 00:08:49 2018-01-17 00:08:44 2018-01-17
-00:08:42 2018-01-17 00:08:42 2018-01-17 00:08:42 2018-01-17 00:08:40
-2018-01-17 00:08:38 2018-01-17 00:08:37 2018-01-17 00:08:37
-
-.. raw:: html
-
-   </div>
+    2018-01-17 00:08:50
+    2018-01-17 00:08:49
+    2018-01-17 00:08:44
+    2018-01-17 00:08:42
+    2018-01-17 00:08:42
+    2018-01-17 00:08:42
+    2018-01-17 00:08:40
+    2018-01-17 00:08:38
+    2018-01-17 00:08:37
+    2018-01-17 00:08:37
 
 .. code:: python
 
     [print(tweet.generator.get("name")) for tweet in tweets[0:10]];
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
-
-Twitter for iPhone Twitter for iPhone Twitter for iPhone Twitter for
-iPhone Twitter for iPhone Twitter for iPhone Twitter for Android Twitter
-for iPhone Airtime Pro Twitter for iPhone
-
-.. raw:: html
-
-   </div>
+    Twitter for iPhone
+    Twitter for iPhone
+    Twitter for iPhone
+    Twitter for iPhone
+    Twitter for iPhone
+    Twitter for iPhone
+    Twitter for Android
+    Twitter for iPhone
+    Airtime Pro
+    Twitter for iPhone
 
 Voila, we have some tweets. For interactive environments and other cases
 where you don't care about collecting your data in a single load or
@@ -532,23 +513,19 @@ stop on number of pages to limit your API call usage.
 
     print(rs)
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
-
-ResultStream:
-    {
-
-"username":null,
-    "endpoint":"`https:\/\/api.twitter.com\/1.1\/tweets\/search\/30day\/dev.json <https:\/\/api.twitter.com\/1.1\/tweets\/search\/30day\/dev.json>`__",
-    "rule_payload":{ "query":"beyonce", "maxResults":100 },
-    "tweetify":true, "max_results":500
-
-}
-
-.. raw:: html
-
-   </div>
+    ResultStream: 
+    	{
+        "username":null,
+        "endpoint":"https:\/\/api.twitter.com\/1.1\/tweets\/search\/30day\/dev.json",
+        "rule_payload":{
+            "query":"beyonce",
+            "maxResults":100
+        },
+        "tweetify":true,
+        "max_results":500
+    }
 
 There is a function, ``.stream``, that seamlessly handles requests and
 pagination for a given query. It returns a generator, and to grab our
@@ -566,29 +543,20 @@ easily extractable.
     # using unidecode to prevent emoji/accents printing 
     [print(tweet.all_text) for tweet in tweets[0:10]];
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
-
-gente socorro kkkkkkkkkk BEYONCE https://t.co/kJ9zubvKuf Jay-Z &amp;
-Beyoncé sat across from us at dinner tonight and, at one point, I made
-eye contact with Beyoncé. My limbs turned to jello and I can no longer
-form a coherent sentence. I have seen the eyes of the lord. Beyoncé and
-it isn't close. https://t.co/UdOU9oUtuW As you could guess.. Signs by
-Beyoncé will always be my shit. When Beyoncé adopts a dog 🙌🏾
-https://t.co/U571HyLG4F Hold up, you can't just do that to Beyoncé
-https://t.co/3p14DocGqA Why y'all keep using Rihanna and Beyoncé gifs to
-promote the show when y'all let Bey lose the same award she deserved 3
-times and let Rihanna leave with nothing but the clothes on her back?
-https://t.co/w38QpH0wma 30) anybody tell you that you look like Beyoncé
-https://t.co/Vo4Z7bfSCi Mi Beyoncé favorita https://t.co/f9Jp600l2B
-Beyoncé necesita ver esto. Que diosa @TiniStoessel 🔥🔥🔥
-https://t.co/gadVJbehQZ Joanne Pearce Is now playing IF I WAS A BOY -
-BEYONCE.mp3 by !
-
-.. raw:: html
-
-   </div>
+    gente socorro kkkkkkkkkk BEYONCE https://t.co/kJ9zubvKuf
+    Jay-Z &amp; Beyoncé sat across from us at dinner tonight and, at one point, I made eye contact with Beyoncé. My limbs turned to jello and I can no longer form a coherent sentence. I have seen the eyes of the lord.
+    Beyoncé and it isn't close. https://t.co/UdOU9oUtuW
+    As you could guess.. Signs by Beyoncé will always be my shit.
+    When Beyoncé adopts a dog 🙌🏾 https://t.co/U571HyLG4F
+    Hold up, you can't just do that to Beyoncé
+    https://t.co/3p14DocGqA
+    Why y'all keep using Rihanna and Beyoncé gifs to promote the show when y'all let Bey lose the same award she deserved 3 times and let Rihanna leave with nothing but the clothes on her back? https://t.co/w38QpH0wma
+    30) anybody tell you that you look like Beyoncé https://t.co/Vo4Z7bfSCi
+    Mi Beyoncé favorita https://t.co/f9Jp600l2B
+    Beyoncé necesita ver esto. Que diosa @TiniStoessel 🔥🔥🔥 https://t.co/gadVJbehQZ
+    Joanne Pearce Is now playing IF I WAS A BOY - BEYONCE.mp3 by !
 
 Counts Endpoint
 ---------------
@@ -618,38 +586,39 @@ Our results are pretty straightforward and can be rapidly used.
 
     counts
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
-
-[{'count': 366, 'timePeriod': '201801170000'},
-    {'count': 44580, 'timePeriod': '201801160000'}, {'count': 61932,
-    'timePeriod': '201801150000'}, {'count': 59678, 'timePeriod':
-    '201801140000'}, {'count': 44014, 'timePeriod': '201801130000'},
-    {'count': 46607, 'timePeriod': '201801120000'}, {'count': 41523,
-    'timePeriod': '201801110000'}, {'count': 47056, 'timePeriod':
-    '201801100000'}, {'count': 65506, 'timePeriod': '201801090000'},
-    {'count': 95251, 'timePeriod': '201801080000'}, {'count': 162883,
-    'timePeriod': '201801070000'}, {'count': 106344, 'timePeriod':
-    '201801060000'}, {'count': 93542, 'timePeriod': '201801050000'},
-    {'count': 110415, 'timePeriod': '201801040000'}, {'count': 127523,
-    'timePeriod': '201801030000'}, {'count': 131952, 'timePeriod':
-    '201801020000'}, {'count': 176157, 'timePeriod': '201801010000'},
-    {'count': 57229, 'timePeriod': '201712310000'}, {'count': 72277,
-    'timePeriod': '201712300000'}, {'count': 72051, 'timePeriod':
-    '201712290000'}, {'count': 76371, 'timePeriod': '201712280000'},
-    {'count': 61578, 'timePeriod': '201712270000'}, {'count': 55118,
-    'timePeriod': '201712260000'}, {'count': 59115, 'timePeriod':
-    '201712250000'}, {'count': 106219, 'timePeriod': '201712240000'},
-    {'count': 114732, 'timePeriod': '201712230000'}, {'count': 73327,
-    'timePeriod': '201712220000'}, {'count': 89171, 'timePeriod':
-    '201712210000'}, {'count': 192381, 'timePeriod': '201712200000'},
-    {'count': 85554, 'timePeriod': '201712190000'}, {'count': 57829,
-    'timePeriod': '201712180000'}]
-
-.. raw:: html
-
-   </div>
+    [{'count': 366, 'timePeriod': '201801170000'},
+     {'count': 44580, 'timePeriod': '201801160000'},
+     {'count': 61932, 'timePeriod': '201801150000'},
+     {'count': 59678, 'timePeriod': '201801140000'},
+     {'count': 44014, 'timePeriod': '201801130000'},
+     {'count': 46607, 'timePeriod': '201801120000'},
+     {'count': 41523, 'timePeriod': '201801110000'},
+     {'count': 47056, 'timePeriod': '201801100000'},
+     {'count': 65506, 'timePeriod': '201801090000'},
+     {'count': 95251, 'timePeriod': '201801080000'},
+     {'count': 162883, 'timePeriod': '201801070000'},
+     {'count': 106344, 'timePeriod': '201801060000'},
+     {'count': 93542, 'timePeriod': '201801050000'},
+     {'count': 110415, 'timePeriod': '201801040000'},
+     {'count': 127523, 'timePeriod': '201801030000'},
+     {'count': 131952, 'timePeriod': '201801020000'},
+     {'count': 176157, 'timePeriod': '201801010000'},
+     {'count': 57229, 'timePeriod': '201712310000'},
+     {'count': 72277, 'timePeriod': '201712300000'},
+     {'count': 72051, 'timePeriod': '201712290000'},
+     {'count': 76371, 'timePeriod': '201712280000'},
+     {'count': 61578, 'timePeriod': '201712270000'},
+     {'count': 55118, 'timePeriod': '201712260000'},
+     {'count': 59115, 'timePeriod': '201712250000'},
+     {'count': 106219, 'timePeriod': '201712240000'},
+     {'count': 114732, 'timePeriod': '201712230000'},
+     {'count': 73327, 'timePeriod': '201712220000'},
+     {'count': 89171, 'timePeriod': '201712210000'},
+     {'count': 192381, 'timePeriod': '201712200000'},
+     {'count': 85554, 'timePeriod': '201712190000'},
+     {'count': 57829, 'timePeriod': '201712180000'}]
 
 Dated searches / Full Archive Search
 ------------------------------------
@@ -672,15 +641,9 @@ method; please see your developer console for details.
                             results_per_call=500)
     print(rule)
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
-
-{"query":"from:jack","maxResults":500,"toDate":"201710300000","fromDate":"201709010000"}
-
-.. raw:: html
-
-   </div>
+    {"query":"from:jack","maxResults":500,"toDate":"201710300000","fromDate":"201709010000"}
 
 .. code:: python
 
@@ -691,36 +654,22 @@ method; please see your developer console for details.
     # usiing unidecode only to 
     [print(tweet.all_text) for tweet in tweets[0:10]];
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
+    More clarity on our private information policy and enforcement. Working to build as much direct context into the product too https://t.co/IrwBexPrBA
+    To provide more clarity on our private information policy, we’ve added specific examples of what is/is not a violation and insight into what we need to remove this type of content from the service. https://t.co/NGx5hh2tTQ
+    Launching violent groups and hateful images/symbols policy on November 22nd https://t.co/NaWuBPxyO5
+    We will now launch our policies on violent groups and hateful imagery and hate symbols on Nov 22. During the development process, we received valuable feedback that we’re implementing before these are published and enforced. See more on our policy development process here 👇 https://t.co/wx3EeH39BI
+    @WillStick @lizkelley Happy birthday Liz!
+    Off-boarding advertising from all accounts owned by Russia Today (RT) and Sputnik.
 
-More clarity on our private information policy and enforcement. Working
-to build as much direct context into the product too
-https://t.co/IrwBexPrBA To provide more clarity on our private
-information policy, we’ve added specific examples of what is/is not a
-violation and insight into what we need to remove this type of content
-from the service. https://t.co/NGx5hh2tTQ Launching violent groups and
-hateful images/symbols policy on November 22nd https://t.co/NaWuBPxyO5
-We will now launch our policies on violent groups and hateful imagery
-and hate symbols on Nov 22. During the development process, we received
-valuable feedback that we’re implementing before these are published and
-enforced. See more on our policy development process here 👇
-https://t.co/wx3EeH39BI @WillStick @lizkelley Happy birthday Liz!
-Off-boarding advertising from all accounts owned by Russia Today (RT)
-and Sputnik.
-
-We’re donating all projected earnings ($1.9mm) to support external
-research into the use of Twitter in elections, including use of
-malicious automation and misinformation. https://t.co/zIxfqqXCZr @TMFJMo
-@anthonynoto Thank you @gasca @stratechery @Lefsetz letter @gasca
-@stratechery Bridgewater’s Daily Observations Yup!!!! ❤️❤️❤️❤️
-#davechappelle https://t.co/ybSGNrQpYF @ndimichino Sometimes Setting up
-at @CampFlogGnaw https://t.co/nVq8QjkKsf
-
-.. raw:: html
-
-   </div>
+    We’re donating all projected earnings ($1.9mm) to support external research into the use of Twitter in elections, including use of malicious automation and misinformation. https://t.co/zIxfqqXCZr
+    @TMFJMo @anthonynoto Thank you
+    @gasca @stratechery @Lefsetz letter
+    @gasca @stratechery Bridgewater’s Daily Observations
+    Yup!!!! ❤️❤️❤️❤️ #davechappelle https://t.co/ybSGNrQpYF
+    @ndimichino Sometimes
+    Setting up at @CampFlogGnaw https://t.co/nVq8QjkKsf
 
 .. code:: python
 
@@ -731,15 +680,9 @@ at @CampFlogGnaw https://t.co/nVq8QjkKsf
                             results_per_call=500)
     print(rule)
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
-
-{"query":"from:jack","toDate":"201710300000","fromDate":"201709200000","bucket":"day"}
-
-.. raw:: html
-
-   </div>
+    {"query":"from:jack","toDate":"201710300000","fromDate":"201709200000","bucket":"day"}
 
 .. code:: python
 
@@ -749,38 +692,45 @@ at @CampFlogGnaw https://t.co/nVq8QjkKsf
 
     [print(c) for c in counts];
 
-.. raw:: html
+::
 
-   <div class="parsed-literal">
-
-{'timePeriod': '201710290000', 'count': 0} {'timePeriod':
-'201710280000', 'count': 0} {'timePeriod': '201710270000', 'count': 3}
-{'timePeriod': '201710260000', 'count': 6} {'timePeriod':
-'201710250000', 'count': 4} {'timePeriod': '201710240000', 'count': 4}
-{'timePeriod': '201710230000', 'count': 0} {'timePeriod':
-'201710220000', 'count': 0} {'timePeriod': '201710210000', 'count': 3}
-{'timePeriod': '201710200000', 'count': 2} {'timePeriod':
-'201710190000', 'count': 1} {'timePeriod': '201710180000', 'count': 6}
-{'timePeriod': '201710170000', 'count': 2} {'timePeriod':
-'201710160000', 'count': 2} {'timePeriod': '201710150000', 'count': 1}
-{'timePeriod': '201710140000', 'count': 64} {'timePeriod':
-'201710130000', 'count': 3} {'timePeriod': '201710120000', 'count': 4}
-{'timePeriod': '201710110000', 'count': 8} {'timePeriod':
-'201710100000', 'count': 4} {'timePeriod': '201710090000', 'count': 1}
-{'timePeriod': '201710080000', 'count': 0} {'timePeriod':
-'201710070000', 'count': 0} {'timePeriod': '201710060000', 'count': 1}
-{'timePeriod': '201710050000', 'count': 3} {'timePeriod':
-'201710040000', 'count': 5} {'timePeriod': '201710030000', 'count': 8}
-{'timePeriod': '201710020000', 'count': 5} {'timePeriod':
-'201710010000', 'count': 0} {'timePeriod': '201709300000', 'count': 0}
-{'timePeriod': '201709290000', 'count': 0} {'timePeriod':
-'201709280000', 'count': 9} {'timePeriod': '201709270000', 'count': 41}
-{'timePeriod': '201709260000', 'count': 13} {'timePeriod':
-'201709250000', 'count': 6} {'timePeriod': '201709240000', 'count': 7}
-{'timePeriod': '201709230000', 'count': 3} {'timePeriod':
-'201709220000', 'count': 0} {'timePeriod': '201709210000', 'count': 1}
-{'timePeriod': '201709200000', 'count': 7}
-
-.. raw:: html
-
-   </div>
+    {'timePeriod': '201710290000', 'count': 0}
+    {'timePeriod': '201710280000', 'count': 0}
+    {'timePeriod': '201710270000', 'count': 3}
+    {'timePeriod': '201710260000', 'count': 6}
+    {'timePeriod': '201710250000', 'count': 4}
+    {'timePeriod': '201710240000', 'count': 4}
+    {'timePeriod': '201710230000', 'count': 0}
+    {'timePeriod': '201710220000', 'count': 0}
+    {'timePeriod': '201710210000', 'count': 3}
+    {'timePeriod': '201710200000', 'count': 2}
+    {'timePeriod': '201710190000', 'count': 1}
+    {'timePeriod': '201710180000', 'count': 6}
+    {'timePeriod': '201710170000', 'count': 2}
+    {'timePeriod': '201710160000', 'count': 2}
+    {'timePeriod': '201710150000', 'count': 1}
+    {'timePeriod': '201710140000', 'count': 64}
+    {'timePeriod': '201710130000', 'count': 3}
+    {'timePeriod': '201710120000', 'count': 4}
+    {'timePeriod': '201710110000', 'count': 8}
+    {'timePeriod': '201710100000', 'count': 4}
+    {'timePeriod': '201710090000', 'count': 1}
+    {'timePeriod': '201710080000', 'count': 0}
+    {'timePeriod': '201710070000', 'count': 0}
+    {'timePeriod': '201710060000', 'count': 1}
+    {'timePeriod': '201710050000', 'count': 3}
+    {'timePeriod': '201710040000', 'count': 5}
+    {'timePeriod': '201710030000', 'count': 8}
+    {'timePeriod': '201710020000', 'count': 5}
+    {'timePeriod': '201710010000', 'count': 0}
+    {'timePeriod': '201709300000', 'count': 0}
+    {'timePeriod': '201709290000', 'count': 0}
+    {'timePeriod': '201709280000', 'count': 9}
+    {'timePeriod': '201709270000', 'count': 41}
+    {'timePeriod': '201709260000', 'count': 13}
+    {'timePeriod': '201709250000', 'count': 6}
+    {'timePeriod': '201709240000', 'count': 7}
+    {'timePeriod': '201709230000', 'count': 3}
+    {'timePeriod': '201709220000', 'count': 0}
+    {'timePeriod': '201709210000', 'count': 1}
+    {'timePeriod': '201709200000', 'count': 7}
