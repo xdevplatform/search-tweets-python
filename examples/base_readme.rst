@@ -221,7 +221,7 @@ Full options are listed below:
 
 ----
 
-Using the Twitter Search APIs Python Wrapper
+Using the Twitter Search APIs' Python Wrapper
 ============================================
 
 .. include:: api_example.rst
