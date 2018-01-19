@@ -9,7 +9,7 @@ Python program. It comes with tools for assisting in dynamic generation
 of search rules and for parsing tweets.
 
 Pretty docs can be seen
-`here <https://twitterdev.github.io/search_tweets_api/>`__.
+`here <https://twitterdev.github.io/search-tweets-python/>`__.
 
 Features
 ========

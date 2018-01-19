@@ -7,7 +7,7 @@ It provides a command-line utility and a library usable from within a Python pro
 comes with tools for assisting in dynamic generation of search rules and for
 parsing tweets.
 
-Pretty docs can be seen `here <https://twitterdev.github.io/search_tweets_api/>`_.
+Pretty docs can be seen `here <https://twitterdev.github.io/search-tweets-python/>`_.
 
 
 Features
