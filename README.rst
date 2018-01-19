@@ -339,7 +339,7 @@ Using the Twitter Search APIs' Python Wrapper
 Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.
 
-I have my credentials set up in a YAML file called
+We’ll assume that credentials are in the default location,
 ``~/.twitter_keys.yaml``.
 
 .. code:: python
