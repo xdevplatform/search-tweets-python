@@ -1,12 +1,12 @@
 Python Twitter Search API
 =========================
 
-This library serves as a python interface to the `Twitter premium and
+This library serves as a Python interface to the `Twitter premium and
 enterprise search
-APIs <https://developer.twitter.com/en/docs/tweets/search/overview/30-day-search>`__.
-It provides a command-line utility and a library usable from within
-python. It comes with tools for assisting in dynamic generation of
-search rules and for parsing tweets.
+APIs <https://developer.twitter.com/en/docs/tweets/search/overview/>`__.
+It provides a command-line utility and a library usable from within a
+Python program. It comes with tools for assisting in dynamic generation
+of search rules and for parsing tweets.
 
 Pretty docs can be seen
 `here <https://twitterdev.github.io/search_tweets_api/>`__.
@@ -47,9 +47,10 @@ Or you can install the development version locally via
 Credential Handling
 ===================
 
-The premium and enterprise Search APIs use different credentials and we
-attempt to provide methods of seamless handling for all customers. We
-support YAML-file based methods and environment variables for access.
+The premium and enterprise Search APIs use different authentication
+methods and we attempt to provide a seamless way to handle
+authentication for all customers. We support both YAML-file based
+methods and environment variables for access.
 
 A YAML credential file should look like this:
 
@@ -68,7 +69,7 @@ fields; Enterprise clients require ``username``, ``password``, and
 discern the account type and declare a warning about this behavior. The
 ``load_credentials`` function also allows ``account_type`` to be set.
 
-Our credential reader will default this file being located at
+Our credential reader will look for this file at
 ``"~/.twitter_keys.yaml"``, but you can pass the relevant location as
 needed. You can also specify a different key in the yaml file, which can
 be useful if you have different endpoints, e.g., ``dev``, ``test``,
@@ -109,7 +110,6 @@ command line app and Python library.
 .. code:: python
 
     from searchtweets import load_credentials
-    import os
 
 .. code:: python
 
@@ -138,10 +138,11 @@ Environment Variable Overrides
 ------------------------------
 
 If we set our environment variables, the program will look for them
-regardless of a YAML file's validity or existence.
+regardless of a YAML file’s validity or existence.
 
 .. code:: python
 
+    import os
     os.environ["SEARCHTWEETS_USERNAME"] = "ENV_USERNAME"
     os.environ["SEARCHTWEETS_PASSWORD"] = "ENV_PW"
     os.environ["SEARCHTWEETS_ENDPOINT"] = "https://endpoint"
@@ -201,7 +202,6 @@ environment variables.
 .. code:: bash
 
     python search_tweets.py \
-      --endpoint <MY_ENDPOINT> \
       --max-results 100 \
       --results-per-call 100 \
       --filter-rule "beyonce has:hashtags" \
@@ -333,12 +333,7 @@ Full options are listed below:
 
 --------------
 
-Using the Twitter Search APIs Python Wrapper
-============================================
-
-.. _using-the-twitter-search-apis-python-wrapper-1:
-
-Using the Twitter Search APIs Python Wrapper
+Using the Twitter Search APIs' Python Wrapper
 ============================================
 
 Working with the API within a Python program is straightforward both for
@@ -371,12 +366,12 @@ Premium Setup
 
 There is a function that formats search API rules into valid json
 queries called ``gen_rule_payload``. It has sensible defaults, such as
-pulling more tweets per call than the default 100 (but note that a
+pulling more Tweets per call than the default 100 (but note that a
 sandbox environment can only have a max of 100 here, so if you get
 errors, please check this) not including dates, and defaulting to hourly
 counts when using the counts api. Discussing the finer points of
 generating search rules is out of scope for these examples; I encourage
-you to see the docs to learn the nuances within, but for now let's see
+you to see the docs to learn the nuances within, but for now let’s see
 what a rule looks like.
 
 .. code:: python
@@ -391,30 +386,30 @@ what a rule looks like.
 This rule will match tweets that have the text ``beyonce`` in them.
 
 From this point, there are two ways to interact with the API. There is a
-quick method to collect smaller amounts of tweets to memory that
+quick method to collect smaller amounts of Tweets to memory that
 requires less thought and knowledge, and interaction with the
 ``ResultStream`` object which will be introduced later.
 
 Fast Way
 --------
 
-We'll use the ``search_args`` variable to power the configuration point
+We’ll use the ``search_args`` variable to power the configuration point
 for the API. The object also takes a valid PowerTrack rule and has
-options to cutoff search when hitting limits on both number of tweets
+options to cutoff search when hitting limits on both number of Tweets
 and API calls.
 
-We'll be using the ``collect_results`` function, which has three
+We’ll be using the ``collect_results`` function, which has three
 parameters.
 
 -  rule: a valid PowerTrack rule, referenced earlier
 -  max_results: as the API handles pagination, it will stop collecting
    when we get to this number
--  result_stream_args: configuration args that we've already specified.
+-  result_stream_args: configuration args that we’ve already specified.
 
 For the remaining examples, please change the args to either premium or
 enterprise depending on your usage.
 
-Let's see how it goes:
+Let’s see how it goes:
 
 .. code:: python
 
@@ -426,9 +421,9 @@ Let's see how it goes:
                              max_results=100,
                              result_stream_args=enterprise_search_args) # change this if you need to
 
-By default, tweet payloads are lazily parsed into a ``Tweet`` object. An
-overwhelming number of tweet attributes are made available directly, as
-such:
+By default, Tweet payloads are lazily parsed into a ``Tweet``
+`object <https://twitterdev.github.io/tweet_parser/>`__. An overwhelming
+number of Tweet attributes are made available directly, as such:
 
 .. code:: python
 
@@ -492,9 +487,9 @@ such:
     Airtime Pro
     Twitter for iPhone
 
-Voila, we have some tweets. For interactive environments and other cases
-where you don't care about collecting your data in a single load or
-don't need to operate on the stream of tweets or counts directly, I
+Voila, we have some Tweets. For interactive environments and other cases
+where you don’t care about collecting your data in a single load or
+don’t need to operate on the stream of Tweets or counts directly, I
 recommend using this convenience function.
 
 Working with the ResultStream
@@ -529,14 +524,15 @@ stop on number of pages to limit your API call usage.
 
 There is a function, ``.stream``, that seamlessly handles requests and
 pagination for a given query. It returns a generator, and to grab our
-500 tweets that mention ``beyonce`` we can do this:
+500 Tweets that mention ``beyonce`` we can do this:
 
 .. code:: python
 
     tweets = list(rs.stream())
 
-Tweets are lazily parsed using our Tweet Parser, so tweet data is very
-easily extractable.
+Tweets are lazily parsed using our `Tweet
+Parser <https://twitterdev.github.io/tweet_parser/>`__, so tweet data is
+very easily extractable.
 
 .. code:: python
 
@@ -561,14 +557,14 @@ easily extractable.
 Counts Endpoint
 ---------------
 
-We can also use the Search API Counts endpoint to get counts of tweets
+We can also use the Search API Counts endpoint to get counts of Tweets
 that match our rule. Each request will return up to *30* results, and
 each count request can be done on a minutely, hourly, or daily basis.
 The underlying ``ResultStream`` object will handle converting your
 endpoint to the count endpoint, and you have to specify the
 ``count_bucket`` argument when making a rule to use it.
 
-The process is very similar to grabbing tweets, but has some minor
+The process is very similar to grabbing Tweets, but has some minor
 differences.
 
 *Caveat - premium sandbox environments do NOT have access to the Search
@@ -623,7 +619,7 @@ Our results are pretty straightforward and can be rapidly used.
 Dated searches / Full Archive Search
 ------------------------------------
 
-Let's make a new rule and pass it dates this time.
+Let’s make a new rule and pass it dates this time.
 
 ``gen_rule_payload`` takes dates of the forms ``YYYY-mm-DD`` and
 ``YYYYmmDD``.
@@ -651,7 +647,6 @@ method; please see your developer console for details.
 
 .. code:: python
 
-    # usiing unidecode only to 
     [print(tweet.all_text) for tweet in tweets[0:10]];
 
 ::

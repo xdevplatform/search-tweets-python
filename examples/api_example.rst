@@ -29,7 +29,7 @@ Premium Setup
 
 There is a function that formats search API rules into valid json
 queries called ``gen_rule_payload``. It has sensible defaults, such as
-pulling more tweets per call than the default 100 (but note that a
+pulling more Tweets per call than the default 100 (but note that a
 sandbox environment can only have a max of 100 here, so if you get
 errors, please check this) not including dates, and defaulting to hourly
 counts when using the counts api. Discussing the finer points of
@@ -51,7 +51,7 @@ what a rule looks like.
 This rule will match tweets that have the text ``beyonce`` in them.
 
 From this point, there are two ways to interact with the API. There is a
-quick method to collect smaller amounts of tweets to memory that
+quick method to collect smaller amounts of Tweets to memory that
 requires less thought and knowledge, and interaction with the
 ``ResultStream`` object which will be introduced later.
 
@@ -60,7 +60,7 @@ Fast Way
 
 We’ll use the ``search_args`` variable to power the configuration point
 for the API. The object also takes a valid PowerTrack rule and has
-options to cutoff search when hitting limits on both number of tweets
+options to cutoff search when hitting limits on both number of Tweets
 and API calls.
 
 We’ll be using the ``collect_results`` function, which has three
@@ -86,9 +86,9 @@ Let’s see how it goes:
                              max_results=100,
                              result_stream_args=enterprise_search_args) # change this if you need to
 
-By default, tweet payloads are lazily parsed into a ``Tweet`` object. An
-overwhelming number of tweet attributes are made available directly, as
-such:
+By default, Tweet payloads are lazily parsed into a ``Tweet``
+`object <https://twitterdev.github.io/tweet_parser/>`__. An overwhelming
+number of Tweet attributes are made available directly, as such:
 
 .. code:: ipython3
 
@@ -159,9 +159,9 @@ such:
     Twitter for iPhone
 
 
-Voila, we have some tweets. For interactive environments and other cases
+Voila, we have some Tweets. For interactive environments and other cases
 where you don’t care about collecting your data in a single load or
-don’t need to operate on the stream of tweets or counts directly, I
+don’t need to operate on the stream of Tweets or counts directly, I
 recommend using this convenience function.
 
 Working with the ResultStream
@@ -198,14 +198,15 @@ stop on number of pages to limit your API call usage.
 
 There is a function, ``.stream``, that seamlessly handles requests and
 pagination for a given query. It returns a generator, and to grab our
-500 tweets that mention ``beyonce`` we can do this:
+500 Tweets that mention ``beyonce`` we can do this:
 
 .. code:: ipython3
 
     tweets = list(rs.stream())
 
-Tweets are lazily parsed using our Tweet Parser, so tweet data is very
-easily extractable.
+Tweets are lazily parsed using our `Tweet
+Parser <https://twitterdev.github.io/tweet_parser/>`__, so tweet data is
+very easily extractable.
 
 .. code:: ipython3
 
@@ -232,14 +233,14 @@ easily extractable.
 Counts Endpoint
 ---------------
 
-We can also use the Search API Counts endpoint to get counts of tweets
+We can also use the Search API Counts endpoint to get counts of Tweets
 that match our rule. Each request will return up to *30* results, and
 each count request can be done on a minutely, hourly, or daily basis.
 The underlying ``ResultStream`` object will handle converting your
 endpoint to the count endpoint, and you have to specify the
 ``count_bucket`` argument when making a rule to use it.
 
-The process is very similar to grabbing tweets, but has some minor
+The process is very similar to grabbing Tweets, but has some minor
 differences.
 
 *Caveat - premium sandbox environments do NOT have access to the Search
