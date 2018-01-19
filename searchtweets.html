@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>searchtweets package &#8212; Twitter Search APIs Python Wrapper 1.0b documentation</title>
+    <title>searchtweets package &#8212; Twitter Search APIs Python Wrapper 1.2 documentation</title>
     
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -13,7 +13,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0b',
+        VERSION:     '1.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -49,14 +49,14 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="index.html">
-          Twitter Search API</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
+          Search Tweets APIs</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
             
-                <li><a href="https://github.com/twitterdev/twitter_search_api">Github</a></li>
+                <li><a href="https://github.com/twitterdev/search-tweets-python">Github</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -64,7 +64,7 @@
      id="dLabelGlobalToc"
      data-toggle="dropdown"
      data-target="#"
-     href="index.html">Twitter Search API <b class="caret"></b></a>
+     href="index.html">Search Tweets API <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
@@ -186,45 +186,6 @@ or json-formatted <cite>str</cite>.</li>
 <dt id="searchtweets.api_utils.gen_params_from_config">
 <code class="descclassname">searchtweets.api_utils.</code><code class="descname">gen_params_from_config</code><span class="sig-paren">(</span><em>config_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/api_utils.html#gen_params_from_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.api_utils.gen_params_from_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates parameters for a ResultStream from a dictionary.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="searchtweets.api_utils.load_credentials">
-<code class="descclassname">searchtweets.api_utils.</code><code class="descname">load_credentials</code><span class="sig-paren">(</span><em>filename=None</em>, <em>account_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/api_utils.html#load_credentials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.api_utils.load_credentials" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles credeintial managmenet via a YAML file. YAML files should look
-like this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets_api</span><span class="p">:</span>
-  <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
-  <span class="n">account</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">ACCOUNT_NAME</span><span class="o">&gt;</span>
-  <span class="n">username</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span>
-  <span class="n">password</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span>
-  <span class="n">bearer_token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">TOKEN</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<p>with the appropriate fields filled out for your account.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; pass a filename here if you do not want to use the
-default &#8216;~/.twitter_keys.yaml&#8217;</li>
-<li><strong>account_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; pass your account type, &#8220;premium&#8221; or &#8220;enterprise&#8221;</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict of your access credentials.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">searchtweets.api_utils</span> <span class="k">import</span> <span class="n">load_credentials</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">search_args</span> <span class="o">=</span> <span class="n">load_credentials</span><span class="p">(</span><span class="n">account_type</span><span class="o">=</span><span class="s2">&quot;premium&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">search_args</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-<span class="go">dict_keys([&#39;bearer_token&#39;, &#39;endpoint&#39;])</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -468,7 +429,8 @@ present.</p>
 <dl class="function">
 <dt id="searchtweets.utils.take">
 <code class="descclassname">searchtweets.utils.</code><code class="descname">take</code><span class="sig-paren">(</span><em>n</em>, <em>iterable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#take"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.take" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return first n items of the iterable as a list</p>
+<dd><p>Return first n items of the iterable as a list.
+Originaly found in the Python itertools documentation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -552,10 +514,24 @@ return all data from the result stream as a generator that wraps the
 </dd></dl>
 
 <dl class="function">
-<dt id="searchtweets.utils.read_configfile">
-<code class="descclassname">searchtweets.utils.</code><code class="descname">read_configfile</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#read_configfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.read_configfile" title="Permalink to this definition">¶</a></dt>
-<dd><p>reads and flattens a configuration file into a single
-dictionary for ease of use.</p>
+<dt id="searchtweets.utils.read_config">
+<code class="descclassname">searchtweets.utils.</code><code class="descname">read_config</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#read_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.read_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads and flattens a configuration file into a single
+dictionary for ease of use. Works with both <code class="docutils literal"><span class="pre">.config</span></code> and
+<code class="docutils literal"><span class="pre">.yaml</span></code> files. Files should look like this:</p>
+<p>or</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; location of file with extension (&#8216;.config&#8217; or &#8216;.yaml&#8217;)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">parsed configuration dictionary.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>

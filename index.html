@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Python Twitter Search API &#8212; Twitter Search APIs Python Wrapper 1.0b documentation</title>
+    <title>Python Twitter Search API &#8212; Twitter Search APIs Python Wrapper 1.2 documentation</title>
     
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -13,7 +13,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.0b',
+        VERSION:     '1.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -49,14 +49,14 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="#">
-          Twitter Search API</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
+          Search Tweets APIs</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
             
-                <li><a href="https://github.com/twitterdev/twitter_search_api">Github</a></li>
+                <li><a href="https://github.com/twitterdev/search-tweets-python">Github</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -64,7 +64,7 @@
      id="dLabelGlobalToc"
      data-toggle="dropdown"
      data-target="#"
-     href="#">Twitter Search API <b class="caret"></b></a>
+     href="#">Search Tweets API <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
@@ -94,13 +94,17 @@
 <li><a class="reference internal" href="#">Python Twitter Search API</a></li>
 <li><a class="reference internal" href="#features">Features</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#credential-handling">Credential Handling</a><ul>
+<li><a class="reference internal" href="#environment-variable-overrides">Environment Variable Overrides</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#using-the-comand-line-application">Using the Comand Line Application</a></li>
-<li><a class="reference internal" href="#using-the-twitter-search-api-within-python">Using the Twitter Search API within Python</a><ul>
+<li><a class="reference internal" href="#using-the-twitter-search-apis-python-wrapper">Using the Twitter Search APIs&#8217; Python Wrapper</a><ul>
 <li><a class="reference internal" href="#enterprise-setup">Enterprise setup</a></li>
 <li><a class="reference internal" href="#premium-setup">Premium Setup</a></li>
 <li><a class="reference internal" href="#fast-way">Fast Way</a></li>
 <li><a class="reference internal" href="#working-with-the-resultstream">Working with the ResultStream</a></li>
-<li><a class="reference internal" href="#counts-api">Counts API</a></li>
+<li><a class="reference internal" href="#counts-endpoint">Counts Endpoint</a></li>
 <li><a class="reference internal" href="#dated-searches-full-archive-search">Dated searches / Full Archive Search</a></li>
 </ul>
 </li>
@@ -144,8 +148,14 @@
       
   <div class="section" id="python-twitter-search-api">
 <h1>Python Twitter Search API<a class="headerlink" href="#python-twitter-search-api" title="Permalink to this headline">¶</a></h1>
-<p>This library serves as a python interface to the <a class="reference external" href="https://developer.twitter.com/en/docs/tweets/search/overview/30-day-search">Twitter premium and enterprise search APIs</a>. It provides a command-line utility and a library usable from within python. It comes with tools for assisting in dynamic generation of search rules and for parsing tweets.</p>
-<p>Pretty docs can be seen <a class="reference external" href="https://twitterdev.github.io/search_tweets_api/">here</a>.</p>
+<p>This library serves as a Python interface to the <a class="reference external" href="https://developer.twitter.com/en/docs/tweets/search/overview/">Twitter premium and
+enterprise search
+APIs</a>.
+It provides a command-line utility and a library usable from within a
+Python program. It comes with tools for assisting in dynamic generation
+of search rules and for parsing tweets.</p>
+<p>Pretty docs can be seen
+<a class="reference external" href="https://twitterdev.github.io/search_tweets_api/">here</a>.</p>
 </div>
 <div class="section" id="features">
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
@@ -155,37 +165,119 @@
 <li>Delivers a stream of data to the user for low in-memory requirements</li>
 <li>Handles Enterprise and Premium authentication methods</li>
 <li>Flexible usage within a python program</li>
-<li>Compatible with our group&#8217;s Tweet Parser for rapid extraction of relevant data fields from each tweet payload</li>
-<li>Supports the Counts API, which can reduce API call usage and provide rapid insights if you only need volumes and not tweet payloads</li>
+<li>Compatible with our group&#8217;s Tweet Parser for rapid extraction of
+relevant data fields from each tweet payload</li>
+<li>Supports the Search Counts endpoint, which can reduce API call usage
+and provide rapid insights if you only need volumes and not tweet
+payloads</li>
 </ul>
 </div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>We will host the package on PyPi so it&#8217;s pip-friendly.</p>
+<p>The <code class="docutils literal"><span class="pre">searchtweets</span></code> library is on Pypi:</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">searchtweets</span>
 </pre></div>
 </div>
-<p>Or the development version locally via</p>
+<p>Or you can install the development version locally via</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">twitterdev</span><span class="o">/</span><span class="n">search</span><span class="o">-</span><span class="n">tweets</span><span class="o">-</span><span class="n">python</span>
 <span class="n">cd</span> <span class="n">search</span><span class="o">-</span><span class="n">tweets</span><span class="o">-</span><span class="n">python</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="using-the-comand-line-application">
-<h1>Using the Comand Line Application<a class="headerlink" href="#using-the-comand-line-application" title="Permalink to this headline">¶</a></h1>
-<p>We provide a utility, <code class="docutils literal"><span class="pre">search_tweets.py</span></code>, in the <code class="docutils literal"><span class="pre">tools</span></code> directory that provides rapid access to tweets.
-Premium customers should use <code class="docutils literal"><span class="pre">--bearer-token</span></code>; enterprise customers should use <code class="docutils literal"><span class="pre">--user-name</span></code> and <code class="docutils literal"><span class="pre">--password</span></code>.</p>
-<p>The <code class="docutils literal"><span class="pre">--endpoint</span></code> flag will specify the full URL of your connection, e.g.:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">.</span><span class="n">twitter</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="mf">1.1</span><span class="o">/</span><span class="n">tweets</span><span class="o">/</span><span class="n">search</span><span class="o">/</span><span class="mi">30</span><span class="n">day</span><span class="o">/</span><span class="n">dev</span><span class="o">.</span><span class="n">json</span>
+<hr class="docutils" />
+<div class="section" id="credential-handling">
+<h1>Credential Handling<a class="headerlink" href="#credential-handling" title="Permalink to this headline">¶</a></h1>
+<p>The premium and enterprise Search APIs use different authentication
+methods and we attempt to provide a seamless way to handle
+authentication for all customers. We support both YAML-file based
+methods and environment variables for access.</p>
+<p>A YAML credential file should look like this:</p>
+<p>Premium clients will require the <code class="docutils literal"><span class="pre">bearer_token</span></code> and <code class="docutils literal"><span class="pre">endpoint</span></code>
+fields; Enterprise clients require <code class="docutils literal"><span class="pre">username</span></code>, <code class="docutils literal"><span class="pre">password</span></code>, and
+<code class="docutils literal"><span class="pre">endpoint</span></code>. If you do not specify the <code class="docutils literal"><span class="pre">account_type</span></code>, we attempt to
+discern the account type and declare a warning about this behavior. The
+<code class="docutils literal"><span class="pre">load_credentials</span></code> function also allows <code class="docutils literal"><span class="pre">account_type</span></code> to be set.</p>
+<p>Our credential reader will look for this file at
+<code class="docutils literal"><span class="pre">&quot;~/.twitter_keys.yaml&quot;</span></code>, but you can pass the relevant location as
+needed. You can also specify a different key in the yaml file, which can
+be useful if you have different endpoints, e.g., <code class="docutils literal"><span class="pre">dev</span></code>, <code class="docutils literal"><span class="pre">test</span></code>,
+<code class="docutils literal"><span class="pre">prod</span></code>, etc. The file might look like this:</p>
+<p>If you want or need to pass credentials via environment variables, you
+can set the appropriate variables of the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">SEARCHTWEETS_ENDPOINT</span><span class="o">=</span>
+<span class="n">export</span> <span class="n">SEARCHTWEETS_USERNAME</span><span class="o">=</span>
+<span class="n">export</span> <span class="n">SEARCHTWEETS_PASSWORD</span><span class="o">=</span>
+<span class="n">export</span> <span class="n">SEARCHTWEETS_BEARER_TOKEN</span><span class="o">=</span>
+<span class="n">export</span> <span class="n">SEARCHTWEETS_ACCOUNT_TYPE</span><span class="o">=</span>
 </pre></div>
 </div>
-<p>You can find this url in your developer console.</p>
-<p>Note that the <code class="docutils literal"><span class="pre">--results-per-call</span></code> flag specifies an argument to the API call ( <code class="docutils literal"><span class="pre">maxResults</span></code>, results returned per CALL), not as a hard max to number of results returned from this program. use <code class="docutils literal"><span class="pre">--max-results</span></code> for that for now.</p>
+<p>The <code class="docutils literal"><span class="pre">load_credentials</span></code> function will attempt to find these variables
+if it cannot load fields from the yaml file, and it will <strong>overwrite any
+found credentials from the YAML file</strong> if they have been parsed. This
+behavior can be changed by setting the <code class="docutils literal"><span class="pre">load_credentials</span></code> parameter
+<code class="docutils literal"><span class="pre">env_overwrite</span></code> to <code class="docutils literal"><span class="pre">False</span></code>.</p>
+<p>The following cells demonstrates credential handling, both in the
+command line app and Python library.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">load_credentials</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;./search_tweets_creds_example.yaml&quot;</span><span class="p">,</span>
+                 <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;search_tweets_ent_example&quot;</span><span class="p">,</span>
+                 <span class="n">env_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_ENDPOINT&gt;&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_PASSWORD&gt;&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_USERNAME&gt;&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;./search_tweets_creds_example.yaml&quot;</span><span class="p">,</span>
+                 <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;search_tweets_premium_example&quot;</span><span class="p">,</span>
+                 <span class="n">env_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;bearer_token&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;A_VERY_LONG_MAGIC_STRING&gt;&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;https://api.twitter.com/1.1/tweets/search/30day/dev.json&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="environment-variable-overrides">
+<h2>Environment Variable Overrides<a class="headerlink" href="#environment-variable-overrides" title="Permalink to this headline">¶</a></h2>
+<p>If we set our environment variables, the program will look for them
+regardless of a YAML file’s validity or existence.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_USERNAME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ENV_USERNAME&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_PASSWORD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ENV_PW&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_ENDPOINT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://endpoint&quot;</span>
+
+<span class="n">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;nothing&quot;</span><span class="p">,</span> <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;no_key_here&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cannot</span> <span class="n">read</span> <span class="n">file</span> <span class="n">nothing</span>
+<span class="n">Error</span> <span class="n">parsing</span> <span class="n">YAML</span> <span class="n">file</span><span class="p">;</span> <span class="n">searching</span> <span class="k">for</span> <span class="n">valid</span> <span class="n">environment</span> <span class="n">variables</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;https://endpoint&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;ENV_PW&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;ENV_USERNAME&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="using-the-comand-line-application">
+<h1>Using the Comand Line Application<a class="headerlink" href="#using-the-comand-line-application" title="Permalink to this headline">¶</a></h1>
+<p>The library includes an application, <code class="docutils literal"><span class="pre">search_tweets.py</span></code>, in the
+<code class="docutils literal"><span class="pre">tools</span></code> directory that provides rapid access to Tweets.</p>
+<p>Note that the <code class="docutils literal"><span class="pre">--results-per-call</span></code> flag specifies an argument to the
+API call ( <code class="docutils literal"><span class="pre">maxResults</span></code>, results returned per CALL), not as a hard max
+to number of results returned from this program. The argument
+<code class="docutils literal"><span class="pre">--max-results</span></code> defines the maximum number of results to return from a
+given call. All examples assume that your credentials are set up
+correctly in a default location - <code class="docutils literal"><span class="pre">.twitter_keys.yaml</span></code> or in
+environment variables.</p>
 <p><strong>Stream json results to stdout without saving</strong></p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
-  <span class="o">--</span><span class="n">bearer</span><span class="o">-</span><span class="n">token</span> <span class="o">&lt;</span><span class="n">BEARER_TOKEN</span><span class="o">&gt;</span> \
-  <span class="o">--</span><span class="n">endpoint</span> <span class="o">&lt;</span><span class="n">MY_ENDPOINT</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">1000</span> \
   <span class="o">--</span><span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
@@ -194,9 +286,6 @@ Premium customers should use <code class="docutils literal"><span class="pre">--
 </div>
 <p><strong>Stream json results to stdout and save to a file</strong></p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
-  <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
-  <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
-  <span class="o">--</span><span class="n">endpoint</span> <span class="o">&lt;</span><span class="n">MY_ENDPOINT</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">1000</span> \
   <span class="o">--</span><span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
@@ -206,9 +295,6 @@ Premium customers should use <code class="docutils literal"><span class="pre">--
 </div>
 <p><strong>Save to file without output</strong></p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
-  <span class="o">--</span><span class="n">user</span><span class="o">-</span><span class="n">name</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span> \
-  <span class="o">--</span><span class="n">password</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span> \
-  <span class="o">--</span><span class="n">endpoint</span> <span class="o">&lt;</span><span class="n">MY_ENDPOINT</span><span class="o">&gt;</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
@@ -216,97 +302,153 @@ Premium customers should use <code class="docutils literal"><span class="pre">--
   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
 </div>
-<p>It can be far easier to specify your information in a configuration file. An example file can be found in the <code class="docutils literal"><span class="pre">tools/api_config_example.config</span></code> file, but will look something like this:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">credentials</span><span class="p">]</span>
-<span class="n">account_name</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">account_name</span><span class="o">&gt;</span>
-<span class="n">username</span> <span class="o">=</span>  <span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span>
-<span class="n">password</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span>
-<span class="n">bearer_token</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">token</span><span class="o">&gt;</span>
-
-<span class="p">[</span><span class="n">api_info</span><span class="p">]</span>
-<span class="n">endpoint</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">endpoint</span><span class="o">&gt;</span>
-
-<span class="p">[</span><span class="n">gnip_search_rules</span><span class="p">]</span>
+<p>Options can be passed via a configuration file (either ini or YAML). An
+example file can be found in the <code class="docutils literal"><span class="pre">tools/api_config_example.config</span></code> or
+<code class="docutils literal"><span class="pre">./tools/api_yaml_example.yaml</span></code> files, which might look like this:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">search_rules</span><span class="p">]</span>
 <span class="n">from_date</span> <span class="o">=</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">01</span>
 <span class="n">to_date</span> <span class="o">=</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span>
-<span class="n">results_per_call</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">pt_rule</span> <span class="o">=</span> <span class="n">beyonce</span> <span class="n">has</span><span class="p">:</span><span class="n">hashtags</span>
-
+<span class="n">pt_rule</span> <span class="o">=</span> <span class="n">beyonce</span> <span class="n">has</span><span class="p">:</span><span class="n">geo</span>
 
 <span class="p">[</span><span class="n">search_params</span><span class="p">]</span>
+<span class="n">results_per_call</span> <span class="o">=</span> <span class="mi">500</span>
 <span class="n">max_results</span> <span class="o">=</span> <span class="mi">500</span>
 
 <span class="p">[</span><span class="n">output_params</span><span class="p">]</span>
-<span class="n">output_file_prefix</span> <span class="o">=</span> <span class="n">beyonce</span>
+<span class="n">save_file</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">filename_prefix</span> <span class="o">=</span> <span class="n">beyonce</span>
+<span class="n">results_per_file</span> <span class="o">=</span> <span class="mi">10000000</span>
 </pre></div>
 </div>
-<p>Soon, we will update this behavior and remove the credentials section from the config file to be handled differently.</p>
-<p>When using a config file in conjunction with the command-line utility, you need to specify your config file via the <code class="docutils literal"><span class="pre">--config-file</span></code> parameter. Additional command-line arguments will either be <em>added</em> to the config file args or <strong>overwrite</strong> the config file args if both are specified and present.</p>
+<p>Or this:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">search_rules</span><span class="p">:</span>
+    <span class="n">from</span><span class="o">-</span><span class="n">date</span><span class="p">:</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">01</span>
+    <span class="n">to</span><span class="o">-</span><span class="n">date</span><span class="p">:</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span> <span class="mi">01</span><span class="p">:</span><span class="mi">01</span>
+    <span class="n">pt</span><span class="o">-</span><span class="n">rule</span><span class="p">:</span> <span class="n">kanye</span>
+
+<span class="n">search_params</span><span class="p">:</span>
+    <span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span><span class="p">:</span> <span class="mi">500</span>
+    <span class="nb">max</span><span class="o">-</span><span class="n">results</span><span class="p">:</span> <span class="mi">500</span>
+
+<span class="n">output_params</span><span class="p">:</span>
+    <span class="n">save_file</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="n">filename_prefix</span><span class="p">:</span> <span class="n">kanye</span>
+    <span class="n">results_per_file</span><span class="p">:</span> <span class="mi">10000000</span>
+</pre></div>
+</div>
+<p>When using a config file in conjunction with the command-line utility,
+you need to specify your config file via the <code class="docutils literal"><span class="pre">--config-file</span></code>
+parameter. Additional command-line arguments will either be <em>added</em> to
+the config file args or <strong>overwrite</strong> the config file args if both are
+specified and present.</p>
 <p>Example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">file</span> <span class="n">myapiconfig</span><span class="o">.</span><span class="n">config</span> \
   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="using-the-twitter-search-api-within-python">
-<h1>Using the Twitter Search API within Python<a class="headerlink" href="#using-the-twitter-search-api-within-python" title="Permalink to this headline">¶</a></h1>
-<p>Working with the API within a Python program is straightforward both for
-Premium and Enterprise clients.</p>
-<p>Our group&#8217;s python <a class="reference external" href="https://github.com/twitterdev/tweet_parser">tweet parser
-library</a> is a
-requirement.</p>
-<p>Prior to starting your program, an easy way to define your secrets will
-be setting an environment variable. If you are an enterprise client,
-your authentication will be a (username, password) pair. If you are a
-premium client, you&#8217;ll need to get a bearer token that will be passed
-with each call for authentication.</p>
-<p>Your credentials should be put into a YAML file that looks like this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets_api</span><span class="p">:</span>
-  <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
-  <span class="n">account</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">ACCOUNT_NAME</span><span class="o">&gt;</span>
-  <span class="n">username</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span>
-  <span class="n">password</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span>
-  <span class="n">bearer_token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">TOKEN</span><span class="o">&gt;</span>
+<hr class="docutils" />
+<p>Full options are listed below:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ search_tweets.py -h
+usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]
+                        [--credential-file-key CREDENTIAL_YAML_KEY]
+                        [--env-overwrite ENV_OVERWRITE]
+                        [--config-file CONFIG_FILENAME]
+                        [--account-type {premium,enterprise}]
+                        [--count-bucket COUNT_BUCKET]
+                        [--start-datetime FROM_DATE] [--end-datetime TO_DATE]
+                        [--filter-rule PT_RULE]
+                        [--results-per-call RESULTS_PER_CALL]
+                        [--max-results MAX_RESULTS] [--max-pages MAX_PAGES]
+                        [--results-per-file RESULTS_PER_FILE]
+                        [--filename-prefix FILENAME_PREFIX]
+                        [--no-print-stream] [--print-stream] [--debug]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --credential-file CREDENTIAL_FILE
+                        Location of the yaml file used to hold your
+                        credentials.
+  --credential-file-key CREDENTIAL_YAML_KEY
+                        the key in the credential file used for this session&#39;s
+                        credentials. Defaults to search_tweets_api
+  --env-overwrite ENV_OVERWRITE
+                        Overwrite YAML-parsed credentials with any set
+                        environment variables. See API docs or readme for
+                        details.
+  --config-file CONFIG_FILENAME
+                        configuration file with all parameters. Far, easier to
+                        use than the command-line args version., If a valid
+                        file is found, all args will be populated, from there.
+                        Remaining command-line args, will overrule args found
+                        in the config, file.
+  --account-type {premium,enterprise}
+                        The account type you are using
+  --count-bucket COUNT_BUCKET
+                        Bucket size for counts API. Options:, day, hour,
+                        minute (default is &#39;day&#39;).
+  --start-datetime FROM_DATE
+                        Start of datetime window, format &#39;YYYY-mm-DDTHH:MM&#39;
+                        (default: -30 days)
+  --end-datetime TO_DATE
+                        End of datetime window, format &#39;YYYY-mm-DDTHH:MM&#39;
+                        (default: most recent date)
+  --filter-rule PT_RULE
+                        PowerTrack filter rule (See: http://support.gnip.com/c
+                        ustomer/portal/articles/901152-powertrack-operators)
+  --results-per-call RESULTS_PER_CALL
+                        Number of results to return per call (default 100; max
+                        500) - corresponds to &#39;maxResults&#39; in the API
+  --max-results MAX_RESULTS
+                        Maximum results to return for this session (defaults
+                        to 500; see -a option
+  --max-pages MAX_PAGES
+                        Maximum number of pages/api calls to use for this
+                        session.
+  --results-per-file RESULTS_PER_FILE
+                        Maximum tweets to save per file.
+  --filename-prefix FILENAME_PREFIX
+                        prefix for the filename where tweet json data will be
+                        stored.
+  --no-print-stream     disable print streaming
+  --print-stream        Print tweet stream to stdout
+  --debug               print all info and warning messages
 </pre></div>
 </div>
-<p>And filling in the keys that are appropriate for your account type.
-Premium users should only have the <code class="docutils literal"><span class="pre">endpoint</span></code> and <code class="docutils literal"><span class="pre">bearer_token</span></code>;
-Enterprise customers should have <code class="docutils literal"><span class="pre">account</span></code>, <code class="docutils literal"><span class="pre">username</span></code>,
-<code class="docutils literal"><span class="pre">endpoint</span></code>, and <code class="docutils literal"><span class="pre">password</span></code>.</p>
-<p>Our credential reader expects this file at
-<code class="docutils literal"><span class="pre">&quot;~/.twitter_keys.yaml&quot;</span></code>, but you can pass the relevant location as
-needed.</p>
-<p>The following cell demonstrates the basic setup that will be referenced
-throughout your program&#8217;s session.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="using-the-twitter-search-apis-python-wrapper">
+<h1>Using the Twitter Search APIs&#8217; Python Wrapper<a class="headerlink" href="#using-the-twitter-search-apis-python-wrapper" title="Permalink to this headline">¶</a></h1>
+<p>Working with the API within a Python program is straightforward both for
+Premium and Enterprise clients.</p>
+<p>We’ll assume that credentials are in the default location,
+<code class="docutils literal"><span class="pre">~/.twitter_keys.yaml</span></code>.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">ResultStream</span><span class="p">,</span> <span class="n">gen_rule_payload</span><span class="p">,</span> <span class="n">load_credentials</span>
 </pre></div>
 </div>
 <div class="section" id="enterprise-setup">
 <h2>Enterprise setup<a class="headerlink" href="#enterprise-setup" title="Permalink to this headline">¶</a></h2>
-<p>If you are an enterprise customer, you&#8217;ll need to authenticate with a
-basic username/password method. You can specify that here:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">enterprise_search_args</span> <span class="o">=</span> <span class="n">load_credentials</span><span class="p">(</span><span class="s2">&quot;~/.twitter_keys.yaml&quot;</span><span class="p">,</span>
-                                          <span class="n">account_type</span><span class="o">=</span><span class="s2">&quot;enterprise&quot;</span><span class="p">)</span>
+                                          <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;search_tweets_enterprise&quot;</span><span class="p">,</span>
+                                          <span class="n">env_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="premium-setup">
 <h2>Premium Setup<a class="headerlink" href="#premium-setup" title="Permalink to this headline">¶</a></h2>
-<p>Premium customers will use a bearer token for authentication. Use the
-following cell for setup:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">premium_search_args</span> <span class="o">=</span> <span class="n">load_credentials</span><span class="p">(</span><span class="s2">&quot;~/.twitter_keys.yaml&quot;</span><span class="p">,</span>
-                                       <span class="n">account_type</span><span class="o">=</span><span class="s2">&quot;premium&quot;</span><span class="p">)</span>
+                                       <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;search_tweets_premium&quot;</span><span class="p">,</span>
+                                       <span class="n">env_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>There is a function that formats search API rules into valid json
 queries called <code class="docutils literal"><span class="pre">gen_rule_payload</span></code>. It has sensible defaults, such as
-pulling more tweets per call than the default 100 (but note that a
+pulling more Tweets per call than the default 100 (but note that a
 sandbox environment can only have a max of 100 here, so if you get
 errors, please check this) not including dates, and defaulting to hourly
 counts when using the counts api. Discussing the finer points of
 generating search rules is out of scope for these examples; I encourage
-you to see the docs to learn the nuances within, but for now let&#8217;s see
+you to see the docs to learn the nuances within, but for now let’s see
 what a rule looks like.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;beyonce&quot;</span><span class="p">,</span> <span class="n">results_per_call</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># testing with a sandbox account</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
@@ -317,28 +459,27 @@ what a rule looks like.</p>
 </div>
 <p>This rule will match tweets that have the text <code class="docutils literal"><span class="pre">beyonce</span></code> in them.</p>
 <p>From this point, there are two ways to interact with the API. There is a
-quick method to collect smaller amounts of tweets to memory that
+quick method to collect smaller amounts of Tweets to memory that
 requires less thought and knowledge, and interaction with the
 <code class="docutils literal"><span class="pre">ResultStream</span></code> object which will be introduced later.</p>
 </div>
 <div class="section" id="fast-way">
 <h2>Fast Way<a class="headerlink" href="#fast-way" title="Permalink to this headline">¶</a></h2>
-<p>We&#8217;ll use the <code class="docutils literal"><span class="pre">search_args</span></code> variable to power the configuration point
+<p>We’ll use the <code class="docutils literal"><span class="pre">search_args</span></code> variable to power the configuration point
 for the API. The object also takes a valid PowerTrack rule and has
-options to cutoff search when hitting limits on both number of tweets
+options to cutoff search when hitting limits on both number of Tweets
 and API calls.</p>
-<p>We&#8217;ll be using the <code class="docutils literal"><span class="pre">collect_results</span></code> function, which has three
+<p>We’ll be using the <code class="docutils literal"><span class="pre">collect_results</span></code> function, which has three
 parameters.</p>
 <ul class="simple">
-<li>rule: a valid powertrack rule, referenced earlier</li>
-<li>max_results: as the api handles pagination, it will stop collecting
+<li>rule: a valid PowerTrack rule, referenced earlier</li>
+<li>max_results: as the API handles pagination, it will stop collecting
 when we get to this number</li>
-<li>result_stream_args: configuration args that we&#8217;ve already
-specified.</li>
+<li>result_stream_args: configuration args that we’ve already specified.</li>
 </ul>
 <p>For the remaining examples, please change the args to either premium or
 enterprise depending on your usage.</p>
-<p>Let&#8217;s see how it goes:</p>
+<p>Let’s see how it goes:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">collect_results</span>
 </pre></div>
 </div>
@@ -347,73 +488,68 @@ enterprise depending on your usage.</p>
                          <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span> <span class="c1"># change this if you need to</span>
 </pre></div>
 </div>
-<p>By default, tweet payloads are lazily parsed into a <code class="docutils literal"><span class="pre">Tweet</span></code> object. An
-overwhelming number of tweet attributes are made available directly, as
-such:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
+<p>By default, Tweet payloads are lazily parsed into a <code class="docutils literal"><span class="pre">Tweet</span></code>
+<a class="reference external" href="https://twitterdev.github.io/tweet_parser/">object</a>. An overwhelming
+number of Tweet attributes are made available directly, as such:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span>That deep sigh Beyoncé took once she realized she wouldn’t be able to get the earpiece out of her hair before the dance break 😂.  https://t.co/dU1K2KMT7i
-4 Years ago today, &quot;BEYONCÉ&quot; by Beyoncé was surprise released. It received acclaim from critics,  debuted at #1 and certified 2x Platinum in the US. https://t.co/wB3C7DuX9o
-me mata la gente que se cree superior por sus gustos de música escuches queen beyonce o el polaco no sos mas ni menos que nadie
-I’m literally not Beyoncé https://t.co/LwIkllCx6P
-#BEYONCÉ ‣ 𝐌𝐄𝐀𝐃𝐃𝐅𝐀𝐍 𝐎𝐅𝐈𝐂𝐈𝐀𝐋 - I Am... 𝐖𝐎𝐑𝐋𝐃 𝐓𝐎𝐔𝐑! https://t.co/TyyeDdXKiM
-Beyoncé on how nervous she was to release her self-titled... https://t.co/fru23c6DYC
-AAAA ansiosa por esse feat da Beyoncé com Jorge Ben Jor &amp;lt;3 https://t.co/NkKJhC9JUd
-I am world tour, the Beyonce experience, revamped hmt. https://t.co/pb07eMyNka
-Tell me what studio versions of any artists would u like me to do? https://t.co/Z6YWsAJuhU
-Billboard&#39;s best female artists over the last decade:
+<div class="highlight-default"><div class="highlight"><pre><span></span>Jay-Z &amp;amp; Beyoncé sat across from us at dinner tonight and, at one point, I made eye contact with Beyoncé. My limbs turned to jello and I can no longer form a coherent sentence. I have seen the eyes of the lord.
 
-2017: Ariana Grande
-2016: Adele
-2015: Taylor Swift
-2014: Katy Perry
-2013: Taylor Swift
-2012: Adele
-2011: Adele
-2010: Lady Gaga
-2009: Taylor Swift
-2008: Rihanna
+Beyoncé and it isn&#39;t close. https://t.co/UdOU9oUtuW
 
-Beyonce = 0
+As you could guess.. Signs by Beyoncé will always be my shit.
 
-Taylor Swift = 3 👑
-Beyoncé explaining her intent behind the BEYONCÉ visual album &amp;amp; how she wanted to reinstate the idea of an album release as a significant, exciting event which had lost meaning in the face of hype created around singles. 👑 https://t.co/pK2MB35vYl
+When Beyoncé adopts a dog 🙌🏾 https://t.co/U571HyLG4F
+
+Hold up, you can&#39;t just do that to Beyoncé
+https://t.co/3p14DocGqA
+
+Why y&#39;all keep using Rihanna and Beyoncé gifs to promote the show when y&#39;all let Bey lose the same award she deserved 3 times and let Rihanna leave with nothing but the clothes on her back? https://t.co/w38QpH0wma
+
+30) anybody tell you that you look like Beyoncé https://t.co/Vo4Z7bfSCi
+
+Mi Beyoncé favorita https://t.co/f9Jp600l2B
+Beyoncé necesita ver esto. Que diosa @TiniStoessel 🔥🔥🔥 https://t.co/gadVJbehQZ
+
+Joanne Pearce Is now playing IF I WAS A BOY - BEYONCE.mp3 by !
+
+I&#39;m trynna see beyoncé&#39;s finsta before I die
 </pre></div>
 </div>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">created_at_datetime</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">13</span> <span class="mi">21</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">17</span>
-<span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">13</span> <span class="mi">21</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">16</span>
-<span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">13</span> <span class="mi">21</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">16</span>
-<span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">13</span> <span class="mi">21</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">15</span>
-<span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">13</span> <span class="mi">21</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">15</span>
-<span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">13</span> <span class="mi">21</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">13</span>
-<span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">13</span> <span class="mi">21</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">12</span>
-<span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">13</span> <span class="mi">21</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">12</span>
-<span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">13</span> <span class="mi">21</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">11</span>
-<span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">13</span> <span class="mi">21</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">10</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">50</span>
+<span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">49</span>
+<span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">44</span>
+<span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">42</span>
+<span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">42</span>
+<span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">42</span>
+<span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">40</span>
+<span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">38</span>
+<span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">37</span>
+<span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">37</span>
 </pre></div>
 </div>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Twitter</span> <span class="k">for</span> <span class="n">Android</span>
-<span class="n">Twitter</span> <span class="k">for</span> <span class="n">Android</span>
-<span class="n">Twitter</span> <span class="k">for</span> <span class="n">Android</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
 <span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
-<span class="n">Meadd</span>
 <span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
-<span class="n">Twitter</span> <span class="k">for</span> <span class="n">Android</span>
+<span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
 <span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
 <span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
 <span class="n">Twitter</span> <span class="k">for</span> <span class="n">Android</span>
+<span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
+<span class="n">Airtime</span> <span class="n">Pro</span>
+<span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
 </pre></div>
 </div>
-<p>Voila, we have some tweets. For interactive environments and other cases
-where you don&#8217;t care about collecting your data in a single load or
-don&#8217;t need to operate on the stream of tweets or counts directly, I
+<p>Voila, we have some Tweets. For interactive environments and other cases
+where you don’t care about collecting your data in a single load or
+don’t need to operate on the stream of Tweets or counts directly, I
 recommend using this convenience function.</p>
 </div>
 <div class="section" id="working-with-the-resultstream">
@@ -429,66 +565,59 @@ stop on number of pages to limit your API call usage.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span>
 </pre></div>
 </div>
-<pre class="literal-block">
-ResultStream:
-    {
-    &quot;username&quot;:null,
-    &quot;endpoint&quot;:&quot;<a class="reference external" href="https://api.twitter.com/1.1/tweets/search/30day/dev.json">https://api.twitter.com/1.1/tweets/search/30day/dev.json</a>&quot;,
-    &quot;rule_payload&quot;:{
-        &quot;query&quot;:&quot;beyonce&quot;,
-        &quot;maxResults&quot;:100
-    },
-    &quot;tweetify&quot;:true,
-    &quot;max_results&quot;:500
-}
-</pre>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ResultStream</span><span class="p">:</span>
+    <span class="p">{</span>
+    <span class="s2">&quot;username&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span>
+    <span class="s2">&quot;endpoint&quot;</span><span class="p">:</span><span class="s2">&quot;https:\/\/api.twitter.com\/1.1\/tweets\/search\/30day\/dev.json&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rule_payload&quot;</span><span class="p">:{</span>
+        <span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;beyonce&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;maxResults&quot;</span><span class="p">:</span><span class="mi">100</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;tweetify&quot;</span><span class="p">:</span><span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;max_results&quot;</span><span class="p">:</span><span class="mi">500</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>There is a function, <code class="docutils literal"><span class="pre">.stream</span></code>, that seamlessly handles requests and
 pagination for a given query. It returns a generator, and to grab our
-500 tweets that mention <code class="docutils literal"><span class="pre">beyonce</span></code> we can do this:</p>
+500 Tweets that mention <code class="docutils literal"><span class="pre">beyonce</span></code> we can do this:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">stream</span><span class="p">())</span>
 </pre></div>
 </div>
-<p>Tweets are lazily parsed using our Tweet Parser, so tweet data is very
-easily extractable.</p>
+<p>Tweets are lazily parsed using our <a class="reference external" href="https://twitterdev.github.io/tweet_parser/">Tweet
+Parser</a>, so tweet data is
+very easily extractable.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># using unidecode to prevent emoji/accents printing</span>
 <span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
 </pre></div>
 </div>
-<pre class="literal-block">
-Everyone: <em>still dragging Jay for cheating</em>
-
-Beyoncé: <a class="reference external" href="https://t.co/2z1ltlMQiJ">https://t.co/2z1ltlMQiJ</a>
-Beyoncé changed the game w/ that digital drop 4 years ago today! 🎉
-
-• #1 debut on Billboard
-• Sold 617K in the US / over 828K WW in only 3 days
-• Fastest-selling album on iTunes of all time
-• Reached #1 in 118 countries
-• Widespread acclaim; hailed as her magnum opus <a class="reference external" href="https://t.co/lDCdVs6em3">https://t.co/lDCdVs6em3</a>
-Beyoncé 🔥 #444Tour <a class="reference external" href="https://t.co/sCvZzjLwqx">https://t.co/sCvZzjLwqx</a>
-Se presentan casos de feminismo pop basado en sugerencias de artistas famosos en turno, Emma Watson, Beyoncé.
-Beyonce. Are you kidding me with this?! #Supreme #love #everything
-Dear Beyoncé, <a class="reference external" href="https://t.co/5visfVK2LR">https://t.co/5visfVK2LR</a>
-At this time 4 years ago today, Beyoncé released her self-titled album BEYONCÉ exclusively on the iTunes Store without any prior announcement. The album remains the ONLY album in history to reach #1 in 118 countries &amp;amp; the fastest-selling album in the history of the iTunes Store. <a class="reference external" href="https://t.co/ZZb4QyQYf0">https://t.co/ZZb4QyQYf0</a>
-4 years ago today, Beyoncé released her self-titled visual album &quot;BEYONCÉ&quot; and shook up the music world forever. 🙌🏿 <a class="reference external" href="https://t.co/aGtUSq9R3u">https://t.co/aGtUSq9R3u</a>
-Everyone: <em>still dragging Jay for cheating</em>
-
-Beyoncé: <a class="reference external" href="https://t.co/2z1ltlMQiJ">https://t.co/2z1ltlMQiJ</a>
-And Beyonce hasn't had a solo #1 hit since the Bush administration soooo... <a class="reference external" href="https://t.co/WCd7ni8DwN">https://t.co/WCd7ni8DwN</a>
-</pre>
+<div class="highlight-default"><div class="highlight"><pre><span></span>gente socorro kkkkkkkkkk BEYONCE https://t.co/kJ9zubvKuf
+Jay-Z &amp;amp; Beyoncé sat across from us at dinner tonight and, at one point, I made eye contact with Beyoncé. My limbs turned to jello and I can no longer form a coherent sentence. I have seen the eyes of the lord.
+Beyoncé and it isn&#39;t close. https://t.co/UdOU9oUtuW
+As you could guess.. Signs by Beyoncé will always be my shit.
+When Beyoncé adopts a dog 🙌🏾 https://t.co/U571HyLG4F
+Hold up, you can&#39;t just do that to Beyoncé
+https://t.co/3p14DocGqA
+Why y&#39;all keep using Rihanna and Beyoncé gifs to promote the show when y&#39;all let Bey lose the same award she deserved 3 times and let Rihanna leave with nothing but the clothes on her back? https://t.co/w38QpH0wma
+30) anybody tell you that you look like Beyoncé https://t.co/Vo4Z7bfSCi
+Mi Beyoncé favorita https://t.co/f9Jp600l2B
+Beyoncé necesita ver esto. Que diosa @TiniStoessel 🔥🔥🔥 https://t.co/gadVJbehQZ
+Joanne Pearce Is now playing IF I WAS A BOY - BEYONCE.mp3 by !
+</pre></div>
 </div>
-<div class="section" id="counts-api">
-<h2>Counts API<a class="headerlink" href="#counts-api" title="Permalink to this headline">¶</a></h2>
-<p>We can also use the counts api to get counts of tweets that match our
-rule. Each request will return up to <em>30</em> results, and each count
-request can be done on a minutely, hourly, or daily basis. The
-underlying <code class="docutils literal"><span class="pre">ResultStream</span></code> object will handle converting your endpoint
-to the count endpoint, and you have to specify the <code class="docutils literal"><span class="pre">count_bucket</span></code>
-argument when making a rule to use it.</p>
-<p>The process is very similar to grabbing tweets, but has some minor
-differneces.</p>
-<p><strong>Caveat - premium sandbox environments do NOT have access to the counts
-API.</strong></p>
+</div>
+<div class="section" id="counts-endpoint">
+<h2>Counts Endpoint<a class="headerlink" href="#counts-endpoint" title="Permalink to this headline">¶</a></h2>
+<p>We can also use the Search API Counts endpoint to get counts of Tweets
+that match our rule. Each request will return up to <em>30</em> results, and
+each count request can be done on a minutely, hourly, or daily basis.
+The underlying <code class="docutils literal"><span class="pre">ResultStream</span></code> object will handle converting your
+endpoint to the count endpoint, and you have to specify the
+<code class="docutils literal"><span class="pre">count_bucket</span></code> argument when making a rule to use it.</p>
+<p>The process is very similar to grabbing Tweets, but has some minor
+differences.</p>
+<p><em>Caveat - premium sandbox environments do NOT have access to the Search
+API counts endpoint.</em></p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">count_rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;beyonce&quot;</span><span class="p">,</span> <span class="n">count_bucket</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">)</span>
 
 <span class="n">counts</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">count_rule</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span>
@@ -498,50 +627,53 @@ API.</strong></p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">counts</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">85660</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712130000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">95231</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712120000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">114540</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712110000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">165964</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712100000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">102022</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712090000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">87630</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712080000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">195794</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712070000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">209629</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712060000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">88742</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712050000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">96795</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712040000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">177595</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712030000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">120102</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712020000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">186759</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712010000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">151212</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711300000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">79311</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711290000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">107175</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711280000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">58192</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711270000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">48327</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711260000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">59639</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711250000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">85201</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711240000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">91544</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711230000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">64129</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711220000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">92065</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711210000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">101617</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711200000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">84733</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711190000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">74887</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711180000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">76091</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711170000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">81849</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711160000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">58423</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711150000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">78004</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711140000&#39;</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">118077</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201711130000&#39;</span><span class="p">}]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">366</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801170000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">44580</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801160000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">61932</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801150000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">59678</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801140000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">44014</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801130000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">46607</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801120000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">41523</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801110000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">47056</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801100000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">65506</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801090000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">95251</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801080000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">162883</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801070000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">106344</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801060000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">93542</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801050000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">110415</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801040000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">127523</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801030000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">131952</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801020000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">176157</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801010000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">57229</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712310000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">72277</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712300000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">72051</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712290000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">76371</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712280000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">61578</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712270000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">55118</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712260000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">59115</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712250000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">106219</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712240000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">114732</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712230000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">73327</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712220000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">89171</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712210000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">192381</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712200000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">85554</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712190000&#39;</span><span class="p">},</span>
+ <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">57829</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201712180000&#39;</span><span class="p">}]</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="dated-searches-full-archive-search">
 <h2>Dated searches / Full Archive Search<a class="headerlink" href="#dated-searches-full-archive-search" title="Permalink to this headline">¶</a></h2>
-<p>Let&#8217;s make a new rule and pass it dates this time.</p>
+<p>Let’s make a new rule and pass it dates this time.</p>
 <p><code class="docutils literal"><span class="pre">gen_rule_payload</span></code> takes dates of the forms <code class="docutils literal"><span class="pre">YYYY-mm-DD</span></code> and
 <code class="docutils literal"><span class="pre">YYYYmmDD</span></code>.</p>
 <p><strong>Note that this will only work with the full archive search option</strong>,
 which is available to my account only via the enterprise options. Full
 archive search will likely require a different endpoint or access
 method; please see your developer console for details.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span> <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;2017-09-01&quot;</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="s2">&quot;2017-10-30&quot;</span><span class="p">,</span> <span class="n">results_per_call</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span>
+                        <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;2017-09-01&quot;</span><span class="p">,</span>
+                        <span class="n">to_date</span><span class="o">=</span><span class="s2">&quot;2017-10-30&quot;</span><span class="p">,</span>
+                        <span class="n">results_per_call</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -551,8 +683,7 @@ method; please see your developer console for details.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># usiing unidecode only to</span>
-<span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span>More clarity on our private information policy and enforcement. Working to build as much direct context into the product too https://t.co/IrwBexPrBA
