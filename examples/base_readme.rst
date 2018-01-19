@@ -1,9 +1,9 @@
 Python Twitter Search API
 =========================
 
-This library serves as a python interface to the `Twitter premium and enterprise search APIs
-<https://developer.twitter.com/en/docs/tweets/search/overview/30-day-search>`_.
-It provides a command-line utility and a library usable from within python. It
+This library serves as a Python interface to the `Twitter premium and enterprise search APIs
+<https://developer.twitter.com/en/docs/tweets/search/overview/>`_.
+It provides a command-line utility and a library usable from within a Python program. It
 comes with tools for assisting in dynamic generation of search rules and for
 parsing tweets.
 
@@ -88,7 +88,6 @@ your credentials are set up correctly in a default location
 .. code:: bash
 
   python search_tweets.py \
-    --endpoint <MY_ENDPOINT> \
     --max-results 100 \
     --results-per-call 100 \
     --filter-rule "beyonce has:hashtags" \

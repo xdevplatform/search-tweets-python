@@ -1,7 +1,4 @@
 
-Using the Twitter Search APIs Python Wrapper
-============================================
-
 Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.
 
@@ -37,7 +34,7 @@ sandbox environment can only have a max of 100 here, so if you get
 errors, please check this) not including dates, and defaulting to hourly
 counts when using the counts api. Discussing the finer points of
 generating search rules is out of scope for these examples; I encourage
-you to see the docs to learn the nuances within, but for now let's see
+you to see the docs to learn the nuances within, but for now let’s see
 what a rule looks like.
 
 .. code:: ipython3
@@ -46,7 +43,7 @@ what a rule looks like.
     print(rule)
 
 
-:: 
+::
 
     {"query":"beyonce","maxResults":100}
 
@@ -61,24 +58,23 @@ requires less thought and knowledge, and interaction with the
 Fast Way
 --------
 
-We'll use the ``search_args`` variable to power the configuration point
+We’ll use the ``search_args`` variable to power the configuration point
 for the API. The object also takes a valid PowerTrack rule and has
 options to cutoff search when hitting limits on both number of tweets
 and API calls.
 
-We'll be using the ``collect_results`` function, which has three
+We’ll be using the ``collect_results`` function, which has three
 parameters.
 
 -  rule: a valid PowerTrack rule, referenced earlier
--  max\_results: as the API handles pagination, it will stop collecting
+-  max_results: as the API handles pagination, it will stop collecting
    when we get to this number
--  result\_stream\_args: configuration args that we've already
-   specified.
+-  result_stream_args: configuration args that we’ve already specified.
 
 For the remaining examples, please change the args to either premium or
 enterprise depending on your usage.
 
-Let's see how it goes:
+Let’s see how it goes:
 
 .. code:: ipython3
 
@@ -99,7 +95,7 @@ such:
     [print(tweet.all_text, end='\n\n') for tweet in tweets[0:10]];
 
 
-:: 
+::
 
     Jay-Z &amp; Beyoncé sat across from us at dinner tonight and, at one point, I made eye contact with Beyoncé. My limbs turned to jello and I can no longer form a coherent sentence. I have seen the eyes of the lord.
     
@@ -130,7 +126,7 @@ such:
     [print(tweet.created_at_datetime) for tweet in tweets[0:10]];
 
 
-:: 
+::
 
     2018-01-17 00:08:50
     2018-01-17 00:08:49
@@ -149,7 +145,7 @@ such:
     [print(tweet.generator.get("name")) for tweet in tweets[0:10]];
 
 
-:: 
+::
 
     Twitter for iPhone
     Twitter for iPhone
@@ -164,8 +160,8 @@ such:
 
 
 Voila, we have some tweets. For interactive environments and other cases
-where you don't care about collecting your data in a single load or
-don't need to operate on the stream of tweets or counts directly, I
+where you don’t care about collecting your data in a single load or
+don’t need to operate on the stream of tweets or counts directly, I
 recommend using this convenience function.
 
 Working with the ResultStream
@@ -185,7 +181,7 @@ stop on number of pages to limit your API call usage.
     print(rs)
 
 
-:: 
+::
 
     ResultStream: 
     	{
@@ -217,7 +213,7 @@ easily extractable.
     [print(tweet.all_text) for tweet in tweets[0:10]];
 
 
-:: 
+::
 
     gente socorro kkkkkkkkkk BEYONCE https://t.co/kJ9zubvKuf
     Jay-Z &amp; Beyoncé sat across from us at dinner tonight and, at one point, I made eye contact with Beyoncé. My limbs turned to jello and I can no longer form a coherent sentence. I have seen the eyes of the lord.
@@ -264,7 +260,7 @@ Our results are pretty straightforward and can be rapidly used.
 
 
 
-:: 
+::
 
     [{'count': 366, 'timePeriod': '201801170000'},
      {'count': 44580, 'timePeriod': '201801160000'},
@@ -303,7 +299,7 @@ Our results are pretty straightforward and can be rapidly used.
 Dated searches / Full Archive Search
 ------------------------------------
 
-Let's make a new rule and pass it dates this time.
+Let’s make a new rule and pass it dates this time.
 
 ``gen_rule_payload`` takes dates of the forms ``YYYY-mm-DD`` and
 ``YYYYmmDD``.
@@ -322,7 +318,7 @@ method; please see your developer console for details.
     print(rule)
 
 
-:: 
+::
 
     {"query":"from:jack","maxResults":500,"toDate":"201710300000","fromDate":"201709010000"}
 
@@ -333,11 +329,10 @@ method; please see your developer console for details.
 
 .. code:: ipython3
 
-    # usiing unidecode only to 
     [print(tweet.all_text) for tweet in tweets[0:10]];
 
 
-:: 
+::
 
     More clarity on our private information policy and enforcement. Working to build as much direct context into the product too https://t.co/IrwBexPrBA
     To provide more clarity on our private information policy, we’ve added specific examples of what is/is not a violation and insight into what we need to remove this type of content from the service. https://t.co/NGx5hh2tTQ
@@ -365,7 +360,7 @@ method; please see your developer console for details.
     print(rule)
 
 
-:: 
+::
 
     {"query":"from:jack","toDate":"201710300000","fromDate":"201709200000","bucket":"day"}
 
@@ -379,7 +374,7 @@ method; please see your developer console for details.
     [print(c) for c in counts];
 
 
-:: 
+::
 
     {'timePeriod': '201710290000', 'count': 0}
     {'timePeriod': '201710280000', 'count': 0}
