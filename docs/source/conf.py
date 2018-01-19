@@ -40,7 +40,9 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
     'sphinxcontrib.napoleon',
-    'sphinx.ext.githubpages']
+    'sphinx.ext.githubpages',
+    'sphinx.ext.mathjax'
+    ]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -173,10 +175,10 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 
 html_theme_options = {
     # Navigation bar title. (Default: ``project`` value)
-    'navbar_title': "Twitter Search API",
+    'navbar_title': "Search Tweets APIs",
 
     # Tab name for entire site. (Default: "Site")
-    'navbar_site_name': "Twitter Search API",
+    'navbar_site_name': "Search Tweets API",
 
     # A list of tuples containing pages or urls to link to.
     # Valid tuples should be in the following forms:
@@ -186,7 +188,7 @@ html_theme_options = {
     # Note the "1" or "True" value above as the third argument to indicate
     # an arbitrary url.
     'navbar_links': [
-        ("Github", "https://github.com/twitterdev/twitter_search_api", True),
+        ("Github", "https://github.com/twitterdev/search-tweets-python", True),
     ],
 
     # Render the next and previous page links in navbar. (Default: true)
