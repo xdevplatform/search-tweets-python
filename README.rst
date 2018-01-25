@@ -1,19 +1,21 @@
 Python Twitter Search API
 =========================
 
-This library serves as a Python interface to the `Twitter premium and
-enterprise search
-APIs <https://developer.twitter.com/en/docs/tweets/search/overview/>`__.
-It provides a command-line utility and a library usable from within a
+This library serves as a Python interface to the various `Twitter
+premium and enterprise search
+APIs <https://developer.twitter.com/en/products/tweets/search>`__. It
+provides a command-line utility and a library usable from within a
 Python program. It comes with tools for assisting in dynamic generation
 of search rules and for parsing tweets.
 
 Pretty docs can be seen
-`here <https://twitterdev.github.io/search_tweets_api/>`__.
+`here <https://twitterdev.github.io/search-tweets-python/>`__.
 
 Features
 ========
 
+-  Supports 30-day Search and Full Archive Search (not the standard
+   Search API).
 -  Command-line utility is pipeable to other tools (e.g., ``jq``).
 -  Automatically handles pagination of results with specifiable limits
 -  Delivers a stream of data to the user for low in-memory requirements
@@ -138,7 +140,7 @@ Environment Variable Overrides
 ------------------------------
 
 If we set our environment variables, the program will look for them
-regardless of a YAML file’s validity or existence.
+regardless of a YAML file's validity or existence.
 
 .. code:: python
 
@@ -339,7 +341,7 @@ Using the Twitter Search APIs' Python Wrapper
 Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.
 
-We’ll assume that credentials are in the default location,
+We'll assume that credentials are in the default location,
 ``~/.twitter_keys.yaml``.
 
 .. code:: python
@@ -371,7 +373,7 @@ sandbox environment can only have a max of 100 here, so if you get
 errors, please check this) not including dates, and defaulting to hourly
 counts when using the counts api. Discussing the finer points of
 generating search rules is out of scope for these examples; I encourage
-you to see the docs to learn the nuances within, but for now let’s see
+you to see the docs to learn the nuances within, but for now let's see
 what a rule looks like.
 
 .. code:: python
@@ -393,23 +395,23 @@ requires less thought and knowledge, and interaction with the
 Fast Way
 --------
 
-We’ll use the ``search_args`` variable to power the configuration point
+We'll use the ``search_args`` variable to power the configuration point
 for the API. The object also takes a valid PowerTrack rule and has
 options to cutoff search when hitting limits on both number of Tweets
 and API calls.
 
-We’ll be using the ``collect_results`` function, which has three
+We'll be using the ``collect_results`` function, which has three
 parameters.
 
 -  rule: a valid PowerTrack rule, referenced earlier
 -  max_results: as the API handles pagination, it will stop collecting
    when we get to this number
--  result_stream_args: configuration args that we’ve already specified.
+-  result_stream_args: configuration args that we've already specified.
 
 For the remaining examples, please change the args to either premium or
 enterprise depending on your usage.
 
-Let’s see how it goes:
+Let's see how it goes:
 
 .. code:: python
 
@@ -488,8 +490,8 @@ number of Tweet attributes are made available directly, as such:
     Twitter for iPhone
 
 Voila, we have some Tweets. For interactive environments and other cases
-where you don’t care about collecting your data in a single load or
-don’t need to operate on the stream of Tweets or counts directly, I
+where you don't care about collecting your data in a single load or
+don't need to operate on the stream of Tweets or counts directly, I
 recommend using this convenience function.
 
 Working with the ResultStream
@@ -619,7 +621,7 @@ Our results are pretty straightforward and can be rapidly used.
 Dated searches / Full Archive Search
 ------------------------------------
 
-Let’s make a new rule and pass it dates this time.
+Let's make a new rule and pass it dates this time.
 
 ``gen_rule_payload`` takes dates of the forms ``YYYY-mm-DD`` and
 ``YYYYmmDD``.

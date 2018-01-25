@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Python Twitter Search API &#8212; Twitter Search APIs Python Wrapper 1.2 documentation</title>
+    <title>Python Twitter Search API &#8212; Twitter Search APIs Python Wrapper 1.2.1 documentation</title>
     
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -13,7 +13,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '1.2',
+        VERSION:     '1.2.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -148,18 +148,20 @@
       
   <div class="section" id="python-twitter-search-api">
 <h1>Python Twitter Search API<a class="headerlink" href="#python-twitter-search-api" title="Permalink to this headline">¶</a></h1>
-<p>This library serves as a Python interface to the <a class="reference external" href="https://developer.twitter.com/en/docs/tweets/search/overview/">Twitter premium and
-enterprise search
-APIs</a>.
-It provides a command-line utility and a library usable from within a
+<p>This library serves as a Python interface to the various <a class="reference external" href="https://developer.twitter.com/en/products/tweets/search">Twitter
+premium and enterprise search
+APIs</a>. It
+provides a command-line utility and a library usable from within a
 Python program. It comes with tools for assisting in dynamic generation
 of search rules and for parsing tweets.</p>
 <p>Pretty docs can be seen
-<a class="reference external" href="https://twitterdev.github.io/search_tweets_api/">here</a>.</p>
+<a class="reference external" href="https://twitterdev.github.io/search-tweets-python/">here</a>.</p>
 </div>
 <div class="section" id="features">
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
+<li>Supports 30-day Search and Full Archive Search (not the standard
+Search API).</li>
 <li>Command-line utility is pipeable to other tools (e.g., <code class="docutils literal"><span class="pre">jq</span></code>).</li>
 <li>Automatically handles pagination of results with specifiable limits</li>
 <li>Delivers a stream of data to the user for low in-memory requirements</li>
@@ -244,7 +246,7 @@ command line app and Python library.</p>
 <div class="section" id="environment-variable-overrides">
 <h2>Environment Variable Overrides<a class="headerlink" href="#environment-variable-overrides" title="Permalink to this headline">¶</a></h2>
 <p>If we set our environment variables, the program will look for them
-regardless of a YAML file’s validity or existence.</p>
+regardless of a YAML file&#8217;s validity or existence.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_USERNAME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ENV_USERNAME&quot;</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_PASSWORD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ENV_PW&quot;</span>
@@ -421,7 +423,7 @@ optional arguments:
 <h1>Using the Twitter Search APIs&#8217; Python Wrapper<a class="headerlink" href="#using-the-twitter-search-apis-python-wrapper" title="Permalink to this headline">¶</a></h1>
 <p>Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.</p>
-<p>We’ll assume that credentials are in the default location,
+<p>We&#8217;ll assume that credentials are in the default location,
 <code class="docutils literal"><span class="pre">~/.twitter_keys.yaml</span></code>.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">ResultStream</span><span class="p">,</span> <span class="n">gen_rule_payload</span><span class="p">,</span> <span class="n">load_credentials</span>
 </pre></div>
@@ -448,7 +450,7 @@ sandbox environment can only have a max of 100 here, so if you get
 errors, please check this) not including dates, and defaulting to hourly
 counts when using the counts api. Discussing the finer points of
 generating search rules is out of scope for these examples; I encourage
-you to see the docs to learn the nuances within, but for now let’s see
+you to see the docs to learn the nuances within, but for now let&#8217;s see
 what a rule looks like.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;beyonce&quot;</span><span class="p">,</span> <span class="n">results_per_call</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># testing with a sandbox account</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
@@ -465,21 +467,21 @@ requires less thought and knowledge, and interaction with the
 </div>
 <div class="section" id="fast-way">
 <h2>Fast Way<a class="headerlink" href="#fast-way" title="Permalink to this headline">¶</a></h2>
-<p>We’ll use the <code class="docutils literal"><span class="pre">search_args</span></code> variable to power the configuration point
+<p>We&#8217;ll use the <code class="docutils literal"><span class="pre">search_args</span></code> variable to power the configuration point
 for the API. The object also takes a valid PowerTrack rule and has
 options to cutoff search when hitting limits on both number of Tweets
 and API calls.</p>
-<p>We’ll be using the <code class="docutils literal"><span class="pre">collect_results</span></code> function, which has three
+<p>We&#8217;ll be using the <code class="docutils literal"><span class="pre">collect_results</span></code> function, which has three
 parameters.</p>
 <ul class="simple">
 <li>rule: a valid PowerTrack rule, referenced earlier</li>
 <li>max_results: as the API handles pagination, it will stop collecting
 when we get to this number</li>
-<li>result_stream_args: configuration args that we’ve already specified.</li>
+<li>result_stream_args: configuration args that we&#8217;ve already specified.</li>
 </ul>
 <p>For the remaining examples, please change the args to either premium or
 enterprise depending on your usage.</p>
-<p>Let’s see how it goes:</p>
+<p>Let&#8217;s see how it goes:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">collect_results</span>
 </pre></div>
 </div>
@@ -548,8 +550,8 @@ I&#39;m trynna see beyoncé&#39;s finsta before I die
 </pre></div>
 </div>
 <p>Voila, we have some Tweets. For interactive environments and other cases
-where you don’t care about collecting your data in a single load or
-don’t need to operate on the stream of Tweets or counts directly, I
+where you don&#8217;t care about collecting your data in a single load or
+don&#8217;t need to operate on the stream of Tweets or counts directly, I
 recommend using this convenience function.</p>
 </div>
 <div class="section" id="working-with-the-resultstream">
@@ -663,7 +665,7 @@ API counts endpoint.</em></p>
 </div>
 <div class="section" id="dated-searches-full-archive-search">
 <h2>Dated searches / Full Archive Search<a class="headerlink" href="#dated-searches-full-archive-search" title="Permalink to this headline">¶</a></h2>
-<p>Let’s make a new rule and pass it dates this time.</p>
+<p>Let&#8217;s make a new rule and pass it dates this time.</p>
 <p><code class="docutils literal"><span class="pre">gen_rule_payload</span></code> takes dates of the forms <code class="docutils literal"><span class="pre">YYYY-mm-DD</span></code> and
 <code class="docutils literal"><span class="pre">YYYYmmDD</span></code>.</p>
 <p><strong>Note that this will only work with the full archive search option</strong>,
