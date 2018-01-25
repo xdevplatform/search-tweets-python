@@ -2,7 +2,7 @@
 Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.
 
-We’ll assume that credentials are in the default location,
+We'll assume that credentials are in the default location,
 ``~/.twitter_keys.yaml``.
 
 .. code:: ipython3
@@ -34,7 +34,7 @@ sandbox environment can only have a max of 100 here, so if you get
 errors, please check this) not including dates, and defaulting to hourly
 counts when using the counts api. Discussing the finer points of
 generating search rules is out of scope for these examples; I encourage
-you to see the docs to learn the nuances within, but for now let’s see
+you to see the docs to learn the nuances within, but for now let's see
 what a rule looks like.
 
 .. code:: ipython3
@@ -58,23 +58,24 @@ requires less thought and knowledge, and interaction with the
 Fast Way
 --------
 
-We’ll use the ``search_args`` variable to power the configuration point
+We'll use the ``search_args`` variable to power the configuration point
 for the API. The object also takes a valid PowerTrack rule and has
 options to cutoff search when hitting limits on both number of Tweets
 and API calls.
 
-We’ll be using the ``collect_results`` function, which has three
+We'll be using the ``collect_results`` function, which has three
 parameters.
 
 -  rule: a valid PowerTrack rule, referenced earlier
--  max_results: as the API handles pagination, it will stop collecting
+-  max\_results: as the API handles pagination, it will stop collecting
    when we get to this number
--  result_stream_args: configuration args that we’ve already specified.
+-  result\_stream\_args: configuration args that we've already
+   specified.
 
 For the remaining examples, please change the args to either premium or
 enterprise depending on your usage.
 
-Let’s see how it goes:
+Let's see how it goes:
 
 .. code:: ipython3
 
@@ -160,8 +161,8 @@ number of Tweet attributes are made available directly, as such:
 
 
 Voila, we have some Tweets. For interactive environments and other cases
-where you don’t care about collecting your data in a single load or
-don’t need to operate on the stream of Tweets or counts directly, I
+where you don't care about collecting your data in a single load or
+don't need to operate on the stream of Tweets or counts directly, I
 recommend using this convenience function.
 
 Working with the ResultStream
@@ -300,7 +301,7 @@ Our results are pretty straightforward and can be rapidly used.
 Dated searches / Full Archive Search
 ------------------------------------
 
-Let’s make a new rule and pass it dates this time.
+Let's make a new rule and pass it dates this time.
 
 ``gen_rule_payload`` takes dates of the forms ``YYYY-mm-DD`` and
 ``YYYYmmDD``.

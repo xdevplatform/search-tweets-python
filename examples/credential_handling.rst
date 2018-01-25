@@ -106,7 +106,7 @@ Environment Variable Overrides
 ------------------------------
 
 If we set our environment variables, the program will look for them
-regardless of a YAML file’s validity or existence.
+regardless of a YAML file's validity or existence.
 
 .. code:: ipython3
 

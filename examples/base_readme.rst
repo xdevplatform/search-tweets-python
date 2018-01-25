@@ -1,8 +1,8 @@
 Python Twitter Search API
 =========================
 
-This library serves as a Python interface to the `Twitter premium and enterprise search APIs
-<https://developer.twitter.com/en/docs/tweets/search/overview/>`_.
+This library serves as a Python interface to the various `Twitter premium and enterprise search APIs
+<https://developer.twitter.com/en/products/tweets/search>`_.
 It provides a command-line utility and a library usable from within a Python program. It
 comes with tools for assisting in dynamic generation of search rules and for
 parsing tweets.
@@ -13,6 +13,7 @@ Pretty docs can be seen `here <https://twitterdev.github.io/search-tweets-python
 Features
 ========
 
+- Supports 30-day Search and Full Archive Search (not the standard Search API).
 - Command-line utility is pipeable to other tools (e.g., ``jq``).
 - Automatically handles pagination of results with specifiable limits
 - Delivers a stream of data to the user for low in-memory requirements
