@@ -63,7 +63,7 @@ def merge_dicts(*dicts):
     dictionary.
 
     Args:
-        dicts (list or Iterable): iterable set of dictionarys for merging.
+        dicts (list or Iterable): iterable set of dictionaries for merging.
 
     Returns:
         dict: dict with all keys from the passed list. Later dictionaries in
@@ -77,7 +77,9 @@ def merge_dicts(*dicts):
         {"maxResults": 1000, "rule": "something has:geo"}
     """
     def _merge_dicts(dict1, dict2):
-        return {**dict1, **dict2}
+        merged = dict1.copy()
+        merged.update(dict2)
+        return merged
 
     return reduce(_merge_dicts, dicts)
 
