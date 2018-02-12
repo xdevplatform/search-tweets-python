@@ -1,31 +1,29 @@
 Python Twitter Search API
 =========================
 
-This library serves as a Python interface to the various `Twitter
-premium and enterprise search
-APIs <https://developer.twitter.com/en/products/tweets/search>`__. It
-provides a command-line utility and a library usable from within a
-Python program. It comes with tools for assisting in dynamic generation
-of search rules and for parsing tweets.
-
-Pretty docs can be seen
-`here <https://twitterdev.github.io/search-tweets-python/>`__.
+This project serves as a wrapper for the `Twitter premium and enterprise
+search
+APIs <https://developer.twitter.com/en/products/tweets/search>`__,
+providing a command-line utility and a Python library. Pretty docs can
+be seen `here <https://twitterdev.github.io/search-tweets-python/>`__.
 
 Features
 ========
 
 -  Supports 30-day Search and Full Archive Search (not the standard
-   Search API).
+   Search API at this time).
 -  Command-line utility is pipeable to other tools (e.g., ``jq``).
--  Automatically handles pagination of results with specifiable limits
+-  Automatically handles pagination of search results with specifiable
+   limits
 -  Delivers a stream of data to the user for low in-memory requirements
--  Handles Enterprise and Premium authentication methods
+-  Handles enterprise and premium authentication methods
 -  Flexible usage within a python program
--  Compatible with our group's Tweet Parser for rapid extraction of
-   relevant data fields from each tweet payload
+-  Compatible with our group's `Tweet
+   Parser <https://github.com/twitterdev/tweet_parser>`__ for rapid
+   extraction of relevant data fields from each tweet payload
 -  Supports the Search Counts endpoint, which can reduce API call usage
-   and provide rapid insights if you only need volumes and not tweet
-   payloads
+   and provide rapid insights if you only need Tweet volumes and not
+   Tweet payloads
 
 Installation
 ============
@@ -51,46 +49,81 @@ Credential Handling
 
 The premium and enterprise Search APIs use different authentication
 methods and we attempt to provide a seamless way to handle
-authentication for all customers. We support both YAML-file based
-methods and environment variables for access.
-
-A YAML credential file should look like this:
-
-.. code:: .yaml
-
-    <key>:
-      account_type: <OPTIONAL PREMIUM_OR_ENTERPRISE>
-      endpoint: <FULL_URL_OF_ENDPOINT>
-      username: <USERNAME>
-      password: <PW>
-      bearer_token: <TOKEN>
+authentication for all customers.
 
 Premium clients will require the ``bearer_token`` and ``endpoint``
 fields; Enterprise clients require ``username``, ``password``, and
 ``endpoint``. If you do not specify the ``account_type``, we attempt to
-discern the account type and declare a warning about this behavior. The
-``load_credentials`` function also allows ``account_type`` to be set.
+discern the account type and declare a warning about this behavior.
 
-Our credential reader will look for this file at
+We support both YAML-file based methods and environment variables for
+access, and provide flexible handling with sensible defaults.
+
+YAML method
+-----------
+
+For premium customers, the simplest credential file should look like
+this:
+
+.. code:: yaml
+
+    search_tweets_api:
+      account_type: premium
+      endpoint: <FULL_URL_OF_ENDPOINT>
+      bearer_token: <TOKEN>
+
+For enterprise customers, the simplest credential file should look like
+this:
+
+.. code:: yaml
+
+    search_tweets_api:
+      account_type: enterprise
+      endpoint: <FULL_URL_OF_ENDPOINT>
+      username: <USERNAME>
+      password: <PW>
+
+By default, this library expects this file at
 ``"~/.twitter_keys.yaml"``, but you can pass the relevant location as
-needed. You can also specify a different key in the yaml file, which can
-be useful if you have different endpoints, e.g., ``dev``, ``test``,
-``prod``, etc. The file might look like this:
+needed, either with the ``--credential-file`` flag for the command-line
+app or as demonstrated below in a Python program.
 
-.. code:: .yaml
+Both above examples require no special command-line arguments or
+in-program arguments. The credential parsing methods, unless otherwise
+specified, will look for a YAML key called ``search_tweets_api``.
 
-    search_tweets_dev:
+For developers who have multiple endpoints and/or search products, you
+can keep all credentials in the same file and specify specific keys to
+use. ``--credential-file-key`` specifies this behavior in the command
+line app. An example:
+
+.. code:: yaml
+
+    search_tweets_30_day_dev:
       account_type: premium
       endpoint: <FULL_URL_OF_ENDPOINT>
       bearer_token: <TOKEN>
 
-    search_tweets_prod:
+    search_tweets_30_day_prod:
       account_type: premium
       endpoint: <FULL_URL_OF_ENDPOINT>
       bearer_token: <TOKEN>
+
+    search_tweets_fullarchive_dev:
+      account_type: premium
+      endpoint: <FULL_URL_OF_ENDPOINT>
+      bearer_token: <TOKEN>
+
+    search_tweets_fullarchive_prod:
+      account_type: premium
+      endpoint: <FULL_URL_OF_ENDPOINT>
+      bearer_token: <TOKEN>
+
+Environment Variables
+---------------------
 
 If you want or need to pass credentials via environment variables, you
-can set the appropriate variables of the following:
+can set the appropriate variables for your product of the following:
 
 ::
 
@@ -101,13 +134,14 @@ can set the appropriate variables of the following:
     export SEARCHTWEETS_ACCOUNT_TYPE=
 
 The ``load_credentials`` function will attempt to find these variables
-if it cannot load fields from the yaml file, and it will **overwrite any
-found credentials from the YAML file** if they have been parsed. This
-behavior can be changed by setting the ``load_credentials`` parameter
-``env_overwrite`` to ``False``.
+if it cannot load fields from the YAML file, and it will **overwrite any
+credentials from the YAML file that are present as environment
+variables** if they have been parsed. This behavior can be changed by
+setting the ``load_credentials`` parameter ``env_overwrite`` to
+``False``.
 
-The following cells demonstrates credential handling, both in the
-command line app and Python library.
+The following cells demonstrates credential handling in the Python
+library.
 
 .. code:: python
 
@@ -145,22 +179,33 @@ regardless of a YAML file's validity or existence.
 .. code:: python
 
     import os
-    os.environ["SEARCHTWEETS_USERNAME"] = "ENV_USERNAME"
-    os.environ["SEARCHTWEETS_PASSWORD"] = "ENV_PW"
-    os.environ["SEARCHTWEETS_ENDPOINT"] = "https://endpoint"
+    os.environ["SEARCHTWEETS_USERNAME"] = "<ENV_USERNAME>"
+    os.environ["SEARCHTWEETS_PASSWORD"] = "<ENV_PW>"
+    os.environ["SEARCHTWEETS_ENDPOINT"] = "<https://endpoint>"
 
-    load_credentials(filename="nothing", yaml_key="no_key_here")
+    load_credentials(filename="nothing_here.yaml", yaml_key="no_key_here")
 
 ::
 
-    cannot read file nothing
+    cannot read file nothing_here.yaml
     Error parsing YAML file; searching for valid environment variables
 
 ::
 
-    {'endpoint': 'https://endpoint',
-     'password': 'ENV_PW',
-     'username': 'ENV_USERNAME'}
+    {'endpoint': '<https://endpoint>',
+     'password': '<ENV_PW>',
+     'username': '<ENV_USERNAME>'}
+
+Command-line app
+----------------
+
+the flags:
+
+-  ``--credential-file <FILENAME>``
+-  ``--credential-file-key <KEY>``
+-  ``--env-overwrite``
+
+are used to control credential behavior from the command-line app.
 
 --------------
 
@@ -171,11 +216,11 @@ The library includes an application, ``search_tweets.py``, in the
 ``tools`` directory that provides rapid access to Tweets.
 
 Note that the ``--results-per-call`` flag specifies an argument to the
-API call ( ``maxResults``, results returned per CALL), not as a hard max
-to number of results returned from this program. The argument
+API ( ``maxResults``, results returned per CALL), not as a hard max to
+number of results returned from this program. The argument
 ``--max-results`` defines the maximum number of results to return from a
 given call. All examples assume that your credentials are set up
-correctly in a default location - ``.twitter_keys.yaml`` or in
+correctly in the default location - ``.twitter_keys.yaml`` or in
 environment variables.
 
 **Stream json results to stdout without saving**
@@ -210,8 +255,8 @@ environment variables.
       --filename-prefix beyonce_geo \
       --no-print-stream
 
-Options can be passed via a configuration file (either ini or YAML). An
-example file can be found in the ``tools/api_config_example.config`` or
+Options can be passed via a configuration file (either ini or YAML).
+Example files can be found in the ``tools/api_config_example.config`` or
 ``./tools/api_yaml_example.yaml`` files, which might look like this:
 
 .. code:: bash
@@ -270,18 +315,18 @@ Full options are listed below:
 
     $ search_tweets.py -h
     usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]
-                            [--credential-file-key CREDENTIAL_YAML_KEY]
-                            [--env-overwrite ENV_OVERWRITE]
-                            [--config-file CONFIG_FILENAME]
-                            [--account-type {premium,enterprise}]
-                            [--count-bucket COUNT_BUCKET]
-                            [--start-datetime FROM_DATE] [--end-datetime TO_DATE]
-                            [--filter-rule PT_RULE]
-                            [--results-per-call RESULTS_PER_CALL]
-                            [--max-results MAX_RESULTS] [--max-pages MAX_PAGES]
-                            [--results-per-file RESULTS_PER_FILE]
-                            [--filename-prefix FILENAME_PREFIX]
-                            [--no-print-stream] [--print-stream] [--debug]
+                          [--credential-file-key CREDENTIAL_YAML_KEY]
+                          [--env-overwrite ENV_OVERWRITE]
+                          [--config-file CONFIG_FILENAME]
+                          [--account-type {premium,enterprise}]
+                          [--count-bucket COUNT_BUCKET]
+                          [--start-datetime FROM_DATE] [--end-datetime TO_DATE]
+                          [--filter-rule PT_RULE]
+                          [--results-per-call RESULTS_PER_CALL]
+                          [--max-results MAX_RESULTS] [--max-pages MAX_PAGES]
+                          [--results-per-file RESULTS_PER_FILE]
+                          [--filename-prefix FILENAME_PREFIX]
+                          [--no-print-stream] [--print-stream] [--debug]
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -319,10 +364,10 @@ Full options are listed below:
                             Number of results to return per call (default 100; max
                             500) - corresponds to 'maxResults' in the API
       --max-results MAX_RESULTS
-                            Maximum results to return for this session (defaults
-                            to 500; see -a option
+                            Maximum number of Tweets or Counts to return for this
+                            session (defaults to 500)
       --max-pages MAX_PAGES
-                            Maximum number of pages/api calls to use for this
+                            Maximum number of pages/API calls to use for this
                             session.
       --results-per-file RESULTS_PER_FILE
                             Maximum tweets to save per file.
@@ -336,7 +381,7 @@ Full options are listed below:
 --------------
 
 Using the Twitter Search APIs' Python Wrapper
-============================================
+=============================================
 
 Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.
@@ -621,21 +666,27 @@ Our results are pretty straightforward and can be rapidly used.
 Dated searches / Full Archive Search
 ------------------------------------
 
-Let's make a new rule and pass it dates this time.
-
-``gen_rule_payload`` takes dates of the forms ``YYYY-mm-DD`` and
-``YYYYmmDD``.
-
 **Note that this will only work with the full archive search option**,
 which is available to my account only via the enterprise options. Full
 archive search will likely require a different endpoint or access
 method; please see your developer console for details.
 
+Let's make a new rule and pass it dates this time.
+
+``gen_rule_payload`` takes timestamps of the following forms:
+
+-  ``YYYYmmDDHHMM``
+-  ``YYYY-mm-DD`` (which will convert to midnight UTC (00:00)
+-  ``YYYY-mm-DD HH:MM``
+-  ``YYYY-mm-DDTHH:MM``
+
+Note - all Tweets are stored in UTC time.
+
 .. code:: python
 
     rule = gen_rule_payload("from:jack",
-                            from_date="2017-09-01",
-                            to_date="2017-10-30",
+                            from_date="2017-09-01", #UTC 2017-09-01 00:00
+                            to_date="2017-10-30",#UTC 2017-10-30 00:00
                             results_per_call=500)
     print(rule)
 
