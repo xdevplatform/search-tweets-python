@@ -96,15 +96,14 @@ def parse_cmd_args():
     argparser.add_argument("--max-results", dest="max_results",
                            default=500,
                            type=int,
-                           help="Maximum results to return for this "
-                                "session (defaults to 500; "
-                                "see -a option")
+                           help="Maximum number of Tweets or Counts to return for this "
+                                "session (defaults to 500)")
 
     argparser.add_argument("--max-pages",
                            dest="max_pages",
                            type=int,
                            default=None,
-                           help="Maximum number of pages/api calls to "
+                           help="Maximum number of pages/API calls to "
                            "use for this session.")
 
     argparser.add_argument("--results-per-file", dest="results_per_file",
