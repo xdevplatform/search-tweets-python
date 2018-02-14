@@ -56,8 +56,15 @@ fields; Enterprise clients require ``username``, ``password``, and
 ``endpoint``. If you do not specify the ``account_type``, we attempt to
 discern the account type and declare a warning about this behavior.
 
+For premium search products, we are using app-only authentication and
+the bearer tokens are not delivered with an expiration time. They can be
+invalidated. Please see
+`here <https://developer.twitter.com/en/docs/basics/authentication/overview/application-only>`__
+for an overview of the premium authentication method.
+
 We support both YAML-file based methods and environment variables for
-access, and provide flexible handling with sensible defaults.
+storing credentials, and provide flexible handling with sensible
+defaults.
 
 YAML method
 -----------
