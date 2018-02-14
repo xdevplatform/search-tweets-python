@@ -1,26 +1,23 @@
 Python Twitter Search API
 =========================
 
-This library serves as a Python interface to the various `Twitter premium and enterprise search APIs
-<https://developer.twitter.com/en/products/tweets/search>`_.
-It provides a command-line utility and a library usable from within a Python program. It
-comes with tools for assisting in dynamic generation of search rules and for
-parsing tweets.
-
+This project serves as a wrapper for the `Twitter premium and enterprise search APIs
+<https://developer.twitter.com/en/products/tweets/search>`_, 
+providing a command-line utility and a Python library.
 Pretty docs can be seen `here <https://twitterdev.github.io/search-tweets-python/>`_.
 
 
 Features
 ========
 
-- Supports 30-day Search and Full Archive Search (not the standard Search API).
+- Supports 30-day Search and Full Archive Search (not the standard Search API at this time).
 - Command-line utility is pipeable to other tools (e.g., ``jq``).
-- Automatically handles pagination of results with specifiable limits
+- Automatically handles pagination of search results with specifiable limits
 - Delivers a stream of data to the user for low in-memory requirements
-- Handles Enterprise and Premium authentication methods
+- Handles enterprise and premium authentication methods
 - Flexible usage within a python program
-- Compatible with our group's Tweet Parser for rapid extraction of relevant data fields from each tweet payload
-- Supports the Search Counts endpoint, which can reduce API call usage and provide rapid insights if you only need volumes and not tweet payloads
+- Compatible with our group's `Tweet Parser <https://github.com/twitterdev/tweet_parser>`_ for rapid extraction of relevant data fields from each tweet payload
+- Supports the Search Counts endpoint, which can reduce API call usage and provide rapid insights if you only need Tweet volumes and not Tweet payloads
 
 
 Installation
@@ -53,11 +50,11 @@ Using the Comand Line Application
 
 The library includes an application, ``search_tweets.py``, in the ``tools`` directory that provides rapid access to Tweets.
 
-Note that the ``--results-per-call`` flag specifies an argument to the API call
+Note that the ``--results-per-call`` flag specifies an argument to the API
 ( ``maxResults``, results returned per CALL), not as a hard max to number of
 results returned from this program. The argument ``--max-results`` defines the
 maximum number of results to return from a given call. All examples assume that
-your credentials are set up correctly in a default location
+your credentials are set up correctly in the default location
 - ``.twitter_keys.yaml`` or in environment variables.
 
 
@@ -96,8 +93,8 @@ your credentials are set up correctly in a default location
     --no-print-stream
 
 
-Options can be passed via a configuration file (either ini or YAML). An example
-file can be found in the ``tools/api_config_example.config`` or
+Options can be passed via a configuration file (either ini or YAML). Example
+files can be found in the ``tools/api_config_example.config`` or
 ``./tools/api_yaml_example.yaml`` files, which might look like this:
 
 .. code:: bash
@@ -152,22 +149,22 @@ Example::
 
 Full options are listed below:
 
-:: 
+::
 
   $ search_tweets.py -h
   usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]
-                          [--credential-file-key CREDENTIAL_YAML_KEY]
-                          [--env-overwrite ENV_OVERWRITE]
-                          [--config-file CONFIG_FILENAME]
-                          [--account-type {premium,enterprise}]
-                          [--count-bucket COUNT_BUCKET]
-                          [--start-datetime FROM_DATE] [--end-datetime TO_DATE]
-                          [--filter-rule PT_RULE]
-                          [--results-per-call RESULTS_PER_CALL]
-                          [--max-results MAX_RESULTS] [--max-pages MAX_PAGES]
-                          [--results-per-file RESULTS_PER_FILE]
-                          [--filename-prefix FILENAME_PREFIX]
-                          [--no-print-stream] [--print-stream] [--debug]
+                        [--credential-file-key CREDENTIAL_YAML_KEY]
+                        [--env-overwrite ENV_OVERWRITE]
+                        [--config-file CONFIG_FILENAME]
+                        [--account-type {premium,enterprise}]
+                        [--count-bucket COUNT_BUCKET]
+                        [--start-datetime FROM_DATE] [--end-datetime TO_DATE]
+                        [--filter-rule PT_RULE]
+                        [--results-per-call RESULTS_PER_CALL]
+                        [--max-results MAX_RESULTS] [--max-pages MAX_PAGES]
+                        [--results-per-file RESULTS_PER_FILE]
+                        [--filename-prefix FILENAME_PREFIX]
+                        [--no-print-stream] [--print-stream] [--debug]
 
   optional arguments:
     -h, --help            show this help message and exit
@@ -205,10 +202,10 @@ Full options are listed below:
                           Number of results to return per call (default 100; max
                           500) - corresponds to 'maxResults' in the API
     --max-results MAX_RESULTS
-                          Maximum results to return for this session (defaults
-                          to 500; see -a option
+                          Maximum number of Tweets or Counts to return for this
+                          session (defaults to 500)
     --max-pages MAX_PAGES
-                          Maximum number of pages/api calls to use for this
+                          Maximum number of pages/API calls to use for this
                           session.
     --results-per-file RESULTS_PER_FILE
                           Maximum tweets to save per file.
@@ -223,6 +220,6 @@ Full options are listed below:
 ----
 
 Using the Twitter Search APIs' Python Wrapper
-============================================
+=============================================
 
 .. include:: api_example.rst

@@ -54,13 +54,15 @@ GNIP_RESP_CODES = {
 def convert_utc_time(datetime_str):
     """
     Handles datetime argument conversion to the GNIP API format, which is
-    `YYYYMMDDHHSS`. Flexible passing of date formats.
+    `YYYYMMDDHHSS`. Flexible passing of date formats in the following types::
+
+        - YYYYmmDDHHMM
+        - YYYY-mm-DD
+        - YYYY-mm-DD HH:MM
+        - YYYY-mm-DDTHH:MM
 
     Args:
-        datetime_str (str): the datestring, which can either be in GNIP API
-        Format (YYYYmmDDHHSS), ISO date format (YYYY-mm-DD), ISO datetime
-        format (YYYY-mm-DD HH:mm),
-        or command-line ISO format (YYYY-mm-DDTHH:mm)
+        datetime_str (str): valid formats are listed above.
 
     Returns:
         string of GNIP API formatted date.

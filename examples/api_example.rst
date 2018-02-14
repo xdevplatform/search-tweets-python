@@ -301,21 +301,27 @@ Our results are pretty straightforward and can be rapidly used.
 Dated searches / Full Archive Search
 ------------------------------------
 
-Let's make a new rule and pass it dates this time.
-
-``gen_rule_payload`` takes dates of the forms ``YYYY-mm-DD`` and
-``YYYYmmDD``.
-
 **Note that this will only work with the full archive search option**,
 which is available to my account only via the enterprise options. Full
 archive search will likely require a different endpoint or access
 method; please see your developer console for details.
 
+Let's make a new rule and pass it dates this time.
+
+``gen_rule_payload`` takes timestamps of the following forms:
+
+-  ``YYYYmmDDHHMM``
+-  ``YYYY-mm-DD`` (which will convert to midnight UTC (00:00)
+-  ``YYYY-mm-DD HH:MM``
+-  ``YYYY-mm-DDTHH:MM``
+
+Note - all Tweets are stored in UTC time.
+
 .. code:: ipython3
 
     rule = gen_rule_payload("from:jack",
-                            from_date="2017-09-01",
-                            to_date="2017-10-30",
+                            from_date="2017-09-01", #UTC 2017-09-01 00:00
+                            to_date="2017-10-30",#UTC 2017-10-30 00:00
                             results_per_call=500)
     print(rule)
 
