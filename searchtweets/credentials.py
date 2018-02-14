@@ -201,13 +201,19 @@ def _generate_bearer_token(consumer_key, consumer_secret):
     """
     Return the bearer token for a given pair of consumer key and secret values.
     """
-    consumer_secret = base64.b64encode(consumer_secret.encode())
-    auth_value = 'Basic {0} {1}'.format(consumer_key, consumer_secret)
+    auth = base64.b64encode("{0}:{1}".format(
+        consumer_key,
+        consumer_secret).encode()).decode()
+
+    headers = {
+        'Authorization': 'Basic {0}'.format(auth),
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
     data = 'grant_type=client_credentials'
     resp = requests.post(OAUTH_ENDPOINT,
                          data=data,
-                         headers={'Authorization': auth_value})
-
-    resp.raise_for_status()
+                         headers=headers)
+    if resp.status_code >= 400:
+        logger.error(resp.text)
+        resp.raise_for_status()
 
     return resp.json()['access_token']
