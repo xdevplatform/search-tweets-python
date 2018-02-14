@@ -201,7 +201,7 @@ def _generate_bearer_token(consumer_key, consumer_secret):
     """
     Return the bearer token for a given pair of consumer key and secret values.
     """
-    consumer_secret = base64.b64encode(consumer_secret)
+    consumer_secret = base64.b64encode(consumer_secret.encode())
     auth_value = 'Basic {0} {1}'.format(consumer_key, consumer_secret)
     data = 'grant_type=client_credentials'
     resp = requests.post(OAUTH_ENDPOINT,
