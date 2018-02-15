@@ -100,9 +100,9 @@ def write_ndjson(filename, data_iterable, append=False, **kwargs):
 def write_result_stream(result_stream, filename_prefix=None,
                         results_per_file=None, **kwargs):
     """
-    Wraps a resultstream object to save it to a file. This function will still
+    Wraps a ``ResultStream`` object to save it to a file. This function will still
     return all data from the result stream as a generator that wraps the
-    `write_ndjson` method.
+    ``write_ndjson`` method.
 
     Args:
         result_stream (ResultStream): the unstarted ResultStream object
@@ -110,7 +110,7 @@ def write_result_stream(result_stream, filename_prefix=None,
         results_per_file (int or None): the maximum number of tweets to write
         per file. Defaults to having no max, which means one file. Multiple
         files will be named by datetime, according to
-        "<prefix>_YYY-mm-ddTHH_MM_SS.json".
+        ``<prefix>_YYY-mm-ddTHH_MM_SS.json``.
 
     """
     if isinstance(result_stream, types.GeneratorType):
@@ -143,9 +143,7 @@ def write_result_stream(result_stream, filename_prefix=None,
 def read_config(filename):
     """Reads and flattens a configuration file into a single
     dictionary for ease of use. Works with both ``.config`` and
-    ``.yaml`` files. Files should look like this:
-
-    .. code: yaml
+    ``.yaml`` files. Files should look like this::
 
         search_rules:
             from-date: 2017-06-01
@@ -161,9 +159,8 @@ def read_config(filename):
             filename_prefix: kanye
             results_per_file: 10000000
 
-    or
+    or::
 
-    .. parsed-literal:
 
         [search_rules]
         from_date = 2017-06-01

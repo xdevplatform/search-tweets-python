@@ -4,49 +4,92 @@ Credential Handling
 
 The premium and enterprise Search APIs use different authentication
 methods and we attempt to provide a seamless way to handle
-authentication for all customers. We support both YAML-file based
-methods and environment variables for access.
-
-A YAML credential file should look like this:
-
-.. code:: .yaml
-
-
-    <key>:
-      account_type: <OPTIONAL PREMIUM_OR_ENTERPRISE>
-      endpoint: <FULL_URL_OF_ENDPOINT>
-      username: <USERNAME>
-      password: <PW>
-      bearer_token: <TOKEN>
+authentication for all customers.
 
 Premium clients will require the ``bearer_token`` and ``endpoint``
 fields; Enterprise clients require ``username``, ``password``, and
 ``endpoint``. If you do not specify the ``account_type``, we attempt to
-discern the account type and declare a warning about this behavior. The
-``load_credentials`` function also allows ``account_type`` to be set.
+discern the account type and declare a warning about this behavior.
 
-Our credential reader will look for this file at
+For premium search products, we are using app-only authentication and
+the bearer tokens are not delivered with an expiration time. They can be
+invalidated. Please see
+`here <https://developer.twitter.com/en/docs/basics/authentication/overview/application-only>`__
+for an overview of the premium authentication method.
+
+We support both YAML-file based methods and environment variables for
+storing credentials, and provide flexible handling with sensible
+defaults.
+
+YAML method
+-----------
+
+For premium customers, the simplest credential file should look like
+this:
+
+.. code:: yaml
+
+
+    search_tweets_api:
+      account_type: premium
+      endpoint: <FULL_URL_OF_ENDPOINT>
+      bearer_token: <TOKEN>
+
+For enterprise customers, the simplest credential file should look like
+this:
+
+.. code:: yaml
+
+
+    search_tweets_api:
+      account_type: enterprise
+      endpoint: <FULL_URL_OF_ENDPOINT>
+      username: <USERNAME>
+      password: <PW>
+
+By default, this library expects this file at
 ``"~/.twitter_keys.yaml"``, but you can pass the relevant location as
-needed. You can also specify a different key in the yaml file, which can
-be useful if you have different endpoints, e.g., ``dev``, ``test``,
-``prod``, etc. The file might look like this:
+needed, either with the ``--credential-file`` flag for the command-line
+app or as demonstrated below in a Python program.
 
-.. code:: .yaml
+Both above examples require no special command-line arguments or
+in-program arguments. The credential parsing methods, unless otherwise
+specified, will look for a YAML key called ``search_tweets_api``.
+
+For developers who have multiple endpoints and/or search products, you
+can keep all credentials in the same file and specify specific keys to
+use. ``--credential-file-key`` specifies this behavior in the command
+line app. An example:
+
+.. code:: yaml
 
 
-    search_tweets_dev:
+    search_tweets_30_day_dev:
       account_type: premium
       endpoint: <FULL_URL_OF_ENDPOINT>
       bearer_token: <TOKEN>
       
-    search_tweets_prod:
+    search_tweets_30_day_prod:
       account_type: premium
       endpoint: <FULL_URL_OF_ENDPOINT>
       bearer_token: <TOKEN>
       
+    search_tweets_fullarchive_dev:
+      account_type: premium
+      endpoint: <FULL_URL_OF_ENDPOINT>
+      bearer_token: <TOKEN>
+
+    search_tweets_fullarchive_prod:
+      account_type: premium
+      endpoint: <FULL_URL_OF_ENDPOINT>
+      bearer_token: <TOKEN>
+      
+
+Environment Variables
+---------------------
 
 If you want or need to pass credentials via environment variables, you
-can set the appropriate variables of the following:
+can set the appropriate variables for your product of the following:
 
 ::
 
@@ -57,13 +100,14 @@ can set the appropriate variables of the following:
     export SEARCHTWEETS_ACCOUNT_TYPE=
 
 The ``load_credentials`` function will attempt to find these variables
-if it cannot load fields from the yaml file, and it will **overwrite any
-found credentials from the YAML file** if they have been parsed. This
-behavior can be changed by setting the ``load_credentials`` parameter
-``env_overwrite`` to ``False``.
+if it cannot load fields from the YAML file, and it will **overwrite any
+credentials from the YAML file that are present as environment
+variables** if they have been parsed. This behavior can be changed by
+setting the ``load_credentials`` parameter ``env_overwrite`` to
+``False``.
 
-The following cells demonstrates credential handling, both in the
-command line app and Python library.
+The following cells demonstrates credential handling in the Python
+library.
 
 .. code:: ipython3
 
@@ -111,16 +155,16 @@ regardless of a YAML file's validity or existence.
 .. code:: ipython3
 
     import os
-    os.environ["SEARCHTWEETS_USERNAME"] = "ENV_USERNAME"
-    os.environ["SEARCHTWEETS_PASSWORD"] = "ENV_PW"
-    os.environ["SEARCHTWEETS_ENDPOINT"] = "https://endpoint"
+    os.environ["SEARCHTWEETS_USERNAME"] = "<ENV_USERNAME>"
+    os.environ["SEARCHTWEETS_PASSWORD"] = "<ENV_PW>"
+    os.environ["SEARCHTWEETS_ENDPOINT"] = "<https://endpoint>"
     
-    load_credentials(filename="nothing", yaml_key="no_key_here")
+    load_credentials(filename="nothing_here.yaml", yaml_key="no_key_here")
 
 
 ::
 
-    cannot read file nothing
+    cannot read file nothing_here.yaml
     Error parsing YAML file; searching for valid environment variables
 
 
@@ -128,8 +172,19 @@ regardless of a YAML file's validity or existence.
 
 ::
 
-    {'endpoint': 'https://endpoint',
-     'password': 'ENV_PW',
-     'username': 'ENV_USERNAME'}
+    {'endpoint': '<https://endpoint>',
+     'password': '<ENV_PW>',
+     'username': '<ENV_USERNAME>'}
 
 
+
+Command-line app
+----------------
+
+the flags:
+
+-  ``--credential-file <FILENAME>``
+-  ``--credential-file-key <KEY>``
+-  ``--env-overwrite``
+
+are used to control credential behavior from the command-line app.
