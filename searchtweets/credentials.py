@@ -49,7 +49,10 @@ def _load_env_credentials():
              "SEARCHTWEETS_USERNAME",
              "SEARCHTWEETS_PASSWORD",
              "SEARCHTWEETS_BEARER_TOKEN",
-             "SEARCHTWEETS_ACCOUNT_TYPE"]
+             "SEARCHTWEETS_ACCOUNT_TYPE",
+             "SEARCHTWEETS_CONSUMER_KEY",
+             "SEARCHTWEETS_CONSUMER_SECRET"
+             ]
     renamed = [var.replace("SEARCHTWEETS_", '').lower() for var in vars_]
 
     parsed = {r: os.environ.get(var) for (var, r) in zip(vars_, renamed)}
@@ -108,7 +111,7 @@ def load_credentials(filename=None, account_type=None,
     """
     Handles credential management. Supports both YAML files and environment
     variables. A YAML file is preferred for simplicity and configureability.
-    A YAML credential file should look like this:
+    A YAML credential file should look something like this:
 
     .. code:: yaml
 
@@ -116,27 +119,13 @@ def load_credentials(filename=None, account_type=None,
           endpoint: <FULL_URL_OF_ENDPOINT>
           username: <USERNAME>
           password: <PW>
+          consumer_key: <KEY>
+          consumer_secret: <SECRET>
           bearer_token: <TOKEN>
           account_type: <enterprise OR premium>
 
     with the appropriate fields filled out for your account. The top-level key
-    defaults to ``search_tweets_api`` but can be flexible, e.g.:
-
-    .. code:: yaml
-
-        premium_dev:
-          account_type: premium
-          endpoint: <FULL_URL_OF_ENDPOINT>
-          bearer_token: <TOKEN>
-
-        enterprise_dev:
-          account_type: enterprise
-          endpoint: <FULL_URL_OF_ENDPOINT>
-          username: <MY_USERNAME>
-          password: <MY_PASSWORD>
-
-    as this method supports a flexible interface for reading the
-    credential files. You can keep all of your credentials in the same file.
+    defaults to ``search_tweets_api`` but can be flexible.
 
     If a YAML file is not found or is missing keys, this function will check
     for this information in the environment variables that correspond to
@@ -148,9 +137,10 @@ def load_credentials(filename=None, account_type=None,
         SEARCHTWEETS_PASSWORD
         SEARCHTWEETS_BEARER_TOKEN
         SEARCHTWEETS_ACCOUNT_TYPE
+        ...
 
     Again, set the variables that correspond to your account information and
-    type.
+    type. See the main documentation for details and more examples.
 
 
     Args:
@@ -174,12 +164,12 @@ def load_credentials(filename=None, account_type=None,
         dict_keys(['bearer_token', 'endpoint'])
         >>> import os
         >>> os.environ["SEARCHTWEETS_ENDPOINT"] = "https://endpoint"
-        >>> os.environ["SEARCHTWEETS_USERNAME"] = "azaleszzz"
+        >>> os.environ["SEARCHTWEETS_USERNAME"] = "areallybadpassword"
         >>> os.environ["SEARCHTWEETS_PASSWORD"] = "<PW>"
         >>> load_credentials()
         {'endpoint': 'https://endpoint',
          'password': '<PW>',
-         'username': 'azaleszzz'}
+         'username': 'areallybadpassword'}
 
     """
     yaml_key = yaml_key if yaml_key is not None else "search_tweets_api"
@@ -212,6 +202,7 @@ def _generate_bearer_token(consumer_key, consumer_secret):
     resp = requests.post(OAUTH_ENDPOINT,
                          data=data,
                          headers=headers)
+    logger.warning("Grabbing bearer token from OAUTH")
     if resp.status_code >= 400:
         logger.error(resp.text)
         resp.raise_for_status()
