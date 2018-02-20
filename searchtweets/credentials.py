@@ -191,17 +191,10 @@ def _generate_bearer_token(consumer_key, consumer_secret):
     """
     Return the bearer token for a given pair of consumer key and secret values.
     """
-    auth = base64.b64encode("{0}:{1}".format(
-        consumer_key,
-        consumer_secret).encode()).decode()
-
-    headers = {
-        'Authorization': 'Basic {0}'.format(auth),
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
-    data = 'grant_type=client_credentials'
+    data = [('grant_type', 'client_credentials')]
     resp = requests.post(OAUTH_ENDPOINT,
                          data=data,
-                         headers=headers)
+                         auth=(consumer_key, consumer_secret))
     logger.warning("Grabbing bearer token from OAUTH")
     if resp.status_code >= 400:
         logger.error(resp.text)
