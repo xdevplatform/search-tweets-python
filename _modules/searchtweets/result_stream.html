@@ -127,9 +127,9 @@
 <span class="c1"># Licensed under the MIT License</span>
 <span class="c1"># https://opensource.org/licenses/MIT</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module contains the request handing and actual api wrapping functionality.</span>
+<span class="sd">This module contains the request handing and actual API wrapping functionality.</span>
 
-<span class="sd">It&#39;s core method is the ``ResultStream`` object, which takes the API call</span>
+<span class="sd">Its core method is the ``ResultStream`` object, which takes the API call</span>
 <span class="sd">arguments and returns a stream of results to the user.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -154,7 +154,7 @@
 
 <div class="viewcode-block" id="make_session"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.make_session">[docs]</a><span class="k">def</span> <span class="nf">make_session</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bearer_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a Requests Session for use. Accepts a bearer token</span>
-<span class="sd">    for freemium users and will override username and password information if</span>
+<span class="sd">    for premiums users and will override username and password information if</span>
 <span class="sd">    present.</span>
 
 <span class="sd">    Args:</span>
@@ -237,7 +237,7 @@
 <span class="sd">    Args:</span>
 <span class="sd">        session (requests.Session): the valid session object</span>
 <span class="sd">        url (str): Valid API endpoint</span>
-<span class="sd">        rule_payload (str or dict): rule package for the POST. if you pass a</span>
+<span class="sd">        rule_payload (str or dict): rule package for the POST. If you pass a</span>
 <span class="sd">            dictionary, it will be converted into JSON.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -311,8 +311,8 @@
 <div class="viewcode-block" id="ResultStream.stream"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.ResultStream.stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Main entry point for the data from the API. Will automatically paginate</span>
-<span class="sd">        through the results via the &#39;next&#39; token and return up to `max_results`</span>
-<span class="sd">        tweets or up to `max_requests` api calls, whichever is lower.</span>
+<span class="sd">        through the results via the ``next`` token and return up to ``max_results``</span>
+<span class="sd">        tweets or up to ``max_requests`` API calls, whichever is lower.</span>
 
 <span class="sd">        Usage:</span>
 <span class="sd">            &gt;&gt;&gt; result_stream = ResultStream(**kwargs)</span>
@@ -359,12 +359,12 @@
 <span class="sd">        Disables tweet parsing if the count API is used.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;counts&quot;</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[/.]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;disabling tweet parsing due to counts api usage&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;disabling tweet parsing due to counts API usage&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tweet_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span></div>
 
 <div class="viewcode-block" id="ResultStream.execute_request"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.ResultStream.execute_request">[docs]</a>    <span class="k">def</span> <span class="nf">execute_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sends the request to the api and parses the json response.</span>
+<span class="sd">        Sends the request to the API and parses the json response.</span>
 <span class="sd">        Makes some assumptions about the session length and sets the presence</span>
 <span class="sd">        of a &quot;next&quot; token.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -392,15 +392,15 @@
 
 <div class="viewcode-block" id="collect_results"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.collect_results">[docs]</a><span class="k">def</span> <span class="nf">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Utility function to quickly get a list of tweets from a resultstream</span>
-<span class="sd">    without keeping the object around. Rqequires your args to be configured</span>
+<span class="sd">    Utility function to quickly get a list of tweets from a ``ResultStream``</span>
+<span class="sd">    without keeping the object around. Requires your args to be configured</span>
 <span class="sd">    prior to using.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        rule (str): valid powertrack rule for your account, preferably</span>
 <span class="sd">        generated by the `gen_rule_payload` function.</span>
 <span class="sd">        max_results (int): maximum number of tweets or counts to return from</span>
-<span class="sd">        the API / underlying resultstream object.</span>
+<span class="sd">        the API / underlying ``ResultStream`` object.</span>
 <span class="sd">        result_stream_args (dict): configuration dict that has connection</span>
 <span class="sd">        information for a ``ResultStream`` object.</span>
 

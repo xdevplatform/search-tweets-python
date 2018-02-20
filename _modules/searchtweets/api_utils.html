@@ -178,13 +178,15 @@
 <div class="viewcode-block" id="convert_utc_time"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.api_utils.convert_utc_time">[docs]</a><span class="k">def</span> <span class="nf">convert_utc_time</span><span class="p">(</span><span class="n">datetime_str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Handles datetime argument conversion to the GNIP API format, which is</span>
-<span class="sd">    `YYYYMMDDHHSS`. Flexible passing of date formats.</span>
+<span class="sd">    `YYYYMMDDHHSS`. Flexible passing of date formats in the following types::</span>
+
+<span class="sd">        - YYYYmmDDHHMM</span>
+<span class="sd">        - YYYY-mm-DD</span>
+<span class="sd">        - YYYY-mm-DD HH:MM</span>
+<span class="sd">        - YYYY-mm-DDTHH:MM</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        datetime_str (str): the datestring, which can either be in GNIP API</span>
-<span class="sd">        Format (YYYYmmDDHHSS), ISO date format (YYYY-mm-DD), ISO datetime</span>
-<span class="sd">        format (YYYY-mm-DD HH:mm),</span>
-<span class="sd">        or command-line ISO format (YYYY-mm-DDTHH:mm)</span>
+<span class="sd">        datetime_str (str): valid formats are listed above.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        string of GNIP API formatted date.</span>

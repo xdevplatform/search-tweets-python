@@ -94,7 +94,10 @@
 <li><a class="reference internal" href="#features">Features</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#credential-handling">Credential Handling</a><ul>
+<li><a class="reference internal" href="#yaml-method">YAML method</a></li>
+<li><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
 <li><a class="reference internal" href="#environment-variable-overrides">Environment Variable Overrides</a></li>
+<li><a class="reference internal" href="#command-line-app">Command-line app</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#using-the-comand-line-application">Using the Comand Line Application</a></li>
@@ -142,30 +145,29 @@
       
   <div class="section" id="python-twitter-search-api">
 <h1>Python Twitter Search API<a class="headerlink" href="#python-twitter-search-api" title="Permalink to this headline">¶</a></h1>
-<p>This library serves as a Python interface to the various <a class="reference external" href="https://developer.twitter.com/en/products/tweets/search">Twitter
-premium and enterprise search
-APIs</a>. It
-provides a command-line utility and a library usable from within a
-Python program. It comes with tools for assisting in dynamic generation
-of search rules and for parsing tweets.</p>
-<p>Pretty docs can be seen
-<a class="reference external" href="https://twitterdev.github.io/search-tweets-python/">here</a>.</p>
+<p>This project serves as a wrapper for the <a class="reference external" href="https://developer.twitter.com/en/products/tweets/search">Twitter premium and enterprise
+search
+APIs</a>,
+providing a command-line utility and a Python library. Pretty docs can
+be seen <a class="reference external" href="https://twitterdev.github.io/search-tweets-python/">here</a>.</p>
 </div>
 <div class="section" id="features">
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li>Supports 30-day Search and Full Archive Search (not the standard
-Search API).</li>
+Search API at this time).</li>
 <li>Command-line utility is pipeable to other tools (e.g., <code class="docutils literal"><span class="pre">jq</span></code>).</li>
-<li>Automatically handles pagination of results with specifiable limits</li>
+<li>Automatically handles pagination of search results with specifiable
+limits</li>
 <li>Delivers a stream of data to the user for low in-memory requirements</li>
-<li>Handles Enterprise and Premium authentication methods</li>
+<li>Handles enterprise and premium authentication methods</li>
 <li>Flexible usage within a python program</li>
-<li>Compatible with our group&#8217;s Tweet Parser for rapid extraction of
-relevant data fields from each tweet payload</li>
+<li>Compatible with our group&#8217;s <a class="reference external" href="https://github.com/twitterdev/tweet_parser">Tweet
+Parser</a> for rapid
+extraction of relevant data fields from each tweet payload</li>
 <li>Supports the Search Counts endpoint, which can reduce API call usage
-and provide rapid insights if you only need volumes and not tweet
-payloads</li>
+and provide rapid insights if you only need Tweet volumes and not
+Tweet payloads</li>
 </ul>
 </div>
 <div class="section" id="installation">
@@ -186,21 +188,75 @@ payloads</li>
 <h1>Credential Handling<a class="headerlink" href="#credential-handling" title="Permalink to this headline">¶</a></h1>
 <p>The premium and enterprise Search APIs use different authentication
 methods and we attempt to provide a seamless way to handle
-authentication for all customers. We support both YAML-file based
-methods and environment variables for access.</p>
-<p>A YAML credential file should look like this:</p>
+authentication for all customers.</p>
 <p>Premium clients will require the <code class="docutils literal"><span class="pre">bearer_token</span></code> and <code class="docutils literal"><span class="pre">endpoint</span></code>
 fields; Enterprise clients require <code class="docutils literal"><span class="pre">username</span></code>, <code class="docutils literal"><span class="pre">password</span></code>, and
 <code class="docutils literal"><span class="pre">endpoint</span></code>. If you do not specify the <code class="docutils literal"><span class="pre">account_type</span></code>, we attempt to
-discern the account type and declare a warning about this behavior. The
-<code class="docutils literal"><span class="pre">load_credentials</span></code> function also allows <code class="docutils literal"><span class="pre">account_type</span></code> to be set.</p>
-<p>Our credential reader will look for this file at
+discern the account type and declare a warning about this behavior.</p>
+<p>For premium search products, we are using app-only authentication and
+the bearer tokens are not delivered with an expiration time. They can be
+invalidated. Please see
+<a class="reference external" href="https://developer.twitter.com/en/docs/basics/authentication/overview/application-only">here</a>
+for an overview of the premium authentication method.</p>
+<p>We support both YAML-file based methods and environment variables for
+storing credentials, and provide flexible handling with sensible
+defaults.</p>
+<div class="section" id="yaml-method">
+<h2>YAML method<a class="headerlink" href="#yaml-method" title="Permalink to this headline">¶</a></h2>
+<p>For premium customers, the simplest credential file should look like
+this:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets_api</span><span class="p">:</span>
+  <span class="n">account_type</span><span class="p">:</span> <span class="n">premium</span>
+  <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
+  <span class="n">bearer_token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">TOKEN</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>For enterprise customers, the simplest credential file should look like
+this:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets_api</span><span class="p">:</span>
+  <span class="n">account_type</span><span class="p">:</span> <span class="n">enterprise</span>
+  <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
+  <span class="n">username</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span>
+  <span class="n">password</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>By default, this library expects this file at
 <code class="docutils literal"><span class="pre">&quot;~/.twitter_keys.yaml&quot;</span></code>, but you can pass the relevant location as
-needed. You can also specify a different key in the yaml file, which can
-be useful if you have different endpoints, e.g., <code class="docutils literal"><span class="pre">dev</span></code>, <code class="docutils literal"><span class="pre">test</span></code>,
-<code class="docutils literal"><span class="pre">prod</span></code>, etc. The file might look like this:</p>
+needed, either with the <code class="docutils literal"><span class="pre">--credential-file</span></code> flag for the command-line
+app or as demonstrated below in a Python program.</p>
+<p>Both above examples require no special command-line arguments or
+in-program arguments. The credential parsing methods, unless otherwise
+specified, will look for a YAML key called <code class="docutils literal"><span class="pre">search_tweets_api</span></code>.</p>
+<p>For developers who have multiple endpoints and/or search products, you
+can keep all credentials in the same file and specify specific keys to
+use. <code class="docutils literal"><span class="pre">--credential-file-key</span></code> specifies this behavior in the command
+line app. An example:</p>
+<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets_30_day_dev</span><span class="p">:</span>
+  <span class="n">account_type</span><span class="p">:</span> <span class="n">premium</span>
+  <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
+  <span class="n">bearer_token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">TOKEN</span><span class="o">&gt;</span>
+
+<span class="n">search_tweets_30_day_prod</span><span class="p">:</span>
+  <span class="n">account_type</span><span class="p">:</span> <span class="n">premium</span>
+  <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
+  <span class="n">bearer_token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">TOKEN</span><span class="o">&gt;</span>
+
+<span class="n">search_tweets_fullarchive_dev</span><span class="p">:</span>
+  <span class="n">account_type</span><span class="p">:</span> <span class="n">premium</span>
+  <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
+  <span class="n">bearer_token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">TOKEN</span><span class="o">&gt;</span>
+
+<span class="n">search_tweets_fullarchive_prod</span><span class="p">:</span>
+  <span class="n">account_type</span><span class="p">:</span> <span class="n">premium</span>
+  <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
+  <span class="n">bearer_token</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">TOKEN</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="environment-variables">
+<h2>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
 <p>If you want or need to pass credentials via environment variables, you
-can set the appropriate variables of the following:</p>
+can set the appropriate variables for your product of the following:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">SEARCHTWEETS_ENDPOINT</span><span class="o">=</span>
 <span class="n">export</span> <span class="n">SEARCHTWEETS_USERNAME</span><span class="o">=</span>
 <span class="n">export</span> <span class="n">SEARCHTWEETS_PASSWORD</span><span class="o">=</span>
@@ -209,12 +265,13 @@ can set the appropriate variables of the following:</p>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">load_credentials</span></code> function will attempt to find these variables
-if it cannot load fields from the yaml file, and it will <strong>overwrite any
-found credentials from the YAML file</strong> if they have been parsed. This
-behavior can be changed by setting the <code class="docutils literal"><span class="pre">load_credentials</span></code> parameter
-<code class="docutils literal"><span class="pre">env_overwrite</span></code> to <code class="docutils literal"><span class="pre">False</span></code>.</p>
-<p>The following cells demonstrates credential handling, both in the
-command line app and Python library.</p>
+if it cannot load fields from the YAML file, and it will <strong>overwrite any
+credentials from the YAML file that are present as environment
+variables</strong> if they have been parsed. This behavior can be changed by
+setting the <code class="docutils literal"><span class="pre">load_credentials</span></code> parameter <code class="docutils literal"><span class="pre">env_overwrite</span></code> to
+<code class="docutils literal"><span class="pre">False</span></code>.</p>
+<p>The following cells demonstrates credential handling in the Python
+library.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">load_credentials</span>
 </pre></div>
 </div>
@@ -237,27 +294,38 @@ command line app and Python library.</p>
  <span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;https://api.twitter.com/1.1/tweets/search/30day/dev.json&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
+</div>
 <div class="section" id="environment-variable-overrides">
 <h2>Environment Variable Overrides<a class="headerlink" href="#environment-variable-overrides" title="Permalink to this headline">¶</a></h2>
 <p>If we set our environment variables, the program will look for them
 regardless of a YAML file&#8217;s validity or existence.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_USERNAME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ENV_USERNAME&quot;</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_PASSWORD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ENV_PW&quot;</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_ENDPOINT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://endpoint&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_USERNAME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&lt;ENV_USERNAME&gt;&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_PASSWORD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&lt;ENV_PW&gt;&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_ENDPOINT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&lt;https://endpoint&gt;&quot;</span>
 
-<span class="n">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;nothing&quot;</span><span class="p">,</span> <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;no_key_here&quot;</span><span class="p">)</span>
+<span class="n">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;nothing_here.yaml&quot;</span><span class="p">,</span> <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;no_key_here&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cannot</span> <span class="n">read</span> <span class="n">file</span> <span class="n">nothing</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cannot</span> <span class="n">read</span> <span class="n">file</span> <span class="n">nothing_here</span><span class="o">.</span><span class="n">yaml</span>
 <span class="n">Error</span> <span class="n">parsing</span> <span class="n">YAML</span> <span class="n">file</span><span class="p">;</span> <span class="n">searching</span> <span class="k">for</span> <span class="n">valid</span> <span class="n">environment</span> <span class="n">variables</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;https://endpoint&#39;</span><span class="p">,</span>
- <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;ENV_PW&#39;</span><span class="p">,</span>
- <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;ENV_USERNAME&#39;</span><span class="p">}</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;https://endpoint&gt;&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;ENV_PW&gt;&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;ENV_USERNAME&gt;&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="command-line-app">
+<h2>Command-line app<a class="headerlink" href="#command-line-app" title="Permalink to this headline">¶</a></h2>
+<p>the flags:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--credential-file</span> <span class="pre">&lt;FILENAME&gt;</span></code></li>
+<li><code class="docutils literal"><span class="pre">--credential-file-key</span> <span class="pre">&lt;KEY&gt;</span></code></li>
+<li><code class="docutils literal"><span class="pre">--env-overwrite</span></code></li>
+</ul>
+<p>are used to control credential behavior from the command-line app.</p>
 </div>
 </div>
 <hr class="docutils" />
@@ -266,11 +334,11 @@ regardless of a YAML file&#8217;s validity or existence.</p>
 <p>The library includes an application, <code class="docutils literal"><span class="pre">search_tweets.py</span></code>, in the
 <code class="docutils literal"><span class="pre">tools</span></code> directory that provides rapid access to Tweets.</p>
 <p>Note that the <code class="docutils literal"><span class="pre">--results-per-call</span></code> flag specifies an argument to the
-API call ( <code class="docutils literal"><span class="pre">maxResults</span></code>, results returned per CALL), not as a hard max
-to number of results returned from this program. The argument
+API ( <code class="docutils literal"><span class="pre">maxResults</span></code>, results returned per CALL), not as a hard max to
+number of results returned from this program. The argument
 <code class="docutils literal"><span class="pre">--max-results</span></code> defines the maximum number of results to return from a
 given call. All examples assume that your credentials are set up
-correctly in a default location - <code class="docutils literal"><span class="pre">.twitter_keys.yaml</span></code> or in
+correctly in the default location - <code class="docutils literal"><span class="pre">.twitter_keys.yaml</span></code> or in
 environment variables.</p>
 <p><strong>Stream json results to stdout without saving</strong></p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
@@ -298,8 +366,8 @@ environment variables.</p>
   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
 </div>
-<p>Options can be passed via a configuration file (either ini or YAML). An
-example file can be found in the <code class="docutils literal"><span class="pre">tools/api_config_example.config</span></code> or
+<p>Options can be passed via a configuration file (either ini or YAML).
+Example files can be found in the <code class="docutils literal"><span class="pre">tools/api_config_example.config</span></code> or
 <code class="docutils literal"><span class="pre">./tools/api_yaml_example.yaml</span></code> files, which might look like this:</p>
 <div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">search_rules</span><span class="p">]</span>
 <span class="n">from_date</span> <span class="o">=</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">01</span>
@@ -347,18 +415,18 @@ specified and present.</p>
 <p>Full options are listed below:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ search_tweets.py -h
 usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]
-                        [--credential-file-key CREDENTIAL_YAML_KEY]
-                        [--env-overwrite ENV_OVERWRITE]
-                        [--config-file CONFIG_FILENAME]
-                        [--account-type {premium,enterprise}]
-                        [--count-bucket COUNT_BUCKET]
-                        [--start-datetime FROM_DATE] [--end-datetime TO_DATE]
-                        [--filter-rule PT_RULE]
-                        [--results-per-call RESULTS_PER_CALL]
-                        [--max-results MAX_RESULTS] [--max-pages MAX_PAGES]
-                        [--results-per-file RESULTS_PER_FILE]
-                        [--filename-prefix FILENAME_PREFIX]
-                        [--no-print-stream] [--print-stream] [--debug]
+                      [--credential-file-key CREDENTIAL_YAML_KEY]
+                      [--env-overwrite ENV_OVERWRITE]
+                      [--config-file CONFIG_FILENAME]
+                      [--account-type {premium,enterprise}]
+                      [--count-bucket COUNT_BUCKET]
+                      [--start-datetime FROM_DATE] [--end-datetime TO_DATE]
+                      [--filter-rule PT_RULE]
+                      [--results-per-call RESULTS_PER_CALL]
+                      [--max-results MAX_RESULTS] [--max-pages MAX_PAGES]
+                      [--results-per-file RESULTS_PER_FILE]
+                      [--filename-prefix FILENAME_PREFIX]
+                      [--no-print-stream] [--print-stream] [--debug]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -396,10 +464,10 @@ optional arguments:
                         Number of results to return per call (default 100; max
                         500) - corresponds to &#39;maxResults&#39; in the API
   --max-results MAX_RESULTS
-                        Maximum results to return for this session (defaults
-                        to 500; see -a option
+                        Maximum number of Tweets or Counts to return for this
+                        session (defaults to 500)
   --max-pages MAX_PAGES
-                        Maximum number of pages/api calls to use for this
+                        Maximum number of pages/API calls to use for this
                         session.
   --results-per-file RESULTS_PER_FILE
                         Maximum tweets to save per file.
@@ -659,16 +727,22 @@ API counts endpoint.</em></p>
 </div>
 <div class="section" id="dated-searches-full-archive-search">
 <h2>Dated searches / Full Archive Search<a class="headerlink" href="#dated-searches-full-archive-search" title="Permalink to this headline">¶</a></h2>
-<p>Let&#8217;s make a new rule and pass it dates this time.</p>
-<p><code class="docutils literal"><span class="pre">gen_rule_payload</span></code> takes dates of the forms <code class="docutils literal"><span class="pre">YYYY-mm-DD</span></code> and
-<code class="docutils literal"><span class="pre">YYYYmmDD</span></code>.</p>
 <p><strong>Note that this will only work with the full archive search option</strong>,
 which is available to my account only via the enterprise options. Full
 archive search will likely require a different endpoint or access
 method; please see your developer console for details.</p>
+<p>Let&#8217;s make a new rule and pass it dates this time.</p>
+<p><code class="docutils literal"><span class="pre">gen_rule_payload</span></code> takes timestamps of the following forms:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">YYYYmmDDHHMM</span></code></li>
+<li><code class="docutils literal"><span class="pre">YYYY-mm-DD</span></code> (which will convert to midnight UTC (00:00)</li>
+<li><code class="docutils literal"><span class="pre">YYYY-mm-DD</span> <span class="pre">HH:MM</span></code></li>
+<li><code class="docutils literal"><span class="pre">YYYY-mm-DDTHH:MM</span></code></li>
+</ul>
+<p>Note - all Tweets are stored in UTC time.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span>
-                        <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;2017-09-01&quot;</span><span class="p">,</span>
-                        <span class="n">to_date</span><span class="o">=</span><span class="s2">&quot;2017-10-30&quot;</span><span class="p">,</span>
+                        <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;2017-09-01&quot;</span><span class="p">,</span> <span class="c1">#UTC 2017-09-01 00:00</span>
+                        <span class="n">to_date</span><span class="o">=</span><span class="s2">&quot;2017-10-30&quot;</span><span class="p">,</span><span class="c1">#UTC 2017-10-30 00:00</span>
                         <span class="n">results_per_call</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
 </pre></div>

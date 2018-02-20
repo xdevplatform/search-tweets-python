@@ -187,7 +187,7 @@
 <span class="sd">    dictionary.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        dicts (list or Iterable): iterable set of dictionarys for merging.</span>
+<span class="sd">        dicts (list or Iterable): iterable set of dictionaries for merging.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: dict with all keys from the passed list. Later dictionaries in</span>
@@ -201,7 +201,9 @@
 <span class="sd">        {&quot;maxResults&quot;: 1000, &quot;rule&quot;: &quot;something has:geo&quot;}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">_merge_dicts</span><span class="p">(</span><span class="n">dict1</span><span class="p">,</span> <span class="n">dict2</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">dict1</span><span class="p">,</span> <span class="o">**</span><span class="n">dict2</span><span class="p">}</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="n">dict1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">merged</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dict2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">merged</span>
 
     <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">_merge_dicts</span><span class="p">,</span> <span class="n">dicts</span><span class="p">)</span></div>
 
@@ -222,9 +224,9 @@
 <div class="viewcode-block" id="write_result_stream"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.utils.write_result_stream">[docs]</a><span class="k">def</span> <span class="nf">write_result_stream</span><span class="p">(</span><span class="n">result_stream</span><span class="p">,</span> <span class="n">filename_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">results_per_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Wraps a resultstream object to save it to a file. This function will still</span>
+<span class="sd">    Wraps a ``ResultStream`` object to save it to a file. This function will still</span>
 <span class="sd">    return all data from the result stream as a generator that wraps the</span>
-<span class="sd">    `write_ndjson` method.</span>
+<span class="sd">    ``write_ndjson`` method.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        result_stream (ResultStream): the unstarted ResultStream object</span>
@@ -232,7 +234,7 @@
 <span class="sd">        results_per_file (int or None): the maximum number of tweets to write</span>
 <span class="sd">        per file. Defaults to having no max, which means one file. Multiple</span>
 <span class="sd">        files will be named by datetime, according to</span>
-<span class="sd">        &quot;&lt;prefix&gt;_YYY-mm-ddTHH_MM_SS.json&quot;.</span>
+<span class="sd">        ``&lt;prefix&gt;_YYY-mm-ddTHH_MM_SS.json``.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result_stream</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">GeneratorType</span><span class="p">):</span>
@@ -265,9 +267,7 @@
 <div class="viewcode-block" id="read_config"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.utils.read_config">[docs]</a><span class="k">def</span> <span class="nf">read_config</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Reads and flattens a configuration file into a single</span>
 <span class="sd">    dictionary for ease of use. Works with both ``.config`` and</span>
-<span class="sd">    ``.yaml`` files. Files should look like this:</span>
-
-<span class="sd">    .. code: yaml</span>
+<span class="sd">    ``.yaml`` files. Files should look like this::</span>
 
 <span class="sd">        search_rules:</span>
 <span class="sd">            from-date: 2017-06-01</span>
@@ -283,9 +283,8 @@
 <span class="sd">            filename_prefix: kanye</span>
 <span class="sd">            results_per_file: 10000000</span>
 
-<span class="sd">    or</span>
+<span class="sd">    or::</span>
 
-<span class="sd">    .. parsed-literal:</span>
 
 <span class="sd">        [search_rules]</span>
 <span class="sd">        from_date = 2017-06-01</span>
