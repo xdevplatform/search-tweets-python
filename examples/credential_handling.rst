@@ -4,7 +4,8 @@ Credential Handling
 
 The premium and enterprise Search APIs use different authentication
 methods and we attempt to provide a seamless way to handle
-authentication for all customers.
+authentication for all customers. We know credentials can be tricking or
+annoying - please read this in its entirety.
 
 Premium clients will require the ``bearer_token`` and ``endpoint``
 fields; Enterprise clients require ``username``, ``password``, and
@@ -12,8 +13,14 @@ fields; Enterprise clients require ``username``, ``password``, and
 discern the account type and declare a warning about this behavior.
 
 For premium search products, we are using app-only authentication and
-the bearer tokens are not delivered with an expiration time. They can be
-invalidated. Please see
+the bearer tokens are not delivered with an expiration time. You can
+provide either: - your application key and secret (the library will
+handle bearer-token authentication) - a bearer token that you get
+yourself
+
+Many developers might find providing your application key and secret
+more straightforward and letting this library manage your bearer token
+generation for you. Please see
 `here <https://developer.twitter.com/en/docs/basics/authentication/overview/application-only>`__
 for an overview of the premium authentication method.
 
@@ -33,7 +40,8 @@ this:
     search_tweets_api:
       account_type: premium
       endpoint: <FULL_URL_OF_ENDPOINT>
-      bearer_token: <TOKEN>
+      consumer_key: <CONSUMER_KEY>
+      consumer_secret: <CONSUMER_SECRET>
 
 For enterprise customers, the simplest credential file should look like
 this:
@@ -67,7 +75,10 @@ line app. An example:
     search_tweets_30_day_dev:
       account_type: premium
       endpoint: <FULL_URL_OF_ENDPOINT>
-      bearer_token: <TOKEN>
+      consumer_key: <KEY>
+      consumer_secret: <SECRET>
+      (optional) bearer_token: <TOKEN>
+      
       
     search_tweets_30_day_prod:
       account_type: premium
@@ -98,6 +109,8 @@ can set the appropriate variables for your product of the following:
     export SEARCHTWEETS_PASSWORD=
     export SEARCHTWEETS_BEARER_TOKEN=
     export SEARCHTWEETS_ACCOUNT_TYPE=
+    export SEARCHTWEETS_CONSUMER_KEY=
+    export SEARCHTWEETS_CONSUMER_SECRET=
 
 The ``load_credentials`` function will attempt to find these variables
 if it cannot load fields from the YAML file, and it will **overwrite any
