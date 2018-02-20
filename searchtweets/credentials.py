@@ -11,7 +11,11 @@ credentials in a YAML file, but the main function in this module,
 import os
 import logging
 import yaml
+import requests
+import base64
 from .utils import merge_dicts
+
+OAUTH_ENDPOINT = 'https://api.twitter.com/oauth2/token'
 
 __all__ = ["load_credentials"]
 
@@ -45,7 +49,10 @@ def _load_env_credentials():
              "SEARCHTWEETS_USERNAME",
              "SEARCHTWEETS_PASSWORD",
              "SEARCHTWEETS_BEARER_TOKEN",
-             "SEARCHTWEETS_ACCOUNT_TYPE"]
+             "SEARCHTWEETS_ACCOUNT_TYPE",
+             "SEARCHTWEETS_CONSUMER_KEY",
+             "SEARCHTWEETS_CONSUMER_SECRET"
+             ]
     renamed = [var.replace("SEARCHTWEETS_", '').lower() for var in vars_]
 
     parsed = {r: os.environ.get(var) for (var, r) in zip(vars_, renamed)}
@@ -76,8 +83,16 @@ def _parse_credentials(search_creds, account_type):
 
     try:
         if account_type == "premium":
-            search_args = {"bearer_token": search_creds["bearer_token"],
-                           "endpoint": search_creds["endpoint"]}
+            if "bearer_token" not in search_creds:
+                if "consumer_key" in search_creds \
+                  and "consumer_secret" in search_creds:
+                    search_creds["bearer_token"] = _generate_bearer_token(
+                        search_creds["consumer_key"],
+                        search_creds["consumer_secret"])
+
+            search_args = {
+                "bearer_token": search_creds["bearer_token"],
+                "endpoint": search_creds["endpoint"]}
         if account_type == "enterprise":
             search_args = {"username": search_creds["username"],
                            "password": search_creds["password"],
@@ -96,7 +111,7 @@ def load_credentials(filename=None, account_type=None,
     """
     Handles credential management. Supports both YAML files and environment
     variables. A YAML file is preferred for simplicity and configureability.
-    A YAML credential file should look like this:
+    A YAML credential file should look something like this:
 
     .. code:: yaml
 
@@ -104,27 +119,13 @@ def load_credentials(filename=None, account_type=None,
           endpoint: <FULL_URL_OF_ENDPOINT>
           username: <USERNAME>
           password: <PW>
+          consumer_key: <KEY>
+          consumer_secret: <SECRET>
           bearer_token: <TOKEN>
           account_type: <enterprise OR premium>
 
     with the appropriate fields filled out for your account. The top-level key
-    defaults to ``search_tweets_api`` but can be flexible, e.g.:
-
-    .. code:: yaml
-
-        premium_dev:
-          account_type: premium
-          endpoint: <FULL_URL_OF_ENDPOINT>
-          bearer_token: <TOKEN>
-
-        enterprise_dev:
-          account_type: enterprise
-          endpoint: <FULL_URL_OF_ENDPOINT>
-          username: <MY_USERNAME>
-          password: <MY_PASSWORD>
-
-    as this method supports a flexible interface for reading the
-    credential files. You can keep all of your credentials in the same file.
+    defaults to ``search_tweets_api`` but can be flexible.
 
     If a YAML file is not found or is missing keys, this function will check
     for this information in the environment variables that correspond to
@@ -136,9 +137,10 @@ def load_credentials(filename=None, account_type=None,
         SEARCHTWEETS_PASSWORD
         SEARCHTWEETS_BEARER_TOKEN
         SEARCHTWEETS_ACCOUNT_TYPE
+        ...
 
     Again, set the variables that correspond to your account information and
-    type.
+    type. See the main documentation for details and more examples.
 
 
     Args:
@@ -162,12 +164,12 @@ def load_credentials(filename=None, account_type=None,
         dict_keys(['bearer_token', 'endpoint'])
         >>> import os
         >>> os.environ["SEARCHTWEETS_ENDPOINT"] = "https://endpoint"
-        >>> os.environ["SEARCHTWEETS_USERNAME"] = "azaleszzz"
+        >>> os.environ["SEARCHTWEETS_USERNAME"] = "areallybadpassword"
         >>> os.environ["SEARCHTWEETS_PASSWORD"] = "<PW>"
         >>> load_credentials()
         {'endpoint': 'https://endpoint',
          'password': '<PW>',
-         'username': 'azaleszzz'}
+         'username': 'areallybadpassword'}
 
     """
     yaml_key = yaml_key if yaml_key is not None else "search_tweets_api"
@@ -183,3 +185,19 @@ def load_credentials(filename=None, account_type=None,
                    else merge_dicts(env_vars, yaml_vars))
     parsed_vars = _parse_credentials(merged_vars, account_type=account_type)
     return parsed_vars
+
+
+def _generate_bearer_token(consumer_key, consumer_secret):
+    """
+    Return the bearer token for a given pair of consumer key and secret values.
+    """
+    data = [('grant_type', 'client_credentials')]
+    resp = requests.post(OAUTH_ENDPOINT,
+                         data=data,
+                         auth=(consumer_key, consumer_secret))
+    logger.warning("Grabbing bearer token from OAUTH")
+    if resp.status_code >= 400:
+        logger.error(resp.text)
+        resp.raise_for_status()
+
+    return resp.json()['access_token']
