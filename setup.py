@@ -8,7 +8,8 @@ setup(name='searchtweets',
       author_email='agonzales@twitter.com',
       license='MIT',
       version='1.3.0',
+      python_requires='>=3.3',
       install_requires=["requests", "tweet_parser", "pyyaml"],
       packages=find_packages(),
       scripts=["tools/search_tweets.py"],
-      )
+     )
