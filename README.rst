@@ -232,8 +232,10 @@ are used to control credential behavior from the command-line app.
 Using the Comand Line Application
 =================================
 
-The library includes an application, ``search_tweets.py``, in the
-``tools`` directory that provides rapid access to Tweets.
+The library includes an application, ``search_tweets.py``, that provides
+rapid access to Tweets. When you use ``pip`` to install this package,
+``search_tweets.py`` is installed globally. The file is located in the
+``tools/`` directory for those who want to run it locally.
 
 Note that the ``--results-per-call`` flag specifies an argument to the
 API ( ``maxResults``, results returned per CALL), not as a hard max to
@@ -247,7 +249,7 @@ environment variables.
 
 .. code:: bash
 
-    python search_tweets.py \
+    search_tweets.py \
       --max-results 1000 \
       --results-per-call 100 \
       --filter-rule "beyonce has:hashtags" \
@@ -257,7 +259,7 @@ environment variables.
 
 .. code:: bash
 
-    python search_tweets.py \
+    search_tweets.py \
       --max-results 1000 \
       --results-per-call 100 \
       --filter-rule "beyonce has:hashtags" \
@@ -268,7 +270,7 @@ environment variables.
 
 .. code:: bash
 
-    python search_tweets.py \
+    search_tweets.py \
       --max-results 100 \
       --results-per-call 100 \
       --filter-rule "beyonce has:hashtags" \
@@ -323,7 +325,7 @@ Example:
 
 ::
 
-    python search_tweets.py \
+    search_tweets.py \
       --config-file myapiconfig.config \
       --no-print-stream
 

@@ -1,0 +1,19 @@
+{% extends "!layout.html" %}
+
+{% block footer %}
+    {% if pagename == 'index' %}
+      <! -- yay -->
+      <!-- Global site tag (gtag.js) - Google Analytics --> <script async src="https://www.googletagmanager.com/gtag/js?id=UA-30775-108"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-30775-108'); </script>
+      {{ super() }}
+    {% elif pagename == 'search' %}
+      <! -- yay -->
+      {{ super() }}
+    {% elif pagename == 'genindex' %}
+      <! -- yay -->
+      {{ super() }}
+    {% else %}
+      <!-- Global site tag (gtag.js) - Google Analytics --> <script async src="https://www.googletagmanager.com/gtag/js?id=UA-30775-108"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-30775-108'); </script>
+      {{ super() }}
+    {% endif %}
+
+{% endblock %}

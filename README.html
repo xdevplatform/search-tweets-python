@@ -343,8 +343,10 @@ regardless of a YAML file&#8217;s validity or existence.</p>
 <hr class="docutils" />
 <div class="section" id="using-the-comand-line-application">
 <h1>Using the Comand Line Application<a class="headerlink" href="#using-the-comand-line-application" title="Permalink to this headline">¶</a></h1>
-<p>The library includes an application, <code class="docutils literal"><span class="pre">search_tweets.py</span></code>, in the
-<code class="docutils literal"><span class="pre">tools</span></code> directory that provides rapid access to Tweets.</p>
+<p>The library includes an application, <code class="docutils literal"><span class="pre">search_tweets.py</span></code>, that provides
+rapid access to Tweets. When you use <code class="docutils literal"><span class="pre">pip</span></code> to install this package,
+<code class="docutils literal"><span class="pre">search_tweets.py</span></code> is installed globally. The file is located in the
+<code class="docutils literal"><span class="pre">tools/</span></code> directory for those who want to run it locally.</p>
 <p>Note that the <code class="docutils literal"><span class="pre">--results-per-call</span></code> flag specifies an argument to the
 API ( <code class="docutils literal"><span class="pre">maxResults</span></code>, results returned per CALL), not as a hard max to
 number of results returned from this program. The argument
@@ -353,7 +355,7 @@ given call. All examples assume that your credentials are set up
 correctly in the default location - <code class="docutils literal"><span class="pre">.twitter_keys.yaml</span></code> or in
 environment variables.</p>
 <p><strong>Stream json results to stdout without saving</strong></p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">1000</span> \
   <span class="o">--</span><span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
@@ -361,7 +363,7 @@ environment variables.</p>
 </pre></div>
 </div>
 <p><strong>Stream json results to stdout and save to a file</strong></p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">1000</span> \
   <span class="o">--</span><span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
@@ -370,7 +372,7 @@ environment variables.</p>
 </pre></div>
 </div>
 <p><strong>Save to file without output</strong></p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
@@ -418,7 +420,7 @@ parameter. Additional command-line arguments will either be <em>added</em> to
 the config file args or <strong>overwrite</strong> the config file args if both are
 specified and present.</p>
 <p>Example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">file</span> <span class="n">myapiconfig</span><span class="o">.</span><span class="n">config</span> \
   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>

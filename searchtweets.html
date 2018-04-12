@@ -154,18 +154,18 @@ rule generation, and related.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>pt_rule</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The string version of a powertrack rule,
+<li><strong>pt_rule</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The string version of a powertrack rule,
 e.g., &#8220;kanye west has:geo&#8221;. Accepts multi-line strings
 for ease of entry.</li>
-<li><strong>results_per_call</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of tweets or counts returned per API</li>
+<li><strong>results_per_call</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; number of tweets or counts returned per API</li>
 <li><strong>This maps to the maxResults search API parameter.</strong> (<em>call.</em>) &#8211; Defaults to 500 to reduce API call usage.</li>
-<li><strong>from_date</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; Date format as specified by
+<li><strong>from_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) &#8211; Date format as specified by
 <cite>convert_utc_time</cite> for the starting time of your search.</li>
-<li><strong>to_date</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; date format as specified by <cite>convert_utc_time</cite>
+<li><strong>to_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) &#8211; date format as specified by <cite>convert_utc_time</cite>
 for the end time of your search.</li>
-<li><strong>count_bucket</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; If using the counts api endpoint,
+<li><strong>count_bucket</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) &#8211; If using the counts api endpoint,
 will define the count bucket for which tweets are aggregated.</li>
-<li><strong>stringify</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; specifies the return type, <cite>dict</cite>
+<li><strong>stringify</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; specifies the return type, <cite>dict</cite>
 or json-formatted <cite>str</cite>.</li>
 </ul>
 </td>
@@ -209,7 +209,7 @@ or json-formatted <cite>str</cite>.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>datetime_str</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; valid formats are listed above.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>datetime_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; valid formats are listed above.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">string of GNIP API formatted date.</td>
 </tr>
@@ -248,7 +248,7 @@ endpoint. Returns the same endpoint if it&#8217;s already a valid count endpoint
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the modified endpoint for a count endpoint.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
 </tr>
 </tbody>
 </table>
@@ -263,7 +263,7 @@ arguments and returns a stream of results to the user.</p>
 <dl class="class">
 <dt id="searchtweets.result_stream.ResultStream">
 <em class="property">class </em><code class="descclassname">searchtweets.result_stream.</code><code class="descname">ResultStream</code><span class="sig-paren">(</span><em>endpoint</em>, <em>rule_payload</em>, <em>username=None</em>, <em>password=None</em>, <em>bearer_token=None</em>, <em>max_results=1000</em>, <em>tweetify=True</em>, <em>max_requests=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#ResultStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.ResultStream" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Class to represent an API query that handles two major functionality
 pieces: wrapping metadata around a specific API call and automatic
 pagination of results.</p>
@@ -272,19 +272,19 @@ pagination of results.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>username</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; username for enterprise customers</li>
-<li><strong>password</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; password for enterprise customers</li>
-<li><strong>bearer_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; bearer token for premium users</li>
-<li><strong>endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; API endpoint; see your console at developer.twitter.com</li>
-<li><strong>rule_payload</strong> (<a class="reference external" href="https://docs.python.org/2/library/json.html#module-json" title="(in Python v2.7)"><em>json</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; payload for the post request</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; max number results that will be returned from this</li>
+<li><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; username for enterprise customers</li>
+<li><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; password for enterprise customers</li>
+<li><strong>bearer_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; bearer token for premium users</li>
+<li><strong>endpoint</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; API endpoint; see your console at developer.twitter.com</li>
+<li><strong>rule_payload</strong> (<a class="reference external" href="https://docs.python.org/3/library/json.html#module-json" title="(in Python v3.6)"><em>json</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; payload for the post request</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; max number results that will be returned from this</li>
 <li><strong>Note that this can be slightly lower than the total returned</strong> (<em>instance.</em>) &#8211; </li>
 <li><strong>the API call  - e.g.</strong><strong>, </strong><strong>setting max_results = 10 would return</strong> (<em>from</em>) &#8211; </li>
 <li><strong>results</strong><strong>, </strong><strong>but an API call will return at minimum 100 results.</strong> (<em>ten</em>) &#8211; </li>
-<li><strong>tweetify</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If you are grabbing tweets and not counts, use the
+<li><strong>tweetify</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) &#8211; If you are grabbing tweets and not counts, use the
 tweet parser library to convert each raw tweet package to a Tweet
 with lazy properties.</li>
-<li><strong>max_requests</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; A hard cutoff for the number of API calls this</li>
+<li><strong>max_requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; A hard cutoff for the number of API calls this</li>
 <li><strong>will make. Good for testing in sandbox premium environments.</strong> (<em>instance</em>) &#8211; </li>
 </ul>
 </td>
@@ -353,11 +353,11 @@ prior to using.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>rule</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; valid powertrack rule for your account, preferably</li>
+<li><strong>rule</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; valid powertrack rule for your account, preferably</li>
 <li><strong>by the gen_rule_payload function.</strong> (<em>generated</em>) &#8211; </li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of tweets or counts to return from</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; maximum number of tweets or counts to return from</li>
 <li><strong>API / underlying ResultStream object.</strong> (<em>the</em>) &#8211; </li>
-<li><strong>result_stream_args</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; configuration dict that has connection</li>
+<li><strong>result_stream_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) &#8211; configuration dict that has connection</li>
 <li><strong>for a ResultStream object.</strong> (<em>information</em>) &#8211; </li>
 </ul>
 </td>
@@ -387,9 +387,9 @@ present.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>username</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; username for the session</li>
-<li><strong>password</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; password for the user</li>
-<li><strong>bearer_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; token for a premium API user.</li>
+<li><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; username for the session</li>
+<li><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; password for the user</li>
+<li><strong>bearer_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; token for a premium API user.</li>
 </ul>
 </td>
 </tr>
@@ -432,7 +432,7 @@ Originaly found in the Python itertools documentation.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>n</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of items to return</li>
+<li><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; number of items to return</li>
 <li><strong>iterable</strong> (<em>iterable</em>) &#8211; the object to select</li>
 </ul>
 </td>
@@ -466,12 +466,12 @@ dictionary.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dicts</strong> (<em>list</em><em> or </em><em>Iterable</em>) &#8211; iterable set of dictionaries for merging.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dicts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em> or </em><em>Iterable</em>) &#8211; iterable set of dictionaries for merging.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dict with all keys from the passed list. Later dictionaries in
 the sequence will override duplicate keys from previous dictionaries.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></td>
 </tr>
 </tbody>
 </table>
@@ -497,8 +497,8 @@ return all data from the result stream as a generator that wraps the
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>result_stream</strong> (<a class="reference internal" href="#searchtweets.result_stream.ResultStream" title="searchtweets.result_stream.ResultStream"><em>ResultStream</em></a>) &#8211; the unstarted ResultStream object</li>
-<li><strong>filename_prefix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; the base name for file writing</li>
-<li><strong>results_per_file</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) &#8211; the maximum number of tweets to write</li>
+<li><strong>filename_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) &#8211; the base name for file writing</li>
+<li><strong>results_per_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) &#8211; the maximum number of tweets to write</li>
 <li><strong>file. Defaults to having no max</strong><strong>, </strong><strong>which means one file. Multiple</strong> (<em>per</em>) &#8211; </li>
 <li><strong>will be named by datetime</strong><strong>, </strong><strong>according to</strong> (<em>files</em>) &#8211; </li>
 <li><strong>&lt;prefix&gt;_YYY-mm-ddTHH_MM_SS.json.</strong> &#8211; </li>
@@ -550,11 +550,11 @@ dictionary for ease of use. Works with both <code class="docutils literal"><span
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; location of file with extension (&#8216;.config&#8217; or &#8216;.yaml&#8217;)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; location of file with extension (&#8216;.config&#8217; or &#8216;.yaml&#8217;)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">parsed configuration dictionary.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></td>
 </tr>
 </tbody>
 </table>
