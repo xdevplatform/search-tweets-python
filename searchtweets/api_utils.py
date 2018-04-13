@@ -17,39 +17,9 @@ except ImportError:
 
 __all__ = ["gen_rule_payload", "gen_params_from_config",
            "infer_endpoint", "convert_utc_time",
-           "validate_count_api", "GNIP_RESP_CODES", "change_to_count_endpoint"]
+           "validate_count_api", "change_to_count_endpoint"]
 
 logger = logging.getLogger(__name__)
-
-GNIP_RESP_CODES = {
-    '200': ("OK: The request was successful. "
-            "The JSON response will be similar to the following:"),
-
-    '400': ("Bad Request: Generally, this response occurs due "
-            "to the presence of invalid JSON in the request, "
-            "or where the request failed to send any JSON payload."),
-
-    '401': ("Unauthorized: HTTP authentication failed due to invalid "
-            "credentials. Log in to console.gnip.com with your credentials "
-            "to ensure you are using them correctly with your request. "),
-    '404': ("Not Found: The resource was not found at the URL to which the "
-            "request was sent, likely because an incorrect URL was used."),
-
-    '422': ("Unprocessable Entity: This is returned due to invalid parameters "
-            "in a query or when a query is too complex for us to process. "
-            "–e.g. invalid PowerTrack rules or too many phrase operators,"
-            " rendering a query too complex."),
-    '429': ("Unknown Code: Your app has exceeded the limit on connection "
-            "requests. The corresponding JSON message will look "
-            "similar to the following:"),
-    '500': ("Internal Server Error: There was an error on Gnip's side. Retry "
-            "your request using an exponential backoff pattern."),
-    '502': ("Proxy Error: There was an error on Gnip's side. Retry your "
-            "request using an exponential backoff pattern."),
-    '503': ("Service Unavailable: There was an error on Gnip's side. "
-            "Retry your request using an exponential backoff pattern.")
-}
-
 
 def convert_utc_time(datetime_str):
     """
