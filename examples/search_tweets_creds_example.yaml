@@ -7,5 +7,9 @@ search_tweets_ent_example:
 search_tweets_premium_example:
   account_type: premium
   endpoint: https://api.twitter.com/1.1/tweets/search/30day/dev.json
+  # if you have a bearer token, you can use it below. otherwise, swap the comment marks and use 
+  # your app's consumer key/secret - the library will generate and use a bearer token for you. 
   bearer_token: <A_VERY_LONG_MAGIC_STRING>
+  #consumer_key: <ANOTHER_MAGIC_STRING>
+  #consumer_secret: <STILL_ANOTHER_MAGIC_STRING>
 
