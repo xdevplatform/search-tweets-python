@@ -21,8 +21,7 @@ from tweet_parser.tweet import Tweet
 
 from .utils import merge_dicts
 
-from .api_utils import (infer_endpoint, GNIP_RESP_CODES,
-                        change_to_count_endpoint)
+from .api_utils import infer_endpoint, change_to_count_endpoint
 
 
 logger = logging.getLogger(__name__)
@@ -94,10 +93,9 @@ def retry(func):
             break
 
         if resp.status_code != 200:
-            logger.error("HTTP Error code: {}: {}"
-                         .format(resp.status_code,
-                                 GNIP_RESP_CODES[str(resp.status_code)]))
-            logger.error("rule payload: {}".format(kwargs["rule_payload"]))
+            error_message = resp.json()["error"]["message"]
+            logger.error("HTTP Error code: {}: {}".format(resp.status_code, error_message))
+            logger.error("Rule payload: {}".format(kwargs["rule_payload"]))
             raise requests.exceptions.HTTPError
 
         return resp
