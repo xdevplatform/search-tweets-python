@@ -138,16 +138,19 @@ def parse_cmd_args():
 
 
 def main():
-    parser = parse_cmd_args()
     args_dict = vars(parse_cmd_args().parse_args())
     if args_dict.get("debug") is True:
         logger.setLevel(logging.DEBUG)
+        logger.debug("command line args dict:")
         logger.debug(json.dumps(args_dict, indent=4))
 
     if args_dict.get("config_filename") is not None:
         configfile_dict = read_config(args_dict["config_filename"])
     else:
         configfile_dict = {}
+
+    logger.debug("config file dict:")
+    logger.debug(json.dumps(configfile_dict, indent=4))
 
     creds_dict = load_credentials(filename=args_dict["credential_file"],
                                   account_type=args_dict["account_type"],
@@ -160,6 +163,7 @@ def main():
                               dict_filter(args_dict),
                               dict_filter(creds_dict))
 
+    logger.debug("combined dict (cli, config, creds):")
     logger.debug(json.dumps(config_dict, indent=4))
 
     if len(dict_filter(config_dict).keys() & REQUIRED_KEYS) < len(REQUIRED_KEYS):
@@ -168,8 +172,6 @@ def main():
         sys.exit(1)
 
     stream_params = gen_params_from_config(config_dict)
-
-    logger.debug(json.dumps(config_dict, indent=4))
 
     rs = ResultStream(tweetify=False, **stream_params)
 
