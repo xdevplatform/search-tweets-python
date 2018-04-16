@@ -226,3 +226,12 @@ Using the Twitter Search APIs' Python Wrapper
 =============================================
 
 .. include:: api_example.rst
+
+
+
+
+
+Contributing
+============
+
+.. include:: contributing.rst
