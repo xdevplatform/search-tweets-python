@@ -23,6 +23,7 @@ from .utils import merge_dicts
 
 from .api_utils import infer_endpoint, change_to_count_endpoint
 
+from ._version import VERSION
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +45,8 @@ def make_session(username=None, password=None, bearer_token=None):
         raise KeyError
 
     session = requests.Session()
-    headers = {'Accept-encoding': 'gzip'}
+    headers = {'Accept-encoding': 'gzip',
+               'User-Agent': 'twitterdev-search-tweets-python/' + VERSION}
     if bearer_token:
         logger.info("using bearer token for authentication")
         headers['Authorization'] = "Bearer {}".format(bearer_token)
