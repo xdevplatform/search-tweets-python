@@ -1,29 +1,17 @@
 <!DOCTYPE html>
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Python Twitter Search API &#8212; Twitter Search APIs Python Wrapper 1.3.0 documentation</title>
-    
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.3.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -35,8 +23,7 @@
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
 
-  </head>
-  <body role="document">
+  </head><body>
 
   <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
     <div class="container">
@@ -101,7 +88,7 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#using-the-comand-line-application">Using the Comand Line Application</a></li>
-<li><a class="reference internal" href="#using-the-twitter-search-apis-python-wrapper">Using the Twitter Search APIs&#8217; Python Wrapper</a><ul>
+<li><a class="reference internal" href="#using-the-twitter-search-apis-python-wrapper">Using the Twitter Search APIs’ Python Wrapper</a><ul>
 <li><a class="reference internal" href="#enterprise-setup">Enterprise setup</a></li>
 <li><a class="reference internal" href="#premium-setup">Premium Setup</a></li>
 <li><a class="reference internal" href="#fast-way">Fast Way</a></li>
@@ -110,6 +97,7 @@
 <li><a class="reference internal" href="#dated-searches-full-archive-search">Dated searches / Full Archive Search</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#contributing">Contributing</a></li>
 </ul>
 </ul>
 </li>
@@ -156,13 +144,13 @@ be seen <a class="reference external" href="https://twitterdev.github.io/search-
 <ul class="simple">
 <li>Supports 30-day Search and Full Archive Search (not the standard
 Search API at this time).</li>
-<li>Command-line utility is pipeable to other tools (e.g., <code class="docutils literal"><span class="pre">jq</span></code>).</li>
+<li>Command-line utility is pipeable to other tools (e.g., <code class="docutils literal notranslate"><span class="pre">jq</span></code>).</li>
 <li>Automatically handles pagination of search results with specifiable
 limits</li>
 <li>Delivers a stream of data to the user for low in-memory requirements</li>
 <li>Handles enterprise and premium authentication methods</li>
 <li>Flexible usage within a python program</li>
-<li>Compatible with our group&#8217;s <a class="reference external" href="https://github.com/twitterdev/tweet_parser">Tweet
+<li>Compatible with our group’s <a class="reference external" href="https://github.com/twitterdev/tweet_parser">Tweet
 Parser</a> for rapid
 extraction of relevant data fields from each tweet payload</li>
 <li>Supports the Search Counts endpoint, which can reduce API call usage
@@ -172,12 +160,12 @@ Tweet payloads</li>
 </div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>The <code class="docutils literal"><span class="pre">searchtweets</span></code> library is on Pypi:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">searchtweets</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">searchtweets</span></code> library is on Pypi:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">searchtweets</span>
 </pre></div>
 </div>
 <p>Or you can install the development version locally via</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">twitterdev</span><span class="o">/</span><span class="n">search</span><span class="o">-</span><span class="n">tweets</span><span class="o">-</span><span class="n">python</span>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">twitterdev</span><span class="o">/</span><span class="n">search</span><span class="o">-</span><span class="n">tweets</span><span class="o">-</span><span class="n">python</span>
 <span class="n">cd</span> <span class="n">search</span><span class="o">-</span><span class="n">tweets</span><span class="o">-</span><span class="n">python</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
 </pre></div>
@@ -190,9 +178,9 @@ Tweet payloads</li>
 methods and we attempt to provide a seamless way to handle
 authentication for all customers. We know credentials can be tricking or
 annoying - please read this in its entirety.</p>
-<p>Premium clients will require the <code class="docutils literal"><span class="pre">bearer_token</span></code> and <code class="docutils literal"><span class="pre">endpoint</span></code>
-fields; Enterprise clients require <code class="docutils literal"><span class="pre">username</span></code>, <code class="docutils literal"><span class="pre">password</span></code>, and
-<code class="docutils literal"><span class="pre">endpoint</span></code>. If you do not specify the <code class="docutils literal"><span class="pre">account_type</span></code>, we attempt to
+<p>Premium clients will require the <code class="docutils literal notranslate"><span class="pre">bearer_token</span></code> and <code class="docutils literal notranslate"><span class="pre">endpoint</span></code>
+fields; Enterprise clients require <code class="docutils literal notranslate"><span class="pre">username</span></code>, <code class="docutils literal notranslate"><span class="pre">password</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">endpoint</span></code>. If you do not specify the <code class="docutils literal notranslate"><span class="pre">account_type</span></code>, we attempt to
 discern the account type and declare a warning about this behavior.</p>
 <p>For premium search products, we are using app-only authentication and
 the bearer tokens are not delivered with an expiration time. You can
@@ -211,7 +199,7 @@ defaults.</p>
 <h2>YAML method<a class="headerlink" href="#yaml-method" title="Permalink to this headline">¶</a></h2>
 <p>For premium customers, the simplest credential file should look like
 this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets_api</span><span class="p">:</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search_tweets_api</span><span class="p">:</span>
   <span class="n">account_type</span><span class="p">:</span> <span class="n">premium</span>
   <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
   <span class="n">consumer_key</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">CONSUMER_KEY</span><span class="o">&gt;</span>
@@ -220,7 +208,7 @@ this:</p>
 </div>
 <p>For enterprise customers, the simplest credential file should look like
 this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets_api</span><span class="p">:</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search_tweets_api</span><span class="p">:</span>
   <span class="n">account_type</span><span class="p">:</span> <span class="n">enterprise</span>
   <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
   <span class="n">username</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span>
@@ -228,17 +216,17 @@ this:</p>
 </pre></div>
 </div>
 <p>By default, this library expects this file at
-<code class="docutils literal"><span class="pre">&quot;~/.twitter_keys.yaml&quot;</span></code>, but you can pass the relevant location as
-needed, either with the <code class="docutils literal"><span class="pre">--credential-file</span></code> flag for the command-line
+<code class="docutils literal notranslate"><span class="pre">&quot;~/.twitter_keys.yaml&quot;</span></code>, but you can pass the relevant location as
+needed, either with the <code class="docutils literal notranslate"><span class="pre">--credential-file</span></code> flag for the command-line
 app or as demonstrated below in a Python program.</p>
 <p>Both above examples require no special command-line arguments or
 in-program arguments. The credential parsing methods, unless otherwise
-specified, will look for a YAML key called <code class="docutils literal"><span class="pre">search_tweets_api</span></code>.</p>
+specified, will look for a YAML key called <code class="docutils literal notranslate"><span class="pre">search_tweets_api</span></code>.</p>
 <p>For developers who have multiple endpoints and/or search products, you
 can keep all credentials in the same file and specify specific keys to
-use. <code class="docutils literal"><span class="pre">--credential-file-key</span></code> specifies this behavior in the command
+use. <code class="docutils literal notranslate"><span class="pre">--credential-file-key</span></code> specifies this behavior in the command
 line app. An example:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets_30_day_dev</span><span class="p">:</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search_tweets_30_day_dev</span><span class="p">:</span>
   <span class="n">account_type</span><span class="p">:</span> <span class="n">premium</span>
   <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
   <span class="n">consumer_key</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">KEY</span><span class="o">&gt;</span>
@@ -267,7 +255,7 @@ line app. An example:</p>
 <h2>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
 <p>If you want or need to pass credentials via environment variables, you
 can set the appropriate variables for your product of the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">SEARCHTWEETS_ENDPOINT</span><span class="o">=</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">SEARCHTWEETS_ENDPOINT</span><span class="o">=</span>
 <span class="n">export</span> <span class="n">SEARCHTWEETS_USERNAME</span><span class="o">=</span>
 <span class="n">export</span> <span class="n">SEARCHTWEETS_PASSWORD</span><span class="o">=</span>
 <span class="n">export</span> <span class="n">SEARCHTWEETS_BEARER_TOKEN</span><span class="o">=</span>
@@ -276,33 +264,33 @@ can set the appropriate variables for your product of the following:</p>
 <span class="n">export</span> <span class="n">SEARCHTWEETS_CONSUMER_SECRET</span><span class="o">=</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">load_credentials</span></code> function will attempt to find these variables
+<p>The <code class="docutils literal notranslate"><span class="pre">load_credentials</span></code> function will attempt to find these variables
 if it cannot load fields from the YAML file, and it will <strong>overwrite any
 credentials from the YAML file that are present as environment
 variables</strong> if they have been parsed. This behavior can be changed by
-setting the <code class="docutils literal"><span class="pre">load_credentials</span></code> parameter <code class="docutils literal"><span class="pre">env_overwrite</span></code> to
-<code class="docutils literal"><span class="pre">False</span></code>.</p>
+setting the <code class="docutils literal notranslate"><span class="pre">load_credentials</span></code> parameter <code class="docutils literal notranslate"><span class="pre">env_overwrite</span></code> to
+<code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 <p>The following cells demonstrates credential handling in the Python
 library.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">load_credentials</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">load_credentials</span>
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;./search_tweets_creds_example.yaml&quot;</span><span class="p">,</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;./search_tweets_creds_example.yaml&quot;</span><span class="p">,</span>
                  <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;search_tweets_ent_example&quot;</span><span class="p">,</span>
                  <span class="n">env_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_ENDPOINT&gt;&#39;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_ENDPOINT&gt;&#39;</span><span class="p">,</span>
  <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_PASSWORD&gt;&#39;</span><span class="p">,</span>
  <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_USERNAME&gt;&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;./search_tweets_creds_example.yaml&quot;</span><span class="p">,</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;./search_tweets_creds_example.yaml&quot;</span><span class="p">,</span>
                  <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;search_tweets_premium_example&quot;</span><span class="p">,</span>
                  <span class="n">env_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;bearer_token&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;A_VERY_LONG_MAGIC_STRING&gt;&#39;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;bearer_token&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;A_VERY_LONG_MAGIC_STRING&gt;&#39;</span><span class="p">,</span>
  <span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;https://api.twitter.com/1.1/tweets/search/30day/dev.json&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -310,8 +298,8 @@ library.</p>
 <div class="section" id="environment-variable-overrides">
 <h2>Environment Variable Overrides<a class="headerlink" href="#environment-variable-overrides" title="Permalink to this headline">¶</a></h2>
 <p>If we set our environment variables, the program will look for them
-regardless of a YAML file&#8217;s validity or existence.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+regardless of a YAML file’s validity or existence.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_USERNAME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&lt;ENV_USERNAME&gt;&quot;</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_PASSWORD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&lt;ENV_PW&gt;&quot;</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SEARCHTWEETS_ENDPOINT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&lt;https://endpoint&gt;&quot;</span>
@@ -319,11 +307,11 @@ regardless of a YAML file&#8217;s validity or existence.</p>
 <span class="n">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;nothing_here.yaml&quot;</span><span class="p">,</span> <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;no_key_here&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cannot</span> <span class="n">read</span> <span class="n">file</span> <span class="n">nothing_here</span><span class="o">.</span><span class="n">yaml</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cannot</span> <span class="n">read</span> <span class="n">file</span> <span class="n">nothing_here</span><span class="o">.</span><span class="n">yaml</span>
 <span class="n">Error</span> <span class="n">parsing</span> <span class="n">YAML</span> <span class="n">file</span><span class="p">;</span> <span class="n">searching</span> <span class="k">for</span> <span class="n">valid</span> <span class="n">environment</span> <span class="n">variables</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;https://endpoint&gt;&#39;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;https://endpoint&gt;&#39;</span><span class="p">,</span>
  <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;ENV_PW&gt;&#39;</span><span class="p">,</span>
  <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;ENV_USERNAME&gt;&#39;</span><span class="p">}</span>
 </pre></div>
@@ -333,9 +321,9 @@ regardless of a YAML file&#8217;s validity or existence.</p>
 <h2>Command-line app<a class="headerlink" href="#command-line-app" title="Permalink to this headline">¶</a></h2>
 <p>the flags:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">--credential-file</span> <span class="pre">&lt;FILENAME&gt;</span></code></li>
-<li><code class="docutils literal"><span class="pre">--credential-file-key</span> <span class="pre">&lt;KEY&gt;</span></code></li>
-<li><code class="docutils literal"><span class="pre">--env-overwrite</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">--credential-file</span> <span class="pre">&lt;FILENAME&gt;</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">--credential-file-key</span> <span class="pre">&lt;KEY&gt;</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">--env-overwrite</span></code></li>
 </ul>
 <p>are used to control credential behavior from the command-line app.</p>
 </div>
@@ -343,19 +331,19 @@ regardless of a YAML file&#8217;s validity or existence.</p>
 <hr class="docutils" />
 <div class="section" id="using-the-comand-line-application">
 <h1>Using the Comand Line Application<a class="headerlink" href="#using-the-comand-line-application" title="Permalink to this headline">¶</a></h1>
-<p>The library includes an application, <code class="docutils literal"><span class="pre">search_tweets.py</span></code>, that provides
-rapid access to Tweets. When you use <code class="docutils literal"><span class="pre">pip</span></code> to install this package,
-<code class="docutils literal"><span class="pre">search_tweets.py</span></code> is installed globally. The file is located in the
-<code class="docutils literal"><span class="pre">tools/</span></code> directory for those who want to run it locally.</p>
-<p>Note that the <code class="docutils literal"><span class="pre">--results-per-call</span></code> flag specifies an argument to the
-API ( <code class="docutils literal"><span class="pre">maxResults</span></code>, results returned per CALL), not as a hard max to
+<p>The library includes an application, <code class="docutils literal notranslate"><span class="pre">search_tweets.py</span></code>, that provides
+rapid access to Tweets. When you use <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install this package,
+<code class="docutils literal notranslate"><span class="pre">search_tweets.py</span></code> is installed globally. The file is located in the
+<code class="docutils literal notranslate"><span class="pre">tools/</span></code> directory for those who want to run it locally.</p>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">--results-per-call</span></code> flag specifies an argument to the
+API ( <code class="docutils literal notranslate"><span class="pre">maxResults</span></code>, results returned per CALL), not as a hard max to
 number of results returned from this program. The argument
-<code class="docutils literal"><span class="pre">--max-results</span></code> defines the maximum number of results to return from a
+<code class="docutils literal notranslate"><span class="pre">--max-results</span></code> defines the maximum number of results to return from a
 given call. All examples assume that your credentials are set up
-correctly in the default location - <code class="docutils literal"><span class="pre">.twitter_keys.yaml</span></code> or in
+correctly in the default location - <code class="docutils literal notranslate"><span class="pre">.twitter_keys.yaml</span></code> or in
 environment variables.</p>
 <p><strong>Stream json results to stdout without saving</strong></p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">1000</span> \
   <span class="o">--</span><span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
@@ -363,7 +351,7 @@ environment variables.</p>
 </pre></div>
 </div>
 <p><strong>Stream json results to stdout and save to a file</strong></p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">1000</span> \
   <span class="o">--</span><span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
@@ -372,7 +360,7 @@ environment variables.</p>
 </pre></div>
 </div>
 <p><strong>Save to file without output</strong></p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">results</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span> <span class="mi">100</span> \
   <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
@@ -381,9 +369,9 @@ environment variables.</p>
 </pre></div>
 </div>
 <p>Options can be passed via a configuration file (either ini or YAML).
-Example files can be found in the <code class="docutils literal"><span class="pre">tools/api_config_example.config</span></code> or
-<code class="docutils literal"><span class="pre">./tools/api_yaml_example.yaml</span></code> files, which might look like this:</p>
-<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">search_rules</span><span class="p">]</span>
+Example files can be found in the <code class="docutils literal notranslate"><span class="pre">tools/api_config_example.config</span></code> or
+<code class="docutils literal notranslate"><span class="pre">./tools/api_yaml_example.yaml</span></code> files, which might look like this:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">search_rules</span><span class="p">]</span>
 <span class="n">from_date</span> <span class="o">=</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">01</span>
 <span class="n">to_date</span> <span class="o">=</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span>
 <span class="n">pt_rule</span> <span class="o">=</span> <span class="n">beyonce</span> <span class="n">has</span><span class="p">:</span><span class="n">geo</span>
@@ -399,7 +387,7 @@ Example files can be found in the <code class="docutils literal"><span class="pr
 </pre></div>
 </div>
 <p>Or this:</p>
-<div class="code yaml highlight-default"><div class="highlight"><pre><span></span><span class="n">search_rules</span><span class="p">:</span>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search_rules</span><span class="p">:</span>
     <span class="n">from</span><span class="o">-</span><span class="n">date</span><span class="p">:</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">01</span>
     <span class="n">to</span><span class="o">-</span><span class="n">date</span><span class="p">:</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span> <span class="mi">01</span><span class="p">:</span><span class="mi">01</span>
     <span class="n">pt</span><span class="o">-</span><span class="n">rule</span><span class="p">:</span> <span class="n">kanye</span>
@@ -415,19 +403,19 @@ Example files can be found in the <code class="docutils literal"><span class="pr
 </pre></div>
 </div>
 <p>When using a config file in conjunction with the command-line utility,
-you need to specify your config file via the <code class="docutils literal"><span class="pre">--config-file</span></code>
+you need to specify your config file via the <code class="docutils literal notranslate"><span class="pre">--config-file</span></code>
 parameter. Additional command-line arguments will either be <em>added</em> to
 the config file args or <strong>overwrite</strong> the config file args if both are
 specified and present.</p>
 <p>Example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
   <span class="o">--</span><span class="n">config</span><span class="o">-</span><span class="n">file</span> <span class="n">myapiconfig</span><span class="o">.</span><span class="n">config</span> \
   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
 </div>
 <hr class="docutils" />
 <p>Full options are listed below:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>$ search_tweets.py -h
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ search_tweets.py -h
 usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]
                       [--credential-file-key CREDENTIAL_YAML_KEY]
                       [--env-overwrite ENV_OVERWRITE]
@@ -496,17 +484,17 @@ optional arguments:
 </div>
 <hr class="docutils" />
 <div class="section" id="using-the-twitter-search-apis-python-wrapper">
-<h1>Using the Twitter Search APIs&#8217; Python Wrapper<a class="headerlink" href="#using-the-twitter-search-apis-python-wrapper" title="Permalink to this headline">¶</a></h1>
+<h1>Using the Twitter Search APIs’ Python Wrapper<a class="headerlink" href="#using-the-twitter-search-apis-python-wrapper" title="Permalink to this headline">¶</a></h1>
 <p>Working with the API within a Python program is straightforward both for
 Premium and Enterprise clients.</p>
-<p>We&#8217;ll assume that credentials are in the default location,
-<code class="docutils literal"><span class="pre">~/.twitter_keys.yaml</span></code>.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">ResultStream</span><span class="p">,</span> <span class="n">gen_rule_payload</span><span class="p">,</span> <span class="n">load_credentials</span>
+<p>We’ll assume that credentials are in the default location,
+<code class="docutils literal notranslate"><span class="pre">~/.twitter_keys.yaml</span></code>.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">ResultStream</span><span class="p">,</span> <span class="n">gen_rule_payload</span><span class="p">,</span> <span class="n">load_credentials</span>
 </pre></div>
 </div>
 <div class="section" id="enterprise-setup">
 <h2>Enterprise setup<a class="headerlink" href="#enterprise-setup" title="Permalink to this headline">¶</a></h2>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">enterprise_search_args</span> <span class="o">=</span> <span class="n">load_credentials</span><span class="p">(</span><span class="s2">&quot;~/.twitter_keys.yaml&quot;</span><span class="p">,</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">enterprise_search_args</span> <span class="o">=</span> <span class="n">load_credentials</span><span class="p">(</span><span class="s2">&quot;~/.twitter_keys.yaml&quot;</span><span class="p">,</span>
                                           <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;search_tweets_enterprise&quot;</span><span class="p">,</span>
                                           <span class="n">env_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
@@ -514,65 +502,65 @@ Premium and Enterprise clients.</p>
 </div>
 <div class="section" id="premium-setup">
 <h2>Premium Setup<a class="headerlink" href="#premium-setup" title="Permalink to this headline">¶</a></h2>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">premium_search_args</span> <span class="o">=</span> <span class="n">load_credentials</span><span class="p">(</span><span class="s2">&quot;~/.twitter_keys.yaml&quot;</span><span class="p">,</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">premium_search_args</span> <span class="o">=</span> <span class="n">load_credentials</span><span class="p">(</span><span class="s2">&quot;~/.twitter_keys.yaml&quot;</span><span class="p">,</span>
                                        <span class="n">yaml_key</span><span class="o">=</span><span class="s2">&quot;search_tweets_premium&quot;</span><span class="p">,</span>
                                        <span class="n">env_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>There is a function that formats search API rules into valid json
-queries called <code class="docutils literal"><span class="pre">gen_rule_payload</span></code>. It has sensible defaults, such as
+queries called <code class="docutils literal notranslate"><span class="pre">gen_rule_payload</span></code>. It has sensible defaults, such as
 pulling more Tweets per call than the default 100 (but note that a
 sandbox environment can only have a max of 100 here, so if you get
 errors, please check this) not including dates, and defaulting to hourly
 counts when using the counts api. Discussing the finer points of
 generating search rules is out of scope for these examples; I encourage
-you to see the docs to learn the nuances within, but for now let&#8217;s see
+you to see the docs to learn the nuances within, but for now let’s see
 what a rule looks like.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;beyonce&quot;</span><span class="p">,</span> <span class="n">results_per_call</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># testing with a sandbox account</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;beyonce&quot;</span><span class="p">,</span> <span class="n">results_per_call</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># testing with a sandbox account</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;beyonce&quot;</span><span class="p">,</span><span class="s2">&quot;maxResults&quot;</span><span class="p">:</span><span class="mi">100</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;beyonce&quot;</span><span class="p">,</span><span class="s2">&quot;maxResults&quot;</span><span class="p">:</span><span class="mi">100</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>This rule will match tweets that have the text <code class="docutils literal"><span class="pre">beyonce</span></code> in them.</p>
+<p>This rule will match tweets that have the text <code class="docutils literal notranslate"><span class="pre">beyonce</span></code> in them.</p>
 <p>From this point, there are two ways to interact with the API. There is a
 quick method to collect smaller amounts of Tweets to memory that
 requires less thought and knowledge, and interaction with the
-<code class="docutils literal"><span class="pre">ResultStream</span></code> object which will be introduced later.</p>
+<code class="docutils literal notranslate"><span class="pre">ResultStream</span></code> object which will be introduced later.</p>
 </div>
 <div class="section" id="fast-way">
 <h2>Fast Way<a class="headerlink" href="#fast-way" title="Permalink to this headline">¶</a></h2>
-<p>We&#8217;ll use the <code class="docutils literal"><span class="pre">search_args</span></code> variable to power the configuration point
+<p>We’ll use the <code class="docutils literal notranslate"><span class="pre">search_args</span></code> variable to power the configuration point
 for the API. The object also takes a valid PowerTrack rule and has
 options to cutoff search when hitting limits on both number of Tweets
 and API calls.</p>
-<p>We&#8217;ll be using the <code class="docutils literal"><span class="pre">collect_results</span></code> function, which has three
+<p>We’ll be using the <code class="docutils literal notranslate"><span class="pre">collect_results</span></code> function, which has three
 parameters.</p>
 <ul class="simple">
 <li>rule: a valid PowerTrack rule, referenced earlier</li>
 <li>max_results: as the API handles pagination, it will stop collecting
 when we get to this number</li>
-<li>result_stream_args: configuration args that we&#8217;ve already specified.</li>
+<li>result_stream_args: configuration args that we’ve already specified.</li>
 </ul>
 <p>For the remaining examples, please change the args to either premium or
 enterprise depending on your usage.</p>
-<p>Let&#8217;s see how it goes:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">collect_results</span>
+<p>Let’s see how it goes:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">collect_results</span>
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span>
                          <span class="n">max_results</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                          <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span> <span class="c1"># change this if you need to</span>
 </pre></div>
 </div>
-<p>By default, Tweet payloads are lazily parsed into a <code class="docutils literal"><span class="pre">Tweet</span></code>
+<p>By default, Tweet payloads are lazily parsed into a <code class="docutils literal notranslate"><span class="pre">Tweet</span></code>
 <a class="reference external" href="https://twitterdev.github.io/tweet_parser/">object</a>. An overwhelming
 number of Tweet attributes are made available directly, as such:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span>Jay-Z &amp;amp; Beyoncé sat across from us at dinner tonight and, at one point, I made eye contact with Beyoncé. My limbs turned to jello and I can no longer form a coherent sentence. I have seen the eyes of the lord.
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Jay-Z &amp;amp; Beyoncé sat across from us at dinner tonight and, at one point, I made eye contact with Beyoncé. My limbs turned to jello and I can no longer form a coherent sentence. I have seen the eyes of the lord.
 
 Beyoncé and it isn&#39;t close. https://t.co/UdOU9oUtuW
 
@@ -595,10 +583,10 @@ Joanne Pearce Is now playing IF I WAS A BOY - BEYONCE.mp3 by !
 I&#39;m trynna see beyoncé&#39;s finsta before I die
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">created_at_datetime</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">created_at_datetime</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">50</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">50</span>
 <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">49</span>
 <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">44</span>
 <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">42</span>
@@ -610,10 +598,10 @@ I&#39;m trynna see beyoncé&#39;s finsta before I die
 <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">17</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">37</span>
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">generator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
 <span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
 <span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
 <span class="n">Twitter</span> <span class="k">for</span> <span class="n">iPhone</span>
@@ -626,16 +614,16 @@ I&#39;m trynna see beyoncé&#39;s finsta before I die
 </pre></div>
 </div>
 <p>Voila, we have some Tweets. For interactive environments and other cases
-where you don&#8217;t care about collecting your data in a single load or
-don&#8217;t need to operate on the stream of Tweets or counts directly, I
+where you don’t care about collecting your data in a single load or
+don’t need to operate on the stream of Tweets or counts directly, I
 recommend using this convenience function.</p>
 </div>
 <div class="section" id="working-with-the-resultstream">
 <h2>Working with the ResultStream<a class="headerlink" href="#working-with-the-resultstream" title="Permalink to this headline">¶</a></h2>
-<p>The ResultStream object will be powered by the <code class="docutils literal"><span class="pre">search_args</span></code>, and
+<p>The ResultStream object will be powered by the <code class="docutils literal notranslate"><span class="pre">search_args</span></code>, and
 takes the rules and other configuration parameters, including a hard
 stop on number of pages to limit your API call usage.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rs</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="n">rule_payload</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rs</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="n">rule_payload</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span>
                   <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
                   <span class="n">max_pages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                   <span class="o">**</span><span class="n">premium_search_args</span><span class="p">)</span>
@@ -643,7 +631,7 @@ stop on number of pages to limit your API call usage.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ResultStream</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ResultStream</span><span class="p">:</span>
     <span class="p">{</span>
     <span class="s2">&quot;username&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span>
     <span class="s2">&quot;endpoint&quot;</span><span class="p">:</span><span class="s2">&quot;https:\/\/api.twitter.com\/1.1\/tweets\/search\/30day\/dev.json&quot;</span><span class="p">,</span>
@@ -656,20 +644,20 @@ stop on number of pages to limit your API call usage.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>There is a function, <code class="docutils literal"><span class="pre">.stream</span></code>, that seamlessly handles requests and
+<p>There is a function, <code class="docutils literal notranslate"><span class="pre">.stream</span></code>, that seamlessly handles requests and
 pagination for a given query. It returns a generator, and to grab our
-500 Tweets that mention <code class="docutils literal"><span class="pre">beyonce</span></code> we can do this:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">stream</span><span class="p">())</span>
+500 Tweets that mention <code class="docutils literal notranslate"><span class="pre">beyonce</span></code> we can do this:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">stream</span><span class="p">())</span>
 </pre></div>
 </div>
 <p>Tweets are lazily parsed using our <a class="reference external" href="https://twitterdev.github.io/tweet_parser/">Tweet
 Parser</a>, so tweet data is
 very easily extractable.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="c1"># using unidecode to prevent emoji/accents printing</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># using unidecode to prevent emoji/accents printing</span>
 <span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span>gente socorro kkkkkkkkkk BEYONCE https://t.co/kJ9zubvKuf
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>gente socorro kkkkkkkkkk BEYONCE https://t.co/kJ9zubvKuf
 Jay-Z &amp;amp; Beyoncé sat across from us at dinner tonight and, at one point, I made eye contact with Beyoncé. My limbs turned to jello and I can no longer form a coherent sentence. I have seen the eyes of the lord.
 Beyoncé and it isn&#39;t close. https://t.co/UdOU9oUtuW
 As you could guess.. Signs by Beyoncé will always be my shit.
@@ -689,23 +677,23 @@ Joanne Pearce Is now playing IF I WAS A BOY - BEYONCE.mp3 by !
 <p>We can also use the Search API Counts endpoint to get counts of Tweets
 that match our rule. Each request will return up to <em>30</em> results, and
 each count request can be done on a minutely, hourly, or daily basis.
-The underlying <code class="docutils literal"><span class="pre">ResultStream</span></code> object will handle converting your
+The underlying <code class="docutils literal notranslate"><span class="pre">ResultStream</span></code> object will handle converting your
 endpoint to the count endpoint, and you have to specify the
-<code class="docutils literal"><span class="pre">count_bucket</span></code> argument when making a rule to use it.</p>
+<code class="docutils literal notranslate"><span class="pre">count_bucket</span></code> argument when making a rule to use it.</p>
 <p>The process is very similar to grabbing Tweets, but has some minor
 differences.</p>
 <p><em>Caveat - premium sandbox environments do NOT have access to the Search
 API counts endpoint.</em></p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">count_rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;beyonce&quot;</span><span class="p">,</span> <span class="n">count_bucket</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">count_rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;beyonce&quot;</span><span class="p">,</span> <span class="n">count_bucket</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">)</span>
 
 <span class="n">counts</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">count_rule</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Our results are pretty straightforward and can be rapidly used.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">counts</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">counts</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">366</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801170000&#39;</span><span class="p">},</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">366</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801170000&#39;</span><span class="p">},</span>
  <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">44580</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801160000&#39;</span><span class="p">},</span>
  <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">61932</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801150000&#39;</span><span class="p">},</span>
  <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">59678</span><span class="p">,</span> <span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201801140000&#39;</span><span class="p">},</span>
@@ -745,32 +733,32 @@ API counts endpoint.</em></p>
 which is available to my account only via the enterprise options. Full
 archive search will likely require a different endpoint or access
 method; please see your developer console for details.</p>
-<p>Let&#8217;s make a new rule and pass it dates this time.</p>
-<p><code class="docutils literal"><span class="pre">gen_rule_payload</span></code> takes timestamps of the following forms:</p>
+<p>Let’s make a new rule and pass it dates this time.</p>
+<p><code class="docutils literal notranslate"><span class="pre">gen_rule_payload</span></code> takes timestamps of the following forms:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">YYYYmmDDHHMM</span></code></li>
-<li><code class="docutils literal"><span class="pre">YYYY-mm-DD</span></code> (which will convert to midnight UTC (00:00)</li>
-<li><code class="docutils literal"><span class="pre">YYYY-mm-DD</span> <span class="pre">HH:MM</span></code></li>
-<li><code class="docutils literal"><span class="pre">YYYY-mm-DDTHH:MM</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">YYYYmmDDHHMM</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">YYYY-mm-DD</span></code> (which will convert to midnight UTC (00:00)</li>
+<li><code class="docutils literal notranslate"><span class="pre">YYYY-mm-DD</span> <span class="pre">HH:MM</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">YYYY-mm-DDTHH:MM</span></code></li>
 </ul>
 <p>Note - all Tweets are stored in UTC time.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span>
                         <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;2017-09-01&quot;</span><span class="p">,</span> <span class="c1">#UTC 2017-09-01 00:00</span>
                         <span class="n">to_date</span><span class="o">=</span><span class="s2">&quot;2017-10-30&quot;</span><span class="p">,</span><span class="c1">#UTC 2017-10-30 00:00</span>
                         <span class="n">results_per_call</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span><span class="s2">&quot;maxResults&quot;</span><span class="p">:</span><span class="mi">500</span><span class="p">,</span><span class="s2">&quot;toDate&quot;</span><span class="p">:</span><span class="s2">&quot;201710300000&quot;</span><span class="p">,</span><span class="s2">&quot;fromDate&quot;</span><span class="p">:</span><span class="s2">&quot;201709010000&quot;</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span><span class="s2">&quot;maxResults&quot;</span><span class="p">:</span><span class="mi">500</span><span class="p">,</span><span class="s2">&quot;toDate&quot;</span><span class="p">:</span><span class="s2">&quot;201710300000&quot;</span><span class="p">,</span><span class="s2">&quot;fromDate&quot;</span><span class="p">:</span><span class="s2">&quot;201709010000&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">tweet</span><span class="o">.</span><span class="n">all_text</span><span class="p">)</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]];</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span>More clarity on our private information policy and enforcement. Working to build as much direct context into the product too https://t.co/IrwBexPrBA
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>More clarity on our private information policy and enforcement. Working to build as much direct context into the product too https://t.co/IrwBexPrBA
 To provide more clarity on our private information policy, we’ve added specific examples of what is/is not a violation and insight into what we need to remove this type of content from the service. https://t.co/NGx5hh2tTQ
 Launching violent groups and hateful images/symbols policy on November 22nd https://t.co/NaWuBPxyO5
 We will now launch our policies on violent groups and hateful imagery and hate symbols on Nov 22. During the development process, we received valuable feedback that we’re implementing before these are published and enforced. See more on our policy development process here 👇 https://t.co/wx3EeH39BI
@@ -786,7 +774,7 @@ Yup!!!! ❤️❤️❤️❤️ #davechappelle https://t.co/ybSGNrQpYF
 Setting up at @CampFlogGnaw https://t.co/nVq8QjkKsf
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span>
                         <span class="n">from_date</span><span class="o">=</span><span class="s2">&quot;2017-09-20&quot;</span><span class="p">,</span>
                         <span class="n">to_date</span><span class="o">=</span><span class="s2">&quot;2017-10-30&quot;</span><span class="p">,</span>
                         <span class="n">count_bucket</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">,</span>
@@ -794,16 +782,16 @@ Setting up at @CampFlogGnaw https://t.co/nVq8QjkKsf
 <span class="nb">print</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span><span class="s2">&quot;toDate&quot;</span><span class="p">:</span><span class="s2">&quot;201710300000&quot;</span><span class="p">,</span><span class="s2">&quot;fromDate&quot;</span><span class="p">:</span><span class="s2">&quot;201709200000&quot;</span><span class="p">,</span><span class="s2">&quot;bucket&quot;</span><span class="p">:</span><span class="s2">&quot;day&quot;</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;from:jack&quot;</span><span class="p">,</span><span class="s2">&quot;toDate&quot;</span><span class="p">:</span><span class="s2">&quot;201710300000&quot;</span><span class="p">,</span><span class="s2">&quot;fromDate&quot;</span><span class="p">:</span><span class="s2">&quot;201709200000&quot;</span><span class="p">,</span><span class="s2">&quot;bucket&quot;</span><span class="p">:</span><span class="s2">&quot;day&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">counts</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">counts</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">result_stream_args</span><span class="o">=</span><span class="n">enterprise_search_args</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">];</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">];</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710290000&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710290000&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
 <span class="p">{</span><span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710280000&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
 <span class="p">{</span><span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710270000&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
 <span class="p">{</span><span class="s1">&#39;timePeriod&#39;</span><span class="p">:</span> <span class="s1">&#39;201710260000&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">}</span>
@@ -847,6 +835,30 @@ Setting up at @CampFlogGnaw https://t.co/nVq8QjkKsf
 </div>
 </div>
 </div>
+<div class="section" id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+<p>Any contributions should follow the following pattern:</p>
+<ol class="arabic simple">
+<li>Make a feature or bugfix branch, e.g.,
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">-b</span> <span class="pre">my_new_feature</span></code></li>
+<li>Make your changes in that branch</li>
+<li>Ensure you bump the version number in <code class="docutils literal notranslate"><span class="pre">searchtweets/_version.py</span></code> to
+reflect your changes. We use <a class="reference external" href="https://semver.org">Semantic
+Versioning</a>, so non-breaking enhancements
+should increment the minor version, e.g., <code class="docutils literal notranslate"><span class="pre">1.5.0</span> <span class="pre">-&gt;</span> <span class="pre">1.6.0</span></code>, and
+bugfixes will increment the last version, <code class="docutils literal notranslate"><span class="pre">1.6.0</span> <span class="pre">-&gt;</span> <span class="pre">1.6.1</span></code>.</li>
+<li>Create a pull request</li>
+</ol>
+<p>After the pull request process is accepted, package maintainers will
+handle building documentation and distribution to Pypi.</p>
+<p>For reference, distributing to Pypi is accomplished by the following
+commands, ran from the root directory in the repo:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">bdist_wheel</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">sdist</span>
+<span class="n">twine</span> <span class="n">upload</span> <span class="n">dist</span><span class="o">/*</span>
+</pre></div>
+</div>
+</div>
 
 
     </div>
@@ -861,7 +873,7 @@ Setting up at @CampFlogGnaw https://t.co/nVq8QjkKsf
     </p>
     <p>
         &copy; Copyright 2017, twitterdev.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.<br/>
     </p>
   </div>
 </footer>
