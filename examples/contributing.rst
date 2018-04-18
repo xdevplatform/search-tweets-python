@@ -16,3 +16,24 @@ For reference, distributing to Pypi is accomplished by the following commands, r
   python setup.py sdist
   twine upload dist/*
 
+How to build the documentation:
+
+Building the documentation requires a few Sphinx packages to build the webpages:
+
+.. code:: bash
+ 
+  pip install sphinx
+  pip install sphinx_bootstrap_theme
+  pip install sphinxcontrib-napoleon
+
+Then (once your changes are committed to master) you should be able to run the documentation-generating bash script and follow the instructions:
+
+.. code:: bash
+  
+  git checkout gh-pages
+  bash build_sphinx_docs.sh master searchtweets
+
+Note that this README is also generated, and so after any README changes you'll need to re-build the README (you need pandoc version 2.1+ for this) and commit the result:
+
+.. code:: bash 
+  bash make_readme.sh
