@@ -864,6 +864,26 @@ commands, ran from the root directory in the repo:</p>
 <span class="n">twine</span> <span class="n">upload</span> <span class="n">dist</span><span class="o">/*</span>
 </pre></div>
 </div>
+<p>How to build the documentation:</p>
+<p>Building the documentation requires a few Sphinx packages to build the
+webpages:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx_bootstrap_theme</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">sphinxcontrib</span><span class="o">-</span><span class="n">napoleon</span>
+</pre></div>
+</div>
+<p>Then (once your changes are committed to master) you should be able to
+run the documentation-generating bash script and follow the
+instructions:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="n">gh</span><span class="o">-</span><span class="n">pages</span>
+<span class="n">bash</span> <span class="n">build_sphinx_docs</span><span class="o">.</span><span class="n">sh</span> <span class="n">master</span> <span class="n">searchtweets</span>
+</pre></div>
+</div>
+<p>Note that this README is also generated, and so after any README changes
+you’ll need to re-build the README (you need pandoc version 2.1+ for
+this) and commit the result:</p>
+<blockquote>
+<div>bash make_readme.sh</div></blockquote>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
