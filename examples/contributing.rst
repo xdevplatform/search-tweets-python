@@ -35,4 +35,5 @@ Then (once your changes are committed to master) you should be able to run the d
 Note that this README is also generated, and so after any README changes you'll need to re-build the README (you need pandoc version 2.1+ for this) and commit the result:
 
 .. code:: bash 
+  
   bash make_readme.sh
