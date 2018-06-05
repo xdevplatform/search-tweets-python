@@ -83,7 +83,7 @@ def change_to_count_endpoint(endpoint):
         return "https://" + '/'.join(filt_tokens) + '/' + "counts.json"
 
 
-def gen_rule_payload(pt_rule, results_per_call=500,
+def gen_rule_payload(pt_rule, results_per_call=None,
                      from_date=None, to_date=None, count_bucket=None,
                      tag=None,
                      stringify=True):
@@ -93,7 +93,7 @@ def gen_rule_payload(pt_rule, results_per_call=500,
 
     Args:
         pt_rule (str): The string version of a powertrack rule,
-            e.g., "kanye west has:geo". Accepts multi-line strings
+            e.g., "beyonce has:geo". Accepts multi-line strings
             for ease of entry.
         results_per_call (int): number of tweets or counts returned per API
         call. This maps to the ``maxResults`` search API parameter.
@@ -110,14 +110,16 @@ def gen_rule_payload(pt_rule, results_per_call=500,
     Example:
 
         >>> from searchtweets.utils import gen_rule_payload
-        >>> gen_rule_payload("kanye west has:geo",
+        >>> gen_rule_payload("beyonce has:geo",
             ...              from_date="2017-08-21",
             ...              to_date="2017-08-22")
-        '{"query":"kanye west has:geo","maxResults":100,"toDate":"201708220000","fromDate":"201708210000"}'
+        '{"query":"beyonce has:geo","maxResults":100,"toDate":"201708220000","fromDate":"201708210000"}'
     """
 
     pt_rule = ' '.join(pt_rule.split())  # allows multi-line strings
-    payload = {"query": pt_rule, "maxResults": results_per_call}
+    payload = {"query": pt_rule}
+    if results_per_call is not None and isinstance(results_per_call, int) is True:
+        payload["maxResults"] = results_per_call
     if to_date:
         payload["toDate"] = convert_utc_time(to_date)
     if from_date:
@@ -149,10 +151,20 @@ def gen_params_from_config(config_dict):
     else:
         endpoint = config_dict.get("endpoint")
 
+
+    def intify(arg):
+        if not isinstance(arg, int) and arg is not None:
+            return int(arg)
+        else:
+            return arg
+
+    # this parameter comes in as a string when it's parsed
+    results_per_call = intify(config_dict.get("results_per_call", None))
+
     rule = gen_rule_payload(pt_rule=config_dict["pt_rule"],
                             from_date=config_dict.get("from_date", None),
                             to_date=config_dict.get("to_date", None),
-                            results_per_call=int(config_dict.get("results_per_call")),
+                            results_per_call=results_per_call,
                             count_bucket=config_dict.get("count_bucket", None))
 
     _dict = {"endpoint": endpoint,
@@ -160,9 +172,9 @@ def gen_params_from_config(config_dict):
              "password": config_dict.get("password"),
              "bearer_token": config_dict.get("bearer_token"),
              "rule_payload": rule,
-             "results_per_file": int(config_dict.get("results_per_file")),
-             "max_results": int(config_dict.get("max_results")),
-             "max_pages": config_dict.get("max_pages", None)}
+             "results_per_file": intify(config_dict.get("results_per_file")),
+             "max_results": intify(config_dict.get("max_results")),
+             "max_pages": intify(config_dict.get("max_pages", None))}
     return _dict
 
 
