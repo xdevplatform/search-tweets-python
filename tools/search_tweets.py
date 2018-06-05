@@ -89,16 +89,13 @@ def parse_cmd_args():
 
     argparser.add_argument("--results-per-call",
                            dest="results_per_call",
-                           default=100,
                            help="Number of results to return per call "
                                 "(default 100; max 500) - corresponds to "
                                 "'maxResults' in the API")
 
     argparser.add_argument("--max-results", dest="max_results",
-                           default=500,
                            type=int,
-                           help="Maximum number of Tweets or Counts to return for this "
-                                "session (defaults to 500)")
+                           help="Maximum number of Tweets or Counts to return for this session")
 
     argparser.add_argument("--max-pages",
                            dest="max_pages",
@@ -108,7 +105,7 @@ def parse_cmd_args():
                            "use for this session.")
 
     argparser.add_argument("--results-per-file", dest="results_per_file",
-                           default=0,
+                           default=None,
                            type=int,
                            help="Maximum tweets to save per file.")
 
@@ -137,6 +134,10 @@ def parse_cmd_args():
     return argparser
 
 
+def _filter_sensitive_args(dict_):
+    sens_args = ("password", "consumer_key", "consumer_secret", "bearer_token")
+    return {k: v for k, v in dict_.items() if k not in sens_args}
+
 def main():
     args_dict = vars(parse_cmd_args().parse_args())
     if args_dict.get("debug") is True:
@@ -149,8 +150,8 @@ def main():
     else:
         configfile_dict = {}
 
-    logger.debug("config file dict:")
-    logger.debug(json.dumps(configfile_dict, indent=4))
+    logger.debug("config file ({}) arguments sans sensitive args:".format(args_dict["config_filename"]))
+    logger.debug(json.dumps(_filter_sensitive_args(configfile_dict), indent=4))
 
     creds_dict = load_credentials(filename=args_dict["credential_file"],
                                   account_type=args_dict["account_type"],
@@ -163,8 +164,8 @@ def main():
                               dict_filter(args_dict),
                               dict_filter(creds_dict))
 
-    logger.debug("combined dict (cli, config, creds):")
-    logger.debug(json.dumps(config_dict, indent=4))
+    logger.debug("combined dict (cli, config, creds) sans password:")
+    logger.debug(json.dumps(_filter_sensitive_args(config_dict), indent=4))
 
     if len(dict_filter(config_dict).keys() & REQUIRED_KEYS) < len(REQUIRED_KEYS):
         print(REQUIRED_KEYS - dict_filter(config_dict).keys())
@@ -172,6 +173,8 @@ def main():
         sys.exit(1)
 
     stream_params = gen_params_from_config(config_dict)
+    logger.debug("full arguments passed to the ResultStream object sans password")
+    logger.debug(json.dumps(_filter_sensitive_args(stream_params), indent=4))
 
     rs = ResultStream(tweetify=False, **stream_params)
 
@@ -179,8 +182,8 @@ def main():
 
     if config_dict.get("filename_prefix") is not None:
         stream = write_result_stream(rs,
-                                     filename_prefix=config_dict["filename_prefix"],
-                                     results_per_file=config_dict["results_per_file"])
+                                     filename_prefix=config_dict.get("filename_prefix"),
+                                     results_per_file=config_dict.get("results_per_file"))
     else:
         stream = rs.stream()
 
