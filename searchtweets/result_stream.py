@@ -155,7 +155,7 @@ class ResultStream:
     session_request_counter = 0
 
     def __init__(self, endpoint, rule_payload, username=None, password=None,
-                 bearer_token=None, max_results=1000,
+                 bearer_token=None, max_results=500,
                  tweetify=True, max_requests=None, **kwargs):
 
         self.username = username

@@ -29,7 +29,7 @@ __all__ = ["take", "partition", "merge_dicts", "write_result_stream",
 
 def take(n, iterable):
     """Return first n items of the iterable as a list.
-    Originaly found in the Python itertools documentation.
+    Originally found in the Python itertools documentation.
 
     Args:
         n (int): number of items to return
