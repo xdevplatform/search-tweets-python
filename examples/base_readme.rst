@@ -53,12 +53,20 @@ access to Tweets. When you use ``pip`` to install this package,
 ``search_tweets.py`` is installed globally. The file is located in the
 ``tools/`` directory for those who want to run it locally.
 
-Note that the ``--results-per-call`` flag specifies an argument to the API
-( ``maxResults``, results returned per CALL), not as a hard max to number of
-results returned from this program. The argument ``--max-results`` defines the
-maximum number of results to return from a given call. All examples assume that
-your credentials are set up correctly in the default location
-- ``.twitter_keys.yaml`` or in environment variables.
+Note that the ``--results-per-call`` flag specifies the maximum number of 
+results to return per CALL, or, equivalently, per pagination request. This 
+does not affect the maximum number of results returned from running the 
+program. The argument ``--max-results`` determines the maximum number of 
+results to return from a run of the program (cumulative over any 
+pagination).
+
+The astute reader will observe that the ``--results-per-call`` setting 
+is later assigned to a payload key called ``maxResults`` under the hood. 
+The authors acknowledge that this is somewhat confusing, but hope that 
+the CLI flags are more intuitive in their naming.
+
+All examples assume that your credentials are set up correctly in the 
+default location (``.twitter_keys.yaml``) or in environment variables.
 
 
 **Stream json results to stdout without saving**
