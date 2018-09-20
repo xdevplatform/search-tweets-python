@@ -27,6 +27,10 @@ from ._version import VERSION
 
 logger = logging.getLogger(__name__)
 
+class NoAuth(requests.auth.AuthBase):
+    def __call__(self, r):
+        return r
+
 
 def make_session(username=None, password=None, bearer_token=None):
     """Creates a Requests Session for use. Accepts a bearer token
@@ -119,7 +123,12 @@ def request(session, url, rule_payload, **kwargs):
     if isinstance(rule_payload, dict):
         rule_payload = json.dumps(rule_payload)
     logger.debug("sending request")
-    result = session.post(url, data=rule_payload, **kwargs)
+    result = session.post(
+        url,
+        auth=NoAuth(),  # TS: prevent requests library from using auth from last request
+        data=rule_payload,
+        **kwargs
+    )
     return result
 
 
