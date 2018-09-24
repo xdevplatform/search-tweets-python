@@ -45,6 +45,7 @@ def make_session(username=None, password=None, bearer_token=None):
         raise KeyError
 
     session = requests.Session()
+    session.trust_env = False
     headers = {'Accept-encoding': 'gzip',
                'User-Agent': 'twitterdev-search-tweets-python/' + VERSION}
     if bearer_token:
