@@ -28,7 +28,7 @@ from ._version import VERSION
 logger = logging.getLogger(__name__)
 
 
-def make_session(username=None, password=None, bearer_token=None):
+def make_session(username=None, password=None, bearer_token=None, dtab_overrides=None): 
     """Creates a Requests Session for use. Accepts a bearer token
     for premiums users and will override username and password information if
     present.
@@ -56,6 +56,8 @@ def make_session(username=None, password=None, bearer_token=None):
         logger.info("using username and password for authentication")
         session.auth = username, password
         session.headers = headers
+    if dtab_overrides:
+        headers['Dtab-local'] = "{}".format(dtab_overrides) 
     return session
 
 
@@ -144,7 +146,9 @@ class ResultStream:
             tweet parser library to convert each raw tweet package to a Tweet
             with lazy properties.
         max_requests (int): A hard cutoff for the number of API calls this
-        instance will make. Good for testing in sandbox premium environments.
+        instance will make. Good for testing in sandbox premium environments. 
+        dtab_overrides (str): delegation table overrides
+
 
     Example:
         >>> rs = ResultStream(**search_args, rule_payload=rule, max_pages=1)
@@ -156,12 +160,13 @@ class ResultStream:
     session_request_counter = 0
 
     def __init__(self, endpoint, rule_payload, username=None, password=None,
-                 bearer_token=None, max_results=500,
+                 bearer_token=None, dtab_overrides=None, max_results=500,
                  tweetify=True, max_requests=None, **kwargs):
 
         self.username = username
         self.password = password
         self.bearer_token = bearer_token
+        self.dtab_overrides = dtab_overrides
         if isinstance(rule_payload, str):
             rule_payload = json.loads(rule_payload)
         self.rule_payload = rule_payload
@@ -229,7 +234,8 @@ class ResultStream:
             self.session.close()
         self.session = make_session(self.username,
                                     self.password,
-                                    self.bearer_token)
+                                    self.bearer_token,
+                                    self.dtab_overrides)
 
     def check_counts(self):
         """

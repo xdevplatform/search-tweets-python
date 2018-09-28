@@ -92,7 +92,8 @@ def _parse_credentials(search_creds, account_type):
 
             search_args = {
                 "bearer_token": search_creds["bearer_token"],
-                "endpoint": search_creds["endpoint"]}
+                "endpoint": search_creds["endpoint"],
+                "dtab_overrides": search_creds.get("dtab_overrides",None)}
         if account_type == "enterprise":
             search_args = {"username": search_creds["username"],
                            "password": search_creds["password"],
@@ -123,6 +124,7 @@ def load_credentials(filename=None, account_type=None,
           consumer_secret: <SECRET>
           bearer_token: <TOKEN>
           account_type: <enterprise OR premium>
+          dtab_overrides: <DTAB>
 
     with the appropriate fields filled out for your account. The top-level key
     defaults to ``search_tweets_api`` but can be flexible.

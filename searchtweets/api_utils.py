@@ -171,6 +171,7 @@ def gen_params_from_config(config_dict):
              "username": config_dict.get("username"),
              "password": config_dict.get("password"),
              "bearer_token": config_dict.get("bearer_token"),
+             "dtab_overrides": config_dict.get("dtab_overrides",None),
              "rule_payload": rule,
              "results_per_file": intify(config_dict.get("results_per_file")),
              "max_results": intify(config_dict.get("max_results")),
