@@ -824,13 +824,15 @@ After the pull request process is accepted, package maintainers will
 handle building documentation and distribution to Pypi.
 
 For reference, distributing to Pypi is accomplished by the following
-commands, ran from the root directory in the repo:
+commands, run from the root directory in the repo (ensure the 
+``twine`` and ``wheel`` packages are installed):
 
 .. code:: bash
 
     python setup.py bdist_wheel
     python setup.py sdist
     twine upload dist/*
+
 
 How to build the documentation:
 
