@@ -95,6 +95,16 @@ your credentials are set up correctly in the default location
     --filename-prefix beyonce_geo \
     --no-print-stream
 
+One or more custom headers can be specified from the command line,
+using the ``--extra-headers`` argument and a JSON-formatted string
+representing a dictionary of extra headers:
+
+.. code:: bash
+
+  search_tweets.py \
+    --filter-rule "beyonce has:hashtags" \
+    --custom-headers '{"<MY_HEADER_KEY>":"<MY_HEADER_VALUE>"}'
+
 
 Options can be passed via a configuration file (either ini or YAML). Example
 files can be found in the ``tools/api_config_example.config`` or
@@ -134,11 +144,24 @@ Or this:
       filename_prefix: kanye
       results_per_file: 10000000
 
+Custom headers can be specified in a config file, under a specific credentials 
+key: 
+
+.. code:: yaml
+
+  search_tweets_api:
+    account_type: premium
+    endpoint: <FULL_URL_OF_ENDPOINT>
+    username: <USERNAME>
+    password: <PW>
+    extra_headers:
+      <MY_HEADER_KEY>: <MY_HEADER_VALUE>
 
 When using a config file in conjunction with the command-line utility, you need
 to specify your config file via the ``--config-file`` parameter. Additional
 command-line arguments will either be *added* to the config file args or
 **overwrite** the config file args if both are specified and present.
+
 
 
 Example::
@@ -167,7 +190,8 @@ Full options are listed below:
                         [--max-results MAX_RESULTS] [--max-pages MAX_PAGES]
                         [--results-per-file RESULTS_PER_FILE]
                         [--filename-prefix FILENAME_PREFIX]
-                        [--no-print-stream] [--print-stream] [--debug]
+                        [--no-print-stream] [--print-stream]
+                        [--extra-headers EXTRA_HEADERS] [--debug]
 
   optional arguments:
     -h, --help            show this help message and exit
@@ -216,7 +240,10 @@ Full options are listed below:
                           prefix for the filename where tweet json data will be
                           stored.
     --no-print-stream     disable print streaming
-    --print-stream        Print tweet stream to stdout
+    --print-stream        Print tweet stream to stdout 
+    --extra-headers EXTRA_HEADERS
+                          JSON-formatted str representing a dict of additional
+                          request headers
     --debug               print all info and warning messages
 
 

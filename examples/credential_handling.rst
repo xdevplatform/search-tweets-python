@@ -137,9 +137,9 @@ library.
 
 ::
 
-    {'endpoint': '<MY_ENDPOINT>',
+    {'username': '<MY_USERNAME>',
      'password': '<MY_PASSWORD>',
-     'username': '<MY_USERNAME>'}
+     'endpoint': '<MY_ENDPOINT>'}
 
 
 
@@ -155,7 +155,8 @@ library.
 ::
 
     {'bearer_token': '<A_VERY_LONG_MAGIC_STRING>',
-     'endpoint': 'https://api.twitter.com/1.1/tweets/search/30day/dev.json'}
+     'endpoint': 'https://api.twitter.com/1.1/tweets/search/30day/dev.json',
+     'extra_headers_dict': None}
 
 
 
@@ -185,9 +186,9 @@ regardless of a YAML file's validity or existence.
 
 ::
 
-    {'endpoint': '<https://endpoint>',
+    {'username': '<ENV_USERNAME>',
      'password': '<ENV_PW>',
-     'username': '<ENV_USERNAME>'}
+     'endpoint': '<https://endpoint>'}
 
 
 
@@ -201,3 +202,4 @@ the flags:
 -  ``--env-overwrite``
 
 are used to control credential behavior from the command-line app.
+
