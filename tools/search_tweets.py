@@ -172,8 +172,8 @@ def main():
     dict_filter = lambda x: {k: v for k, v in x.items() if v is not None}
 
     config_dict = merge_dicts(dict_filter(configfile_dict),
-                              dict_filter(args_dict),
-                              dict_filter(creds_dict))
+                              dict_filter(creds_dict),
+                              dict_filter(args_dict))
 
     logger.debug("combined dict (cli, config, creds) sans password:")
     logger.debug(json.dumps(_filter_sensitive_args(config_dict), indent=4))
