@@ -286,7 +286,7 @@ representing a dictionary of extra headers:
 
    search_tweets.py \
      --filter-rule "beyonce has:hashtags" \
-     --custom-headers '{"<MY_HEADER_KEY>":"<MY_HEADER_VALUE>"}'
+     --extra-headers '{"<MY_HEADER_KEY>":"<MY_HEADER_VALUE>"}'
 
 Options can be passed via a configuration file (either ini or YAML).
 Example files can be found in the ``tools/api_config_example.config`` or
@@ -852,15 +852,13 @@ After the pull request process is accepted, package maintainers will
 handle building documentation and distribution to Pypi.
 
 For reference, distributing to Pypi is accomplished by the following
-commands, run from the root directory in the repo (ensure the 
-``twine`` and ``wheel`` packages are installed):
+commands, ran from the root directory in the repo:
 
 .. code:: bash
 
    python setup.py bdist_wheel
    python setup.py sdist
    twine upload dist/*
-
 
 How to build the documentation:
 
