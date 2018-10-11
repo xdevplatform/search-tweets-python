@@ -124,7 +124,8 @@ def load_credentials(filename=None, account_type=None,
           consumer_secret: <SECRET>
           bearer_token: <TOKEN>
           account_type: <enterprise OR premium>
-          dtab_overrides: <DTAB>
+          extra_headers: 
+            <MY_HEADER_KEY>: <MY_HEADER_VALUE>
 
     with the appropriate fields filled out for your account. The top-level key
     defaults to ``search_tweets_api`` but can be flexible.

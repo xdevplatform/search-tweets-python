@@ -103,7 +103,7 @@ representing a dictionary of extra headers:
 
   search_tweets.py \
     --filter-rule "beyonce has:hashtags" \
-    --custom-headers '{"<MY_HEADER_KEY>":"<MY_HEADER_VALUE>"}'
+    --extra-headers '{"<MY_HEADER_KEY>":"<MY_HEADER_VALUE>"}'
 
 
 Options can be passed via a configuration file (either ini or YAML). Example
