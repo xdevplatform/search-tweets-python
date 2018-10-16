@@ -28,7 +28,7 @@ from ._version import VERSION
 logger = logging.getLogger(__name__)
 
 
-def make_session(username=None, password=None, bearer_token=None):
+def make_session(username=None, password=None, bearer_token=None, extra_headers_dict=None): 
     """Creates a Requests Session for use. Accepts a bearer token
     for premiums users and will override username and password information if
     present.
@@ -56,6 +56,8 @@ def make_session(username=None, password=None, bearer_token=None):
         logger.info("using username and password for authentication")
         session.auth = username, password
         session.headers = headers
+    if extra_headers_dict:
+        headers.update(extra_headers_dict) 
     return session
 
 
@@ -144,7 +146,9 @@ class ResultStream:
             tweet parser library to convert each raw tweet package to a Tweet
             with lazy properties.
         max_requests (int): A hard cutoff for the number of API calls this
-        instance will make. Good for testing in sandbox premium environments.
+        instance will make. Good for testing in sandbox premium environments. 
+        extra_headers_dict (dict): custom headers to add
+
 
     Example:
         >>> rs = ResultStream(**search_args, rule_payload=rule, max_pages=1)
@@ -156,12 +160,13 @@ class ResultStream:
     session_request_counter = 0
 
     def __init__(self, endpoint, rule_payload, username=None, password=None,
-                 bearer_token=None, max_results=500,
+                 bearer_token=None, extra_headers_dict=None, max_results=500,
                  tweetify=True, max_requests=None, **kwargs):
 
         self.username = username
         self.password = password
         self.bearer_token = bearer_token
+        self.extra_headers_dict = extra_headers_dict
         if isinstance(rule_payload, str):
             rule_payload = json.loads(rule_payload)
         self.rule_payload = rule_payload
@@ -229,7 +234,8 @@ class ResultStream:
             self.session.close()
         self.session = make_session(self.username,
                                     self.password,
-                                    self.bearer_token)
+                                    self.bearer_token,
+                                    self.extra_headers_dict)
 
     def check_counts(self):
         """

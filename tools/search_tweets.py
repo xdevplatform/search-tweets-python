@@ -126,6 +126,12 @@ def parse_cmd_args():
                            default=True,
                            help="Print tweet stream to stdout")
 
+    argparser.add_argument("--extra-headers",
+                           dest="extra_headers",
+                           type=str,
+                           default=None,
+                           help="JSON-formatted str representing a dict of additional request headers")
+
     argparser.add_argument("--debug",
                            dest="debug",
                            action="store_true",
@@ -149,6 +155,11 @@ def main():
         configfile_dict = read_config(args_dict["config_filename"])
     else:
         configfile_dict = {}
+    
+    extra_headers_str = args_dict.get("extra_headers")
+    if extra_headers_str is not None:
+        args_dict['extra_headers_dict'] = json.loads(extra_headers_str)
+        del args_dict['extra_headers']
 
     logger.debug("config file ({}) arguments sans sensitive args:".format(args_dict["config_filename"]))
     logger.debug(json.dumps(_filter_sensitive_args(configfile_dict), indent=4))
@@ -161,8 +172,8 @@ def main():
     dict_filter = lambda x: {k: v for k, v in x.items() if v is not None}
 
     config_dict = merge_dicts(dict_filter(configfile_dict),
-                              dict_filter(args_dict),
-                              dict_filter(creds_dict))
+                              dict_filter(creds_dict),
+                              dict_filter(args_dict))
 
     logger.debug("combined dict (cli, config, creds) sans password:")
     logger.debug(json.dumps(_filter_sensitive_args(config_dict), indent=4))
