@@ -7,11 +7,11 @@
     <title>Python Twitter Search API &#8212; Twitter Search APIs Python Wrapper 1.3.0 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -286,9 +286,9 @@ library.</p>
                  <span class="n">env_overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_ENDPOINT&gt;&#39;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_USERNAME&gt;&#39;</span><span class="p">,</span>
  <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_PASSWORD&gt;&#39;</span><span class="p">,</span>
- <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_USERNAME&gt;&#39;</span><span class="p">}</span>
+ <span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;MY_ENDPOINT&gt;&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">load_credentials</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;./search_tweets_creds_example.yaml&quot;</span><span class="p">,</span>
@@ -297,7 +297,8 @@ library.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;bearer_token&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;A_VERY_LONG_MAGIC_STRING&gt;&#39;</span><span class="p">,</span>
- <span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;https://api.twitter.com/1.1/tweets/search/30day/dev.json&#39;</span><span class="p">}</span>
+ <span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;https://api.twitter.com/1.1/tweets/search/30day/dev.json&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;extra_headers_dict&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -317,9 +318,9 @@ regardless of a YAML file’s validity or existence.</p>
 <span class="n">Error</span> <span class="n">parsing</span> <span class="n">YAML</span> <span class="n">file</span><span class="p">;</span> <span class="n">searching</span> <span class="k">for</span> <span class="n">valid</span> <span class="n">environment</span> <span class="n">variables</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;https://endpoint&gt;&#39;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;ENV_USERNAME&gt;&#39;</span><span class="p">,</span>
  <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;ENV_PW&gt;&#39;</span><span class="p">,</span>
- <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;ENV_USERNAME&gt;&#39;</span><span class="p">}</span>
+ <span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;https://endpoint&gt;&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -374,6 +375,14 @@ environment variables.</p>
   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="nb">print</span><span class="o">-</span><span class="n">stream</span>
 </pre></div>
 </div>
+<p>One or more custom headers can be specified from the command line, using
+the <code class="docutils literal notranslate"><span class="pre">--extra-headers</span></code> argument and a JSON-formatted string
+representing a dictionary of extra headers:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search_tweets</span><span class="o">.</span><span class="n">py</span> \
+  <span class="o">--</span><span class="nb">filter</span><span class="o">-</span><span class="n">rule</span> <span class="s2">&quot;beyonce has:hashtags&quot;</span> \
+  <span class="o">--</span><span class="n">extra</span><span class="o">-</span><span class="n">headers</span> <span class="s1">&#39;{&quot;&lt;MY_HEADER_KEY&gt;&quot;:&quot;&lt;MY_HEADER_VALUE&gt;&quot;}&#39;</span>
+</pre></div>
+</div>
 <p>Options can be passed via a configuration file (either ini or YAML).
 Example files can be found in the <code class="docutils literal notranslate"><span class="pre">tools/api_config_example.config</span></code> or
 <code class="docutils literal notranslate"><span class="pre">./tools/api_yaml_example.yaml</span></code> files, which might look like this:</p>
@@ -408,6 +417,17 @@ Example files can be found in the <code class="docutils literal notranslate"><sp
     <span class="n">results_per_file</span><span class="p">:</span> <span class="mi">10000000</span>
 </pre></div>
 </div>
+<p>Custom headers can be specified in a config file, under a specific
+credentials key:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search_tweets_api</span><span class="p">:</span>
+  <span class="n">account_type</span><span class="p">:</span> <span class="n">premium</span>
+  <span class="n">endpoint</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">FULL_URL_OF_ENDPOINT</span><span class="o">&gt;</span>
+  <span class="n">username</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">USERNAME</span><span class="o">&gt;</span>
+  <span class="n">password</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">PW</span><span class="o">&gt;</span>
+  <span class="n">extra_headers</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="n">MY_HEADER_KEY</span><span class="o">&gt;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">MY_HEADER_VALUE</span><span class="o">&gt;</span>
+</pre></div>
+</div>
 <p>When using a config file in conjunction with the command-line utility,
 you need to specify your config file via the <code class="docutils literal notranslate"><span class="pre">--config-file</span></code>
 parameter. Additional command-line arguments will either be <em>added</em> to
@@ -434,7 +454,8 @@ usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]
                       [--max-results MAX_RESULTS] [--max-pages MAX_PAGES]
                       [--results-per-file RESULTS_PER_FILE]
                       [--filename-prefix FILENAME_PREFIX]
-                      [--no-print-stream] [--print-stream] [--debug]
+                      [--no-print-stream] [--print-stream]
+                      [--extra-headers EXTRA_HEADERS] [--debug]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -484,6 +505,9 @@ optional arguments:
                         stored.
   --no-print-stream     disable print streaming
   --print-stream        Print tweet stream to stdout
+  --extra-headers EXTRA_HEADERS
+                        JSON-formatted str representing a dict of additional
+                        request headers
   --debug               print all info and warning messages
 </pre></div>
 </div>
@@ -638,7 +662,7 @@ stop on number of pages to limit your API call usage.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ResultStream</span><span class="p">:</span>
-    <span class="p">{</span>
+     <span class="p">{</span>
     <span class="s2">&quot;username&quot;</span><span class="p">:</span><span class="n">null</span><span class="p">,</span>
     <span class="s2">&quot;endpoint&quot;</span><span class="p">:</span><span class="s2">&quot;https:\/\/api.twitter.com\/1.1\/tweets\/search\/30day\/dev.json&quot;</span><span class="p">,</span>
     <span class="s2">&quot;rule_payload&quot;</span><span class="p">:{</span>
@@ -921,7 +945,7 @@ this) and commit the result:</p>
     </p>
     <p>
         &copy; Copyright 2017, twitterdev.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.<br/>
     </p>
   </div>
 </footer>

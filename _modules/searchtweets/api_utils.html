@@ -7,11 +7,11 @@
     <title>searchtweets.api_utils &#8212; Twitter Search APIs Python Wrapper 1.3.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -194,7 +194,7 @@
         <span class="k">return</span> <span class="s2">&quot;https://&quot;</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filt_tokens</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="s2">&quot;counts.json&quot;</span></div>
 
 
-<div class="viewcode-block" id="gen_rule_payload"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.api_utils.gen_rule_payload">[docs]</a><span class="k">def</span> <span class="nf">gen_rule_payload</span><span class="p">(</span><span class="n">pt_rule</span><span class="p">,</span> <span class="n">results_per_call</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<div class="viewcode-block" id="gen_rule_payload"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.api_utils.gen_rule_payload">[docs]</a><span class="k">def</span> <span class="nf">gen_rule_payload</span><span class="p">(</span><span class="n">pt_rule</span><span class="p">,</span> <span class="n">results_per_call</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">from_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count_bucket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">stringify</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -204,7 +204,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        pt_rule (str): The string version of a powertrack rule,</span>
-<span class="sd">            e.g., &quot;kanye west has:geo&quot;. Accepts multi-line strings</span>
+<span class="sd">            e.g., &quot;beyonce has:geo&quot;. Accepts multi-line strings</span>
 <span class="sd">            for ease of entry.</span>
 <span class="sd">        results_per_call (int): number of tweets or counts returned per API</span>
 <span class="sd">        call. This maps to the ``maxResults`` search API parameter.</span>
@@ -221,14 +221,16 @@
 <span class="sd">    Example:</span>
 
 <span class="sd">        &gt;&gt;&gt; from searchtweets.utils import gen_rule_payload</span>
-<span class="sd">        &gt;&gt;&gt; gen_rule_payload(&quot;kanye west has:geo&quot;,</span>
+<span class="sd">        &gt;&gt;&gt; gen_rule_payload(&quot;beyonce has:geo&quot;,</span>
 <span class="sd">            ...              from_date=&quot;2017-08-21&quot;,</span>
 <span class="sd">            ...              to_date=&quot;2017-08-22&quot;)</span>
-<span class="sd">        &#39;{&quot;query&quot;:&quot;kanye west has:geo&quot;,&quot;maxResults&quot;:100,&quot;toDate&quot;:&quot;201708220000&quot;,&quot;fromDate&quot;:&quot;201708210000&quot;}&#39;</span>
+<span class="sd">        &#39;{&quot;query&quot;:&quot;beyonce has:geo&quot;,&quot;maxResults&quot;:100,&quot;toDate&quot;:&quot;201708220000&quot;,&quot;fromDate&quot;:&quot;201708210000&quot;}&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">pt_rule</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pt_rule</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>  <span class="c1"># allows multi-line strings</span>
-    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">pt_rule</span><span class="p">,</span> <span class="s2">&quot;maxResults&quot;</span><span class="p">:</span> <span class="n">results_per_call</span><span class="p">}</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">pt_rule</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">results_per_call</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results_per_call</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;maxResults&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_per_call</span>
     <span class="k">if</span> <span class="n">to_date</span><span class="p">:</span>
         <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;toDate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">convert_utc_time</span><span class="p">(</span><span class="n">to_date</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">from_date</span><span class="p">:</span>
@@ -260,20 +262,31 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">endpoint</span> <span class="o">=</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;endpoint&quot;</span><span class="p">)</span>
 
+
+    <span class="k">def</span> <span class="nf">intify</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">arg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">arg</span>
+
+    <span class="c1"># this parameter comes in as a string when it&#39;s parsed</span>
+    <span class="n">results_per_call</span> <span class="o">=</span> <span class="n">intify</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results_per_call&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
     <span class="n">rule</span> <span class="o">=</span> <span class="n">gen_rule_payload</span><span class="p">(</span><span class="n">pt_rule</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;pt_rule&quot;</span><span class="p">],</span>
                             <span class="n">from_date</span><span class="o">=</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;from_date&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
                             <span class="n">to_date</span><span class="o">=</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;to_date&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-                            <span class="n">results_per_call</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results_per_call&quot;</span><span class="p">)),</span>
+                            <span class="n">results_per_call</span><span class="o">=</span><span class="n">results_per_call</span><span class="p">,</span>
                             <span class="n">count_bucket</span><span class="o">=</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;count_bucket&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 
     <span class="n">_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;endpoint&quot;</span><span class="p">:</span> <span class="n">endpoint</span><span class="p">,</span>
              <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">),</span>
              <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">),</span>
              <span class="s2">&quot;bearer_token&quot;</span><span class="p">:</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bearer_token&quot;</span><span class="p">),</span>
+             <span class="s2">&quot;extra_headers_dict&quot;</span><span class="p">:</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;extra_headers_dict&quot;</span><span class="p">,</span><span class="kc">None</span><span class="p">),</span>
              <span class="s2">&quot;rule_payload&quot;</span><span class="p">:</span> <span class="n">rule</span><span class="p">,</span>
-             <span class="s2">&quot;results_per_file&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results_per_file&quot;</span><span class="p">)),</span>
-             <span class="s2">&quot;max_results&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_results&quot;</span><span class="p">)),</span>
-             <span class="s2">&quot;max_pages&quot;</span><span class="p">:</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_pages&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)}</span>
+             <span class="s2">&quot;results_per_file&quot;</span><span class="p">:</span> <span class="n">intify</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results_per_file&quot;</span><span class="p">)),</span>
+             <span class="s2">&quot;max_results&quot;</span><span class="p">:</span> <span class="n">intify</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_results&quot;</span><span class="p">)),</span>
+             <span class="s2">&quot;max_pages&quot;</span><span class="p">:</span> <span class="n">intify</span><span class="p">(</span><span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_pages&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))}</span>
     <span class="k">return</span> <span class="n">_dict</span></div>
 
 
@@ -317,7 +330,7 @@
     </p>
     <p>
         &copy; Copyright 2017, twitterdev.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.<br/>
     </p>
   </div>
 </footer>

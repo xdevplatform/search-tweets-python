@@ -7,11 +7,11 @@
     <title>searchtweets.result_stream &#8212; Twitter Search APIs Python Wrapper 1.3.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -139,7 +139,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="make_session"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.make_session">[docs]</a><span class="k">def</span> <span class="nf">make_session</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bearer_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="make_session"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.make_session">[docs]</a><span class="k">def</span> <span class="nf">make_session</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bearer_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_headers_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span> 
     <span class="sd">&quot;&quot;&quot;Creates a Requests Session for use. Accepts a bearer token</span>
 <span class="sd">    for premiums users and will override username and password information if</span>
 <span class="sd">    present.</span>
@@ -156,6 +156,7 @@
         <span class="k">raise</span> <span class="ne">KeyError</span>
 
     <span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">trust_env</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Accept-encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;gzip&#39;</span><span class="p">,</span>
                <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="s1">&#39;twitterdev-search-tweets-python/&#39;</span> <span class="o">+</span> <span class="n">VERSION</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">bearer_token</span><span class="p">:</span>
@@ -166,6 +167,8 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;using username and password for authentication&quot;</span><span class="p">)</span>
         <span class="n">session</span><span class="o">.</span><span class="n">auth</span> <span class="o">=</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span>
         <span class="n">session</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
+    <span class="k">if</span> <span class="n">extra_headers_dict</span><span class="p">:</span>
+        <span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extra_headers_dict</span><span class="p">)</span> 
     <span class="k">return</span> <span class="n">session</span></div>
 
 
@@ -254,7 +257,9 @@
 <span class="sd">            tweet parser library to convert each raw tweet package to a Tweet</span>
 <span class="sd">            with lazy properties.</span>
 <span class="sd">        max_requests (int): A hard cutoff for the number of API calls this</span>
-<span class="sd">        instance will make. Good for testing in sandbox premium environments.</span>
+<span class="sd">        instance will make. Good for testing in sandbox premium environments. </span>
+<span class="sd">        extra_headers_dict (dict): custom headers to add</span>
+
 
 <span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; rs = ResultStream(**search_args, rule_payload=rule, max_pages=1)</span>
@@ -266,12 +271,13 @@
     <span class="n">session_request_counter</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">rule_payload</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">bearer_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                 <span class="n">bearer_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_headers_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
                  <span class="n">tweetify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_requests</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bearer_token</span> <span class="o">=</span> <span class="n">bearer_token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra_headers_dict</span> <span class="o">=</span> <span class="n">extra_headers_dict</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">rule_payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">rule_payload</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rule_payload</span> <span class="o">=</span> <span class="n">rule_payload</span>
@@ -339,7 +345,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">make_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">bearer_token</span><span class="p">)</span></div>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">bearer_token</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">extra_headers_dict</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ResultStream.check_counts"><a class="viewcode-back" href="../../searchtweets.html#searchtweets.result_stream.ResultStream.check_counts">[docs]</a>    <span class="k">def</span> <span class="nf">check_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -424,7 +431,7 @@
     </p>
     <p>
         &copy; Copyright 2017, twitterdev.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.<br/>
     </p>
   </div>
 </footer>
