@@ -198,8 +198,8 @@ def main():
     else:
         stream = rs.stream()
 
-    for tweet in stream:
-        if config_dict["print_stream"] is True:
+    if config_dict["print_stream"]:
+        for tweet in stream:
             print(json.dumps(tweet))
 
 
