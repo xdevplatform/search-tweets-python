@@ -44,19 +44,23 @@ def _load_yaml_credentials(filename=None, yaml_key=None):
 
 
 def _load_env_credentials():
-    vars_ = ["SEARCHTWEETS_ENDPOINT",
-             "SEARCHTWEETS_ACCOUNT",
-             "SEARCHTWEETS_USERNAME",
-             "SEARCHTWEETS_PASSWORD",
-             "SEARCHTWEETS_BEARER_TOKEN",
-             "SEARCHTWEETS_ACCOUNT_TYPE",
-             "SEARCHTWEETS_CONSUMER_KEY",
-             "SEARCHTWEETS_CONSUMER_SECRET"
-             ]
-    renamed = [var.replace("SEARCHTWEETS_", '').lower() for var in vars_]
-
-    parsed = {r: os.environ.get(var) for (var, r) in zip(vars_, renamed)}
-    parsed = {k: v for k, v in parsed.items() if v is not None}
+    vars_ = (
+        "SEARCHTWEETS_ENDPOINT",
+        "SEARCHTWEETS_ACCOUNT",
+        "SEARCHTWEETS_USERNAME",
+        "SEARCHTWEETS_PASSWORD",
+        "SEARCHTWEETS_BEARER_TOKEN",
+        "SEARCHTWEETS_ACCOUNT_TYPE",
+        "SEARCHTWEETS_CONSUMER_KEY",
+        "SEARCHTWEETS_CONSUMER_SECRET"
+    )
+    parsed = {}
+    for var in vars_:
+        key = var.replace('SEARCHTWEETS_', '').lower()
+        try:
+            parsed[key] = os.environ[key]
+        except KeyError:
+            pass
     return parsed
 
 
@@ -111,7 +115,7 @@ def load_credentials(filename=None, account_type=None,
                      yaml_key=None, env_overwrite=True):
     """
     Handles credential management. Supports both YAML files and environment
-    variables. A YAML file is preferred for simplicity and configureability.
+    variables. A YAML file is preferred for simplicity and configurability.
     A YAML credential file should look something like this:
 
     .. code:: yaml
