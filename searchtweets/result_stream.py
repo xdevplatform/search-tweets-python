@@ -28,7 +28,7 @@ from ._version import VERSION
 logger = logging.getLogger(__name__)
 
 
-def make_session(username=None, password=None, bearer_token=None, extra_headers_dict=None): 
+def make_session(username=None, password=None, bearer_token=None, extra_headers_dict=None, proxies=None):
     """Creates a Requests Session for use. Accepts a bearer token
     for premiums users and will override username and password information if
     present.
@@ -57,7 +57,11 @@ def make_session(username=None, password=None, bearer_token=None, extra_headers_
         session.auth = username, password
         session.headers = headers
     if extra_headers_dict:
-        headers.update(extra_headers_dict) 
+        headers.update(extra_headers_dict)
+
+    if proxies:
+        session.proxies = proxies
+
     return session
 
 
@@ -161,7 +165,7 @@ class ResultStream:
 
     def __init__(self, endpoint, rule_payload, username=None, password=None,
                  bearer_token=None, extra_headers_dict=None, max_results=500,
-                 tweetify=True, max_requests=None, **kwargs):
+                 tweetify=True, max_requests=None, proxies=None, **kwargs):
 
         self.username = username
         self.password = password
@@ -185,6 +189,7 @@ class ResultStream:
         # magic number of requests!
         self.max_requests = (max_requests if max_requests is not None
                              else 10 ** 9)
+        self.proxies = proxies
         self.endpoint = (change_to_count_endpoint(endpoint)
                          if infer_endpoint(rule_payload) == "counts"
                          else endpoint)
@@ -235,7 +240,8 @@ class ResultStream:
         self.session = make_session(self.username,
                                     self.password,
                                     self.bearer_token,
-                                    self.extra_headers_dict)
+                                    self.extra_headers_dict,
+                                    self.proxies)
 
     def check_counts(self):
         """
