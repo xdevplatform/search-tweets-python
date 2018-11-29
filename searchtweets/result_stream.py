@@ -101,7 +101,7 @@ def retry(func):
             error_message = resp.json()["error"]["message"]
             logger.error("HTTP Error code: {}: {}".format(resp.status_code, error_message))
             logger.error("Rule payload: {}".format(kwargs["rule_payload"]))
-            raise requests.exceptions.HTTPError
+            raise requests.exceptions.HTTPError(response=resp)
 
         return resp
 
