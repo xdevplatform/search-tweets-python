@@ -61,6 +61,7 @@ def make_session(username=None, password=None, bearer_token=None, extra_headers_
 
     if proxies:
         session.proxies = proxies
+        session.verify = False
 
     return session
 
