@@ -31,7 +31,7 @@ def _load_yaml_credentials(filename=None, yaml_key=None):
     """
     try:
         with open(os.path.expanduser(filename)) as f:
-            search_creds = yaml.load(f)[yaml_key]
+            search_creds = yaml.safe_load(f)[yaml_key]
     except FileNotFoundError:
         logger.error("cannot read file {}".format(filename))
         search_creds = {}
