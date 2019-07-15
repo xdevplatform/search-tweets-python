@@ -73,7 +73,7 @@ def retry(func):
 
     """
     def retried_func(*args, **kwargs):
-        max_tries = 3
+        max_tries = 5
         tries = 0
         while True:
             try:
@@ -92,7 +92,7 @@ def retry(func):
                                .format(resp.status_code))
                 tries += 1
                 # mini exponential backoff here.
-                time.sleep(tries ** 2)
+                time.sleep(2 ** tries)
                 continue
 
             break
