@@ -73,8 +73,9 @@ def retry(func):
 
     """
     def retried_func(*args, **kwargs):
-        max_tries = 3
+        max_tries = 10
         tries = 0
+        total_sleep_seconds = 0
         while True:
             try:
                 resp = func(*args, **kwargs)
@@ -88,20 +89,33 @@ def retry(func):
                 raise exc
 
             if resp.status_code != 200 and tries < max_tries:
-                logger.warning("retrying request; current status code: {}"
-                               .format(resp.status_code))
+
                 tries += 1
+
+                logger.error(f"HTTP Error code: {resp.status_code}: {resp.text}")
+                logger.error(f"Request payload: {kwargs['rule_payload']}")
+
+                if resp.status_code == 429:
+                    logger.warning("Rate limit hit... Will retry...")
+                    #print("Rate limit hit... Will retry...")
+                    sleep_seconds = min(((tries * 2) ** 2), 900 - total_sleep_seconds)
+                    total_sleep_seconds = total_sleep_seconds + sleep_seconds
+
+                elif resp.status_code >= 500:
+                    logger.warning("Server-side error... Will retry...")
+                    #print("Server-side error... Will retry...")
+                    sleep_seconds = 30
+                else:
+                    #Other errors are a "one and done", no use in retrying error...
+                    raise requests.exceptions.HTTPError
+
                 # mini exponential backoff here.
-                time.sleep(tries ** 2)
+                logger.warning(f"Will retry in {sleep_seconds} seconds...")
+                #print(f"Will retry in {sleep_seconds} seconds...")
+                time.sleep(sleep_seconds)
                 continue
 
             break
-
-        if resp.status_code != 200:
-            error_message = resp.json()["error"]["message"]
-            logger.error("HTTP Error code: {}: {}".format(resp.status_code, error_message))
-            logger.error("Rule payload: {}".format(kwargs["rule_payload"]))
-            raise requests.exceptions.HTTPError
 
         return resp
 
