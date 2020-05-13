@@ -1,15 +1,15 @@
-Python client for Labs Recent search
-====================================
-
 .. image:: https://img.shields.io/static/v1?label=Twitter%20API&message=Developer%20Labs%20v2&color=794BC4&style=flat&logo=Twitter
    :target: https://developer.twitter.com/en/docs/labs/overview/versioning
    :alt: Labs v2
+
+Python client for Labs Recent search
+====================================
 
 Welcome to the ``labs`` branch of the Python search client. This branch was born from the ``master`` branch that supports premium and enterprise tiers of Twitter search. This branch supports the  `Twitter Developer Labs Recent search v2 endpoint <https://developer.twitter.com/en/docs/labs/recent-search/overview>`__ only, and drops support for the premium and enterprise tiers.
 
 Note: If you are looking for the original version that works with premium and enterprise versions of search, head on over to the ``master`` branch.
 
-This project serves as a wrapper for the, providing a command-line utility and a Python library.
+This project serves as a wrapper for the Labs Recent search endpoint, providing a command-line utility and a Python library.
 
 Features
 ========
