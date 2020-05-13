@@ -1,7 +1,7 @@
 """
 Utility functions that are used in various parts of the program.
 """
-# Copyright 2018 Twitter, Inc.
+# Copyright 2020 Twitter, Inc.
 # Licensed under the MIT License
 # https://opensource.org/licenses/MIT
 
@@ -71,10 +71,10 @@ def merge_dicts(*dicts):
 
     Example:
         >>> from searchtweets.utils import merge_dicts
-        >>> d1 = {"rule": "something has:geo"}
-        >>> d2 = {"maxResults": 1000}
+        >>> d1 = {"query": "snow has:media -is:retweet"}
+        >>> d2 = {"max_tweets": 1000}
         >>> merge_dicts(*[d1, d2])
-        {"maxResults": 1000, "rule": "something has:geo"}
+        {"max_results": 1000, "rule": "something has:geo"}
     """
     def _merge_dicts(dict1, dict2):
         merged = dict1.copy()
@@ -148,32 +148,31 @@ def read_config(filename):
         search_rules:
             from-date: 2017-06-01
             to-date: 2017-09-01 01:01
-            pt-rule: kanye
+            query: snow
 
         search_params:
-            results-per-call: 500
-            max-results: 500
+            results-per-call: 100
+            max-tweets: 500
 
         output_params:
             save_file: True
-            filename_prefix: kanye
+            filename_prefix: snow
             results_per_file: 10000000
 
     or::
 
-
         [search_rules]
         from_date = 2017-06-01
         to_date = 2017-09-01
-        pt_rule = beyonce has:geo
+        query = snow has:geo
 
         [search_params]
-        results_per_call = 500
-        max_results = 500
+        results_per_call = 100
+        max_tweets = 500
 
         [output_params]
         save_file = True
-        filename_prefix = beyonce
+        filename_prefix = snow_geo
         results_per_file = 10000000
 
     Args:
@@ -203,10 +202,10 @@ def read_config(filename):
 
     # ensure args are renamed correctly:
     config_dict = {k.replace('-', '_'): v for k, v in config_dict.items()}
-    # YAML will parse datestrings as datetimes; we'll convert them here if they
-    # exist
-    if config_dict.get("to_date") is not None:
-        config_dict["to_date"] = str(config_dict["to_date"])
-    if config_dict.get("from_date") is not None:
-        config_dict["from_date"] = str(config_dict["from_date"])
+    # YAML will parse datestrings as datetimes; we'll convert them here if they exist
+
+    if config_dict.get("start_time") is not None:
+        config_dict["start_time"] = str(config_dict["start_time"])
+    if config_dict.get("end_time") is not None:
+        config_dict["end_time"] = str(config_dict["end_time"])
     return config_dict
