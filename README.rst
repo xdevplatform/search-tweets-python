@@ -1,27 +1,24 @@
 Python client for Labs Recent search
 ====================================
 
-This project serves as a wrapper for the `Twitter Labs recent search
-APIs <https://developer.twitter.com/en/docs/labs/recent-search/>`__,
-providing a command-line utility and a Python library.
+Welcome to the ``labs`` branch of the Python search client. This branch was born from the ``master`` branch that supports premium and enterprise tiers of Twitter search. This branch supports the  `Twitter Developer Labs Recent search v2 endpoint <https://developer.twitter.com/en/docs/labs/recent-search/overview>`__ only, and drops support for the premium and enterprise tiers. 
 
-This is a fork of the premium/enterprise search client at https://github.com/twitterdev/search-tweets-python.
+Note: If you are looking for the original version that works with premium and enterprise versions of search, head on over to the ``master`` branch.
 
-If you are working with an enterprise or premium 30-day or Full-archive search endpoint, the ```master``` branch of this repository has what you need.
-
+This project serves as a wrapper for the, providing a command-line utility and a Python library.
 
 Features
 ========
 
 - Supports Labs Recent search, v2. 
-- Supports a new "polling" mode using the new Labs ```since-id``` search request parameter. The ```since-id```, along with the new ```until-id``` provide a way to navigate the public Tweet archive by Tweet ID. 
-- Supports additional ways to specify ```start-time``` and ```end-time``` request parameters:
+- Supports a new "polling" mode using the new Labs ``since-id`` search request parameter. The ``since-id``, along with the new ``until-id`` provide a way to navigate the public Tweet archive by Tweet ID. 
+- Supports additional ways to specify ``start-time`` and ``end-time`` request parameters:
 
-  - d# - For example, 'd2' sets ```start-time``` to (exactly) two days ago. 
-  - h# - For example, 'h12' sets ```start-time``` to (exactly) twelve hours ago. 
-  - m# - For example, 'm15' sets ```start-time``` to (exactly) fifteen minutes ago. 
+  - d# - For example, 'd2' sets ``start-time`` to (exactly) two days ago. 
+  - h# - For example, 'h12' sets ``start-time`` to (exactly) twelve hours ago. 
+  - m# - For example, 'm15' sets ``start-time`` to (exactly) fifteen minutes ago. 
   
-  These are handy for kicking off searches with a backfill period, and also work with the ```end-time``` request parameter. 
+  These are handy for kicking off searches with a backfill period, and also work with the ``end-time`` request parameter. 
 
 These features were inherited from the enterprise/premium version:
 
@@ -38,7 +35,7 @@ Labs updates
 When migrating this Python search client from an enterprise or premium search endpoint, the following updates were made:
 
 - Added support for GET requests (and removed POST support for now)
-- Added support for since_id and until_id request parameters.
+- Added support for ``since_id`` and ``until_id`` request parameters.
 - Updated pagination details.
 - Updated app command-line parlance
       -  --start-datetime → --start-time
@@ -110,51 +107,27 @@ optional arguments:
   --debug               print all info and warning messages
 
 
-Migrating from enterprise/premium library
-=========================================
-
-
-
-
-
-
-
-
-
-
 Installation
 =============
 
-{Are there any new conventions?}
-Maintaing two packages: 
-+ searchtweets (current enterprise/premium package)
-+ searchtweetslabs 
-Eventually, there will be searchtweetsv2, and searchtweets will be dropped.
+Currently, there is not an updated Pypi install package for the Labs version. To get started with this code, you'll need to clone the repository, install the required Python packages, set up your credentials, and start making requests. 
 
-The searchtweets library is on Pypi:
+To confirm the your code is ready to go, run the ``$python3 scripts/search-tweets.py -h`` command. You should see the help details shown above.
 
-pip install searchtweets
-Or you can install the development version locally via
-
-git clone https://github.com/twitterdev/search-tweets-python
-cd search-tweets-python
-pip install -e .
 Credential Handling
-The premium and enterprise Search APIs use different authentication methods and we attempt to provide a seamless way to handle authentication for all customers. We know credentials can be tricky or annoying - please read this in its entirety.
+===================
 
-Premium clients will require the bearer_token and endpoint fields; Enterprise clients require username, password, and endpoint. If you do not specify the account_type, we attempt to discern the account type and declare a warning about this behavior.
+The Labs Recent search endpoint uses app-only authentication. You have the choice to configure your application consumer key and secret, or a Bearer Token you have generated. If you supply the application key and secret, the client will generate a Bearer Token for you. 
 
-For premium search products, we are using app-only authentication and the bearer tokens are not delivered with an expiration time. You can provide either: - your application key and secret (the library will handle bearer-token authentication) - a bearer token that you get yourself
-
-Many developers might find providing your application key and secret more straightforward and letting this library manage your bearer token generation for you. Please see here for an overview of the premium authentication method.
+Many developers might find providing your application key and secret more straightforward and letting this library manage your Bearer Token generation for you. Please see `HERE <https://developer.twitter.com/en/docs/basics/authentication/oauth-2-0>`_ for an overview of the app-only authentication method.
 
 We support both YAML-file based methods and environment variables for storing credentials, and provide flexible handling with sensible defaults.
 
 YAML method
-For premium customers, the simplest credential file should look like this:
+The simplest credential file should look like this:
 
-search_tweets_endpoint:
-  endpoint: <FULL_URL_OF_ENDPOINT>
+search_tweets_api:
+  endpoint:  https://api.twitter.com/labs/2/tweets/search
   consumer_key: <CONSUMER_KEY>
   consumer_secret: <CONSUMER_SECRET>
 
@@ -165,13 +138,13 @@ Both above examples require no special command-line arguments or in-program argu
 For developers who have multiple endpoints and/or search products, you can keep all credentials in the same file and specify specific keys to use. --credential-file-key specifies this behavior in the command line app. An example:
 
 search_tweets_labsv1:
-  endpoint: <FULL_URL_OF_ENDPOINT>
+  endpoint: https://api.twitter.com/labs/1/tweets/search
   consumer_key: <KEY>
   consumer_secret: <SECRET>
   (optional) bearer_token: <TOKEN>
 
 search_tweets_labsv2:
-  endpoint: <FULL_URL_OF_ENDPOINT>
+  endpoint: https://api.twitter.com/labs/2/tweets/search
   consumer_key: <KEY>
   consumer_secret: <SECRET>
   (optional) bearer_token: <TOKEN>
@@ -179,7 +152,7 @@ search_tweets_labsv2:
 
 Environment Variables
 
-If you want or need to pass credentials via environment variables, you can set the appropriate variables for your product of the following:
+If you want or need to pass credentials via environment variables, you can set the appropriate variables:
 
 export SEARCHTWEETS_ENDPOINT=
 export SEARCHTWEETS_BEARER_TOKEN=
@@ -231,14 +204,14 @@ the flags:
 are used to control credential behavior from the command-line app.
 
 Using the Comand Line Application
-The library includes an application, search_tweets.py, that provides rapid access to Tweets. When you use pip to install this package, search_tweets.py is installed globally. The file is located in the tools/ directory for those who want to run it locally.
+The library includes an application, search_tweets.py, that provides rapid access to Tweets. When you use pip to install this package, search_tweets.py is installed globally. The file is located in the scripts/ directory for those who want to run it locally.
 
-Note that the --results-per-call flag specifies an argument to the API ( maxResults, results returned per CALL), not as a hard max to number of results returned from this program. The argument --max-results defines the maximum number of results to return from a given call. All examples assume that your credentials are set up correctly in the default location - .twitter_keys.yaml or in environment variables.
+Note that the --results-per-call flag specifies an argument to the API, not as a hard max to number of results returned from this program. The argument --max-tweets defines the maximum number of results to return from a single run of the ``search-tweets.py``` script. All examples assume that your credentials are set up correctly in the default location - .twitter_keys.yaml or in environment variables.
 
 Stream json results to stdout without saving
 
 search_tweets.py \
-  --max-results 1000 \
+  --max-tweets 1000 \
   --results-per-call 100 \
   --query "(snow OR rain) has:media -is:retweet" \
   --print-stream
@@ -256,14 +229,14 @@ search_tweets.py \
   --max-results 100 \
   --results-per-call 100 \
   --query "(snow OR rain) has:media -is:retweet" \
-  --filename-prefix beyonce_geo \
+  --filename-prefix weather_pic \
   --no-print-stream
 One or more custom headers can be specified from the command line, using the --extra-headers argument and a JSON-formatted string representing a dictionary of extra headers:
 
 search_tweets.py \
   --query "(snow OR rain) has:media -is:retweet" \
   --extra-headers '{"<MY_HEADER_KEY>":"<MY_HEADER_VALUE>"}'
-Options can be passed via a configuration file (either ini or YAML). Example files can be found in the tools/api_config_example.config or ./tools/api_yaml_example.yaml files, which might look like this:
+Options can be passed via a configuration file (either ini or YAML). Example files can be found in the config/api_config_example.config or config/api_yaml_example.yaml files, which might look like this:
 
 [search_rules]
 start_time = 2020-05-01
@@ -282,13 +255,13 @@ results_per_file = 10000000
 Or this:
 
 search_rules:
-    start_time: 2017-06-01
-    end_time: 2017-09-01 01:01
+    start_time: 2020-05-01
+    end_time: 2020-05-01 01:01
     query: (snow OR rain) has:media -is:retweet
 
 search_params:
-    results-per-call: 100
-    max-results: 500
+    results_per_call: 100
+    max_results: 500
 
 output_params:
     save_file: True
