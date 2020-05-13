@@ -1,7 +1,15 @@
 Python client for Labs Recent search
 ====================================
 
-Welcome to the ``labs`` branch of the Python search client. This branch was born from the ``master`` branch that supports premium and enterprise tiers of Twitter search. This branch supports the  `Twitter Developer Labs Recent search v2 endpoint <https://developer.twitter.com/en/docs/labs/recent-search/overview>`__ only, and drops support for the premium and enterprise tiers. 
+.. image:: https://img.shields.io/static/v1?label=Twitter%20API&message=Developer%20Labs%20v1&color=794BC4&style=flat&logo=Twitter
+   :target: https://developer.twitter.com/en/docs/labs/overview/versioning
+   :alt: Labs v1
+
+.. image:: https://img.shields.io/static/v1?label=Twitter%20API&message=Developer%20Labs%20v2&color=794BC4&style=flat&logo=Twitter
+   :target: https://developer.twitter.com/en/docs/labs/overview/versioning
+   :alt: Labs v2
+
+Welcome to the ``labs`` branch of the Python search client. This branch was born from the ``master`` branch that supports premium and enterprise tiers of Twitter search. This branch supports the  `Twitter Developer Labs Recent search v2 endpoint <https://developer.twitter.com/en/docs/labs/recent-search/overview>`__ only, and drops support for the premium and enterprise tiers.
 
 Note: If you are looking for the original version that works with premium and enterprise versions of search, head on over to the ``master`` branch.
 
@@ -10,15 +18,15 @@ This project serves as a wrapper for the, providing a command-line utility and a
 Features
 ========
 
-- Supports Labs Recent search, v2. 
-- Supports a new "polling" mode using the new Labs ``since-id`` search request parameter. The ``since-id``, along with the new ``until-id`` provide a way to navigate the public Tweet archive by Tweet ID. 
+- Supports Labs Recent search, v2.
+- Supports a new "polling" mode using the new Labs ``since-id`` search request parameter. The ``since-id``, along with the new ``until-id`` provide a way to navigate the public Tweet archive by Tweet ID.
 - Supports additional ways to specify ``start-time`` and ``end-time`` request parameters:
 
-  - d# - For example, 'd2' sets ``start-time`` to (exactly) two days ago. 
-  - h# - For example, 'h12' sets ``start-time`` to (exactly) twelve hours ago. 
-  - m# - For example, 'm15' sets ``start-time`` to (exactly) fifteen minutes ago. 
-  
-  These are handy for kicking off searches with a backfill period, and also work with the ``end-time`` request parameter. 
+  - d# - For example, 'd2' sets ``start-time`` to (exactly) two days ago.
+  - h# - For example, 'h12' sets ``start-time`` to (exactly) twelve hours ago.
+  - m# - For example, 'm15' sets ``start-time`` to (exactly) fifteen minutes ago.
+
+  These are handy for kicking off searches with a backfill period, and also work with the ``end-time`` request parameter.
 
 These features were inherited from the enterprise/premium version:
 
@@ -44,12 +52,12 @@ When migrating this Python search client from an enterprise or premium search en
       -  --max-results → --max-tweets
       - Dropped --account-type.
       - Dropped --count-bucket. Removed search 'counts' endpoint support. This endpoint is currently not available in Labs.
-    
+
 
 Command-line options
 =====================
 
-usage: search_tweets.py 
+usage: search_tweets.py
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -110,14 +118,14 @@ optional arguments:
 Installation
 =============
 
-Currently, there is not an updated Pypi install package for the Labs version. To get started with this code, you'll need to clone the repository, install the required Python packages, set up your credentials, and start making requests. 
+Currently, there is not an updated Pypi install package for the Labs version. To get started with this code, you'll need to clone the repository, install the required Python packages, set up your credentials, and start making requests.
 
 To confirm the your code is ready to go, run the ``$python3 scripts/search-tweets.py -h`` command. You should see the help details shown above.
 
 Credential Handling
 ===================
 
-The Labs Recent search endpoint uses app-only authentication. You have the choice to configure your application consumer key and secret, or a Bearer Token you have generated. If you supply the application key and secret, the client will generate a Bearer Token for you. 
+The Labs Recent search endpoint uses app-only authentication. You have the choice to configure your application consumer key and secret, or a Bearer Token you have generated. If you supply the application key and secret, the client will generate a Bearer Token for you.
 
 Many developers might find providing your application key and secret more straightforward and letting this library manage your Bearer Token generation for you. Please see `HERE <https://developer.twitter.com/en/docs/basics/authentication/oauth-2-0>`_ for an overview of the app-only authentication method.
 
@@ -180,13 +188,13 @@ The following cells demonstrates credential handling in the Python library.
   load_credentials(filename="./search_tweets_creds_example.yaml",
                    yaml_key="search_tweets_v2_example",
                    env_overwrite=False)
-                   
+
 ::
-                  
+
   {'bearer_token': '<A_VERY_LONG_MAGIC_STRING>',
    'endpoint': 'https://api.twitter.com/labs/2/tweets/search',
    'extra_headers_dict': None}
- 
+
 Environment Variable Overrides
 ==============================
 
@@ -199,7 +207,7 @@ If we set our environment variables, the program will look for them regardless o
   os.environ["SEARCHTWEETS_ENDPOINT"] = "<https://endpoint>"
 
   load_credentials(filename="nothing_here.yaml", yaml_key="no_key_here")
-  
+
 ::
   cannot read file nothing_here.yaml
   Error parsing YAML file; searching for valid environment variables
@@ -238,7 +246,7 @@ Note that the ``--results-per-call`` flag specifies an argument to the API, not 
     --results-per-call 100 \
     --query "(snow OR rain) has:media -is:retweet" \
     --print-stream
-    
+
 **Stream json results to stdout and save to a file**
 
 .. code:: bash
@@ -249,7 +257,7 @@ Note that the ``--results-per-call`` flag specifies an argument to the API, not 
     --query "(snow OR rain) has:media -is:retweet" \
     --filename-prefix beyonce_geo \
     --print-stream
-    
+
 **Save to file without output**
 
 .. code:: bash
@@ -260,7 +268,7 @@ Note that the ``--results-per-call`` flag specifies an argument to the API, not 
     --query "(snow OR rain) has:media -is:retweet" \
     --filename-prefix weather_pic \
     --no-print-stream
-    
+
 One or more custom headers can be specified from the command line, using the ``--extra-headers`` argument and a JSON-formatted string representing a dictionary of extra headers:
 
 .. code:: bash
@@ -268,7 +276,7 @@ One or more custom headers can be specified from the command line, using the ``-
   search_tweets.py \
     --query "(snow OR rain) has:media -is:retweet" \
     --extra-headers '{"<MY_HEADER_KEY>":"<MY_HEADER_VALUE>"}'
-    
+
 Options can be passed via a configuration file (either ini or YAML). Example files can be found in the ``config/api_config_example.config`` or ``config/api_yaml_example.yaml`` files, which might look like this:
 
 .. code:: bash
@@ -326,7 +334,7 @@ Example:
     --no-print-stream
 
 ------------------
-    
+
 
 
 
