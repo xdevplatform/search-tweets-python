@@ -124,12 +124,16 @@ Many developers might find providing your application key and secret more straig
 We support both YAML-file based methods and environment variables for storing credentials, and provide flexible handling with sensible defaults.
 
 YAML method
+===========
+
 The simplest credential file should look like this:
 
-search_tweets_api:
-  endpoint:  https://api.twitter.com/labs/2/tweets/search
-  consumer_key: <CONSUMER_KEY>
-  consumer_secret: <CONSUMER_SECRET>
+.. code:: yaml
+
+  search_tweets_api:
+    endpoint:  https://api.twitter.com/labs/2/tweets/search
+    consumer_key: <CONSUMER_KEY>
+    consumer_secret: <CONSUMER_SECRET>
 
 By default, this library expects this file at "~/.twitter_keys.yaml", but you can pass the relevant location as needed, either with the --credential-file flag for the command-line app or as demonstrated below in a Python program.
 
@@ -137,156 +141,192 @@ Both above examples require no special command-line arguments or in-program argu
 
 For developers who have multiple endpoints and/or search products, you can keep all credentials in the same file and specify specific keys to use. --credential-file-key specifies this behavior in the command line app. An example:
 
-search_tweets_labsv1:
-  endpoint: https://api.twitter.com/labs/1/tweets/search
-  consumer_key: <KEY>
-  consumer_secret: <SECRET>
-  (optional) bearer_token: <TOKEN>
+.. code:: yaml
 
-search_tweets_labsv2:
-  endpoint: https://api.twitter.com/labs/2/tweets/search
-  consumer_key: <KEY>
-  consumer_secret: <SECRET>
-  (optional) bearer_token: <TOKEN>
+  search_tweets_labsv1:
+    endpoint: https://api.twitter.com/labs/1/tweets/search
+    consumer_key: <KEY>
+    consumer_secret: <SECRET>
+    (optional) bearer_token: <TOKEN>
 
+  search_tweets_labsv2:
+    endpoint: https://api.twitter.com/labs/2/tweets/search
+    consumer_key: <KEY>
+    consumer_secret: <SECRET>
+    (optional) bearer_token: <TOKEN>
 
 Environment Variables
+=====================
 
 If you want or need to pass credentials via environment variables, you can set the appropriate variables:
 
-export SEARCHTWEETS_ENDPOINT=
-export SEARCHTWEETS_BEARER_TOKEN=
-export SEARCHTWEETS_CONSUMER_KEY=
-export SEARCHTWEETS_CONSUMER_SECRET=
+::
 
-The load_credentials function will attempt to find these variables if it cannot load fields from the YAML file, and it will overwrite any credentials from the YAML file that are present as environment variables if they have been parsed. This behavior can be changed by setting the load_credentials parameter env_overwrite to False.
+  export SEARCHTWEETS_ENDPOINT=
+  export SEARCHTWEETS_BEARER_TOKEN=
+  export SEARCHTWEETS_CONSUMER_KEY=
+  export SEARCHTWEETS_CONSUMER_SECRET=
+
+The ``load_credentials`` function will attempt to find these variables if it cannot load fields from the YAML file, and it will **overwrite any credentials from the YAML file that are present as environment variables** if they have been parsed. This behavior can be changed by setting the ``load_credentials`` parameter ``env_overwrite`` to ``False``.
 
 The following cells demonstrates credential handling in the Python library.
 
-from searchtweets import load_credentials
-load_credentials(filename="./search_tweets_creds_example.yaml",
-                 yaml_key="search_tweets_ent_example",
-                 env_overwrite=False)
-{ 'endpoint': '<MY_ENDPOINT>'}
+.. code:: python
 
-load_credentials(filename="./search_tweets_creds_example.yaml",
-                 yaml_key="search_tweetsv2_example",
-                 env_overwrite=False)
-                 
-{'bearer_token': '<A_VERY_LONG_MAGIC_STRING>',
- 'endpoint': 'https://api.twitter.com/labs/2/tweets/search',
- 'extra_headers_dict': None}
- 
+  from searchtweets import load_credentials
+
+.. code:: python
+
+  load_credentials(filename="./search_tweets_creds_example.yaml",
+                   yaml_key="search_tweets_v2_example",
+                   env_overwrite=False)
+                   
+::
+                  
+  {'bearer_token': '<A_VERY_LONG_MAGIC_STRING>',
+   'endpoint': 'https://api.twitter.com/labs/2/tweets/search',
+   'extra_headers_dict': None}
  
 Environment Variable Overrides
+==============================
 
 If we set our environment variables, the program will look for them regardless of a YAML file's validity or existence.
 
-import os
-os.environ["SEARCHTWEETS_USERNAME"] = "<ENV_USERNAME>"
-os.environ["SEARCHTWEETS_BEARERTOKEN"] = "<ENV_BEARER>"
-os.environ["SEARCHTWEETS_ENDPOINT"] = "<https://endpoint>"
+.. code:: python
+  import os
+  os.environ["SEARCHTWEETS_USERNAME"] = "<ENV_USERNAME>"
+  os.environ["SEARCHTWEETS_BEARERTOKEN"] = "<ENV_BEARER>"
+  os.environ["SEARCHTWEETS_ENDPOINT"] = "<https://endpoint>"
 
-load_credentials(filename="nothing_here.yaml", yaml_key="no_key_here")
-cannot read file nothing_here.yaml
+  load_credentials(filename="nothing_here.yaml", yaml_key="no_key_here")
+  
+::
+  cannot read file nothing_here.yaml
+  Error parsing YAML file; searching for valid environment variables
 
-Error parsing YAML file; searching for valid environment variables
-{'bearer_token': '<ENV_BEARER_TOKEN>',
- 'endpoint': '<https://endpoint>'}
+::
+
+  {'bearer_token': '<ENV_BEARER_TOKEN>',
+   'endpoint': '<https://endpoint>'}
 
 Command-line app
+----------------
 
 the flags:
 
---credential-file <FILENAME>
---credential-file-key <KEY>
---env-overwrite
+- ``--credential-file <FILENAME>``
+- ``--credential-file-key <KEY>``
+- ``--env-overwrite``
+
 are used to control credential behavior from the command-line app.
 
+----------------
+
 Using the Comand Line Application
-The library includes an application, search_tweets.py, that provides rapid access to Tweets. When you use pip to install this package, search_tweets.py is installed globally. The file is located in the scripts/ directory for those who want to run it locally.
+=================================
 
-Note that the --results-per-call flag specifies an argument to the API, not as a hard max to number of results returned from this program. The argument --max-tweets defines the maximum number of results to return from a single run of the ``search-tweets.py``` script. All examples assume that your credentials are set up correctly in the default location - .twitter_keys.yaml or in environment variables.
+The library includes an application, ``search_tweets.py``, that provides rapid access to Tweets. When you use ``pip`` to install this package, ``search_tweets.py`` is installed globally. The file is located in the ``scripts/`` directory for those who want to run it locally.
 
-Stream json results to stdout without saving
+Note that the ``--results-per-call`` flag specifies an argument to the API, not as a hard max to number of results returned from this program. The argument ``--max-tweets`` defines the maximum number of results to return from a single run of the ``search-tweets.py``` script. All examples assume that your credentials are set up correctly in the default location - ``.twitter_keys.yaml`` or in environment variables.
 
-search_tweets.py \
-  --max-tweets 1000 \
-  --results-per-call 100 \
-  --query "(snow OR rain) has:media -is:retweet" \
-  --print-stream
-Stream json results to stdout and save to a file
+**Stream json results to stdout without saving**
 
-search_tweets.py \
-  --max-results 1000 \
-  --results-per-call 100 \
-  --query "(snow OR rain) has:media -is:retweet" \
-  --filename-prefix beyonce_geo \
-  --print-stream
-Save to file without output
+.. code:: bash
 
-search_tweets.py \
-  --max-results 100 \
-  --results-per-call 100 \
-  --query "(snow OR rain) has:media -is:retweet" \
-  --filename-prefix weather_pic \
-  --no-print-stream
-One or more custom headers can be specified from the command line, using the --extra-headers argument and a JSON-formatted string representing a dictionary of extra headers:
+  search_tweets.py \
+    --max-tweets 1000 \
+    --results-per-call 100 \
+    --query "(snow OR rain) has:media -is:retweet" \
+    --print-stream
+    
+**Stream json results to stdout and save to a file**
 
-search_tweets.py \
-  --query "(snow OR rain) has:media -is:retweet" \
-  --extra-headers '{"<MY_HEADER_KEY>":"<MY_HEADER_VALUE>"}'
-Options can be passed via a configuration file (either ini or YAML). Example files can be found in the config/api_config_example.config or config/api_yaml_example.yaml files, which might look like this:
+.. code:: bash
 
-[search_rules]
-start_time = 2020-05-01
-end_time = 2020-05-01
-query = (snow OR rain) has:media -is:retweet
+  search_tweets.py \
+    --max-results 1000 \
+    --results-per-call 100 \
+    --query "(snow OR rain) has:media -is:retweet" \
+    --filename-prefix beyonce_geo \
+    --print-stream
+    
+**Save to file without output**
 
-[search_params]
-results_per_call = 100
-max_tweets = 10000
+.. code:: bash
 
-[output_params]
-save_file = True
-filename_prefix = weather-pics
-results_per_file = 10000000
+  search_tweets.py \
+    --max-results 100 \
+    --results-per-call 100 \
+    --query "(snow OR rain) has:media -is:retweet" \
+    --filename-prefix weather_pic \
+    --no-print-stream
+    
+One or more custom headers can be specified from the command line, using the ``--extra-headers`` argument and a JSON-formatted string representing a dictionary of extra headers:
+
+.. code:: bash
+
+  search_tweets.py \
+    --query "(snow OR rain) has:media -is:retweet" \
+    --extra-headers '{"<MY_HEADER_KEY>":"<MY_HEADER_VALUE>"}'
+    
+Options can be passed via a configuration file (either ini or YAML). Example files can be found in the ``config/api_config_example.config`` or ``config/api_yaml_example.yaml`` files, which might look like this:
+
+.. code:: bash
+
+  [search_rules]
+  start_time = 2020-05-01
+  end_time = 2020-05-01
+  query = (snow OR rain) has:media -is:retweet
+
+  [search_params]
+  results_per_call = 100
+  max_tweets = 10000
+
+  [output_params]
+  save_file = True
+  filename_prefix = weather-pics
+  results_per_file = 10000000
 
 Or this:
 
-search_rules:
-    start_time: 2020-05-01
-    end_time: 2020-05-01 01:01
-    query: (snow OR rain) has:media -is:retweet
+.. code:: bash
 
-search_params:
-    results_per_call: 100
-    max_results: 500
+  search_rules:
+      start_time: 2020-05-01
+      end_time: 2020-05-01 01:01
+      query: (snow OR rain) has:media -is:retweet
 
-output_params:
-    save_file: True
-    filename_prefix: (snow OR rain) has:media -is:retweet
-    results_per_file: 10000000
+  search_params:
+      results_per_call: 100
+      max_results: 500
+
+  output_params:
+      save_file: True
+      filename_prefix: (snow OR rain) has:media -is:retweet
+      results_per_file: 10000000
+
 Custom headers can be specified in a config file, under a specific credentials key:
 
-search_tweets_api:
-  endpoint: <FULL_URL_OF_ENDPOINT>
-  bearer_token: <AAAAAloooooogString>
-  extra_headers:
-    <MY_HEADER_KEY>: <MY_HEADER_VALUE>
-When using a config file in conjunction with the command-line utility, you need to specify your config file via the --config-file parameter. Additional command-line arguments will either be added to the config file args or overwrite the config file args if both are specified and present.
+.. code:: yaml
+
+  search_tweets_api:
+    endpoint: <FULL_URL_OF_ENDPOINT>
+    bearer_token: <AAAAAloooooogString>
+    extra_headers:
+      <MY_HEADER_KEY>: <MY_HEADER_VALUE>
+
+When using a config file in conjunction with the command-line utility, you need to specify your config file via the ``--config-file`` parameter. Additional command-line arguments will either be added to the config file args or overwrite the config file args if both are specified and present.
 
 Example:
 
-search_tweets.py \
-  --config-file myapiconfig.config \
-  --no-print-stream
-Full options are listed below:
+::
 
-$ search_tweets.py -h
+  search_tweets.py \
+    --config-file myapiconfig.config \
+    --no-print-stream
 
-usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]
-                      [--credential-file-key CREDENTIAL_YAML_KEY]
+------------------
+    
 
 
 
