@@ -14,19 +14,19 @@ Features
 ========
 
 - Supports Labs Recent search, v2. 
-- Supports a new "polling" mode using the new Labs ```since_id``` search request parameter. The ```since_id```, along with the new ```until_id``` provide a way to navigate the public Tweet archive by Tweet ID. 
-- Supports additional ways to specify ```start_time``` and ```end_time``` request parameters:
+- Supports a new "polling" mode using the new Labs ```since-id``` search request parameter. The ```since-id```, along with the new ```until-id``` provide a way to navigate the public Tweet archive by Tweet ID. 
+- Supports additional ways to specify ```start-time``` and ```end-time``` request parameters:
 
-  - d# - For example, 'd2' sets ```start_time``` to (exactly) two days ago. 
-  - h# - For example, 'h12' sets ```start_time``` to (exactly) twelve hours ago. 
-  - m# - For example, 'm15' sets ```start_time``` to (exactly) fifteen minutes ago. 
+  - d# - For example, 'd2' sets ```start-time``` to (exactly) two days ago. 
+  - h# - For example, 'h12' sets ```start-time``` to (exactly) twelve hours ago. 
+  - m# - For example, 'm15' sets ```start-time``` to (exactly) fifteen minutes ago. 
   
-  These are handy for kicking off searches with a backfill period, and also work with the ```end_time``` request parameter. 
+  These are handy for kicking off searches with a backfill period, and also work with the ```end-time``` request parameter. 
 
-These features were inherited from the enterprise/premium version. 
+These features were inherited from the enterprise/premium version:
+
 -  Command-line utility is pipeable to other tools (e.g., ``jq``).
--  Automatically handles pagination of search results with specifiable
-   limits.
+-  Automatically handles pagination of search results with specifiable limits.
 -  Delivers a stream of data to the user for low in-memory requirements.
 -  Handles OAuth 2 and Bearer Token authentication.
 -  Flexible usage within a python program.
