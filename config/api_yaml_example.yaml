@@ -1,0 +1,14 @@
+search_rules:
+    start-time: 2020-01-06
+    end-time: 2020-01-10
+    query: snow colorado -is:retweet has:media
+
+search_params:
+    results-per-call: 100
+    max-tweets: 10000
+    tweet-fields: id,created_at,text
+
+output_params:
+    save_file: True
+    filename_prefix: snow-photos
+    results_per_file: 100000
