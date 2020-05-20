@@ -33,5 +33,5 @@ setup(name='searchtweets-labs',
       python_requires='>=3.3',
       install_requires=["requests", "tweet_parser", "pyyaml"],
       packages=find_packages(),
-      scripts=["tools/search_tweets.py","tools/polling_app.py"],
+      scripts=["scripts/search_tweets.py","scripts/polling_app.py"],
      )
