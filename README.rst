@@ -49,7 +49,7 @@ Credential Handling
 
 The premium and enterprise Search APIs use different authentication
 methods and we attempt to provide a seamless way to handle
-authentication for all customers. We know credentials can be tricking or
+authentication for all customers. We know credentials can be tricky or
 annoying - please read this in its entirety.
 
 Premium clients will require the ``bearer_token`` and ``endpoint``

@@ -1,21 +1,16 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>searchtweets package &#8212; Twitter Search APIs Python Wrapper 1.3.0 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Python Twitter Search API" href="index.html" />
@@ -23,6 +18,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
 
   </head><body>
 
@@ -121,7 +120,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   <div class="section" id="searchtweets-package">
 <h1>searchtweets package<a class="headerlink" href="#searchtweets-package" title="Permalink to this headline">¶</a></h1>
@@ -132,78 +131,69 @@
 <span id="searchtweets-api-utils-module"></span><h2>searchtweets.api_utils module<a class="headerlink" href="#module-searchtweets.api_utils" title="Permalink to this headline">¶</a></h2>
 <p>Module containing the various functions that are used for API calls,
 rule generation, and related.</p>
-<dl class="function">
-<dt id="searchtweets.api_utils.gen_rule_payload">
-<code class="descclassname">searchtweets.api_utils.</code><code class="descname">gen_rule_payload</code><span class="sig-paren">(</span><em>pt_rule</em>, <em>results_per_call=None</em>, <em>from_date=None</em>, <em>to_date=None</em>, <em>count_bucket=None</em>, <em>tag=None</em>, <em>stringify=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/api_utils.html#gen_rule_payload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.api_utils.gen_rule_payload" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates the dict or json payload for a PowerTrack rule.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>pt_rule</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The string version of a powertrack rule,
-e.g., “beyonce has:geo”. Accepts multi-line strings
-for ease of entry.</li>
-<li><strong>results_per_call</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – number of tweets or counts returned per API</li>
-<li><strong>This maps to the maxResults search API parameter.</strong> (<em>call.</em>) – Defaults to 500 to reduce API call usage.</li>
-<li><strong>from_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Date format as specified by
-<cite>convert_utc_time</cite> for the starting time of your search.</li>
-<li><strong>to_date</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – date format as specified by <cite>convert_utc_time</cite>
-for the end time of your search.</li>
-<li><strong>count_bucket</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – If using the counts api endpoint,
-will define the count bucket for which tweets are aggregated.</li>
-<li><strong>stringify</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – specifies the return type, <cite>dict</cite>
-or json-formatted <cite>str</cite>.</li>
+<dl class="py function">
+<dt id="searchtweets.api_utils.gen_request_parameters">
+<code class="sig-prename descclassname">searchtweets.api_utils.</code><code class="sig-name descname">gen_request_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">results_per_call</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">start_time</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end_time</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">since_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">until_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tweet_fields</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stringify</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/api_utils.html#gen_request_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.api_utils.gen_request_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the dict or json payload for a search query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The string version of a search query,
+e.g., “snow has:media -is:retweet”. Accepts multi-line strings
+for ease of entry.</p></li>
+<li><p><strong>results_per_call</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – number of tweets or counts returned per API</p></li>
+<li><p><strong>This maps to the max_results` search API parameter.</strong> (<em>call.</em>) – Defaults to 100 (maximum supported in Labs).</p></li>
+<li><p><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – Date format as specified by
+<cite>convert_utc_time</cite> for the starting time of your search.</p></li>
+<li><p><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – date format as specified by <cite>convert_utc_time</cite>
+for the end time of your search.</p></li>
+<li><p><strong>tweet_fields</strong> (<em>string</em>) – comma-delimted list of Tweet JSON attributes wanted in endpoint responses. Default is “id,created_at,text”).</p></li>
+<li><p><strong>stringify</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – specifies the return type, <cite>dict</cite>
+or json-formatted <cite>str</cite>.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">searchtweets.utils</span> <span class="k">import</span> <span class="n">gen_rule_payload</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_rule_payload</span><span class="p">(</span><span class="s2">&quot;beyonce has:geo&quot;</span><span class="p">,</span>
-<span class="go">    ...              from_date=&quot;2017-08-21&quot;,</span>
-<span class="go">    ...              to_date=&quot;2017-08-22&quot;)</span>
-<span class="go">&#39;{&quot;query&quot;:&quot;beyonce has:geo&quot;,&quot;maxResults&quot;:100,&quot;toDate&quot;:&quot;201708220000&quot;,&quot;fromDate&quot;:&quot;201708210000&quot;}&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">searchtweets.utils</span> <span class="k">import</span> <span class="n">gen_request_parameters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_request_parameters</span><span class="p">(</span><span class="s2">&quot;snow has:media -is:retweet&quot;</span><span class="p">,</span>
+<span class="go">    ...              from_date=&quot;2020-02-18&quot;,</span>
+<span class="go">    ...              to_date=&quot;2020-02-21&quot;)</span>
+<span class="go">&#39;{&quot;query&quot;:&quot;snow has:media -is:retweet&quot;,&quot;max_results&quot;:100,&quot;start_time&quot;:&quot;202002180000&quot;,&quot;end_time&quot;:&quot;202002210000&quot;}&#39;</span>
 </pre></div>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="searchtweets.api_utils.gen_params_from_config">
-<code class="descclassname">searchtweets.api_utils.</code><code class="descname">gen_params_from_config</code><span class="sig-paren">(</span><em>config_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/api_utils.html#gen_params_from_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.api_utils.gen_params_from_config" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">searchtweets.api_utils.</code><code class="sig-name descname">gen_params_from_config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/api_utils.html#gen_params_from_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.api_utils.gen_params_from_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates parameters for a ResultStream from a dictionary.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="searchtweets.api_utils.infer_endpoint">
-<code class="descclassname">searchtweets.api_utils.</code><code class="descname">infer_endpoint</code><span class="sig-paren">(</span><em>rule_payload</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/api_utils.html#infer_endpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.api_utils.infer_endpoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Infer which endpoint should be used for a given rule payload.</p>
-</dd></dl>
-
-<dl class="function">
+<dl class="py function">
 <dt id="searchtweets.api_utils.convert_utc_time">
-<code class="descclassname">searchtweets.api_utils.</code><code class="descname">convert_utc_time</code><span class="sig-paren">(</span><em>datetime_str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/api_utils.html#convert_utc_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.api_utils.convert_utc_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles datetime argument conversion to the GNIP API format, which is
-<cite>YYYYMMDDHHSS</cite>. Flexible passing of date formats in the following types:</p>
+<code class="sig-prename descclassname">searchtweets.api_utils.</code><code class="sig-name descname">convert_utc_time</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">datetime_str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/api_utils.html#convert_utc_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.api_utils.convert_utc_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles datetime argument conversion to the Labs API format, which is
+<cite>YYYY-MM-DDTHH:mm:ssZ</cite>.
+Flexible passing of date formats in the following types:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">YYYYmmDDHHMM</span>
 <span class="o">-</span> <span class="n">YYYY</span><span class="o">-</span><span class="n">mm</span><span class="o">-</span><span class="n">DD</span>
 <span class="o">-</span> <span class="n">YYYY</span><span class="o">-</span><span class="n">mm</span><span class="o">-</span><span class="n">DD</span> <span class="n">HH</span><span class="p">:</span><span class="n">MM</span>
 <span class="o">-</span> <span class="n">YYYY</span><span class="o">-</span><span class="n">mm</span><span class="o">-</span><span class="n">DDTHH</span><span class="p">:</span><span class="n">MM</span>
+<span class="c1">#Coming soon:</span>
+<span class="o">-</span> <span class="mi">3</span><span class="n">d</span>
+<span class="o">-</span><span class="mi">12</span><span class="n">h</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>datetime_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – valid formats are listed above.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">string of GNIP API formatted date.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>datetime_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – valid formats are listed above.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string of GNIP API formatted date.</p>
+</dd>
+</dl>
 <p class="rubric">Example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">searchtweets.utils</span> <span class="k">import</span> <span class="n">convert_utc_time</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">searchtweets.utils</span> <span class="k">import</span> <span class="n">convert_utc_time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">convert_utc_time</span><span class="p">(</span><span class="s2">&quot;201708020000&quot;</span><span class="p">)</span>
 <span class="go">&#39;201708020000&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">convert_utc_time</span><span class="p">(</span><span class="s2">&quot;2017-08-02&quot;</span><span class="p">)</span>
@@ -216,226 +206,171 @@ or json-formatted <cite>str</cite>.</li>
 </div>
 </dd></dl>
 
-<dl class="function">
-<dt id="searchtweets.api_utils.validate_count_api">
-<code class="descclassname">searchtweets.api_utils.</code><code class="descname">validate_count_api</code><span class="sig-paren">(</span><em>rule_payload</em>, <em>endpoint</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/api_utils.html#validate_count_api"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.api_utils.validate_count_api" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ensures that the counts api is set correctly in a payload.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="searchtweets.api_utils.change_to_count_endpoint">
-<code class="descclassname">searchtweets.api_utils.</code><code class="descname">change_to_count_endpoint</code><span class="sig-paren">(</span><em>endpoint</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/api_utils.html#change_to_count_endpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.api_utils.change_to_count_endpoint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Utility function to change a normal endpoint to a <code class="docutils literal notranslate"><span class="pre">count</span></code> api
-endpoint. Returns the same endpoint if it’s already a valid count endpoint.
-:param endpoint: your api endpoint
-:type endpoint: str</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the modified endpoint for a count endpoint.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </div>
 <div class="section" id="module-searchtweets.result_stream">
 <span id="searchtweets-result-stream-module"></span><h2>searchtweets.result_stream module<a class="headerlink" href="#module-searchtweets.result_stream" title="Permalink to this headline">¶</a></h2>
-<p>This module contains the request handing and actual API wrapping functionality.</p>
-<p>Its core method is the <code class="docutils literal notranslate"><span class="pre">ResultStream</span></code> object, which takes the API call
+<p>This module contains the request handing and actual API wrapping functionality.
+Its core method is the <code class="docutils literal notranslate"><span class="pre">ResultStream</span></code> object, which takes the API call
 arguments and returns a stream of results to the user.</p>
-<dl class="class">
+<dl class="py class">
 <dt id="searchtweets.result_stream.ResultStream">
-<em class="property">class </em><code class="descclassname">searchtweets.result_stream.</code><code class="descname">ResultStream</code><span class="sig-paren">(</span><em>endpoint</em>, <em>rule_payload</em>, <em>username=None</em>, <em>password=None</em>, <em>bearer_token=None</em>, <em>extra_headers_dict=None</em>, <em>max_results=500</em>, <em>tweetify=True</em>, <em>max_requests=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#ResultStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.ResultStream" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">searchtweets.result_stream.</code><code class="sig-name descname">ResultStream</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">endpoint</span></em>, <em class="sig-param"><span class="n">request_parameters</span></em>, <em class="sig-param"><span class="n">bearer_token</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">extra_headers_dict</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">max_tweets</span><span class="o">=</span><span class="default_value">500</span></em>, <em class="sig-param"><span class="n">tweetify</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_requests</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#ResultStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.ResultStream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class to represent an API query that handles two major functionality
 pieces: wrapping metadata around a specific API call and automatic
-pagination of results.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – username for enterprise customers</li>
-<li><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – password for enterprise customers</li>
-<li><strong>bearer_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – bearer token for premium users</li>
-<li><strong>endpoint</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – API endpoint; see your console at developer.twitter.com</li>
-<li><strong>rule_payload</strong> (<em>json</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – payload for the post request</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – max number results that will be returned from this</li>
-<li><strong>Note that this can be slightly lower than the total returned</strong> (<em>instance.</em>) – </li>
-<li><strong>the API call  - e.g.</strong><strong>, </strong><strong>setting max_results = 10 would return</strong> (<em>from</em>) – </li>
-<li><strong>results</strong><strong>, </strong><strong>but an API call will return at minimum 100 results.</strong> (<em>ten</em>) – </li>
-<li><strong>tweetify</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If you are grabbing tweets and not counts, use the
-tweet parser library to convert each raw tweet package to a Tweet
-with lazy properties.</li>
-<li><strong>max_requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – A hard cutoff for the number of API calls this</li>
-<li><strong>will make. Good for testing in sandbox premium environments.</strong> (<em>instance</em>) – </li>
-<li><strong>extra_headers_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – custom headers to add</li>
+pagination of results.
+:param bearer_token: bearer token for Labs.
+:type bearer_token: str
+:param endpoint: API endpoint.
+:type endpoint: str
+:param request_parameters: payload for the post request
+:type request_parameters: json or dict
+:param max_tweets: max number results that will be returned from this
+:type max_tweets: int
+:param instance. Note that this can be slightly lower than the total returned:
+:param from the API call  - e.g., setting <code class="docutils literal notranslate"><span class="pre">max_tweets</span> <span class="pre">=</span> <span class="pre">10</span></code> would return:
+:param ten results, but an API call will return at minimum 100 results by default.:
+:param tweetify: If you are grabbing tweets and not counts, use the</p>
+<blockquote>
+<div><p>tweet parser library to convert each raw tweet package to a Tweet
+with lazy properties.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – A hard cutoff for the number of API calls this</p></li>
+<li><p><strong>will make. Good for testing in Labs environment.</strong> (<em>instance</em>) – </p></li>
+<li><p><strong>extra_headers_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – custom headers to add</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rs</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="o">**</span><span class="n">search_args</span><span class="p">,</span> <span class="n">rule_payload</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_pages</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rs</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="o">**</span><span class="n">search_args</span><span class="p">,</span> <span class="n">request_parameters</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span> <span class="n">max_pages</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rs</span><span class="o">.</span><span class="n">stream</span><span class="p">())</span>
 </pre></div>
 </div>
-<dl class="method">
-<dt id="searchtweets.result_stream.ResultStream.check_counts">
-<code class="descname">check_counts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#ResultStream.check_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.ResultStream.check_counts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Disables tweet parsing if the count API is used.</p>
-</dd></dl>
-
-<dl class="method">
+<dl class="py method">
 <dt id="searchtweets.result_stream.ResultStream.execute_request">
-<code class="descname">execute_request</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#ResultStream.execute_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.ResultStream.execute_request" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">execute_request</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#ResultStream.execute_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.ResultStream.execute_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends the request to the API and parses the json response.
 Makes some assumptions about the session length and sets the presence
 of a “next” token.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="searchtweets.result_stream.ResultStream.init_session">
-<code class="descname">init_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#ResultStream.init_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.ResultStream.init_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">init_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#ResultStream.init_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.ResultStream.init_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines a session object for passing requests.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="searchtweets.result_stream.ResultStream.session_request_counter">
-<code class="descname">session_request_counter</code><em class="property"> = 0</em><a class="headerlink" href="#searchtweets.result_stream.ResultStream.session_request_counter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">session_request_counter</code><em class="property"> = 0</em><a class="headerlink" href="#searchtweets.result_stream.ResultStream.session_request_counter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="searchtweets.result_stream.ResultStream.stream">
-<code class="descname">stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#ResultStream.stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.ResultStream.stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">stream</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#ResultStream.stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.ResultStream.stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main entry point for the data from the API. Will automatically paginate
-through the results via the <code class="docutils literal notranslate"><span class="pre">next</span></code> token and return up to <code class="docutils literal notranslate"><span class="pre">max_results</span></code>
-tweets or up to <code class="docutils literal notranslate"><span class="pre">max_requests</span></code> API calls, whichever is lower.</p>
-<dl class="docutils">
-<dt>Usage:</dt>
-<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+through the results via the <code class="docutils literal notranslate"><span class="pre">next</span></code> token and return up to <code class="docutils literal notranslate"><span class="pre">max_tweets</span></code>
+tweets or up to <code class="docutils literal notranslate"><span class="pre">max_requests</span></code> API calls, whichever is lower.
+Usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span> <span class="o">=</span> <span class="n">ResultStream</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">result_stream</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># or for faster usage...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ResultStream</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">stream</span><span class="p">())</span>
 </pre></div>
 </div>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="searchtweets.result_stream.collect_results">
-<code class="descclassname">searchtweets.result_stream.</code><code class="descname">collect_results</code><span class="sig-paren">(</span><em>rule</em>, <em>max_results=500</em>, <em>result_stream_args=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#collect_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.collect_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">searchtweets.result_stream.</code><code class="sig-name descname">collect_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">max_tweets</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">result_stream_args</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#collect_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.collect_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Utility function to quickly get a list of tweets from a <code class="docutils literal notranslate"><span class="pre">ResultStream</span></code>
 without keeping the object around. Requires your args to be configured
-prior to using.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>rule</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – valid powertrack rule for your account, preferably</li>
-<li><strong>by the gen_rule_payload function.</strong> (<em>generated</em>) – </li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – maximum number of tweets or counts to return from</li>
-<li><strong>API / underlying ResultStream object.</strong> (<em>the</em>) – </li>
-<li><strong>result_stream_args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – configuration dict that has connection</li>
-<li><strong>for a ResultStream object.</strong> (<em>information</em>) – </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of results</p>
-</td>
-</tr>
-</tbody>
-</table>
+prior to using.
+:param query: valid powertrack rule for your account, preferably
+:type query: str
+:param generated by the <cite>gen_request_parameters</cite> function.:
+:param max_tweets: maximum number of tweets or counts to return from
+:type max_tweets: int
+:param the API / underlying <code class="docutils literal notranslate"><span class="pre">ResultStream</span></code> object.:
+:param result_stream_args: configuration dict that has connection
+:type result_stream_args: dict
+:param information for a <code class="docutils literal notranslate"><span class="pre">ResultStream</span></code> object.:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of results</p>
+</dd>
+</dl>
 <p class="rubric">Example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">collect_results</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span>
-<span class="go">                             max_results=500,</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">searchtweets</span> <span class="k">import</span> <span class="n">collect_results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tweets</span> <span class="o">=</span> <span class="n">collect_results</span><span class="p">(</span><span class="n">query</span><span class="p">,</span>
+<span class="go">                             max_tweets=500,</span>
 <span class="go">                             result_stream_args=search_args)</span>
 </pre></div>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="searchtweets.result_stream.make_session">
-<code class="descclassname">searchtweets.result_stream.</code><code class="descname">make_session</code><span class="sig-paren">(</span><em>username=None</em>, <em>password=None</em>, <em>bearer_token=None</em>, <em>extra_headers_dict=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#make_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.make_session" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">searchtweets.result_stream.</code><code class="sig-name descname">make_session</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bearer_token</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">extra_headers_dict</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#make_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.make_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a Requests Session for use. Accepts a bearer token
-for premiums users and will override username and password information if
-present.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>username</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – username for the session</li>
-<li><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – password for the user</li>
-<li><strong>bearer_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – token for a premium API user.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+for Labs.
+:param bearer_token: token for a Labs user.
+:type bearer_token: str</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="searchtweets.result_stream.request">
-<code class="descclassname">searchtweets.result_stream.</code><code class="descname">request</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.request" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">searchtweets.result_stream.</code><code class="sig-name descname">request</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.request" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="searchtweets.result_stream.retry">
-<code class="descclassname">searchtweets.result_stream.</code><code class="descname">retry</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#retry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.retry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decorator to handle API retries and exceptions. Defaults to three retries.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>func</strong> (<em>function</em>) – function for decoration</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">decorated function</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-prename descclassname">searchtweets.result_stream.</code><code class="sig-name descname">retry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/result_stream.html#retry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.result_stream.retry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to handle API retries and exceptions. Defaults to five retries.
+Rate-limit (429) and server-side errors (5XX) implement a retry design.
+Other 4XX errors are a ‘one and done’ type error.
+Retries implement an exponential backoff…
+:param func: function for decoration
+:type func: function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>decorated function</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
 <div class="section" id="module-searchtweets.utils">
 <span id="searchtweets-utils-module"></span><h2>searchtweets.utils module<a class="headerlink" href="#module-searchtweets.utils" title="Permalink to this headline">¶</a></h2>
 <p>Utility functions that are used in various parts of the program.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="searchtweets.utils.take">
-<code class="descclassname">searchtweets.utils.</code><code class="descname">take</code><span class="sig-paren">(</span><em>n</em>, <em>iterable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#take"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.take" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">searchtweets.utils.</code><code class="sig-name descname">take</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">iterable</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#take"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.take" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return first n items of the iterable as a list.
 Originally found in the Python itertools documentation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – number of items to return</li>
-<li><strong>iterable</strong> (<em>iterable</em>) – the object to select</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – number of items to return</p></li>
+<li><p><strong>iterable</strong> (<em>iterable</em>) – the object to select</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="searchtweets.utils.partition">
-<code class="descclassname">searchtweets.utils.</code><code class="descname">partition</code><span class="sig-paren">(</span><em>iterable</em>, <em>chunk_size</em>, <em>pad_none=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#partition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.partition" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">searchtweets.utils.</code><code class="sig-name descname">partition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">iterable</span></em>, <em class="sig-param"><span class="n">chunk_size</span></em>, <em class="sig-param"><span class="n">pad_none</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#partition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.partition" title="Permalink to this definition">¶</a></dt>
 <dd><p>adapted from Toolz. Breaks an iterable into n iterables up to the
 certain chunk size, padding with Nones if availble.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">searchtweets.utils</span> <span class="k">import</span> <span class="n">partition</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">searchtweets.utils</span> <span class="k">import</span> <span class="n">partition</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">iter_</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">partition</span><span class="p">(</span><span class="n">iter_</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="go">[(0, 1, 2), (3, 4, 5), (6, 7, 8)]</span>
@@ -445,76 +380,71 @@ certain chunk size, padding with Nones if availble.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="searchtweets.utils.merge_dicts">
-<code class="descclassname">searchtweets.utils.</code><code class="descname">merge_dicts</code><span class="sig-paren">(</span><em>*dicts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#merge_dicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.merge_dicts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">searchtweets.utils.</code><code class="sig-name descname">merge_dicts</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">dicts</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#merge_dicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.merge_dicts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helpful function to merge / combine dictionaries and return a new
 dictionary.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dicts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em> or </em><em>Iterable</em>) – iterable set of dictionaries for merging.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dict with all keys from the passed list. Later dictionaries in
-the sequence will override duplicate keys from previous dictionaries.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dicts</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><em>Iterable</em>) – iterable set of dictionaries for merging.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict with all keys from the passed list. Later dictionaries in
+the sequence will override duplicate keys from previous dictionaries.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
+</dd>
+</dl>
 <p class="rubric">Example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">searchtweets.utils</span> <span class="k">import</span> <span class="n">merge_dicts</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="s2">&quot;something has:geo&quot;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;maxResults&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">searchtweets.utils</span> <span class="k">import</span> <span class="n">merge_dicts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;snow has:media -is:retweet&quot;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;max_tweets&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">merge_dicts</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">])</span>
-<span class="go">{&quot;maxResults&quot;: 1000, &quot;rule&quot;: &quot;something has:geo&quot;}</span>
+<span class="go">{&quot;max_results&quot;: 1000, &quot;rule&quot;: &quot;something has:geo&quot;}</span>
 </pre></div>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="searchtweets.utils.write_result_stream">
-<code class="descclassname">searchtweets.utils.</code><code class="descname">write_result_stream</code><span class="sig-paren">(</span><em>result_stream</em>, <em>filename_prefix=None</em>, <em>results_per_file=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#write_result_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.write_result_stream" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">searchtweets.utils.</code><code class="sig-name descname">write_result_stream</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">result_stream</span></em>, <em class="sig-param"><span class="n">filename_prefix</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">results_per_file</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#write_result_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.write_result_stream" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wraps a <code class="docutils literal notranslate"><span class="pre">ResultStream</span></code> object to save it to a file. This function will still
 return all data from the result stream as a generator that wraps the
 <code class="docutils literal notranslate"><span class="pre">write_ndjson</span></code> method.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>result_stream</strong> (<a class="reference internal" href="#searchtweets.result_stream.ResultStream" title="searchtweets.result_stream.ResultStream"><em>ResultStream</em></a>) – the unstarted ResultStream object</li>
-<li><strong>filename_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – the base name for file writing</li>
-<li><strong>results_per_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – the maximum number of tweets to write</li>
-<li><strong>file. Defaults to having no max</strong><strong>, </strong><strong>which means one file. Multiple</strong> (<em>per</em>) – </li>
-<li><strong>will be named by datetime</strong><strong>, </strong><strong>according to</strong> (<em>files</em>) – </li>
-<li><strong>&lt;prefix&gt;_YYY-mm-ddTHH_MM_SS.json.</strong> – </li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result_stream</strong> (<a class="reference internal" href="#searchtweets.result_stream.ResultStream" title="searchtweets.result_stream.ResultStream"><em>ResultStream</em></a>) – the unstarted ResultStream object</p></li>
+<li><p><strong>filename_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – the base name for file writing</p></li>
+<li><p><strong>results_per_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – the maximum number of tweets to write</p></li>
+<li><p><strong>file. Defaults to having no max</strong><strong>, </strong><strong>which means one file. Multiple</strong> (<em>per</em>) – </p></li>
+<li><p><strong>will be named by datetime</strong><strong>, </strong><strong>according to</strong> (<em>files</em>) – </p></li>
+<li><p><strong>&lt;prefix&gt;_YYY-mm-ddTHH_MM_SS.json.</strong> – </p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="searchtweets.utils.read_config">
-<code class="descclassname">searchtweets.utils.</code><code class="descname">read_config</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#read_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.read_config" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">searchtweets.utils.</code><code class="sig-name descname">read_config</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/searchtweets/utils.html#read_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#searchtweets.utils.read_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads and flattens a configuration file into a single
 dictionary for ease of use. Works with both <code class="docutils literal notranslate"><span class="pre">.config</span></code> and
 <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> files. Files should look like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">search_rules</span><span class="p">:</span>
     <span class="n">from</span><span class="o">-</span><span class="n">date</span><span class="p">:</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">01</span>
     <span class="n">to</span><span class="o">-</span><span class="n">date</span><span class="p">:</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span> <span class="mi">01</span><span class="p">:</span><span class="mi">01</span>
-    <span class="n">pt</span><span class="o">-</span><span class="n">rule</span><span class="p">:</span> <span class="n">kanye</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">snow</span>
 
 <span class="n">search_params</span><span class="p">:</span>
-    <span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span><span class="p">:</span> <span class="mi">500</span>
-    <span class="nb">max</span><span class="o">-</span><span class="n">results</span><span class="p">:</span> <span class="mi">500</span>
+    <span class="n">results</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">call</span><span class="p">:</span> <span class="mi">100</span>
+    <span class="nb">max</span><span class="o">-</span><span class="n">tweets</span><span class="p">:</span> <span class="mi">500</span>
 
 <span class="n">output_params</span><span class="p">:</span>
     <span class="n">save_file</span><span class="p">:</span> <span class="kc">True</span>
-    <span class="n">filename_prefix</span><span class="p">:</span> <span class="n">kanye</span>
+    <span class="n">filename_prefix</span><span class="p">:</span> <span class="n">snow</span>
     <span class="n">results_per_file</span><span class="p">:</span> <span class="mi">10000000</span>
 </pre></div>
 </div>
@@ -522,30 +452,29 @@ dictionary for ease of use. Works with both <code class="docutils literal notran
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">search_rules</span><span class="p">]</span>
 <span class="n">from_date</span> <span class="o">=</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">01</span>
 <span class="n">to_date</span> <span class="o">=</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span>
-<span class="n">pt_rule</span> <span class="o">=</span> <span class="n">beyonce</span> <span class="n">has</span><span class="p">:</span><span class="n">geo</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">snow</span> <span class="n">has</span><span class="p">:</span><span class="n">geo</span>
 
 <span class="p">[</span><span class="n">search_params</span><span class="p">]</span>
-<span class="n">results_per_call</span> <span class="o">=</span> <span class="mi">500</span>
-<span class="n">max_results</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">results_per_call</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">max_tweets</span> <span class="o">=</span> <span class="mi">500</span>
 
 <span class="p">[</span><span class="n">output_params</span><span class="p">]</span>
 <span class="n">save_file</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">filename_prefix</span> <span class="o">=</span> <span class="n">beyonce</span>
+<span class="n">filename_prefix</span> <span class="o">=</span> <span class="n">snow_geo</span>
 <span class="n">results_per_file</span> <span class="o">=</span> <span class="mi">10000000</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – location of file with extension (‘.config’ or ‘.yaml’)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">parsed configuration dictionary.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – location of file with extension (‘.config’ or ‘.yaml’)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>parsed configuration dictionary.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -567,7 +496,7 @@ dictionary for ease of use. Works with both <code class="docutils literal notran
     </p>
     <p>
         &copy; Copyright 2017, twitterdev.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
     </p>
   </div>
 </footer>
