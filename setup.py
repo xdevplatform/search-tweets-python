@@ -22,7 +22,7 @@ with open("./searchtweets/_version.py") as f:
                      if line.startswith("VERSION")][0].strip()
     VERSION = parse_version(_version_line)
 
-setup(name='searchtweets',
+setup(name='searchtweets-labs',
       description="Wrapper for Twitter Developer Labs Recent search endpoint.",
       url='https://github.com/twitterdev/search-tweets-python',
       author='Fiona Pigott, Jeff Kolb, Josh Montague, Aaron Gonzales, Jim Moffitt',
