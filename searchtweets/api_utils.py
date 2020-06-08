@@ -4,7 +4,7 @@
 # https://opensource.org/licenses/MIT
 """
 Module containing the various functions that are used for API calls,
-rule generation, and related.
+request payload generation, and related.
 """
 
 import re
@@ -32,15 +32,15 @@ def convert_utc_time(datetime_str):
         - YYYY-mm-DD
         - YYYY-mm-DD HH:MM
         - YYYY-mm-DDTHH:MM
-        #Coming soon:
-        - 3d
-        -12h
+        - 3d (set start_time to three days ago)
+        - 12h (set start_time to twelve hours ago)
+        - 15m (set start_time to fifteen minutes ago)
 
     Args:
         datetime_str (str): valid formats are listed above.
 
     Returns:
-        string of GNIP API formatted date.
+        string of ISO formatted date.
 
     Example:
         >>> from searchtweets.utils import convert_utc_time
@@ -73,6 +73,9 @@ def convert_utc_time(datetime_str):
             # command line with 'T'
             datetime_str = datetime_str.replace('T', ' ')
             _date = datetime.datetime.strptime(datetime_str, "%Y-%m-%d %H:%M")
+        else:
+            _date = datetime.datetime.strptime(datetime_str, "%Y-%m-%d %H:%M")
+
     except ValueError:
         _date = datetime.datetime.strptime(datetime_str, "%Y-%m-%d")
 
