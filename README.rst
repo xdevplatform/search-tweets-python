@@ -11,6 +11,8 @@ Note: If you are looking for the original version that works with premium and en
 
 This project serves as a wrapper for the Labs Recent search endpoint, providing a command-line utility and a Python library.
 
+To download and install this package, go to: https://pypi.org/project/searchtweets-labs/
+
 Features
 ========
 
@@ -46,7 +48,7 @@ When migrating this Python search client from an enterprise or premium search en
       -  --end-datetime → --end-time
       -  --filter-rule → --query
       -  --max-results → --max-tweets
-      - Dropped --account-type.
+      - Dropped --account-type. No longer required since support for Premium and Enterprise search tiers have been dropped.
       - Dropped --count-bucket. Removed search 'counts' endpoint support. This endpoint is currently not available in Labs.
 
 
@@ -114,7 +116,11 @@ optional arguments:
 Installation
 =============
 
-Currently, there is not an updated Pypi install package for the Labs version. To get started with this code, you'll need to clone the repository, install the required Python packages, set up your credentials, and start making requests.
+The updated Pypi install package for the Labs version is at:
+
+https://pypi.org/project/searchtweets-labs/
+
+Another option to work directly with this code by cloning the repository, installing the required Python packages, setting up your credentials, and start making requests.
 
 To confirm the your code is ready to go, run the ``$python3 scripts/search-tweets.py -h`` command. You should see the help details shown above.
 
