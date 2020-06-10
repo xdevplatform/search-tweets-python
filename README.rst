@@ -413,16 +413,26 @@ An overwhelming number of Tweet attributes are made available directly, as such:
    [print(tweet.text, end='\n\n') for tweet in tweets[0:10]];
 
 ::
-   "@CleoLoughlin Rain after the snow? Do you have ice now?"}
-   "@koofltxr Rain, 134340, still with you, winter bear, Seoul, crystal snow, sea, outro:blueside"}
-   "@TheWxMeister Sorry it ruined your camping. I was covering plants in case we got snow in the Mountain Shadows area. Thankfully we didn\u2019t. At least it didn\u2019t stick to the ground. The wind was crazy! Got just over an inch of rain. Looking forward to better weather."}
-   "@brettlorenzen And, the reliability of \u201cNeither snow nor rain nor heat nor gloom of night stays these couriers (the #USPS) from the swift completion of their appointed rounds.\u201d"}
-   "\"Because black people get killed in the rain, black lives matter in the rain. It matters all the time. Snow, rain, sleet, sunny days. We're not out here because it's sunny. We're not out here for fun. We're out here because black lives matter.\" @wisn12news https://t.co/3kZZ7q2MR9"}
-   "Some of the master copies of the film \u201cGone With the Wind\u201d are archived at the @librarycongress near \u201cSnow White and the Seven Dwarfs\u201d and \u201cSingin\u2019 in the Rain.\u201d GWTW isn\u2019t going to vanish off the face of the earth."}
-   "Snow Man\u306eD.D.\u3068\nSixTONES\u306eImitation Rain\n\u6d41\u308c\u305f\u301c"}
-   "@Nonvieta Yup I work in the sanitation industry. I'm in the office however. Life would not go on without our garbage men and women out there. All day everyday rain snow or shine they out there."}
-   "This picture of a rainbow in WA proves nothing. How do we know if this rainbow was not on Mars or the ISS? Maybe it was drawn in on the picture. WA has mail-in voting so we do have to worry aboug rain, snow, poll workers not showing up or voting machines broke on election day !! https://t.co/5WdHx0acS0 https://t.co/BEKtTpBW9g"}
-   "Weather in Oslo at 06:00: Clear Temp: 10.6\u00b0C Min today: 9.1\u00b0C Rain today:0.0mm Snow now: 0.0cm Wind N Conditions: Clear Daylight:18:39 hours Sunset: 22:36"}
+
+   @CleoLoughlin Rain after the snow? Do you have ice now?
+
+   @koofltxr Rain, 134340, still with you, winter bear, Seoul, crystal snow, sea, outro:blueside
+
+   @TheWxMeister Sorry it ruined your camping. I was covering plants in case we got snow in the Mountain Shadows area. Thankfully we didn\u2019t. At least it didn\u2019t stick to the ground. The wind was crazy! Got just over an inch of rain. Looking forward to better weather.
+
+   @brettlorenzen And, the reliability of \u201cNeither snow nor rain nor heat nor gloom of night stays these couriers (the #USPS) from the swift completion of their appointed rounds.\u201d
+   
+   Because black people get killed in the rain, black lives matter in the rain. It matters all the time. Snow, rain, sleet, sunny days. We're not out here because it's sunny. We're not out here for fun. We're out here because black lives matter. 
+   
+   Some of the master copies of the film \u201cGone With the Wind\u201d are archived at the @librarycongress near \u201cSnow White and the Seven Dwarfs\u201d and \u201cSingin\u2019 in the Rain.\u201d GWTW isn\u2019t going to vanish off the face of the earth.
+   
+   Snow Man\u306eD.D.\u3068\nSixTONES\u306eImitation Rain\n\u6d41\u308c\u305f\u301c
+   
+   @Nonvieta Yup I work in the sanitation industry. I'm in the office however. Life would not go on without our garbage men and women out there. All day everyday rain snow or shine they out there.
+   
+   This picture of a rainbow in WA proves nothing. How do we know if this rainbow was not on Mars or the ISS? Maybe it was drawn in on the picture. WA has mail-in voting so we do have to worry aboug rain, snow, poll workers not showing up or voting machines broke on election day !! https://t.co/5WdHx0acS0 https://t.co/BEKtTpBW9g
+   
+   Weather in Oslo at 06:00: Clear Temp: 10.6\u00b0C Min today: 9.1\u00b0C Rain today:0.0mm Snow now: 0.0cm Wind N Conditions: Clear Daylight:18:39 hours Sunset: 22:36
 
 Voila, we have some Tweets. For interactive environments and other cases where you don't care about collecting your data in a single load or don't need to operate on the stream of Tweets directly, I recommend using this convenience function.
 
