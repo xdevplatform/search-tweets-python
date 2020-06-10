@@ -38,7 +38,9 @@ These features were inherited from the enterprise/premium version:
 Labs updates
 ============
 
-When migrating this Python search client from an enterprise or premium search endpoint, the following updates were made:
+Twitter Developer Labs represents an opportunity to apply previous learnings from building Twitter API v1.1. and the premium and enterprise tiers of endpoints, and redesign and rebuild from the ground up. While building this Labs version of the `search-tweets-python` library, we took the opportunity to update fundamental things. This library provides example scripts, and one example is updating their command-line arguments to better match new Labs conventions. Instead of setting search periods with `start-datetime` and `end-datetime`, they have been shortened to match current search request parameters: `start-time` and `end-time`. Throughout the code , we no longer use parlance that references `rules` and `PowerTrack`, and now reference `queries` and the Labs Recent search endpoint. 
+
+When migrating this Python search client to Labs from the enterprise and premium tiers, the following updates were made:
 
 - Added support for GET requests (and removed POST support for now)
 - Added support for ``since_id`` and ``until_id`` request parameters.
@@ -51,9 +53,9 @@ When migrating this Python search client from an enterprise or premium search en
       - Dropped --account-type. No longer required since support for Premium and Enterprise search tiers have been dropped.
       - Dropped --count-bucket. Removed search 'counts' endpoint support. This endpoint is currently not available in Labs.
 
-In this spirit of updating the parlance used, note that the a core method provided by searchtweets/result_stream.py has been renamed. The method gen_rule_payload has been updated to gen_request_parameters. 
+In this spirit of updating the parlance used, note that a core method provided by searchtweets/result_stream.py has been renamed. The method `gen_rule_payload` has been updated to `gen_request_parameters`. 
 
-Finally, the original version of search-tweets-python used a `Tweet Parser <https://twitterdev.github.io/tweet_parser/>`__ to help manage the differences between two different JSON formats ("original" and "Activity Stream"). With Labs, there is just one version of Tweet JSON, so this Tweet Parser is not used. In the original code, this Tweet parser was envoked with a 'tweetify=True' directive. With this Labs version, this use of the Tweet Parser is turned off by instead using 'tweetify=False'.
+Finally, the original version of search-tweets-python used a `Tweet Parser <https://twitterdev.github.io/tweet_parser/>`__ to help manage the differences between two different JSON formats ("original" and "Activity Stream"). With Labs, there is just one version of Tweet JSON, so this Tweet Parser is not used. In the original code, this Tweet parser was envoked with a `tweetify=True directive. With this Labs version, this use of the Tweet Parser is turned off by instead using `tweetify=False`.
 
 
 Command-line options
