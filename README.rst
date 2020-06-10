@@ -51,6 +51,10 @@ When migrating this Python search client from an enterprise or premium search en
       - Dropped --account-type. No longer required since support for Premium and Enterprise search tiers have been dropped.
       - Dropped --count-bucket. Removed search 'counts' endpoint support. This endpoint is currently not available in Labs.
 
+In this spirit of updating the parlance used, note that the a core method provided by searchtweets/result_stream.py has been renamed. The method gen_rule_payload has been updated to gen_request_parameters. 
+
+Finally, the original version of search-tweets-python used a `Tweet Parser <https://twitterdev.github.io/tweet_parser/>`__ to help manage the differences between two different JSON formats ("original" and "Activity Stream"). With Labs, there is just one version of Tweet JSON, so this Tweet Parser is not used. In the original code, this Tweet parser was envoked with a 'tweetify=True' directive. With this Labs version, this use of the Tweet Parser is turned off by instead using 'tweetify=False'.
+
 
 Command-line options
 =====================
@@ -198,39 +202,41 @@ The following cells demonstrates credential handling in the Python library.
    'extra_headers_dict': None}
 
 Environment Variable Overrides
-==============================
+------------------------------
 
-If we set our environment variables, the program will look for them regardless of a YAML file's validity or existence.
+If we set our environment variables, the program will look for them
+regardless of a YAML file's validity or existence.
 
 .. code:: python
-  import os
-  os.environ["SEARCHTWEETS_USERNAME"] = "<ENV_USERNAME>"
-  os.environ["SEARCHTWEETS_BEARERTOKEN"] = "<ENV_BEARER>"
-  os.environ["SEARCHTWEETS_ENDPOINT"] = "<https://endpoint>"
 
-  load_credentials(filename="nothing_here.yaml", yaml_key="no_key_here")
+   import os
+   os.environ["SEARCHTWEETS_BEARER_TOKEN"] = "<ENV_BEARER_TOKEN>"
+   os.environ["SEARCHTWEETS_ENDPOINT"] = "<https://endpoint>"
 
-::
-  cannot read file nothing_here.yaml
-  Error parsing YAML file; searching for valid environment variables
+   load_credentials(filename="nothing_here.yaml", yaml_key="no_key_here")
 
 ::
 
-  {'bearer_token': '<ENV_BEARER_TOKEN>',
-   'endpoint': '<https://endpoint>'}
+   cannot read file nothing_here.yaml
+   Error parsing YAML file; searching for valid environment variables
+
+::
+
+   {'bearer_token': '<ENV_BEARER_TOKEN>',
+    'endpoint': '<https://endpoint>'}
 
 Command-line app
 ----------------
 
 the flags:
 
-- ``--credential-file <FILENAME>``
-- ``--credential-file-key <KEY>``
-- ``--env-overwrite``
+-  ``--credential-file <FILENAME>``
+-  ``--credential-file-key <KEY>``
+-  ``--env-overwrite``
 
 are used to control credential behavior from the command-line app.
 
-----------------
+--------------
 
 Using the Comand Line Application
 =================================
@@ -337,6 +343,190 @@ Example:
 
 ------------------
 
+Using the Twitter Search APIs' Python Wrapper
+=============================================
+
+Working with the API within a Python program is straightforward.
+
+We'll assume that credentials are in the default location,
+``~/.twitter_keys.yaml``.
+
+.. code:: python
+
+   from searchtweets import ResultStream, gen_request_parameters, load_credentials
 
 
+Labs Setup
+-------------
 
+.. code:: python
+
+   labs_search_args = load_credentials("~/.twitter_keys.yaml",
+                                          yaml_key="search_tweets_labs",
+                                          env_overwrite=False)
+                                          
+
+There is a function that formats search API rules into valid json queries called ``gen_request_parameters``. It has sensible defaults, such as pulling more Tweets per call than the default 10, and not including dates. Discussing the finer points of
+generating search rules is out of scope for these examples; we encourage you to see the docs to learn the nuances within, but for now let's see what a query looks like.
+
+.. code:: python
+
+   rule = gen_request_requests("snow", results_per_call=100) 
+   print(rule)
+
+::
+
+   {"query":"snow","max_results":100}
+
+This rule will match tweets that have the text ``snow`` in them.
+
+From this point, there are two ways to interact with the API. There is a quick method to collect smaller amounts of Tweets to memory that requires less thought and knowledge, and interaction with the ``ResultStream`` object which will be introduced later.
+
+Fast Way
+--------
+
+We'll use the ``search_args`` variable to power the configuration point for the API. The object also takes a valid search query and has options to cutoff search when hitting limits on both number of Tweets and endpoint calls.
+
+We'll be using the ``collect_results`` function, which has three parameters.
+
+-  query: a valid search query, referenced earlier
+-  max_results: as the API handles pagination, it will stop collecting
+   when we get to this number
+-  result_stream_args: configuration args that we've already specified.
+
+Let's see how it goes:
+
+.. code:: python
+
+   from searchtweets import collect_results
+
+.. code:: python
+
+   tweets = collect_results(query,
+                            max_results=100,
+                            result_stream_args=labs_search_args) # change this if you need to
+
+An overwhelming number of Tweet attributes are made available directly, as such:
+
+.. code:: python
+
+   [print(tweet.text, end='\n\n') for tweet in tweets[0:10]];
+
+::
+   "@CleoLoughlin Rain after the snow? Do you have ice now?"}
+   "@koofltxr Rain, 134340, still with you, winter bear, Seoul, crystal snow, sea, outro:blueside"}
+   "@TheWxMeister Sorry it ruined your camping. I was covering plants in case we got snow in the Mountain Shadows area. Thankfully we didn\u2019t. At least it didn\u2019t stick to the ground. The wind was crazy! Got just over an inch of rain. Looking forward to better weather."}
+   "@brettlorenzen And, the reliability of \u201cNeither snow nor rain nor heat nor gloom of night stays these couriers (the #USPS) from the swift completion of their appointed rounds.\u201d"}
+   "\"Because black people get killed in the rain, black lives matter in the rain. It matters all the time. Snow, rain, sleet, sunny days. We're not out here because it's sunny. We're not out here for fun. We're out here because black lives matter.\" @wisn12news https://t.co/3kZZ7q2MR9"}
+   "Some of the master copies of the film \u201cGone With the Wind\u201d are archived at the @librarycongress near \u201cSnow White and the Seven Dwarfs\u201d and \u201cSingin\u2019 in the Rain.\u201d GWTW isn\u2019t going to vanish off the face of the earth."}
+   "Snow Man\u306eD.D.\u3068\nSixTONES\u306eImitation Rain\n\u6d41\u308c\u305f\u301c"}
+   "@Nonvieta Yup I work in the sanitation industry. I'm in the office however. Life would not go on without our garbage men and women out there. All day everyday rain snow or shine they out there."}
+   "This picture of a rainbow in WA proves nothing. How do we know if this rainbow was not on Mars or the ISS? Maybe it was drawn in on the picture. WA has mail-in voting so we do have to worry aboug rain, snow, poll workers not showing up or voting machines broke on election day !! https://t.co/5WdHx0acS0 https://t.co/BEKtTpBW9g"}
+   "Weather in Oslo at 06:00: Clear Temp: 10.6\u00b0C Min today: 9.1\u00b0C Rain today:0.0mm Snow now: 0.0cm Wind N Conditions: Clear Daylight:18:39 hours Sunset: 22:36"}
+
+Voila, we have some Tweets. For interactive environments and other cases where you don't care about collecting your data in a single load or don't need to operate on the stream of Tweets directly, I recommend using this convenience function.
+
+Working with the ResultStream
+-----------------------------
+
+The ResultStream object will be powered by the ``search_args``, and takes the query and other configuration parameters, including a hard stop on number of pages to limit your API call usage.
+
+.. code:: python
+
+   rs = ResultStream(query=query,
+                     max_results=500,
+                     max_pages=1,
+                     **labs_search_args)
+
+   print(rs)
+   
+ ::
+ 
+    ResultStream: 
+   	{
+       "endpoint":"https:\/\/api.twitter.com\/labs\/2\/tweets\/search",
+       "request_parameters":{
+           "query":"snow",
+           "max_results":100
+       },
+       "tweetify":false,
+       "max_results":1000
+   }
+   
+There is a function, ``.stream``, that seamlessly handles requests and pagination for a given query. It returns a generator, and to grab our 1000 Tweets that mention ``snow`` we can do this:
+
+.. code:: python
+
+   tweets = list(rs.stream())
+
+.. code:: python
+
+   # using unidecode to prevent emoji/accents printing 
+   [print(tweet) for tweet in tweets[0:10]];
+
+::
+
+{"id": "1270572563505254404", "text": "@CleoLoughlin Rain after the snow? Do you have ice now?"}
+{"id": "1270570767038599168", "text": "@koofltxr Rain, 134340, still with you, winter bear, Seoul, crystal snow, sea, outro:blueside"}
+{"id": "1270570621282340864", "text": "@TheWxMeister Sorry it ruined your camping. I was covering plants in case we got snow in the Mountain Shadows area. Thankfully we didn\u2019t. At least it didn\u2019t stick to the ground. The wind was crazy! Got just over an inch of rain. Looking forward to better weather."}
+{"id": "1270569070287630337", "text": "@brettlorenzen And, the reliability of \u201cNeither snow nor rain nor heat nor gloom of night stays these couriers (the #USPS) from the swift completion of their appointed rounds.\u201d"}
+{"id": "1270568690447257601", "text": "\"Because black people get killed in the rain, black lives matter in the rain. It matters all the time. Snow, rain, sleet, sunny days. We're not out here because it's sunny. We're not out here for fun. We're out here because black lives matter.\" @wisn12news https://t.co/3kZZ7q2MR9"}
+{"id": "1270568607605575680", "text": "Some of the master copies of the film \u201cGone With the Wind\u201d are archived at the @librarycongress near \u201cSnow White and the Seven Dwarfs\u201d and \u201cSingin\u2019 in the Rain.\u201d GWTW isn\u2019t going to vanish off the face of the earth."}
+{"id": "1270568437916426240", "text": "Snow Man\u306eD.D.\u3068\nSixTONES\u306eImitation Rain\n\u6d41\u308c\u305f\u301c"}
+{"id": "1270568195519373313", "text": "@Nonvieta Yup I work in the sanitation industry. I'm in the office however. Life would not go on without our garbage men and women out there. All day everyday rain snow or shine they out there."}
+{"id": "1270567737283117058", "text": "This picture of a rainbow in WA proves nothing. How do we know if this rainbow was not on Mars or the ISS? Maybe it was drawn in on the picture. WA has mail-in voting so we do have to worry aboug rain, snow, poll workers not showing up or voting machines broke on election day !! https://t.co/5WdHx0acS0 https://t.co/BEKtTpBW9g"}
+{"id": "1270566386524356608", "text": "Weather in Oslo at 06:00: Clear Temp: 10.6\u00b0C Min today: 9.1\u00b0C Rain today:0.0mm Snow now: 0.0cm Wind N Conditions: Clear Daylight:18:39 hours Sunset: 22:36"}
+
+Contributing
+============
+
+Any contributions should follow the following pattern:
+
+1. Make a feature or bugfix branch, e.g.,
+   ``git checkout -b my_new_feature``
+2. Make your changes in that branch
+3. Ensure you bump the version number in ``searchtweets/_version.py`` to
+   reflect your changes. We use `Semantic
+   Versioning <https://semver.org>`__, so non-breaking enhancements
+   should increment the minor version, e.g., ``1.5.0 -> 1.6.0``, and
+   bugfixes will increment the last version, ``1.6.0 -> 1.6.1``.
+4. Create a pull request
+
+After the pull request process is accepted, package maintainers will
+handle building documentation and distribution to Pypi.
+
+For reference, distributing to Pypi is accomplished by the following
+commands, ran from the root directory in the repo:
+
+.. code:: bash
+
+   python setup.py bdist_wheel
+   python setup.py sdist
+   twine upload dist/*
+
+How to build the documentation:
+
+Building the documentation requires a few Sphinx packages to build the
+webpages:
+
+.. code:: bash
+
+   pip install sphinx
+   pip install sphinx_bootstrap_theme
+   pip install sphinxcontrib-napoleon
+
+Then (once your changes are committed to master) you should be able to
+run the documentation-generating bash script and follow the
+instructions:
+
+.. code:: bash
+
+   bash build_sphinx_docs.sh master searchtweets
+
+Note that this README is also generated, and so after any README changes
+you'll need to re-build the README (you need pandoc version 2.1+ for
+this) and commit the result:
+
+.. code:: bash
+
+   bash make_readme.sh
