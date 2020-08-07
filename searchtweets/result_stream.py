@@ -107,7 +107,7 @@ def retry(func):
                     sleep_seconds = 30
                 else:
                     #Other errors are a "one and done", no use in retrying error...
-                    raise requests.exceptions.HTTPError
+                    raise requests.exceptions.HTTPError(response=resp)
 
                 # mini exponential backoff here.
                 logger.warning(f"Will retry in {sleep_seconds} seconds...")
