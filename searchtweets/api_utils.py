@@ -97,7 +97,7 @@ def gen_rule_payload(pt_rule, results_per_call=None,
             for ease of entry.
         results_per_call (int): number of tweets or counts returned per API
         call. This maps to the ``maxResults`` search API parameter.
-            Defaults to 500 to reduce API call usage.
+            Defaults to 100.
         from_date (str or None): Date format as specified by
             `convert_utc_time` for the starting time of your search.
         to_date (str or None): date format as specified by `convert_utc_time`
