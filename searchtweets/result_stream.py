@@ -175,7 +175,7 @@ class ResultStream:
 
     def __init__(self, endpoint, rule_payload, username=None, password=None,
                  bearer_token=None, extra_headers_dict=None, max_results=500,
-                 tweetify=True, max_requests=None, **kwargs):
+                 tweetify=True, max_pages=None, **kwargs):
 
         self.username = username
         self.password = password
@@ -197,7 +197,7 @@ class ResultStream:
         self.stream_started = False
         self._tweet_func = Tweet if tweetify else lambda x: x
         # magic number of requests!
-        self.max_requests = (max_requests if max_requests is not None
+        self.max_requests = (max_pages if max_pages is not None
                              else 10 ** 9)
         self.endpoint = (change_to_count_endpoint(endpoint)
                          if infer_endpoint(rule_payload) == "counts"
@@ -228,7 +228,7 @@ class ResultStream:
                 yield self._tweet_func(tweet)
                 self.total_results += 1
 
-            if self.next_token and self.total_results < self.max_results and self.n_requests <= self.max_requests:
+            if self.next_token and self.total_results < self.max_results and self.n_requests < self.max_requests:
                 self.rule_payload = merge_dicts(self.rule_payload,
                                                 {"next": self.next_token})
                 logger.info("paging; total requests read so far: {}"
