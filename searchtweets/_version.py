@@ -2,4 +2,4 @@
 # Copyright 2020 Twitter, Inc.
 # Licensed under the MIT License
 # https://opensource.org/licenses/MIT
-VERSION = "1.7.5"
+VERSION = "1.7.6"
