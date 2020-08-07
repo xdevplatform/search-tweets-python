@@ -66,8 +66,8 @@ def parse_cmd_args():
     argparser.add_argument("--count-bucket",
                            dest="count_bucket",
                            default=None,
-                           help=("""Bucket size for counts API. Options:,
-                                 day, hour, minute (default is 'day')."""))
+                           help=("""Set this to make a 'counts' request. Bucket size for counts API. Options:,
+                                 day, hour, minute."""))
 
     argparser.add_argument("--start-datetime",
                            dest="from_date",
@@ -91,7 +91,7 @@ def parse_cmd_args():
                            dest="results_per_call",
                            help="Number of results to return per call "
                                 "(default 100; max 500) - corresponds to "
-                                "'maxResults' in the API")
+                                "'maxResults' in the API. If making a 'counts' request with '--count-bucket, this parameter is ignored.")
 
     argparser.add_argument("--max-results", dest="max_results",
                            type=int,

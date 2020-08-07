@@ -396,8 +396,8 @@ Full options are listed below:
      --account-type {premium,enterprise}
                            The account type you are using
      --count-bucket COUNT_BUCKET
-                           Bucket size for counts API. Options:, day, hour,
-                           minute (default is 'day').
+                           Set this to make a 'counts' request. Bucket size for counts endpoint. Options:, day, hour,
+                           minute.
      --start-datetime FROM_DATE
                            Start of datetime window, format 'YYYY-mm-DDTHH:MM'
                            (default: -30 days)
@@ -409,7 +409,7 @@ Full options are listed below:
                            ustomer/portal/articles/901152-powertrack-operators)
      --results-per-call RESULTS_PER_CALL
                            Number of results to return per call (default 100; max
-                           500) - corresponds to 'maxResults' in the API
+                           500) - corresponds to 'maxResults' in the API. If making a 'counts' request with '--count-bucket', this parameter is ignored.
      --max-results MAX_RESULTS
                            Maximum number of Tweets or Counts to return for this
                            session (defaults to 500)
@@ -465,8 +465,7 @@ There is a function that formats search API rules into valid json
 queries called ``gen_rule_payload``. It has sensible defaults, such as
 pulling more Tweets per call than the default 100 (but note that a
 sandbox environment can only have a max of 100 here, so if you get
-errors, please check this) not including dates, and defaulting to hourly
-counts when using the counts api. Discussing the finer points of
+errors, please check this) not including dates. Discussing the finer points of
 generating search rules is out of scope for these examples; I encourage
 you to see the docs to learn the nuances within, but for now let's see
 what a rule looks like.
@@ -655,7 +654,7 @@ Counts Endpoint
 ---------------
 
 We can also use the Search API Counts endpoint to get counts of Tweets
-that match our rule. Each request will return up to *30* results, and
+that match our rule. Each request will return up to *30 days* of results, and
 each count request can be done on a minutely, hourly, or daily basis.
 The underlying ``ResultStream`` object will handle converting your
 endpoint to the count endpoint, and you have to specify the

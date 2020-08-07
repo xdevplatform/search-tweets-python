@@ -127,7 +127,10 @@ def gen_rule_payload(pt_rule, results_per_call=None,
     if count_bucket:
         if set(["day", "hour", "minute"]) & set([count_bucket]):
             payload["bucket"] = count_bucket
-            del payload["maxResults"]
+            try:
+                del payload["maxResults"] #Remove if a counts request
+            except:
+                pass
         else:
             logger.error("invalid count bucket: provided {}"
                          .format(count_bucket))
