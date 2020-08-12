@@ -10,6 +10,8 @@ premium and enterprise tiers of Twitter search. This branch supports the `Twitte
 
 This project serves as a wrapper for the Twitter API v2 recent search endpoint, providing a command-line utility and a Python library.
 
+To download and install this package, go to: https://pypi.org/project/searchtweets-v2/
+
 If you are looking for the original version that works with premium and enterprise versions of search, head on over to
 the main or ``enterprise-premium`` branch. (Soon, the v2 version will be promoted to the main branch.)
 
