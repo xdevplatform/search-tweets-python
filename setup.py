@@ -23,7 +23,7 @@ with open("./searchtweets/_version.py") as f:
     VERSION = parse_version(_version_line)
 
 setup(name='searchtweets-labs',
-      description="Wrapper for Twitter Developer Labs Recent search endpoint.",
+      description="Wrapper for Twitter API v2 recent search endpoint.",
       url='https://github.com/twitterdev/search-tweets-python',
       author='Fiona Pigott, Jeff Kolb, Josh Montague, Aaron Gonzales, Jim Moffitt',
       long_description=open('README.rst', 'r', encoding="utf-8").read(),
@@ -31,7 +31,7 @@ setup(name='searchtweets-labs',
       license='MIT',
       version=VERSION,
       python_requires='>=3.3',
-      install_requires=["requests", "tweet_parser", "pyyaml"],
+      install_requires=["requests", "pyyaml"],
       packages=find_packages(),
-      scripts=["scripts/search_tweets.py","scripts/poll_tweets.py"],
+      scripts=["scripts/search.py","scripts/polling.py"],
      )

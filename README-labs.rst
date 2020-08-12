@@ -1,27 +1,23 @@
-.. image:: https://img.shields.io/endpoint?url=https%3A%2F%2Ftwbadges.glitch.me%2Fbadges%2Fv2
-   :target: https://developer.twitter.com/en/docs/twitter-api
-   :alt: Twitter API v2
+.. image:: https://img.shields.io/static/v1?label=Twitter%20API&message=Developer%20Labs%20v2&color=794BC4&style=flat&logo=Twitter
+   :target: https://developer.twitter.com/en/docs/labs/overview/versioning
+   :alt: Labs v2
 
-Python client for the Twitter API v2 recent search endpoint
-===========================================================
+Python client for Labs Recent search
+====================================
 
-Welcome to the ``v2`` branch of the Python search client. This branch was born from the main branch that supports
-premium and enterprise tiers of Twitter search. This branch supports the `Twitter API v2 recent search endpoint <https://developer.twitter.com/en/docs/twitter-api/tweets/search/introduction>`__ only, and drops support for the premium and enterprise tiers.
+Welcome to the ``labs`` branch of the Python search client. This branch was born from the ``master`` branch that supports premium and enterprise tiers of Twitter search. This branch supports the  `Twitter Developer Labs Recent search v2 endpoint <https://developer.twitter.com/en/docs/labs/recent-search/overview>`__ only, and drops support for the premium and enterprise tiers.
 
-This project serves as a wrapper for the Twitter API v2 recent search endpoint, providing a command-line utility and a Python library.
+Note: If you are looking for the original version that works with premium and enterprise versions of search, head on over to the ``master`` branch.
 
-To download and install this package, go to: https://pypi.org/project/searchtweets-v2/
+This project serves as a wrapper for the Labs Recent search endpoint, providing a command-line utility and a Python library.
 
-If you are looking for the original version that works with premium and enterprise versions of search, head on over to
-the main or ``enterprise-premium`` branch. (Soon, the v2 version will be promoted to the main branch.)
-
+To download and install this package, go to: https://pypi.org/project/searchtweets-labs/
 
 Features
 ========
 
-- Supports Twitter API v2 recent search.
-- Supports the configuration of v2 `expansions <https://developer.twitter.com/en/docs/twitter-api/expansions>`_ and `fields <https://developer.twitter.com/en/docs/twitter-api/fields>`_.
-- Supports a new "polling" mode using the ``since-id`` search request parameter. The ``since-id``, along with the new ``until-id`` provide a way to navigate the public Tweet archive by Tweet ID.
+- Supports Labs Recent search, v2.
+- Supports a new "polling" mode using the new Labs ``since-id`` search request parameter. The ``since-id``, along with the new ``until-id`` provide a way to navigate the public Tweet archive by Tweet ID.
 - Supports additional ways to specify ``start-time`` and ``end-time`` request parameters:
 
   - d# - For example, 'd2' sets ``start-time`` to (exactly) two days ago.
@@ -39,56 +35,33 @@ These features were inherited from the enterprise/premium version:
 -  Flexible usage within a python program.
 
 
-Twitter API v2 recent search updates
-====================================
+Labs updates
+============
 
-Twitter API v2 represents an opportunity to apply previous learnings from building Twitter API v1.1. and the premium and enterprise tiers of endpoints, and redesign and rebuild from the ground up. While building this v2 version of the `search-tweets-python` library,
-we took the opportunity to update fundamental things. This library provides example scripts, and one example is updating their command-line arguments to better match new v2 conventions. Instead of setting search periods with `start-datetime` and `end-datetime`,
-they have been shortened to match current search request parameters: `start-time` and `end-time`. Throughout the code, we no longer use parlance that references `rules` and `PowerTrack`, and now reference `queries` and the v2 recent search endpoint.
+Twitter Developer Labs represents an opportunity to apply previous learnings from building Twitter API v1.1. and the premium and enterprise tiers of endpoints, and redesign and rebuild from the ground up. While building this Labs version of the `search-tweets-python` library, we took the opportunity to update fundamental things. This library provides example scripts, and one example is updating their command-line arguments to better match new Labs conventions. Instead of setting search periods with `start-datetime` and `end-datetime`, they have been shortened to match current search request parameters: `start-time` and `end-time`. Throughout the code , we no longer use parlance that references `rules` and `PowerTrack`, and now reference `queries` and the Labs Recent search endpoint. 
 
-When migrating this Python search client to v2 from the enterprise and premium tiers, the following updates were made:
+When migrating this Python search client to Labs from the enterprise and premium tiers, the following updates were made:
 
-- Added support for GET requests (and removed POST support for now).
+- Added support for GET requests (and removed POST support for now)
 - Added support for ``since_id`` and ``until_id`` request parameters.
 - Updated pagination details.
-- Updated app command-line parlance:
+- Updated app command-line parlance
       -  --start-datetime → --start-time
       -  --end-datetime → --end-time
       -  --filter-rule → --query
       -  --max-results → --max-tweets
       - Dropped --account-type. No longer required since support for Premium and Enterprise search tiers have been dropped.
-      - Dropped --count-bucket. Removed search 'counts' endpoint support. This endpoint is currently not available in v2.
+      - Dropped --count-bucket. Removed search 'counts' endpoint support. This endpoint is currently not available in Labs.
 
 In this spirit of updating the parlance used, note that a core method provided by searchtweets/result_stream.py has been renamed. The method `gen_rule_payload` has been updated to `gen_request_parameters`. 
 
-Finally, the original version of search-tweets-python used a `Tweet Parser <https://twitterdev.github.io/tweet_parser/>`__ to help manage the differences between two different JSON formats ("original" and "Activity Stream"). With v2, there is just one version of Tweet JSON, so this Tweet Parser is not used.
-In the original code, this Tweet parser was envoked with a `tweetify=True directive. With this v2 version, this use of the Tweet Parser is turned off by instead using `tweetify=False`.
+Finally, the original version of search-tweets-python used a `Tweet Parser <https://twitterdev.github.io/tweet_parser/>`__ to help manage the differences between two different JSON formats ("original" and "Activity Stream"). With Labs, there is just one version of Tweet JSON, so this Tweet Parser is not used. In the original code, this Tweet parser was envoked with a `tweetify=True directive. With this Labs version, this use of the Tweet Parser is turned off by instead using `tweetify=False`.
 
 
 Command-line options
-====================
+=====================
 
 usage: search_tweets.py
-
-Connected to pydev debugger (build 173.4674.33)
-usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]
-                        [--credential-file-key CREDENTIAL_YAML_KEY]
-                        [--env-overwrite ENV_OVERWRITE]
-                        [--config-file CONFIG_FILENAME] [--query QUERY]
-                        [--start-time START_TIME] [--end-time END_TIME]
-                        [--since-id SINCE_ID] [--until-id UNTIL_ID]
-                        [--results-per-call RESULTS_PER_CALL]
-                        [--expansions EXPANSIONS]
-                        [--tweet-fields TWEET_FIELDS]
-                        [--user-fields USER_FIELDS]
-                        [--media-fields MEDIA_FIELDS]
-                        [--place-fields PLACE_FIELDS]
-                        [--poll-fields POLL_FIELDS] [--max-tweets MAX_TWEETS]
-                        [--max-pages MAX_PAGES]
-                        [--results-per-file RESULTS_PER_FILE]
-                        [--filename-prefix FILENAME_PREFIX]
-                        [--no-print-stream] [--print-stream]
-                        [--extra-headers EXTRA_HEADERS] [--debug]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -108,42 +81,25 @@ optional arguments:
                         file is found, all args will be populated, from there.
                         Remaining command-line args, will overrule args found
                         in the config, file.
-  --query QUERY         Search query. (See:
-                        https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/build-a-rule)
   --start-time START_TIME
                         Start of datetime window, format 'YYYY-mm-DDTHH:MM'
                         (default: -7 days)
   --end-time END_TIME   End of datetime window, format 'YYYY-mm-DDTHH:MM'
                         (default: most recent date)
+  --query QUERY         Search query. (See:
+                        https://developer.twitter.com/en/docs/labs/recent-
+                        search/guides/search-queries)
   --since-id SINCE_ID   Tweet ID, will start search from Tweets after this
                         one. (See:
-                        https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/paginate)
+                        https://developer.twitter.com/en/docs/labs/recent-
+                        search/guides/pagination)
   --until-id UNTIL_ID   Tweet ID, will end search from Tweets before this one.
                         (See:
-                        https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/paginate)
+                        https://developer.twitter.com/en/docs/labs/recent-
+                        search/guides/pagination)
   --results-per-call RESULTS_PER_CALL
                         Number of results to return per call (default 10; max
                         100) - corresponds to 'max_results' in the API
-  --expansions EXPANSIONS
-                        A comma-delimited list of object expansions to include
-                        in endpoint responses. (API default: "")
-  --tweet-fields TWEET_FIELDS
-                        A comma-delimited list of Tweet JSON attributions to
-                        include in endpoint responses. (API default:
-                        "id,text")
-  --user-fields USER_FIELDS
-                        A comma-delimited list of user JSON attributions to
-                        include in endpoint responses. (API default: "id")
-  --media-fields MEDIA_FIELDS
-                        A comma-delimited list of media JSON attributions to
-                        include in endpoint responses. (API default: "id")
-  --place-fields PLACE_FIELDS
-                        A comma-delimited list of Twitter Place JSON
-                        attributions to include in endpoint responses. (API
-                        default: "id")
-  --poll-fields POLL_FIELDS
-                        A comma-delimited list of Tweet Poll JSON attributions
-                        to include in endpoint responses. (API default: "id")
   --max-tweets MAX_TWEETS
                         Maximum number of Tweets to return for this session of
                         requests.
@@ -159,16 +115,16 @@ optional arguments:
   --print-stream        Print tweet stream to stdout
   --extra-headers EXTRA_HEADERS
                         JSON-formatted str representing a dict of additional
-                        HTTP request headers
+                        request headers
   --debug               print all info and warning messages
 
 
 Installation
 =============
 
-The updated Pypi install package for the v2 version is at:
+The updated Pypi install package for the Labs version is at:
 
-https://pypi.org/project/searchtweets-v2/
+https://pypi.org/project/searchtweets-labs/
 
 Another option to work directly with this code by cloning the repository, installing the required Python packages, setting up your credentials, and start making requests.
 
@@ -177,7 +133,7 @@ To confirm the your code is ready to go, run the ``$python3 scripts/search-tweet
 Credential Handling
 ===================
 
-The Twitter API v2 recent search endpoint uses app-only authentication. You have the choice to configure your application consumer key and secret, or a Bearer Token you have generated. If you supply the application key and secret, the client will generate a Bearer Token for you.
+The Labs Recent search endpoint uses app-only authentication. You have the choice to configure your application consumer key and secret, or a Bearer Token you have generated. If you supply the application key and secret, the client will generate a Bearer Token for you.
 
 Many developers might find providing your application key and secret more straightforward and letting this library manage your Bearer Token generation for you. Please see `HERE <https://developer.twitter.com/en/docs/basics/authentication/oauth-2-0>`_ for an overview of the app-only authentication method.
 
@@ -191,10 +147,9 @@ The simplest credential file should look like this:
 .. code:: yaml
 
   search_tweets_api:
-    endpoint:  https://api.twitter.com/2/tweets/search/recent
+    endpoint:  https://api.twitter.com/labs/2/tweets/search
     consumer_key: <CONSUMER_KEY>
     consumer_secret: <CONSUMER_SECRET>
-    bearer_token: <BEARER_TOKEN>
 
 By default, this library expects this file at "~/.twitter_keys.yaml", but you can pass the relevant location as needed, either with the --credential-file flag for the command-line app or as demonstrated below in a Python program.
 
@@ -204,8 +159,8 @@ For developers who have multiple endpoints and/or search products, you can keep 
 
 .. code:: yaml
 
-  search_tweets_v2:
-    endpoint: https://api.twitter.com/2/tweets/search/recent
+  search_tweets_labsv1:
+    endpoint: https://api.twitter.com/labs/1/tweets/search
     consumer_key: <KEY>
     consumer_secret: <SECRET>
     (optional) bearer_token: <TOKEN>
@@ -245,7 +200,7 @@ The following cells demonstrates credential handling in the Python library.
 ::
 
   {'bearer_token': '<A_VERY_LONG_MAGIC_STRING>',
-   'endpoint': 'https://api.twitter.com/2/tweets/search/recent',
+   'endpoint': 'https://api.twitter.com/labs/2/tweets/search',
    'extra_headers_dict': None}
 
 Environment Variable Overrides
@@ -297,7 +252,7 @@ Note that the ``--results-per-call`` flag specifies an argument to the API, not 
 .. code:: bash
 
   search_tweets.py \
-    --max-tweets 10000 \
+    --max-tweets 1000 \
     --results-per-call 100 \
     --query "(snow OR rain) has:media -is:retweet" \
     --print-stream
@@ -307,7 +262,7 @@ Note that the ``--results-per-call`` flag specifies an argument to the API, not 
 .. code:: bash
 
   search_tweets.py \
-    --max-tweets 10000 \
+    --max-results 1000 \
     --results-per-call 100 \
     --query "(snow OR rain) has:media -is:retweet" \
     --filename-prefix beyonce_geo \
@@ -318,7 +273,7 @@ Note that the ``--results-per-call`` flag specifies an argument to the API, not 
 .. code:: bash
 
   search_tweets.py \
-    --max-tweets 10000 \
+    --max-results 100 \
     --results-per-call 100 \
     --query "(snow OR rain) has:media -is:retweet" \
     --filename-prefix weather_pic \
@@ -403,13 +358,13 @@ We'll assume that credentials are in the default location,
    from searchtweets import ResultStream, gen_request_parameters, load_credentials
 
 
-Twitter API v2 Setup
---------------------
+Labs Setup
+-------------
 
 .. code:: python
 
-   search_args = load_credentials("~/.twitter_keys.yaml",
-                                          yaml_key="search_tweets_v2",
+   labs_search_args = load_credentials("~/.twitter_keys.yaml",
+                                          yaml_key="search_tweets_labs",
                                           env_overwrite=False)
                                           
 
@@ -451,7 +406,7 @@ Let's see how it goes:
 
    tweets = collect_results(query,
                             max_results=100,
-                            result_stream_args=search_args) # change this if you need to
+                            result_stream_args=labs_search_args) # change this if you need to
 
 An overwhelming number of Tweet attributes are made available directly, as such:
 
@@ -493,7 +448,7 @@ The ResultStream object will be powered by the ``search_args``, and takes the qu
    rs = ResultStream(query=query,
                      max_results=500,
                      max_pages=1,
-                     **search_args)
+                     **labs_search_args)
 
    print(rs)
    
@@ -501,7 +456,7 @@ The ResultStream object will be powered by the ``search_args``, and takes the qu
  
     ResultStream: 
    	{
-       "endpoint":"https:\/\/api.twitter.com\/2\/tweets\/search\/recent",
+       "endpoint":"https:\/\/api.twitter.com\/labs\/2\/tweets\/search",
        "request_parameters":{
            "query":"snow",
            "max_results":100
