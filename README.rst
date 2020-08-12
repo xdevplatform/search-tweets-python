@@ -1,3 +1,7 @@
+Looking for the Twitter API v2 version? Check out the new 'v2' branch.
+**********************************************************************
+
+
 Python Twitter Search API
 =========================
 
