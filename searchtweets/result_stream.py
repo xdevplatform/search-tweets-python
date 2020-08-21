@@ -264,7 +264,8 @@ class ResultStream:
             resp = json.loads(resp.content.decode(resp.encoding))
 
             meta = resp.get("meta", None)
-            self.next_token = meta.get("next_token", None)
+            if meta is not None:
+                self.next_token = meta.get("next_token", None)
             self.current_tweets = resp.get("data", None)
 
         except:
