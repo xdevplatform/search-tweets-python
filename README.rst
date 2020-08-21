@@ -418,7 +418,7 @@ generating search rules is out of scope for these examples; we encourage you to 
 
 .. code:: python
 
-   rule = gen_request_requests("snow", results_per_call=100) 
+   rule = gen_request_parameters("snow", results_per_call=100) 
    print(rule)
 
 ::
@@ -450,7 +450,7 @@ Let's see how it goes:
 .. code:: python
 
    tweets = collect_results(query,
-                            max_results=100,
+                            max_tweets=100,
                             result_stream_args=search_args) # change this if you need to
 
 An overwhelming number of Tweet attributes are made available directly, as such:
