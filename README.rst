@@ -1,6 +1,6 @@
-.. image:: https://img.shields.io/endpoint?url=https%3A%2F%2Ftwbadges.glitch.me%2Fbadges%2Fv2
-   :target: https://developer.twitter.com/en/docs/twitter-api
-   :alt: Twitter API v2
+.. .. image:: https://img.shields.io/endpoint?url=https%3A%2F%2Ftwbadges.glitch.me%2Fbadges%2Fv2
+..   :target: https://developer.twitter.com/en/docs/twitter-api
+..   :alt: Twitter API v2
 
 Python client for the Twitter API v2 recent search endpoint
 ===========================================================
