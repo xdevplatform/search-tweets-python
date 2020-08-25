@@ -20,9 +20,7 @@ logger = logging.getLogger()
 # --debug flag
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "ERROR"))
 
-
 REQUIRED_KEYS = {"query", "endpoint"}
-
 
 def parse_cmd_args():
     argparser = argparse.ArgumentParser()
@@ -68,7 +66,6 @@ def parse_cmd_args():
                            default=5,
                            help="""Polling interval in minutes. (default: 5 minutes)""")
 
-
     argparser.add_argument("--start-time",
                            dest="start_time",
                            default=None,
@@ -97,6 +94,11 @@ def parse_cmd_args():
                            help="Number of results to return per call "
                                 "(default 10; max 100) - corresponds to "
                                 "'max_results' in the API")
+
+    argparser.add_argument("--expansions",
+                           dest="expansions",
+                           default=None,
+                           help="""A comma-delimited list of expansions. Specified expansions results in full objects in the 'includes' response object.""")
 
     argparser.add_argument("--tweet-fields",
                            dest="tweet_fields",
