@@ -94,7 +94,7 @@ def parse_cmd_args():
     argparser.add_argument("--expansions",
                        dest="expansions",
                        default=None,
-                       help="""A comma-delimited list of expansions. Specifid expansions results in full objects in the 'includes' response object.""")
+                       help="""A comma-delimited list of expansions. Specified expansions results in full objects in the 'includes' response object.""")
 
     argparser.add_argument("--tweet-fields",
                            dest="tweet_fields",
