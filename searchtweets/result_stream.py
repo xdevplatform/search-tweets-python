@@ -174,7 +174,7 @@ class ResultStream:
     session_request_counter = 0
 
     def __init__(self, endpoint, request_parameters, bearer_token=None, extra_headers_dict=None, max_tweets=500,
-                 tweetify=True, max_requests=None, **kwargs):
+                 tweetify=False, max_requests=None, **kwargs):
 
         self.bearer_token = bearer_token
         self.extra_headers_dict = extra_headers_dict
@@ -215,13 +215,24 @@ class ResultStream:
         self.stream_started = True
 
         while True:
+
             if self.current_tweets == None:
                 break
+
+            #Serve up data.tweets.
             for tweet in self.current_tweets:
                 if self.total_results >= self.max_tweets:
                     break
                 yield self._tweet_func(tweet)
                 self.total_results += 1
+
+            #Serve up "includes" arrays
+            if self.includes != None:
+                yield self.includes
+
+            #Serve up meta structure.
+            if self.meta != None:
+                yield self.meta
 
             if self.next_token and self.total_results < self.max_tweets and self.n_requests <= self.max_requests:
                 self.request_parameters = merge_dicts(self.request_parameters,
@@ -263,9 +274,10 @@ class ResultStream:
         try:
             resp = json.loads(resp.content.decode(resp.encoding))
 
-            meta = resp.get("meta", None)
-            self.next_token = meta.get("next_token", None)
             self.current_tweets = resp.get("data", None)
+            self.includes = resp.get("includes", None)
+            self.meta = resp.get("meta", None)
+            self.next_token = self.meta.get("next_token", None)
 
         except:
             print("Error parsing content as JSON.")

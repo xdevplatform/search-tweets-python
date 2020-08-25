@@ -83,7 +83,7 @@ def convert_utc_time(datetime_str):
 
 def gen_request_parameters(query, results_per_call=None,
                            start_time=None, end_time=None, since_id=None, until_id=None,
-                           tweet_fields=None,
+                           tweet_fields=None, expansions=None,
                            stringify=True):
 
     """
@@ -101,6 +101,7 @@ def gen_request_parameters(query, results_per_call=None,
         end_time (str or None): date format as specified by `convert_utc_time`
             for the end time of your search.
         tweet_fields (string): comma-delimted list of Tweet JSON attributes wanted in endpoint responses. Default is "id,created_at,text").
+        expansions (string): comma-delimited list of object expansions.
         stringify (bool): specifies the return type, `dict`
             or json-formatted `str`.
 
@@ -128,6 +129,8 @@ def gen_request_parameters(query, results_per_call=None,
         payload["until_id"] = until_id
     if tweet_fields:
         payload["tweet.fields"] = tweet_fields
+    if expansions:
+        payload["expansions"] = expansions
 
     return json.dumps(payload) if stringify else payload
 
@@ -161,6 +164,7 @@ def gen_params_from_config(config_dict):
                             since_id=config_dict.get("since_id", None),
                             until_id=config_dict.get("until_id", None),
                             tweet_fields=config_dict.get("tweet_fields", None),
+                            expansions=config_dict.get("expansions", None),
                             results_per_call=results_per_call)
                             #count_bucket=config_dict.get("count_bucket", None))
 

@@ -91,6 +91,11 @@ def parse_cmd_args():
                                 "(default 10; max 100) - corresponds to "
                                 "'max_results' in the API")
 
+    argparser.add_argument("--expansions",
+                       dest="expansions",
+                       default=None,
+                       help="""A comma-delimited list of expansions. Specifid expansions results in full objects in the 'includes' response object.""")
+
     argparser.add_argument("--tweet-fields",
                            dest="tweet_fields",
                            default=None,
