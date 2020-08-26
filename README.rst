@@ -61,6 +61,12 @@ When migrating this Python search client to v2 from the enterprise and premium t
 
 In this spirit of updating the parlance used, note that a core method provided by searchtweets/result_stream.py has been renamed. The method `gen_rule_payload` has been updated to `gen_request_parameters`. 
 
+**One key update is handling the changes in how the search endpoint returns its data.** The v2 search endpoint returns matching Tweets in a `data` array, along with an `includes` array that provides supporting objects that result from specifying `expansions`.
+These expanded objects include Users, referenced Tweets, and attached media.  In addition to the `data` and `includes` arrays, the search endpoint also provides a `meta` object that provides the max and min Tweet IDs included in the response,
+along with a `next_token` if there is another 'page' of data to request.
+
+Currently, the v2 client returns the Tweets in the `data` array as individual (and atomic) JSON Tweet objects. This matches the behavior of the original search client. However, after yielding the individual Tweet objects, the client outputs arrays of User, Tweet, and media objects from the `includes` array, followed by the `meta` object.
+
 Finally, the original version of search-tweets-python used a `Tweet Parser <https://twitterdev.github.io/tweet_parser/>`__ to help manage the differences between two different JSON formats ("original" and "Activity Stream"). With v2, there is just one version of Tweet JSON, so this Tweet Parser is not used.
 In the original code, this Tweet parser was envoked with a `tweetify=True directive. With this v2 version, this use of the Tweet Parser is turned off by instead using `tweetify=False`.
 
@@ -68,99 +74,103 @@ In the original code, this Tweet parser was envoked with a `tweetify=True direct
 Command-line options
 ====================
 
-usage: search_tweets.py
+.. code:: bash
 
-Connected to pydev debugger (build 173.4674.33)
-usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]
-                        [--credential-file-key CREDENTIAL_YAML_KEY]
-                        [--env-overwrite ENV_OVERWRITE]
-                        [--config-file CONFIG_FILENAME] [--query QUERY]
-                        [--start-time START_TIME] [--end-time END_TIME]
-                        [--since-id SINCE_ID] [--until-id UNTIL_ID]
-                        [--results-per-call RESULTS_PER_CALL]
-                        [--expansions EXPANSIONS]
-                        [--tweet-fields TWEET_FIELDS]
-                        [--user-fields USER_FIELDS]
-                        [--media-fields MEDIA_FIELDS]
-                        [--place-fields PLACE_FIELDS]
-                        [--poll-fields POLL_FIELDS] [--max-tweets MAX_TWEETS]
-                        [--max-pages MAX_PAGES]
-                        [--results-per-file RESULTS_PER_FILE]
-                        [--filename-prefix FILENAME_PREFIX]
-                        [--no-print-stream] [--print-stream]
-                        [--extra-headers EXTRA_HEADERS] [--debug]
+  usage: search_tweets.py [-h] [--credential-file CREDENTIAL_FILE]
+   [--credential-file-key CREDENTIAL_YAML_KEY]
+   [--env-overwrite ENV_OVERWRITE]
+   [--config-file CONFIG_FILENAME]
+   [--query QUERY]
+   [--start-time START_TIME]
+   [--end-time END_TIME]
+   [--since-id SINCE_ID]
+   [--until-id UNTIL_ID]
+   [--results-per-call RESULTS_PER_CALL]
+   [--expansions EXPANSIONS]
+   [--tweet-fields TWEET_FIELDS]
+   [--user-fields USER_FIELDS]
+   [--media-fields MEDIA_FIELDS]
+   [--place-fields PLACE_FIELDS]
+   [--poll-fields POLL_FIELDS]
+   [--max-tweets MAX_TWEETS]
+   [--max-pages MAX_PAGES]
+   [--results-per-file RESULTS_PER_FILE]
+   [--filename-prefix FILENAME_PREFIX]
+   [--no-print-stream]
+   [--print-stream]
+   [--extra-headers EXTRA_HEADERS]
+   [--debug]
 
-optional arguments:
-  -h, --help            show this help message and exit
-  --credential-file CREDENTIAL_FILE
+   -h, --help            show this help message and exit
+   --credential-file CREDENTIAL_FILE
                         Location of the yaml file used to hold your
                         credentials.
-  --credential-file-key CREDENTIAL_YAML_KEY
+   --credential-file-key CREDENTIAL_YAML_KEY
                         the key in the credential file used for this session's
                         credentials. Defaults to search_tweets_api
-  --env-overwrite ENV_OVERWRITE
+   --env-overwrite ENV_OVERWRITE
                         Overwrite YAML-parsed credentials with any set
                         environment variables. See API docs or readme for
                         details.
-  --config-file CONFIG_FILENAME
+   --config-file CONFIG_FILENAME
                         configuration file with all parameters. Far, easier to
                         use than the command-line args version., If a valid
                         file is found, all args will be populated, from there.
                         Remaining command-line args, will overrule args found
                         in the config, file.
-  --query QUERY         Search query. (See:
+   --query QUERY         Search query. (See:
                         https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/build-a-rule)
-  --start-time START_TIME
+   --start-time START_TIME
                         Start of datetime window, format 'YYYY-mm-DDTHH:MM'
                         (default: -7 days)
-  --end-time END_TIME   End of datetime window, format 'YYYY-mm-DDTHH:MM'
+   --end-time END_TIME   End of datetime window, format 'YYYY-mm-DDTHH:MM'
                         (default: most recent date)
-  --since-id SINCE_ID   Tweet ID, will start search from Tweets after this
+   --since-id SINCE_ID   Tweet ID, will start search from Tweets after this
                         one. (See:
                         https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/paginate)
-  --until-id UNTIL_ID   Tweet ID, will end search from Tweets before this one.
+   --until-id UNTIL_ID   Tweet ID, will end search from Tweets before this one.
                         (See:
                         https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/paginate)
-  --results-per-call RESULTS_PER_CALL
+   --results-per-call RESULTS_PER_CALL
                         Number of results to return per call (default 10; max
                         100) - corresponds to 'max_results' in the API
-  --expansions EXPANSIONS
+   --expansions EXPANSIONS
                         A comma-delimited list of object expansions to include
                         in endpoint responses. (API default: "")
-  --tweet-fields TWEET_FIELDS
+   --tweet-fields TWEET_FIELDS
                         A comma-delimited list of Tweet JSON attributions to
                         include in endpoint responses. (API default:
                         "id,text")
-  --user-fields USER_FIELDS
+   --user-fields USER_FIELDS
                         A comma-delimited list of user JSON attributions to
                         include in endpoint responses. (API default: "id")
-  --media-fields MEDIA_FIELDS
+   --media-fields MEDIA_FIELDS
                         A comma-delimited list of media JSON attributions to
                         include in endpoint responses. (API default: "id")
-  --place-fields PLACE_FIELDS
+   --place-fields PLACE_FIELDS
                         A comma-delimited list of Twitter Place JSON
                         attributions to include in endpoint responses. (API
                         default: "id")
-  --poll-fields POLL_FIELDS
+   --poll-fields POLL_FIELDS
                         A comma-delimited list of Tweet Poll JSON attributions
                         to include in endpoint responses. (API default: "id")
-  --max-tweets MAX_TWEETS
+   --max-tweets MAX_TWEETS
                         Maximum number of Tweets to return for this session of
                         requests.
-  --max-pages MAX_PAGES
+   --max-pages MAX_PAGES
                         Maximum number of pages/API calls to use for this
                         session.
-  --results-per-file RESULTS_PER_FILE
+   --results-per-file RESULTS_PER_FILE
                         Maximum tweets to save per file.
-  --filename-prefix FILENAME_PREFIX
+   --filename-prefix FILENAME_PREFIX
                         prefix for the filename where tweet json data will be
                         stored.
-  --no-print-stream     disable print streaming
-  --print-stream        Print tweet stream to stdout
-  --extra-headers EXTRA_HEADERS
+   --no-print-stream     disable print streaming
+   --print-stream        Print tweet stream to stdout
+   --extra-headers EXTRA_HEADERS
                         JSON-formatted str representing a dict of additional
                         HTTP request headers
-  --debug               print all info and warning messages
+   --debug               print all info and warning messages
 
 
 Installation
@@ -310,7 +320,7 @@ Note that the ``--results-per-call`` flag specifies an argument to the API, not 
     --max-tweets 10000 \
     --results-per-call 100 \
     --query "(snow OR rain) has:media -is:retweet" \
-    --filename-prefix beyonce_geo \
+    --filename-prefix weather_pics \
     --print-stream
 
 **Save to file without output**
@@ -321,7 +331,7 @@ Note that the ``--results-per-call`` flag specifies an argument to the API, not 
     --max-tweets 10000 \
     --results-per-call 100 \
     --query "(snow OR rain) has:media -is:retweet" \
-    --filename-prefix weather_pic \
+    --filename-prefix weather_pics \
     --no-print-stream
 
 One or more custom headers can be specified from the command line, using the ``--extra-headers`` argument and a JSON-formatted string representing a dictionary of extra headers:
@@ -347,7 +357,7 @@ Options can be passed via a configuration file (either ini or YAML). Example fil
 
   [output_params]
   save_file = True
-  filename_prefix = weather-pics
+  filename_prefix = weather_pics
   results_per_file = 10000000
 
 Or this:

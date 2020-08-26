@@ -1,14 +1,16 @@
-search_rules:
-    start-time: 2020-01-06
-    end-time: 2020-01-10
-    query: snow colorado -is:retweet has:media
+#search_rules:
+#    start-time: 2020-01-06
+#    end-time: 2020-01-10
+#    query: snow colorado -is:retweet has:media
 
 search_params:
     results-per-call: 100
     max-tweets: 10000
-    tweet-fields: id,created_at,text
+    tweet-fields: id,created_at,author_id,text,public_metrics,attachments,entities
+    user-fields: description,location,public_metrics
+    expansions: author_id,referenced_tweets.id,attachments.media_keys
 
 output_params:
-    save_file: True
-    filename_prefix: snow-photos
+    save_file: False
+    filename_prefix: snow_tweets
     results_per_file: 100000

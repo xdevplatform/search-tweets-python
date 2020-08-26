@@ -99,7 +99,27 @@ def parse_cmd_args():
     argparser.add_argument("--tweet-fields",
                            dest="tweet_fields",
                            default=None,
-                           help="""A comma-delimited list of Tweet JSON attributions to include in endpoint responses. (default: "id,created_at,text")""")
+                           help="""A comma-delimited list of Tweet JSON attributes to include in endpoint responses. (API default:"id,text")""")
+
+    argparser.add_argument("--user-fields",
+                           dest="user_fields",
+                           default=None,
+                           help="""A comma-delimited list of User JSON attributes to include in endpoint responses. (API default:"id")""")
+
+    argparser.add_argument("--media-fields",
+                           dest="media_fields",
+                           default=None,
+                           help="""A comma-delimited list of media JSON attributes to include in endpoint responses. (API default:"id")""")
+
+    argparser.add_argument("--place-fields",
+                           dest="place_fields",
+                           default=None,
+                           help="""A comma-delimited list of Twitter Place JSON attributes to include in endpoint responses. (API default:"id")""")
+
+    argparser.add_argument("--poll-fields",
+                           dest="poll_fields",
+                           default=None,
+                           help="""A comma-delimited list of Twitter Poll JSON attributes to include in endpoint responses. (API default:"id")""")
 
     #client options.
     argparser.add_argument("--max-tweets", dest="max_tweets",
