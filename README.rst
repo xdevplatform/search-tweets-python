@@ -139,8 +139,7 @@ Command-line options
                         in endpoint responses. (API default: "")
    --tweet-fields TWEET_FIELDS
                         A comma-delimited list of Tweet JSON attributions to
-                        include in endpoint responses. (API default:
-                        "id,text")
+                        include in endpoint responses. (API default: "id, text")
    --user-fields USER_FIELDS
                         A comma-delimited list of user JSON attributions to
                         include in endpoint responses. (API default: "id")

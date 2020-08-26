@@ -16,7 +16,6 @@ try:
     import ujson as json
 except ImportError:
     import json
-from tweet_parser.tweet import Tweet
 
 from .utils import merge_dicts
 
@@ -27,9 +26,9 @@ logger = logging.getLogger(__name__)
 
 def make_session(bearer_token=None, extra_headers_dict=None):
     """Creates a Requests Session for use. Accepts a bearer token
-    for Labs.
+    for v2.
     Args:
-        bearer_token (str): token for a Labs user.
+        bearer_token (str): token for a v2 user.
     """
 
     if bearer_token is None:
@@ -129,10 +128,10 @@ def request(session, url, request_parameters, **kwargs):
 
     request_json = json.loads(request_parameters)
 
-    #Using POST command, not yet supported in Labs.
+    #Using POST command, not yet supported in v2.
     #result = session.post(url, data=request_parameters, **kwargs)
 
-    #New Labs-specific code in support of GET requests.
+    #New v2-specific code in support of GET requests.
     request_url = urlencode(request_json)
     url = f"{url}?{request_url}"
 
@@ -146,7 +145,7 @@ class ResultStream:
     pieces: wrapping metadata around a specific API call and automatic
     pagination of results.
     Args:
-        bearer_token (str): bearer token for Labs.
+        bearer_token (str): bearer token for v2.
 
         endpoint (str): API endpoint.
 
@@ -157,12 +156,8 @@ class ResultStream:
         from the API call  - e.g., setting ``max_tweets = 10`` would return
         ten results, but an API call will return at minimum 100 results by default.
 
-        tweetify (bool): If you are grabbing tweets and not counts, use the
-            tweet parser library to convert each raw tweet package to a Tweet
-            with lazy properties.
-
         max_requests (int): A hard cutoff for the number of API calls this
-        instance will make. Good for testing in Labs environment.
+        instance will make. Good for testing in v2 environment.
 
         extra_headers_dict (dict): custom headers to add
     Example:
@@ -174,14 +169,13 @@ class ResultStream:
     session_request_counter = 0
 
     def __init__(self, endpoint, request_parameters, bearer_token=None, extra_headers_dict=None, max_tweets=500,
-                 tweetify=False, max_requests=None, **kwargs):
+                 max_requests=None, **kwargs):
 
         self.bearer_token = bearer_token
         self.extra_headers_dict = extra_headers_dict
         if isinstance(request_parameters, str):
             request_parameters = json.loads(request_parameters)
         self.request_parameters = request_parameters
-        self.tweetify = tweetify
         # magic number of max tweets if you pass a non_int
         self.max_tweets = (max_tweets if isinstance(max_tweets, int)
                            else 10 ** 15)
@@ -192,7 +186,7 @@ class ResultStream:
         self.current_tweets = None
         self.next_token = None
         self.stream_started = False
-        self._tweet_func = Tweet if tweetify else lambda x: x
+        self._tweet_func = lambda x: x
         # magic number of requests!
         self.max_requests = (max_requests if max_requests is not None
                              else 10 ** 9)
@@ -283,8 +277,7 @@ class ResultStream:
             print("Error parsing content as JSON.")
 
     def __repr__(self):
-        repr_keys = ["endpoint", "request_parameters",
-                     "tweetify", "max_tweets"]
+        repr_keys = ["endpoint", "request_parameters", "max_tweets"]
         str_ = json.dumps(dict([(k, self.__dict__.get(k)) for k in repr_keys]),
                           indent=4)
         str_ = "ResultStream: \n\t" + str_
