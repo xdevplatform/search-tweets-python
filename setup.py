@@ -33,5 +33,5 @@ setup(name='searchtweets-labs',
       python_requires='>=3.3',
       install_requires=["requests", "pyyaml", "python-dateutil"],
       packages=find_packages(),
-      scripts=["scripts/search_tweets.py","scripts/poll_tweets.py"],
+      scripts=["scripts/search_tweets.py", "scripts/poll_tweets.py"],
      )
