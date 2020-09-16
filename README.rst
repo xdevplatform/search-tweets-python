@@ -180,8 +180,11 @@ The updated Pypi install package for the v2 version is at:
 https://pypi.org/project/searchtweets-v2/
 
 Another option to work directly with this code by cloning the repository, installing the required Python packages, setting up your credentials, and start making requests.
+For those not using the Pypi package, and instead are cloning the repository, a ``requirements.txt`` is provided. Dependencies can be installed with the ``pip install -r requirements.txt`` command.
 
 To confirm the your code is ready to go, run the ``$python3 scripts/search-tweets.py -h`` command. You should see the help details shown above.
+
+
 
 Credential Handling
 ===================
