@@ -570,6 +570,12 @@ commands, ran from the root directory in the repo:
    python setup.py sdist
    twine upload dist/*
 
+If you receive an error during the ``twine upload`` step, it may due to the README.rst
+having something invalid in its RST format. Using a RST linter will help fix that.
+
+Also, as Pypi updates are made, you may want to clear out previous versions from the package.
+This can be done with this command: ``rm -rf build dist *.egg-info``
+
 How to build the documentation:
 
 Building the documentation requires a few Sphinx packages to build the
