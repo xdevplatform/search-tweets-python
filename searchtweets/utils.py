@@ -186,7 +186,7 @@ def read_config(filename):
 
     if file_type == "yaml":
         with open(os.path.expanduser(filename)) as f:
-            config_dict = yaml.load(f)
+            config_dict = yaml.safe_load(f)
 
         config_dict = merge_dicts(*[dict(config_dict[s]) for s
                                     in config_dict.keys()])
