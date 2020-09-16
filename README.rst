@@ -199,7 +199,7 @@ The simplest credential file should look like this:
 
 .. code:: yaml
 
-  search_tweets_api:
+  search_tweets_v2:
     endpoint:  https://api.twitter.com/2/tweets/search/recent
     consumer_key: <CONSUMER_KEY>
     consumer_secret: <CONSUMER_SECRET>
@@ -427,8 +427,8 @@ generating search rules is out of scope for these examples; we encourage you to 
 
 .. code:: python
 
-   rule = gen_request_parameters("snow", results_per_call=100) 
-   print(rule)
+   query = gen_request_parameters("snow", results_per_call=100) 
+   print(query)
 
 ::
 
@@ -466,7 +466,7 @@ An overwhelming number of Tweet attributes are made available directly, as such:
 
 .. code:: python
 
-   [print(tweet.text, end='\n\n') for tweet in tweets[0:10]];
+   [print(tweet.text, end='\n\n') for tweet in tweets[0:10]]
 
 ::
 
@@ -499,7 +499,7 @@ The ResultStream object will be powered by the ``search_args``, and takes the qu
 
 .. code:: python
 
-   rs = ResultStream(query=query,
+   rs = ResultStream(request_parameters=query,
                      max_results=500,
                      max_pages=1,
                      **search_args)
@@ -528,7 +528,7 @@ There is a function, ``.stream``, that seamlessly handles requests and paginatio
 .. code:: python
 
    # using unidecode to prevent emoji/accents printing 
-   [print(tweet) for tweet in tweets[0:10]];
+   [print(tweet) for tweet in tweets[0:10]]
 
 ::
 
