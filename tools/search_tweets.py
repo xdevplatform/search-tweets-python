@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright 2017 Twitter, Inc.
+# Copyright 2021 Twitter, Inc.
 # Licensed under the Apache License, Version 2.0
 # http://www.apache.org/licenses/LICENSE-2.0
 import os
@@ -85,7 +85,7 @@ def parse_cmd_args():
     argparser.add_argument("--filter-rule",
                            dest="pt_rule",
                            default=None,
-                           help="PowerTrack filter rule (See: http://support.gnip.com/customer/portal/articles/901152-powertrack-operators)")
+                           help="PowerTrack filter rule (See: https://developer.twitter.com/en/docs/twitter-api/enterprise/search-api/guides/operators)")
 
     argparser.add_argument("--results-per-call",
                            dest="results_per_call",
