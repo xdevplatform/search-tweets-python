@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright 2020 Twitter, Inc.
+# Copyright 2021 Twitter, Inc.
 # Licensed under the Apache License, Version 2.0
 # http://www.apache.org/licenses/LICENSE-2.0
 import os
@@ -69,15 +69,13 @@ def parse_cmd_args():
     argparser.add_argument("--start-time",
                            dest="start_time",
                            default=None,
-                           help="""Start of datetime window, format
-                                'YYYY-mm-DDTHH:MM' (default: -7 days)""")
+                           help="""Start of datetime window, format 'YYYY-mm-DDTHH:MM' (default: -7 days for /recent, -30 days for /all)""")
 
     argparser.add_argument("--end-time",
                            dest="end_time",
                            default=None,
                            help="""End of datetime window, format
-                                 'YYYY-mm-DDTHH:MM' (default: most recent
-                                 date)""")
+                                 'YYYY-mm-DDTHH:MM' (default: to 30 seconds before request time)""")
 
     argparser.add_argument("--since-id",
                            dest="since_id",
