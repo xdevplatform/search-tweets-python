@@ -6,7 +6,7 @@ Python client for the Twitter API v2 search endpoints
 ===========================================================
 
 Welcome to the ``v2`` branch of the Python search client. This branch was born from the main branch that supports
-premium and enterprise tiers of Twitter search. This branch supports the `Twitter API v2 'recent' amd 'all' search endpoints <https://developer.twitter.com/en/docs/twitter-api/tweets/search/introduction>`__ only, and drops support for the premium and enterprise tiers.
+premium and enterprise tiers of Twitter search. This branch supports the `Twitter API v2 'recent' and 'all' search endpoints <https://developer.twitter.com/en/docs/twitter-api/tweets/search/introduction>`__ only, and drops support for the premium and enterprise tiers.
 
 This project serves as a wrapper for the Twitter API v2 search endpoints (/search/recent and /search/all), providing a command-line utility and a Python library.
 
@@ -18,8 +18,7 @@ The search endpoint you want to hit is specified in the library's YAML file:
     endpoint:  https://api.twitter.com/2/tweets/search/recent #Or https://api.twitter.com/2/tweets/search/all
 
 
-The 'recent' search endpoint provides Tweets from the past 7 days. The 'all' search endpoint, launched in January 2021 as part of the 'academic research' tier of Twitter API v2 access,
-provides access to all publicly avaialble Tweets posted since March 2006.
+The 'recent' search endpoint provides Tweets from the past 7 days. The 'all' search endpoint, launched in January 2021 as part of the 'academic research' tier of Twitter API v2 access, provides access to all publicly avaialble Tweets posted since March 2006.
 
 To learn more about the Twitter academic research program, see this [Twitter blog post](https://blog.twitter.com/developer/en_us/topics/tips/2021/enabling-the-future-of-academic-research-with-the-twitter-api.html).
 
