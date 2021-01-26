@@ -2,13 +2,26 @@
 ..   :target: https://developer.twitter.com/en/docs/twitter-api
 ..   :alt: Twitter API v2
 
-Python client for the Twitter API v2 recent search endpoint
+Python client for the Twitter API v2 search endpoints
 ===========================================================
 
 Welcome to the ``v2`` branch of the Python search client. This branch was born from the main branch that supports
-premium and enterprise tiers of Twitter search. This branch supports the `Twitter API v2 recent search endpoint <https://developer.twitter.com/en/docs/twitter-api/tweets/search/introduction>`__ only, and drops support for the premium and enterprise tiers.
+premium and enterprise tiers of Twitter search. This branch supports the `Twitter API v2 'recent' amd 'all' search endpoints <https://developer.twitter.com/en/docs/twitter-api/tweets/search/introduction>`__ only, and drops support for the premium and enterprise tiers.
 
-This project serves as a wrapper for the Twitter API v2 recent search endpoint, providing a command-line utility and a Python library.
+This project serves as a wrapper for the Twitter API v2 search endpoints (/search/recent and /search/all), providing a command-line utility and a Python library.
+
+The search endpoint you want to hit is specified in the library's YAML file:
+
+.. code:: yaml
+
+  search_tweets_v2:
+    endpoint:  https://api.twitter.com/2/tweets/search/recent #Or https://api.twitter.com/2/tweets/search/all
+
+
+The 'recent' search endpoint provides Tweets from the past 7 days. The 'all' search endpoint, launched in January 2021 as part of the 'academic research' tier of Twitter API v2 access,
+provides access to all publicly avaialble Tweets posted since March 2006.
+
+To learn more about the Twitter academic research program, see this [Twitter blog post](https://blog.twitter.com/developer/en_us/topics/tips/2021/enabling-the-future-of-academic-research-with-the-twitter-api.html).
 
 To download and install this package, go to: https://pypi.org/project/searchtweets-v2/
 
@@ -19,7 +32,7 @@ the main or ``enterprise-premium`` branch. (Soon, the v2 version will be promote
 Features
 ========
 
-- Supports Twitter API v2 recent search.
+- Supports Twitter API v2 'recent' and 'all' search.
 - Supports the configuration of v2 `expansions <https://developer.twitter.com/en/docs/twitter-api/expansions>`_ and `fields <https://developer.twitter.com/en/docs/twitter-api/fields>`_.
 - Supports a new "polling" mode using the ``since-id`` search request parameter. The ``since-id``, along with the new ``until-id`` provide a way to navigate the public Tweet archive by Tweet ID.
 - Supports additional ways to specify ``start-time`` and ``end-time`` request parameters:
@@ -39,7 +52,7 @@ These features were inherited from the enterprise/premium version:
 -  Flexible usage within a python program.
 
 
-Twitter API v2 recent search updates
+Twitter API v2 search updates
 ====================================
 
 Twitter API v2 represents an opportunity to apply previous learnings from building Twitter API v1.1. and the premium and enterprise tiers of endpoints, and redesign and rebuild from the ground up. While building this v2 version of the `search-tweets-python` library,
@@ -122,9 +135,9 @@ Command-line options
                         https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/build-a-rule)
    --start-time START_TIME
                         Start of datetime window, format 'YYYY-mm-DDTHH:MM'
-                        (default: -7 days)
+                        (default: -7 days for /recent, -30 days for /all)
    --end-time END_TIME   End of datetime window, format 'YYYY-mm-DDTHH:MM'
-                        (default: most recent date)
+                        (default: to 30 seconds before request time)
    --since-id SINCE_ID   Tweet ID, will start search from Tweets after this
                         one. (See:
                         https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/paginate)
@@ -189,7 +202,7 @@ To confirm the your code is ready to go, run the ``$python3 scripts/search-tweet
 Credential Handling
 ===================
 
-The Twitter API v2 recent search endpoint uses app-only authentication. You have the choice to configure your application consumer key and secret, or a Bearer Token you have generated. If you supply the application key and secret, the client will generate a Bearer Token for you.
+The Twitter API v2 search endpoints uses app-only authentication. You have the choice to configure your application consumer key and secret, or a Bearer Token you have generated. If you supply the application key and secret, the client will generate a Bearer Token for you.
 
 Many developers might find providing your application key and secret more straightforward and letting this library manage your Bearer Token generation for you. Please see `HERE <https://developer.twitter.com/en/docs/basics/authentication/oauth-2-0>`_ for an overview of the app-only authentication method.
 
