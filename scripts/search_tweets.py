@@ -66,14 +66,13 @@ def parse_cmd_args():
                            dest="start_time",
                            default=None,
                            help="""Start of datetime window, format
-                                'YYYY-mm-DDTHH:MM' (default: -7 days)""")
+                                'YYYY-mm-DDTHH:MM' (default: -7 days for /recent, -30 days for /all)""")
 
     argparser.add_argument("--end-time",
                            dest="end_time",
                            default=None,
                            help="""End of datetime window, format
-                                 'YYYY-mm-DDTHH:MM' (default: most recent
-                                 date)""")
+                                 'YYYY-mm-DDTHH:MM' (default: to 30 seconds before request time)""")
 
     argparser.add_argument("--since-id",
                            dest="since_id",
@@ -120,8 +119,19 @@ def parse_cmd_args():
                            dest="poll_fields",
                            default=None,
                            help="""A comma-delimited list of Twitter Poll JSON attributes to include in endpoint responses. (API default:"id")""")
+    #TODO: add code!
+    argparser.add_argument("--atomic",
+                       dest="atomic",
+                       action="store_true",
+                       default=False,
+                       help="Inject 'includes' objects into Tweet objects.")
 
-    #client options.
+    # argparser.add_argument("--output-options",
+    #                        dest="output_options",
+    #                        default=None,
+    #                        help="Set output options: 'a' - atomic, 'r' - response, 'c' - constructed")
+
+
     argparser.add_argument("--max-tweets", dest="max_tweets",
                            type=int,
                            help="Maximum number of Tweets to return for this session of requests.")
@@ -154,6 +164,8 @@ def parse_cmd_args():
                            action="store_true",
                            default=True,
                            help="Print tweet stream to stdout")
+
+
 
     argparser.add_argument("--extra-headers",
                            dest="extra_headers",
