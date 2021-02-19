@@ -18,6 +18,7 @@ except ImportError:
     import json
 
 from .utils import merge_dicts
+from collections import defaultdict
 
 from ._version import VERSION
 
@@ -183,6 +184,7 @@ class ResultStream:
         self.total_results = 0
         self.n_requests = 0
         self.session = None
+        self.current_response = None
         self.current_tweets = None
         self.next_token = None
         self.stream_started = False
@@ -191,6 +193,83 @@ class ResultStream:
         self.max_requests = (max_requests if max_requests is not None
                              else 10 ** 9)
         self.endpoint = endpoint
+
+        self.output_format = "a" # output options: 'a' - atomic, 'r' - response, 'c' - constructed" # todo: hardcode for now, use command line arguments
+
+    def formatted_output(self):
+        # Defaults: Return empty objects for things missing in includes.
+        includes_media = defaultdict(lambda: {}, {media["media_key"]: media for media in self.includes["media"]}) if "media" in self.includes else defaultdict(lambda: {})
+        includes_users = defaultdict(lambda: {}, {user["id"]: user for user in self.includes["users"]}) if "users" in self.includes else defaultdict(lambda: {})  # todo: check for user expansions (pinned tweet id?)
+        includes_polls = defaultdict(lambda: {}, {poll["id"]: poll for poll in self.includes["polls"]}) if "polls" in self.includes else defaultdict(lambda: {}) 
+        includes_place = defaultdict(lambda: {}, {place["id"]: place for place in self.includes["places"]}) if "places" in self.includes else defaultdict(lambda: {}) 
+        includes_user_names = defaultdict(lambda: {}, {user["username"]: user for user in self.includes["users"]}) if "users" in self.includes else defaultdict(lambda: {})  # find by username, needed for mentions
+        includes_tweets = defaultdict(lambda: {}, {tweet["id"]: tweet for tweet in self.includes["tweets"]}) if "tweets" in self.includes else defaultdict(lambda: {})
+
+        def expand_tweet(tweet):
+            if "author_id" in tweet:
+                tweet["author"] = includes_users[tweet["author_id"]]
+            if "in_reply_to_user_id" in tweet:
+                tweet["in_reply_to_user"] = includes_users[tweet["in_reply_to_user_id"]]
+            if "attachments" in tweet:
+                if "media_keys" in tweet["attachments"]:
+                    tweet["attachments"]["media"] = list(includes_media[media_key] for media_key in tweet["attachments"]["media_keys"])
+                if "poll_ids" in tweet["attachments"]:
+                    tweet["attachments"]["polls"] = list(includes_polls[poll_id] for poll_id in tweet["attachments"]["poll_ids"])
+            if "geo" in tweet and len(includes_place) > 0:
+                tweet["geo"] = list(merge_dicts(referenced_place, includes_place[referenced_place['place_id']]) for referenced_place in tweet["geo"])
+            if "entities" in tweet:
+                if "mentions" in tweet["entities"]:
+                    tweet["entities"]["mentions"] = list(merge_dicts(referenced_user, includes_user_names[referenced_user['username']]) for referenced_user in tweet["entities"]["mentions"])
+            if "referenced_tweets" in tweet:
+                tweet["referenced_tweets"] = list(merge_dicts(referenced_tweet, includes_tweets[referenced_tweet['id']]) for referenced_tweet in tweet["referenced_tweets"])
+            return tweet
+
+        # Now expand the included tweets ahead of time using all of the above
+        includes_tweets = defaultdict(lambda: {}, {tweet["id"]: expand_tweet(tweet) for tweet in self.includes["tweets"]}) if "tweets" in self.includes else defaultdict(lambda: {})
+
+        def output_response_format():
+            """ 
+            output the response as 1 "page" per line
+            """
+            if self.total_results >= self.max_tweets:
+                return
+            yield self.current_response
+            self.total_results += self.meta['result_count']
+
+        def output_constructed_format():
+            """ 
+            output the way it was implemented originally
+            """
+            #Serve up data.tweets.
+            for tweet in self.current_tweets:
+                if self.total_results >= self.max_tweets:
+                    break
+                yield self._tweet_func(tweet)
+                self.total_results += 1
+
+            #Serve up "includes" arrays
+            if self.includes != None:
+                yield self.includes
+
+            #Serve up meta structure.
+            if self.meta != None:
+                yield self.meta
+
+        def output_atomic_format():
+            """
+            Format the results with "atomic" objects:
+            """
+            for tweet in self.current_tweets:
+                if self.total_results >= self.max_tweets:
+                    break
+                yield self._tweet_func(expand_tweet(tweet))
+                self.total_results += 1
+
+        response_format = {"r": output_response_format, 
+                           "c": output_constructed_format, 
+                           "a": output_atomic_format}
+
+        return response_format.get(self.output_format, "a")()
 
     def stream(self):
         """
@@ -212,21 +291,7 @@ class ResultStream:
 
             if self.current_tweets == None:
                 break
-
-            #Serve up data.tweets.
-            for tweet in self.current_tweets:
-                if self.total_results >= self.max_tweets:
-                    break
-                yield self._tweet_func(tweet)
-                self.total_results += 1
-
-            #Serve up "includes" arrays
-            if self.includes != None:
-                yield self.includes
-
-            #Serve up meta structure.
-            if self.meta != None:
-                yield self.meta
+            yield from self.formatted_output()
 
             if self.next_token and self.total_results < self.max_tweets and self.n_requests <= self.max_requests:
                 self.request_parameters = merge_dicts(self.request_parameters,
@@ -238,6 +303,7 @@ class ResultStream:
                 break
 
         logger.info("ending stream at {} tweets".format(self.total_results))
+        self.current_response = None
         self.current_tweets = None
         self.session.close()
 
@@ -268,6 +334,7 @@ class ResultStream:
         try:
             resp = json.loads(resp.content.decode(resp.encoding))
 
+            self.current_response = resp
             self.current_tweets = resp.get("data", None)
             self.includes = resp.get("includes", None)
             self.meta = resp.get("meta", None)
