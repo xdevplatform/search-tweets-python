@@ -126,11 +126,10 @@ def parse_cmd_args():
                        default=False,
                        help="Inject 'includes' objects into Tweet objects.")
 
-    # argparser.add_argument("--output-options",
-    #                        dest="output_options",
-    #                        default=None,
-    #                        help="Set output options: 'a' - atomic, 'r' - response, 'c' - constructed")
-
+    argparser.add_argument("--output-options",
+                           dest="output_options",
+                           default=None,
+                           help="Set output options: 'a' - atomic, 'r' - response, 'c' - constructed")
 
     argparser.add_argument("--max-tweets", dest="max_tweets",
                            type=int,
