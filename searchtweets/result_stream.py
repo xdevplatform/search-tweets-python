@@ -197,13 +197,25 @@ class ResultStream:
         self.output_format = "a" # output options: 'a' - atomic, 'r' - response, 'c' - constructed" # todo: hardcode for now, use command line arguments
 
     def formatted_output(self):
-        # Defaults: Return empty objects for things missing in includes.
-        includes_media = defaultdict(lambda: {}, {media["media_key"]: media for media in self.includes["media"]}) if "media" in self.includes else defaultdict(lambda: {})
-        includes_users = defaultdict(lambda: {}, {user["id"]: user for user in self.includes["users"]}) if "users" in self.includes else defaultdict(lambda: {})  # todo: check for user expansions (pinned tweet id?)
-        includes_polls = defaultdict(lambda: {}, {poll["id"]: poll for poll in self.includes["polls"]}) if "polls" in self.includes else defaultdict(lambda: {}) 
-        includes_place = defaultdict(lambda: {}, {place["id"]: place for place in self.includes["places"]}) if "places" in self.includes else defaultdict(lambda: {}) 
-        includes_user_names = defaultdict(lambda: {}, {user["username"]: user for user in self.includes["users"]}) if "users" in self.includes else defaultdict(lambda: {})  # find by username, needed for mentions
-        includes_tweets = defaultdict(lambda: {}, {tweet["id"]: tweet for tweet in self.includes["tweets"]}) if "tweets" in self.includes else defaultdict(lambda: {})
+
+        def extract_includes(expansion, _id="id"):
+            """
+            Return empty objects for things missing in includes.
+            """
+            if expansion in self.includes:
+                return defaultdict(
+                    lambda: {},
+                    {include[_id]: include for include in self.includes[expansion]},
+                )
+            else:
+                return defaultdict(lambda: {})
+
+        includes_media = extract_includes("media", "media_key")
+        includes_users = extract_includes("users") # todo: check for user expansions (pinned tweet id?)
+        includes_user_names = extract_includes("users", "username") # find by username, needed for mentions
+        includes_polls = extract_includes("polls")
+        includes_place = extract_includes("places")
+        includes_tweets = extract_includes("tweets")
 
         def expand_tweet(tweet):
             if "author_id" in tweet:
@@ -225,7 +237,8 @@ class ResultStream:
             return tweet
 
         # Now expand the included tweets ahead of time using all of the above
-        includes_tweets = defaultdict(lambda: {}, {tweet["id"]: expand_tweet(tweet) for tweet in self.includes["tweets"]}) if "tweets" in self.includes else defaultdict(lambda: {})
+        if "tweets" in self.includes:
+            includes_tweets = defaultdict(lambda: {}, {tweet["id"]: expand_tweet(tweet) for tweet in self.includes["tweets"]})
 
         def output_response_format():
             """ 
