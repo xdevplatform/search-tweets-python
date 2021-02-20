@@ -119,7 +119,7 @@ def parse_cmd_args():
                            dest="poll_fields",
                            default=None,
                            help="""A comma-delimited list of Twitter Poll JSON attributes to include in endpoint responses. (API default:"id")""")
-    #TODO: add code!
+
     argparser.add_argument("--atomic",
                        dest="atomic",
                        action="store_true",
