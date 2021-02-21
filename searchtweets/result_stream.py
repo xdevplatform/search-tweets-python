@@ -230,7 +230,7 @@ class ResultStream:
                 if "poll_ids" in tweet["attachments"]:
                     tweet["attachments"]["polls"] = list(includes_polls[poll_id] for poll_id in tweet["attachments"]["poll_ids"])
             if "geo" in tweet and len(includes_place) > 0:
-                tweet["geo"] = list(merge_dicts(referenced_place, includes_place[referenced_place['place_id']]) for referenced_place in tweet["geo"])
+                tweet["geo"] = merge_dicts(tweet["geo"], includes_place[tweet["geo"]['place_id']])
             if "entities" in tweet:
                 if "mentions" in tweet["entities"]:
                     tweet["entities"]["mentions"] = list(merge_dicts(referenced_user, includes_user_names[referenced_user['username']]) for referenced_user in tweet["entities"]["mentions"])
