@@ -212,37 +212,65 @@ class ResultStream:
             else:
                 return defaultdict(lambda: {})
 
-        includes_media = extract_includes("media", "media_key")
-        includes_users = extract_includes("users") # todo: check for user expansions (pinned tweet id?)
-        includes_user_names = extract_includes("users", "username") # find by username, needed for mentions
-        includes_polls = extract_includes("polls")
-        includes_place = extract_includes("places")
+        # Users extracted both by id and by username for expanding mentions
+        includes_users = merge_dicts(extract_includes("users"), extract_includes("users", "username"))
+        # Tweets in includes will themselves be expanded
         includes_tweets = extract_includes("tweets")
+        # Media is by media_key, not id
+        includes_media = extract_includes("media", "media_key")
+        includes_polls = extract_includes("polls")
+        includes_places = extract_includes("places")
+        # Errors are returned but unused here
+        includes_errors = extract_includes("errors")
 
-        def expand_tweet(tweet):
-            if "author_id" in tweet:
-                tweet["author"] = includes_users[tweet["author_id"]]
-            if "in_reply_to_user_id" in tweet:
-                tweet["in_reply_to_user"] = includes_users[tweet["in_reply_to_user_id"]]
-            if "attachments" in tweet:
-                if "media_keys" in tweet["attachments"]:
-                    tweet["attachments"]["media"] = list(includes_media[media_key] for media_key in tweet["attachments"]["media_keys"])
-                if "poll_ids" in tweet["attachments"]:
-                    poll_id = tweet["attachments"]["poll_ids"][-1]
-                    tweet["attachments"]["poll"] = includes_polls[poll_id]
-            if "geo" in tweet and len(includes_place) > 0:
-                place_id = tweet["geo"]['place_id']
-                tweet["geo"] = merge_dicts(tweet["geo"], includes_place[place_id])
-            if "entities" in tweet:
-                if "mentions" in tweet["entities"]:
-                    tweet["entities"]["mentions"] = list(merge_dicts(referenced_user, includes_user_names[referenced_user['username']]) for referenced_user in tweet["entities"]["mentions"])
-            if "referenced_tweets" in tweet:
-                tweet["referenced_tweets"] = list(merge_dicts(referenced_tweet, includes_tweets[referenced_tweet['id']]) for referenced_tweet in tweet["referenced_tweets"])
-            return tweet
+        def expand_payload(payload):
+            """
+            Recursively step through an object and sub objects and append extra data. 
+            """
 
-        # Now expand the included tweets ahead of time using all of the above
-        if "tweets" in self.includes:
-            includes_tweets = defaultdict(lambda: {}, {tweet["id"]: expand_tweet(tweet) for tweet in self.includes["tweets"]})
+            # Don't try to expand on primitive values, return strings as is:
+            if isinstance(payload, (str, bool, int, float)):
+                return payload
+            # expand list items individually:
+            elif isinstance(payload, list):
+                payload = [expand_payload(item) for item in payload]
+                return payload
+            # Try to expand on dicts within dicts:
+            elif isinstance(payload, dict):
+                for key, value in payload.items():
+                    payload[key] = expand_payload(value)
+
+            if "author_id" in payload:
+                payload["author"] = includes_users[payload["author_id"]]
+
+            if "in_reply_to_user_id" in payload:
+                payload["in_reply_to_user"] = includes_users[payload["in_reply_to_user_id"]]
+
+            if "media_keys" in payload:
+                payload["media"] = list(includes_media[media_key] for media_key in payload["media_keys"])
+
+            if "poll_ids" in payload:
+                poll_id = payload["poll_ids"][-1] # always 1, only 1 poll per tweet.
+                payload["poll"] = includes_polls[poll_id]
+
+            if "geo" in payload:
+                place_id = payload["geo"]['place_id']
+                payload["geo"] = merge_dicts(payload["geo"], includes_places[place_id])
+
+            if "mentions" in payload:
+                payload["mentions"] = list(merge_dicts(referenced_user, includes_users[referenced_user['username']]) for referenced_user in payload["mentions"])
+
+            if "referenced_tweets" in payload:
+                payload["referenced_tweets"] = list(merge_dicts(referenced_tweet, includes_tweets[referenced_tweet['id']]) for referenced_tweet in payload["referenced_tweets"])
+
+            if "pinned_tweet_id" in payload:
+                payload["pinned_tweet"] = includes_tweets[payload["pinned_tweet_id"]]
+
+            return payload
+
+        # First, expand the included tweets, before processing actual result tweets:
+        for included_id, included_tweet in extract_includes("tweets").items():
+            includes_tweets[included_id] = expand_payload(included_tweet)
 
         def output_response_format():
             """ 
@@ -279,14 +307,14 @@ class ResultStream:
             for tweet in self.current_tweets:
                 if self.total_results >= self.max_tweets:
                     break
-                yield self._tweet_func(expand_tweet(tweet))
+                yield self._tweet_func(expand_payload(tweet))
                 self.total_results += 1
 
         response_format = {"r": output_response_format, 
                            "c": output_constructed_format, 
                            "a": output_atomic_format}
 
-        return response_format.get(self.output_format, "a")()
+        return response_format.get(self.output_format)()
 
     def stream(self):
         """
