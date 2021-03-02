@@ -119,7 +119,7 @@ Command-line options
                         credentials.
    --credential-file-key CREDENTIAL_YAML_KEY
                         the key in the credential file used for this session's
-                        credentials. Defaults to search_tweets_api
+                        credentials. Defaults to search_tweets_v2
    --env-overwrite ENV_OVERWRITE
                         Overwrite YAML-parsed credentials with any set
                         environment variables. See API docs or readme for
@@ -222,7 +222,7 @@ The simplest credential file should look like this:
 
 By default, this library expects this file at "~/.twitter_keys.yaml", but you can pass the relevant location as needed, either with the --credential-file flag for the command-line app or as demonstrated below in a Python program.
 
-Both above examples require no special command-line arguments or in-program arguments. The credential parsing methods, unless otherwise specified, will look for a YAML key called search_tweets_api.
+Both above examples require no special command-line arguments or in-program arguments. The credential parsing methods, unless otherwise specified, will look for a YAML key called search_tweets_v2.
 
 For developers who have multiple endpoints and/or search products, you can keep all credentials in the same file and specify specific keys to use. --credential-file-key specifies this behavior in the command line app. An example:
 
@@ -396,7 +396,7 @@ Custom headers can be specified in a config file, under a specific credentials k
 
 .. code:: yaml
 
-  search_tweets_api:
+  search_tweets_v2:
     endpoint: <FULL_URL_OF_ENDPOINT>
     bearer_token: <AAAAAloooooogString>
     extra_headers:

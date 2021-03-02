@@ -138,7 +138,7 @@ def load_credentials(filename=None,
         {'endpoint': 'https://endpoint'}
 
     """
-    yaml_key = yaml_key if yaml_key is not None else "search_tweets_api"
+    yaml_key = yaml_key if yaml_key is not None else "search_tweets_v2"
     filename = "~/.twitter_keys.yaml" if filename is None else filename
 
     yaml_vars = _load_yaml_credentials(filename=filename, yaml_key=yaml_key)
