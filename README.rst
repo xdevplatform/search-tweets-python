@@ -36,9 +36,9 @@ Features
 - Supports a new "polling" mode using the ``since-id`` search request parameter. The ``since-id``, along with the new ``until-id`` provide a way to navigate the public Tweet archive by Tweet ID.
 - Supports additional ways to specify ``start-time`` and ``end-time`` request parameters:
 
-  - d# - For example, 'd2' sets ``start-time`` to (exactly) two days ago.
-  - h# - For example, 'h12' sets ``start-time`` to (exactly) twelve hours ago.
-  - m# - For example, 'm15' sets ``start-time`` to (exactly) fifteen minutes ago.
+  - #d - For example, '2d' sets ``start-time`` to (exactly) two days ago.
+  - #h - For example, '12h' sets ``start-time`` to (exactly) twelve hours ago.
+  - #m - For example, '15m' sets ``start-time`` to (exactly) fifteen minutes ago.
 
   These are handy for kicking off searches with a backfill period, and also work with the ``end-time`` request parameter.
 
