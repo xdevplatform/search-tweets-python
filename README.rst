@@ -33,6 +33,7 @@ Features
 
 - Supports Twitter API v2 'recent' and 'all' search.
 - Supports the configuration of v2 `expansions <https://developer.twitter.com/en/docs/twitter-api/expansions>`_ and `fields <https://developer.twitter.com/en/docs/twitter-api/fields>`_.
+- Supports multiple output formats: Original API responses (new default), as a stream of messages (previous default in versions <1.0.7), and new 'atomic' format with expansions included in tweets.
 - Supports a new "polling" mode using the ``since-id`` search request parameter. The ``since-id``, along with the new ``until-id`` provide a way to navigate the public Tweet archive by Tweet ID.
 - Supports additional ways to specify ``start-time`` and ``end-time`` request parameters:
 
@@ -77,7 +78,7 @@ In this spirit of updating the parlance used, note that a core method provided b
 These expanded objects include Users, referenced Tweets, and attached media.  In addition to the `data` and `includes` arrays, the search endpoint also provides a `meta` object that provides the max and min Tweet IDs included in the response,
 along with a `next_token` if there is another 'page' of data to request.
 
-Currently, the v2 client returns the Tweets in the `data` array as individual (and atomic) JSON Tweet objects. This matches the behavior of the original search client. However, after yielding the individual Tweet objects, the client outputs arrays of User, Tweet, and media objects from the `includes` array, followed by the `meta` object.
+Currently, the v2 client returns the original API responses. Optionally, it can output a stream of Tweet objects with all expansions included in each tweet. Alternatively, it can output a stream of messages, yielding the individual Tweet objects, arrays of User, Tweet, and media objects from the `includes` array, followed by the `meta` object. This matches the behavior of the original search client, and was the default output format in versions 1.0.7 and earlier.
 
 Finally, the original version of search-tweets-python used a `Tweet Parser <https://twitterdev.github.io/tweet_parser/>`__ to help manage the differences between two different JSON formats ("original" and "Activity Stream"). With v2, there is just one version of Tweet JSON, so this Tweet Parser is not used.
 In the original code, this Tweet parser was envoked with a `tweetify=True directive. With this v2 version, this use of the Tweet Parser is turned off by instead using `tweetify=False`.
@@ -110,6 +111,8 @@ Command-line options
    [--filename-prefix FILENAME_PREFIX]
    [--no-print-stream]
    [--print-stream]
+   [--output-options]
+   [--atomic]
    [--extra-headers EXTRA_HEADERS]
    [--debug]
 
@@ -178,6 +181,13 @@ Command-line options
                         stored.
    --no-print-stream     disable print streaming
    --print-stream        Print tweet stream to stdout
+   --output-options      Set output format: 
+                         'r' Unmodified API Responses. (default).
+                         'a' Atomic Tweets: Tweet objects with expansions inline.
+                         'm' Message Stream: Tweets, Expansions, and Metadata
+                         as a stream of messages.
+   --atomic              Output "Atomic" Tweet format. 
+                         Equivalent to setting --output-format 'a'.
    --extra-headers EXTRA_HEADERS
                         JSON-formatted str representing a dict of additional
                         HTTP request headers
