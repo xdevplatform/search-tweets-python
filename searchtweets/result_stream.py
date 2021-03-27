@@ -204,7 +204,7 @@ class ResultStream:
             """
             Return empty objects for things missing in includes.
             """
-            if expansion in self.includes:
+            if self.includes is not None and expansion in self.includes:
                 return defaultdict(
                     lambda: {},
                     {include[_id]: include for include in self.includes[expansion]},
