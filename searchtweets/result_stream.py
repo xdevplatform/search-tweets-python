@@ -280,25 +280,6 @@ class ResultStream:
             yield self.current_response
             self.total_results += self.meta['result_count']
 
-        def output_constructed_format():
-            """ 
-            output the way it was implemented originally
-            """
-            #Serve up data.tweets.
-            for tweet in self.current_tweets:
-                if self.total_results >= self.max_tweets:
-                    break
-                yield self._tweet_func(tweet)
-                self.total_results += 1
-
-            #Serve up "includes" arrays
-            if self.includes != None:
-                yield self.includes
-
-            #Serve up meta structure.
-            if self.meta != None:
-                yield self.meta
-
         def output_atomic_format():
             """
             Format the results with "atomic" objects:
@@ -309,9 +290,29 @@ class ResultStream:
                 yield self._tweet_func(expand_payload(tweet))
                 self.total_results += 1
 
-        response_format = {"r": output_response_format, 
-                           "c": output_constructed_format, 
-                           "a": output_atomic_format}
+        def output_message_stream_format():
+            """ 
+            output as a stream of messages, 
+            the way it was implemented originally
+            """
+            # Serve up data.tweets.
+            for tweet in self.current_tweets:
+                if self.total_results >= self.max_tweets:
+                    break
+                yield self._tweet_func(tweet)
+                self.total_results += 1
+
+            # Serve up "includes" arrays, this includes errors
+            if self.includes != None:
+                yield self.includes
+
+            # Serve up meta structure.
+            if self.meta != None:
+                yield self.meta
+
+        response_format = {"r": output_response_format,
+                           "a": output_atomic_format,
+                           "m": output_message_stream_format}
 
         return response_format.get(self.output_format)()
 
