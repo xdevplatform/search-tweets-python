@@ -120,8 +120,8 @@ def parse_cmd_args():
                            default=None,
                            help="""A comma-delimited list of Twitter Poll JSON attributes to include in endpoint responses. (API default:"id")""")
 
-    argparser.add_argument("--output-options",
-                           dest="output_options",
+    argparser.add_argument("--output-format",
+                           dest="output_format",
                            default=None,
                            help="""Set output format: 
                                    'r' Unmodified API Responses. (default).
