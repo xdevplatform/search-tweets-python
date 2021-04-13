@@ -18,6 +18,7 @@ except ImportError:
     import json
 
 from .utils import merge_dicts
+from collections import defaultdict
 
 from ._version import VERSION
 
@@ -169,7 +170,7 @@ class ResultStream:
     session_request_counter = 0
 
     def __init__(self, endpoint, request_parameters, bearer_token=None, extra_headers_dict=None, max_tweets=500,
-                 max_requests=None, **kwargs):
+                 max_requests=None, atomic=False, output_options="r", **kwargs):
 
         self.bearer_token = bearer_token
         self.extra_headers_dict = extra_headers_dict
@@ -183,6 +184,7 @@ class ResultStream:
         self.total_results = 0
         self.n_requests = 0
         self.session = None
+        self.current_response = None
         self.current_tweets = None
         self.next_token = None
         self.stream_started = False
@@ -191,6 +193,128 @@ class ResultStream:
         self.max_requests = (max_requests if max_requests is not None
                              else 10 ** 9)
         self.endpoint = endpoint
+        if atomic:
+            self.output_format = "a"
+        self.output_format = output_options
+
+    def formatted_output(self):
+
+        def extract_includes(expansion, _id="id"):
+            """
+            Return empty objects for things missing in includes.
+            """
+            if self.includes is not None and expansion in self.includes:
+                return defaultdict(
+                    lambda: {},
+                    {include[_id]: include for include in self.includes[expansion]},
+                )
+            else:
+                return defaultdict(lambda: {})
+
+        # Users extracted both by id and by username for expanding mentions
+        includes_users = merge_dicts(extract_includes("users"), extract_includes("users", "username"))
+        # Tweets in includes will themselves be expanded
+        includes_tweets = extract_includes("tweets")
+        # Media is by media_key, not id
+        includes_media = extract_includes("media", "media_key")
+        includes_polls = extract_includes("polls")
+        includes_places = extract_includes("places")
+        # Errors are returned but unused here
+        includes_errors = extract_includes("errors")
+
+        def expand_payload(payload):
+            """
+            Recursively step through an object and sub objects and append extra data. 
+            """
+
+            # Don't try to expand on primitive values, return strings as is:
+            if isinstance(payload, (str, bool, int, float)):
+                return payload
+            # expand list items individually:
+            elif isinstance(payload, list):
+                payload = [expand_payload(item) for item in payload]
+                return payload
+            # Try to expand on dicts within dicts:
+            elif isinstance(payload, dict):
+                for key, value in payload.items():
+                    payload[key] = expand_payload(value)
+
+            if "author_id" in payload:
+                payload["author"] = includes_users[payload["author_id"]]
+
+            if "in_reply_to_user_id" in payload:
+                payload["in_reply_to_user"] = includes_users[payload["in_reply_to_user_id"]]
+
+            if "media_keys" in payload:
+                payload["media"] = list(includes_media[media_key] for media_key in payload["media_keys"])
+
+            if "poll_ids" in payload:
+                poll_id = payload["poll_ids"][-1] # always 1, only 1 poll per tweet.
+                payload["poll"] = includes_polls[poll_id]
+
+            if "geo" in payload:
+                place_id = payload["geo"]['place_id']
+                payload["geo"] = merge_dicts(payload["geo"], includes_places[place_id])
+
+            if "mentions" in payload:
+                payload["mentions"] = list(merge_dicts(referenced_user, includes_users[referenced_user['username']]) for referenced_user in payload["mentions"])
+
+            if "referenced_tweets" in payload:
+                payload["referenced_tweets"] = list(merge_dicts(referenced_tweet, includes_tweets[referenced_tweet['id']]) for referenced_tweet in payload["referenced_tweets"])
+
+            if "pinned_tweet_id" in payload:
+                payload["pinned_tweet"] = includes_tweets[payload["pinned_tweet_id"]]
+
+            return payload
+
+        # First, expand the included tweets, before processing actual result tweets:
+        for included_id, included_tweet in extract_includes("tweets").items():
+            includes_tweets[included_id] = expand_payload(included_tweet)
+
+        def output_response_format():
+            """ 
+            output the response as 1 "page" per line
+            """
+            if self.total_results >= self.max_tweets:
+                return
+            yield self.current_response
+            self.total_results += self.meta['result_count']
+
+        def output_atomic_format():
+            """
+            Format the results with "atomic" objects:
+            """
+            for tweet in self.current_tweets:
+                if self.total_results >= self.max_tweets:
+                    break
+                yield self._tweet_func(expand_payload(tweet))
+                self.total_results += 1
+
+        def output_message_stream_format():
+            """ 
+            output as a stream of messages, 
+            the way it was implemented originally
+            """
+            # Serve up data.tweets.
+            for tweet in self.current_tweets:
+                if self.total_results >= self.max_tweets:
+                    break
+                yield self._tweet_func(tweet)
+                self.total_results += 1
+
+            # Serve up "includes" arrays, this includes errors
+            if self.includes != None:
+                yield self.includes
+
+            # Serve up meta structure.
+            if self.meta != None:
+                yield self.meta
+
+        response_format = {"r": output_response_format,
+                           "a": output_atomic_format,
+                           "m": output_message_stream_format}
+
+        return response_format.get(self.output_format)()
 
     def stream(self):
         """
@@ -212,21 +336,7 @@ class ResultStream:
 
             if self.current_tweets == None:
                 break
-
-            #Serve up data.tweets.
-            for tweet in self.current_tweets:
-                if self.total_results >= self.max_tweets:
-                    break
-                yield self._tweet_func(tweet)
-                self.total_results += 1
-
-            #Serve up "includes" arrays
-            if self.includes != None:
-                yield self.includes
-
-            #Serve up meta structure.
-            if self.meta != None:
-                yield self.meta
+            yield from self.formatted_output()
 
             if self.next_token and self.total_results < self.max_tweets and self.n_requests <= self.max_requests:
                 self.request_parameters = merge_dicts(self.request_parameters,
@@ -238,6 +348,7 @@ class ResultStream:
                 break
 
         logger.info("ending stream at {} tweets".format(self.total_results))
+        self.current_response = None
         self.current_tweets = None
         self.session.close()
 
@@ -268,6 +379,7 @@ class ResultStream:
         try:
             resp = json.loads(resp.content.decode(resp.encoding))
 
+            self.current_response = resp
             self.current_tweets = resp.get("data", None)
             self.includes = resp.get("includes", None)
             self.meta = resp.get("meta", None)
