@@ -187,6 +187,7 @@ def gen_params_from_config(config_dict):
              "bearer_token": config_dict.get("bearer_token"),
              "extra_headers_dict": config_dict.get("extra_headers_dict",None),
              "request_parameters": query,
+             "output_format": config_dict.get("output_format"),
              "results_per_file": intify(config_dict.get("results_per_file")),
              "max_tweets": intify(config_dict.get("max_tweets")),
              "max_pages": intify(config_dict.get("max_pages", None))}

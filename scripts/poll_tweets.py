@@ -39,10 +39,10 @@ def parse_cmd_args():
 
     argparser.add_argument("--credential-file-key",
                            dest="credential_yaml_key",
-                           default=None,
+                           default="search_tweets_v2",
                            help=("the key in the credential file used "
                                  "for this session's credentials. "
-                                 "Defaults to search_tweets_api"))
+                                 "Defaults to search_tweets_v2"))
 
     argparser.add_argument("--env-overwrite",
                            dest="env_overwrite",
@@ -125,7 +125,7 @@ def parse_cmd_args():
 
     argparser.add_argument("--output-format",
                            dest="output_format",
-                           default=None,
+                           default="r",
                            help="""Set output format: 
                                    'r' Unmodified API Responses. (default).
                                    'a' Atomic Tweets: Tweet objects with expansions inline.
