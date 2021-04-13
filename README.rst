@@ -181,13 +181,11 @@ Command-line options
                         stored.
    --no-print-stream     disable print streaming
    --print-stream        Print tweet stream to stdout
-   --output-options      Set output format: 
+   --output-format      Set output format: 
                          'r' Unmodified API Responses. (default).
                          'a' Atomic Tweets: Tweet objects with expansions inline.
                          'm' Message Stream: Tweets, Expansions, and Metadata
                          as a stream of messages.
-   --atomic              Output "Atomic" Tweet format. 
-                         Equivalent to setting --output-format 'a'.
    --extra-headers EXTRA_HEADERS
                         JSON-formatted str representing a dict of additional
                         HTTP request headers
