@@ -123,6 +123,14 @@ def parse_cmd_args():
                            default=None,
                            help="""A comma-delimited list of Twitter Poll JSON attributes to include in endpoint responses. (API default:"id")""")
 
+    argparser.add_argument("--output-format",
+                           dest="output_format",
+                           default=None,
+                           help="""Set output format: 
+                                   'r' Unmodified API Responses. (default).
+                                   'a' Atomic Tweets: Tweet objects with expansions inline.
+                                   'm' Message Stream: Tweets, Expansions, and Metadata as a stream of messages.""")
+
     #client options.
     argparser.add_argument("--max-tweets", dest="max_tweets",
                            type=int,
