@@ -170,7 +170,7 @@ class ResultStream:
     session_request_counter = 0
 
     def __init__(self, endpoint, request_parameters, bearer_token=None, extra_headers_dict=None, max_tweets=500,
-                 max_requests=None, atomic=False, output_options="r", **kwargs):
+                 max_requests=None, output_options="r", **kwargs):
 
         self.bearer_token = bearer_token
         self.extra_headers_dict = extra_headers_dict
@@ -193,8 +193,6 @@ class ResultStream:
         self.max_requests = (max_requests if max_requests is not None
                              else 10 ** 9)
         self.endpoint = endpoint
-        if atomic:
-            self.output_format = "a"
         self.output_format = output_options
 
     def formatted_output(self):

@@ -120,12 +120,6 @@ def parse_cmd_args():
                            default=None,
                            help="""A comma-delimited list of Twitter Poll JSON attributes to include in endpoint responses. (API default:"id")""")
 
-    argparser.add_argument("--atomic",
-                       dest="atomic",
-                       action="store_true",
-                       default=False,
-                       help="Inject 'includes' objects into Tweet objects.")
-
     argparser.add_argument("--output-options",
                            dest="output_options",
                            default=None,
