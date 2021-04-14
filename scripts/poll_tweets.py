@@ -127,9 +127,9 @@ def parse_cmd_args():
                            dest="output_format",
                            default="r",
                            help="""Set output format: 
-                                   'r' Unmodified API Responses. (default).
-                                   'a' Atomic Tweets: Tweet objects with expansions inline.
-                                   'm' Message Stream: Tweets, Expansions, and Metadata as a stream of messages.""")
+                                   'r' Unmodified API [R]esponses. (default).
+                                   'a' [A]tomic Tweets: Tweet objects with expansions inline.
+                                   'm' [M]essage stream: Tweets, expansions, and pagination metadata as a stream of messages.""")
 
     #client options.
     argparser.add_argument("--max-tweets", dest="max_tweets",
