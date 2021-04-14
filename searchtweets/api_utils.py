@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2020 Twitter, Inc.
+# Copyright 2021 Twitter, Inc.
 # Licensed under the MIT License
 # https://opensource.org/licenses/MIT
 """
@@ -190,7 +190,8 @@ def gen_params_from_config(config_dict):
              "output_format": config_dict.get("output_format"),
              "results_per_file": intify(config_dict.get("results_per_file")),
              "max_tweets": intify(config_dict.get("max_tweets")),
-             "max_pages": intify(config_dict.get("max_pages", None))}
+             "max_pages": intify(config_dict.get("max_pages", None)),
+             "output_option": config_dict.get("output_option")}
 
     return _dict
 

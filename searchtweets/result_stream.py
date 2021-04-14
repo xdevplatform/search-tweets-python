@@ -341,7 +341,15 @@ class ResultStream:
                                                       {"next_token": self.next_token})
                 logger.info("paging; total requests read so far: {}"
                             .format(self.n_requests))
+
+                #If hitting the "all" search endpoint, wait one second since that endpoint is currently
+                #limited to one request per sleep.
+                #Revisit and make configurable when the requests-per-second gets revisited.
+                if "tweets/search/all" in self.endpoint:
+                    time.sleep(1)
+
                 self.execute_request()
+
             else:
                 break
 
