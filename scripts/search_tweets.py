@@ -91,9 +91,9 @@ def parse_cmd_args():
                                 "'max_results' in the API")
 
     argparser.add_argument("--expansions",
-                       dest="expansions",
-                       default=None,
-                       help="""A comma-delimited list of expansions. Specified expansions results in full objects in the 'includes' response object.""")
+                           dest="expansions",
+                           default=None,
+                           help="""A comma-delimited list of expansions. Specified expansions results in full objects in the 'includes' response object.""")
 
     argparser.add_argument("--tweet-fields",
                            dest="tweet_fields",
@@ -120,9 +120,9 @@ def parse_cmd_args():
                            default=None,
                            help="""A comma-delimited list of Twitter Poll JSON attributes to include in endpoint responses. (API default:"id")""")
 
-    argparser.add_argument("--output-option",
-                           dest="output_option",
-                           default=None,
+    argparser.add_argument("--output-format",
+                           dest="output_format",
+                           default="r",
                            help="""Set output format: 
                                    'r' Unmodified API [R]esponses. (default).
                                    'a' [A]tomic Tweets: Tweet objects with expansions inline.
@@ -160,8 +160,6 @@ def parse_cmd_args():
                            action="store_true",
                            default=True,
                            help="Print tweet stream to stdout")
-
-
 
     argparser.add_argument("--extra-headers",
                            dest="extra_headers",
