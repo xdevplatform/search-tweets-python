@@ -33,7 +33,10 @@ Features
 
 - Supports Twitter API v2 'recent' and 'all' search.
 - Supports the configuration of v2 `expansions <https://developer.twitter.com/en/docs/twitter-api/expansions>`_ and `fields <https://developer.twitter.com/en/docs/twitter-api/fields>`_.
-- Supports multiple output formats: Original API responses (new default), as a stream of messages (previous default in versions <1.0.7), and new 'atomic' format with expansions included in tweets.
+- Supports multiple output formats: 
+  * Original API responses (new default)
+  * Stream of messages (previous default in versions <1.0.7)
+  * New 'atomic' format with expansions included in tweets.
 - Supports a new "polling" mode using the ``since-id`` search request parameter. The ``since-id``, along with the new ``until-id`` provide a way to navigate the public Tweet archive by Tweet ID.
 - Supports additional ways to specify ``start-time`` and ``end-time`` request parameters:
 
