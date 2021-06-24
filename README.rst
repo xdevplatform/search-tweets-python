@@ -14,9 +14,9 @@ This client library supports these endpoints:
 
 - /2/tweets/search/recent
 - /2/tweets/counts/recent
-
 - /2/tweets/search/all
 - /2/tweets/counts/all
+
 The search endpoint you want to hit is specified in the library's YAML file:
 
 .. code:: yaml
@@ -98,7 +98,7 @@ In the original code, this Tweet parser was envoked with a `tweetify=True direct
 Command-line options
 ====================
 
-.. code:: 
+.. code:: bash
 
 usage: search_tweets.py 
                         [-h] [--credential-file CREDENTIAL_FILE] [--credential-file-key CREDENTIAL_YAML_KEY] [--env-overwrite ENV_OVERWRITE] [--config-file CONFIG_FILENAME] [--query QUERY]
@@ -549,8 +549,6 @@ endpoint to the count endpoint, and you have to specify the
 The process is very similar to grabbing Tweets, but has some minor
 differences.
 
-*Caveat - v2 Basic Access does not currently provide access to the Tweet "counts" endpoint.*
-
 .. code:: python
 
    count_rule = gen_request_parameters("snow has:media", granularity="day")
@@ -559,14 +557,9 @@ differences.
 
 Our results are pretty straightforward and can be rapidly used.
 
-.. code:: python
-
-   counts
-
 ::
+
 {"data": [{"end": "2021-05-24T00:00:00.000Z", "start": "2021-05-23T00:00:00.000Z", "tweet_count": 45}, {"end": "2021-05-25T00:00:00.000Z", "start": "2021-05-24T00:00:00.000Z", "tweet_count": 38}, {"end": "2021-05-26T00:00:00.000Z", "start": "2021-05-25T00:00:00.000Z", "tweet_count": 62}, {"end": "2021-05-27T00:00:00.000Z", "start": "2021-05-26T00:00:00.000Z", "tweet_count": 136}, {"end": "2021-05-28T00:00:00.000Z", "start": "2021-05-27T00:00:00.000Z", "tweet_count": 154}, {"end": "2021-05-29T00:00:00.000Z", "start": "2021-05-28T00:00:00.000Z", "tweet_count": 101}, {"end": "2021-05-30T00:00:00.000Z", "start": "2021-05-29T00:00:00.000Z", "tweet_count": 104}, {"end": "2021-05-31T00:00:00.000Z", "start": "2021-05-30T00:00:00.000Z", "tweet_count": 60}, {"end": "2021-06-01T00:00:00.000Z", "start": "2021-05-31T00:00:00.000Z", "tweet_count": 70}, {"end": "2021-06-02T00:00:00.000Z", "start": "2021-06-01T00:00:00.000Z", "tweet_count": 73}, {"end": "2021-06-03T00:00:00.000Z", "start": "2021-06-02T00:00:00.000Z", "tweet_count": 80}, {"end": "2021-06-04T00:00:00.000Z", "start": "2021-06-03T00:00:00.000Z", "tweet_count": 426}, {"end": "2021-06-05T00:00:00.000Z", "start": "2021-06-04T00:00:00.000Z", "tweet_count": 99}, {"end": "2021-06-06T00:00:00.000Z", "start": "2021-06-05T00:00:00.000Z", "tweet_count": 82}, {"end": "2021-06-07T00:00:00.000Z", "start": "2021-06-06T00:00:00.000Z", "tweet_count": 74}, {"end": "2021-06-08T00:00:00.000Z", "start": "2021-06-07T00:00:00.000Z", "tweet_count": 137}, {"end": "2021-06-09T00:00:00.000Z", "start": "2021-06-08T00:00:00.000Z", "tweet_count": 129}, {"end": "2021-06-10T00:00:00.000Z", "start": "2021-06-09T00:00:00.000Z", "tweet_count": 76}, {"end": "2021-06-11T00:00:00.000Z", "start": "2021-06-10T00:00:00.000Z", "tweet_count": 103}, {"end": "2021-06-12T00:00:00.000Z", "start": "2021-06-11T00:00:00.000Z", "tweet_count": 106}, {"end": "2021-06-13T00:00:00.000Z", "start": "2021-06-12T00:00:00.000Z", "tweet_count": 81}, {"end": "2021-06-14T00:00:00.000Z", "start": "2021-06-13T00:00:00.000Z", "tweet_count": 76}, {"end": "2021-06-15T00:00:00.000Z", "start": "2021-06-14T00:00:00.000Z", "tweet_count": 118}, {"end": "2021-06-16T00:00:00.000Z", "start": "2021-06-15T00:00:00.000Z", "tweet_count": 109}, {"end": "2021-06-17T00:00:00.000Z", "start": "2021-06-16T00:00:00.000Z", "tweet_count": 97}, {"end": "2021-06-18T00:00:00.000Z", "start": "2021-06-17T00:00:00.000Z", "tweet_count": 139}, {"end": "2021-06-19T00:00:00.000Z", "start": "2021-06-18T00:00:00.000Z", "tweet_count": 150}, {"end": "2021-06-20T00:00:00.000Z", "start": "2021-06-19T00:00:00.000Z", "tweet_count": 64}, {"end": "2021-06-21T00:00:00.000Z", "start": "2021-06-20T00:00:00.000Z", "tweet_count": 73}, {"end": "2021-06-22T00:00:00.000Z", "start": "2021-06-21T00:00:00.000Z", "tweet_count": 103}, {"end": "2021-06-23T00:00:00.000Z", "start": "2021-06-22T00:00:00.000Z", "tweet_count": 101}], "meta": {"total_tweet_count": 3266}}
-
-
 
 Contributing
 ============
