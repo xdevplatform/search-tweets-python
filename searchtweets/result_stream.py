@@ -18,6 +18,7 @@ except ImportError:
     import json
 
 from .utils import merge_dicts
+from .api_utils import infer_endpoint, change_to_count_endpoint
 from collections import defaultdict
 
 from ._version import VERSION
@@ -172,7 +173,7 @@ class ResultStream:
     def __init__(self, endpoint, request_parameters, bearer_token=None, extra_headers_dict=None, max_tweets=500,
                  max_requests=None, output_format="r", **kwargs):
 
-        self.bearer_token = bearer_token
+        self.bearer_token = bearer_token #TODO: Add support for user tokens.
         self.extra_headers_dict = extra_headers_dict
         if isinstance(request_parameters, str):
             request_parameters = json.loads(request_parameters)
@@ -192,7 +193,21 @@ class ResultStream:
         # magic number of requests!
         self.max_requests = (max_requests if max_requests is not None
                              else 10 ** 9)
-        self.endpoint = endpoint
+
+
+
+        #Branching to counts or Tweets endpoint.
+        #TODO: unit testing
+        self.search_type = 'tweets'
+        #infer_endpoint(request_parameters)
+        #change_to_count_endpoint(endpoint)
+        self.endpoint = (change_to_count_endpoint(endpoint)
+                         if infer_endpoint(request_parameters) == "counts"
+                         else endpoint)
+
+        if 'counts' in self.endpoint:
+            self.search_type = 'counts'
+
         self.output_format = output_format
 
     def formatted_output(self):
@@ -209,6 +224,7 @@ class ResultStream:
             else:
                 return defaultdict(lambda: {})
 
+        #TODO - counts does not have extractions.... So, skip if you caunt.
         # Users extracted both by id and by username for expanding mentions
         includes_users = merge_dicts(extract_includes("users"), extract_includes("users", "username"))
         # Tweets in includes will themselves be expanded
@@ -265,18 +281,25 @@ class ResultStream:
 
             return payload
 
+        #TODO: Tweets or Counts?
         # First, expand the included tweets, before processing actual result tweets:
-        for included_id, included_tweet in extract_includes("tweets").items():
-            includes_tweets[included_id] = expand_payload(included_tweet)
+        if self.search_type == 'tweets':
+            for included_id, included_tweet in extract_includes("tweets").items():
+                includes_tweets[included_id] = expand_payload(included_tweet)
 
         def output_response_format():
             """ 
             output the response as 1 "page" per line
             """
-            if self.total_results >= self.max_tweets:
-                return
+            #TODO: counts details
+            if self.search_type == 'tweets':
+                if self.total_results >= self.max_tweets:
+                    return
             yield self.current_response
-            self.total_results += self.meta['result_count']
+
+            #With counts, there is nothing to count here... we aren't counting Tweets (but should count requests)
+            if self.search_type == 'tweets':
+                self.total_results += self.meta['result_count']
 
         def output_atomic_format():
             """
@@ -327,6 +350,7 @@ class ResultStream:
             >>> results = list(ResultStream(**kwargs).stream())
         """
         self.init_session()
+        #self.check_counts() #TODO: not needed if no Tweet Parser being used.
         self.execute_request()
         self.stream_started = True
 
@@ -346,7 +370,7 @@ class ResultStream:
                 #limited to one request per sleep.
                 #Revisit and make configurable when the requests-per-second gets revisited.
                 if "tweets/search/all" in self.endpoint:
-                    time.sleep(1)
+                    time.sleep(2)
 
                 self.execute_request()
 
@@ -366,6 +390,17 @@ class ResultStream:
             self.session.close()
         self.session = make_session(self.bearer_token,
                                     self.extra_headers_dict)
+
+
+    #TODO: not needed if no Tweet Parser being used.
+    def check_counts(self):
+        """
+        Disables tweet parsing if the count API is used.
+        """
+        if "counts" in re.split("[/.]", self.endpoint):
+            logger.info("disabling tweet parsing due to counts API usage")
+            self._tweet_func = lambda x: x
+
 
     def execute_request(self):
         """

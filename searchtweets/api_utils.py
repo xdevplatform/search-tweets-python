@@ -18,6 +18,9 @@ except ImportError:
 
 __all__ = ["gen_request_parameters",
            "gen_params_from_config",
+           "infer_endpoint",
+           "change_to_count_endpoint",
+           "validate_count_api",
            "convert_utc_time"]
 
 logger = logging.getLogger(__name__)
@@ -81,7 +84,7 @@ def convert_utc_time(datetime_str):
 
     return _date.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-def gen_request_parameters(query, results_per_call=None,
+def gen_request_parameters(query, granularity, results_per_call=None,
                            start_time=None, end_time=None, since_id=None, until_id=None,
                            tweet_fields=None, user_fields=None, media_fields=None,
                            place_fields=None, poll_fields=None,
@@ -142,9 +145,45 @@ def gen_request_parameters(query, results_per_call=None,
         payload["poll.fields"] = poll_fields
     if expansions:
         payload["expansions"] = expansions
+    if granularity:
+        payload["granularity"] = granularity
 
     return json.dumps(payload) if stringify else payload
 
+def infer_endpoint(request_parameters):
+    """
+    Infer which endpoint should be used for a given rule payload.
+    """
+    if 'granularity' in request_parameters.keys():
+        return 'counts'
+    else:
+        return 'search' #TODO: else "Tweets" makes more sense?
+
+def change_to_count_endpoint(endpoint):
+    """Utility function to change a normal 'get Tweets' endpoint to a ``count`` api
+    endpoint. Returns the same endpoint if it's already a valid count endpoint.
+    Args:
+        endpoint (str): your api endpoint
+    Returns:
+        str: the modified endpoint for a count endpoint.
+
+        Recent search Tweet endpoint:  https://api.twitter.com/2/tweets/search/recent
+        Recent search Counts endpoint: https://api.twitter.com/2/tweets/counts/recent
+
+        FAS Tweet endpoint:  https://api.twitter.com/2/tweets/search/all
+        FAS Counts endpoint: https://api.twitter.com/2/tweets/counts/all
+
+    """
+    if 'counts' in endpoint:
+        return endpoint
+    else: #Add in counts to endpoint URL. #TODO: update to *build* URL by injecting 'counts' to handle FAS.
+        #Insert 'counts' token as the second to last token.
+        #tokens = filter(lambda x: x != '', re.split("[/:]", endpoint))
+        tokens = endpoint.split('/')
+        search_type = tokens[-1]
+        base = endpoint.split('tweets')
+        endpoint = base[0] + 'tweets/counts/' + search_type
+        return endpoint
 
 def gen_params_from_config(config_dict):
     """
@@ -170,6 +209,7 @@ def gen_params_from_config(config_dict):
     results_per_call = intify(config_dict.get("results_per_call", None))
 
     query = gen_request_parameters(query=config_dict["query"],
+                            granularity=config_dict.get("granularity", None),
                             start_time=config_dict.get("start_time", None),
                             end_time=config_dict.get("end_time", None),
                             since_id=config_dict.get("since_id", None),
@@ -181,7 +221,6 @@ def gen_params_from_config(config_dict):
                             poll_fields=config_dict.get("poll_fields", None),
                             expansions=config_dict.get("expansions", None),
                             results_per_call=results_per_call)
-                            #count_bucket=config_dict.get("count_bucket", None))
 
     _dict = {"endpoint": endpoint,
              "bearer_token": config_dict.get("bearer_token"),
@@ -194,7 +233,21 @@ def gen_params_from_config(config_dict):
 
     return _dict
 
-
-
+#TODO: Check if this is still needed, when code dynamically checks/updates endpoint based on use of 'granularity.'
+def validate_count_api(request_parameters, endpoint):
+    """
+    Ensures that the counts api is set correctly in a payload.
+    """
+    rule = (request_parameters if isinstance(request_parameters, dict)
+            else json.loads(request_parameters))
+    granularity = rule.get('granularity')
+    counts = set(endpoint.split("/")) & {"counts.json"}
+    if 'counts' not in endpoint:
+        if granularity is not None:
+            msg = ("""There is a 'granularity' present in your request,
+                   but you are using not using the counts API.
+                   Please check your endpoints and try again""")
+            logger.error(msg)
+            raise ValueError
 
 

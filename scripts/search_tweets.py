@@ -62,6 +62,13 @@ def parse_cmd_args():
                            default=None,
                            help="Search query. (See: https://developer.twitter.com/en/docs/labs/recent-search/guides/search-queries)")
 
+    #Use of this command triggers a search count request.
+    argparser.add_argument("--granularity",
+                           dest="granularity",
+                           default=None,
+                           help=("""Set this to make a 'counts' request. 'Bucket' size for the search counts API. Options:
+    day, hour, minute. Aligned to midnight UTC."""))
+
     argparser.add_argument("--start-time",
                            dest="start_time",
                            default=None,
