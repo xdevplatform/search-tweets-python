@@ -8,8 +8,15 @@ Python client for the Twitter API v2 search endpoints
 Welcome to the ``v2`` branch of the Python search client. This branch was born from the main branch that supports
 premium and enterprise tiers of Twitter search. This branch supports the `Twitter API v2 'recent' and 'all' search endpoints <https://developer.twitter.com/en/docs/twitter-api/tweets/search/introduction>`__ only, and drops support for the premium and enterprise tiers.
 
-This project serves as a wrapper for the Twitter API v2 search endpoints (/search/recent and /search/all), providing a command-line utility and a Python library.
+This project serves as a wrapper for the all Twitter API v2 search endpoints, including both the endpoints that return Tweets and the endpoints that return *counts* of Tweets. This wrapper provides a command-line utility and a Python library you can integrate into your own scripts.
 
+This client library supports these endpoints:
+
+- /2/tweets/search/recent
+- /2/tweets/counts/recent
+
+- /2/tweets/search/all
+- /2/tweets/counts/all
 The search endpoint you want to hit is specified in the library's YAML file:
 
 .. code:: yaml
@@ -32,6 +39,7 @@ Features
 ========
 
 - Supports Twitter API v2 'recent' and 'all' search.
+- [Update] Supports the Tweet 'counts' endpoint, which can reduce API call usage and provide rapid insights if you only need Tweet volumes and not Tweet payloads. 
 - Supports the configuration of v2 `expansions <https://developer.twitter.com/en/docs/twitter-api/expansions>`_ and `fields <https://developer.twitter.com/en/docs/twitter-api/fields>`_.
 - Supports multiple output formats: 
   * Original API responses (new default)
@@ -72,9 +80,9 @@ When migrating this Python search client to v2 from the enterprise and premium t
       -  --end-datetime → --end-time
       -  --filter-rule → --query
       -  --max-results → --max-tweets
+      -  --count-bucket → --granularity [Updated 2021-06] 
       - Dropped --account-type. No longer required since support for Premium and Enterprise search tiers have been dropped.
-      - Dropped --count-bucket. Removed search 'counts' endpoint support. This endpoint is currently not available in v2.
-
+   
 In this spirit of updating the parlance used, note that a core method provided by searchtweets/result_stream.py has been renamed. The method `gen_rule_payload` has been updated to `gen_request_parameters`. 
 
 **One key update is handling the changes in how the search endpoint returns its data.** The v2 search endpoint returns matching Tweets in a `data` array, along with an `includes` array that provides supporting objects that result from specifying `expansions`.
@@ -111,6 +119,10 @@ optional arguments:
                         configuration file with all parameters. Far, easier to use than the command-line args version., If a valid file is found, all args will be populated, from there. Remaining
                         command-line args, will overrule args found in the config, file.
   --query QUERY         Search query. (See: https://developer.twitter.com/en/docs/labs/recent-search/guides/search-queries)
+  --granularity GRANULARITY
+                        Set this to make a 'counts' request. 'Bucket' size for
+                        the search counts API. Options: day, hour, minute.
+                        Aligned to midnight UTC.
   --start-time START_TIME
                         Start of datetime window, format 'YYYY-mm-DDTHH:MM' (default: -7 days for /recent, -30 days for /all)
   --end-time END_TIME   End of datetime window, format 'YYYY-mm-DDTHH:MM' (default: to 30 seconds before request time)
@@ -522,6 +534,39 @@ There is a function, ``.stream``, that seamlessly handles requests and paginatio
 {"id": "1270568195519373313", "text": "@Nonvieta Yup I work in the sanitation industry. I'm in the office however. Life would not go on without our garbage men and women out there. All day everyday rain snow or shine they out there."}
 {"id": "1270567737283117058", "text": "This picture of a rainbow in WA proves nothing. How do we know if this rainbow was not on Mars or the ISS? Maybe it was drawn in on the picture. WA has mail-in voting so we do have to worry aboug rain, snow, poll workers not showing up or voting machines broke on election day !! https://t.co/5WdHx0acS0 https://t.co/BEKtTpBW9g"}
 {"id": "1270566386524356608", "text": "Weather in Oslo at 06:00: Clear Temp: 10.6\u00b0C Min today: 9.1\u00b0C Rain today:0.0mm Snow now: 0.0cm Wind N Conditions: Clear Daylight:18:39 hours Sunset: 22:36"}
+
+
+Counts Endpoint
+---------------
+
+We can also use the Search API Counts endpoint to get counts of Tweets
+that match our rule. Each request will return up to *30 days* of results, and
+each count request can be done on a minutely, hourly, or daily basis.
+The underlying ``ResultStream`` object will handle converting your
+endpoint to the count endpoint, and you have to specify the
+``count_bucket`` argument when making a rule to use it.
+
+The process is very similar to grabbing Tweets, but has some minor
+differences.
+
+*Caveat - v2 Basic Access does not currently provide access to the Tweet "counts" endpoint.*
+
+.. code:: python
+
+   count_rule = gen_request_parameters("snow has:media", granularity="day")
+
+   counts = collect_results(count_rule, result_stream_args=enterprise_search_args)
+
+Our results are pretty straightforward and can be rapidly used.
+
+.. code:: python
+
+   counts
+
+::
+{"data": [{"end": "2021-05-24T00:00:00.000Z", "start": "2021-05-23T00:00:00.000Z", "tweet_count": 45}, {"end": "2021-05-25T00:00:00.000Z", "start": "2021-05-24T00:00:00.000Z", "tweet_count": 38}, {"end": "2021-05-26T00:00:00.000Z", "start": "2021-05-25T00:00:00.000Z", "tweet_count": 62}, {"end": "2021-05-27T00:00:00.000Z", "start": "2021-05-26T00:00:00.000Z", "tweet_count": 136}, {"end": "2021-05-28T00:00:00.000Z", "start": "2021-05-27T00:00:00.000Z", "tweet_count": 154}, {"end": "2021-05-29T00:00:00.000Z", "start": "2021-05-28T00:00:00.000Z", "tweet_count": 101}, {"end": "2021-05-30T00:00:00.000Z", "start": "2021-05-29T00:00:00.000Z", "tweet_count": 104}, {"end": "2021-05-31T00:00:00.000Z", "start": "2021-05-30T00:00:00.000Z", "tweet_count": 60}, {"end": "2021-06-01T00:00:00.000Z", "start": "2021-05-31T00:00:00.000Z", "tweet_count": 70}, {"end": "2021-06-02T00:00:00.000Z", "start": "2021-06-01T00:00:00.000Z", "tweet_count": 73}, {"end": "2021-06-03T00:00:00.000Z", "start": "2021-06-02T00:00:00.000Z", "tweet_count": 80}, {"end": "2021-06-04T00:00:00.000Z", "start": "2021-06-03T00:00:00.000Z", "tweet_count": 426}, {"end": "2021-06-05T00:00:00.000Z", "start": "2021-06-04T00:00:00.000Z", "tweet_count": 99}, {"end": "2021-06-06T00:00:00.000Z", "start": "2021-06-05T00:00:00.000Z", "tweet_count": 82}, {"end": "2021-06-07T00:00:00.000Z", "start": "2021-06-06T00:00:00.000Z", "tweet_count": 74}, {"end": "2021-06-08T00:00:00.000Z", "start": "2021-06-07T00:00:00.000Z", "tweet_count": 137}, {"end": "2021-06-09T00:00:00.000Z", "start": "2021-06-08T00:00:00.000Z", "tweet_count": 129}, {"end": "2021-06-10T00:00:00.000Z", "start": "2021-06-09T00:00:00.000Z", "tweet_count": 76}, {"end": "2021-06-11T00:00:00.000Z", "start": "2021-06-10T00:00:00.000Z", "tweet_count": 103}, {"end": "2021-06-12T00:00:00.000Z", "start": "2021-06-11T00:00:00.000Z", "tweet_count": 106}, {"end": "2021-06-13T00:00:00.000Z", "start": "2021-06-12T00:00:00.000Z", "tweet_count": 81}, {"end": "2021-06-14T00:00:00.000Z", "start": "2021-06-13T00:00:00.000Z", "tweet_count": 76}, {"end": "2021-06-15T00:00:00.000Z", "start": "2021-06-14T00:00:00.000Z", "tweet_count": 118}, {"end": "2021-06-16T00:00:00.000Z", "start": "2021-06-15T00:00:00.000Z", "tweet_count": 109}, {"end": "2021-06-17T00:00:00.000Z", "start": "2021-06-16T00:00:00.000Z", "tweet_count": 97}, {"end": "2021-06-18T00:00:00.000Z", "start": "2021-06-17T00:00:00.000Z", "tweet_count": 139}, {"end": "2021-06-19T00:00:00.000Z", "start": "2021-06-18T00:00:00.000Z", "tweet_count": 150}, {"end": "2021-06-20T00:00:00.000Z", "start": "2021-06-19T00:00:00.000Z", "tweet_count": 64}, {"end": "2021-06-21T00:00:00.000Z", "start": "2021-06-20T00:00:00.000Z", "tweet_count": 73}, {"end": "2021-06-22T00:00:00.000Z", "start": "2021-06-21T00:00:00.000Z", "tweet_count": 103}, {"end": "2021-06-23T00:00:00.000Z", "start": "2021-06-22T00:00:00.000Z", "tweet_count": 101}], "meta": {"total_tweet_count": 3266}}
+
+
 
 Contributing
 ============
