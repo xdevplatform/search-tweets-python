@@ -1,6 +1,7 @@
 Looking for the Twitter API v2 version? Check out the new 'v2' branch.
 **********************************************************************
 
+Twitter v2 search endpoints now include a 'counts' endpoint that returns time-series totals of matching Tweets. 
 
 Python Twitter Search API
 =========================
