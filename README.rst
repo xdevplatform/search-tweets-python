@@ -25,7 +25,7 @@ The search endpoint you want to hit is specified in the library's YAML file:
     endpoint:  https://api.twitter.com/2/tweets/search/recent #Or https://api.twitter.com/2/tweets/search/all
 
 
-The 'recent' search endpoint provides Tweets from the past 7 days. The 'all' search endpoint, launched in January 2021 as part of the 'academic research' tier of Twitter API v2 access, provides access to all publicly avaialble Tweets posted since March 2006.
+The 'recent' search endpoint provides Tweets from the past 7 days. The 'all' search endpoint, launched in January 2021 as part of the 'academic research' tier of Twitter API v2 access, provides access to all publicly available Tweets posted since March 2006.
 
 To learn more about the Twitter academic research program, see this [Twitter blog post](https://blog.twitter.com/developer/en_us/topics/tips/2021/enabling-the-future-of-academic-research-with-the-twitter-api.html).
 
@@ -92,7 +92,7 @@ along with a `next_token` if there is another 'page' of data to request.
 Currently, the v2 client returns the original API responses. Optionally, it can output a stream of Tweet objects with all expansions included in each tweet. Alternatively, it can output a stream of messages, yielding the individual Tweet objects, arrays of User, Tweet, and media objects from the `includes` array, followed by the `meta` object. This matches the behavior of the original search client, and was the default output format in versions 1.0.7 and earlier.
 
 Finally, the original version of search-tweets-python used a `Tweet Parser <https://twitterdev.github.io/tweet_parser/>`__ to help manage the differences between two different JSON formats ("original" and "Activity Stream"). With v2, there is just one version of Tweet JSON, so this Tweet Parser is not used.
-In the original code, this Tweet parser was envoked with a `tweetify=True directive. With this v2 version, this use of the Tweet Parser is turned off by instead using `tweetify=False`.
+In the original code, this Tweet parser was invoked with a `tweetify=True directive. With this v2 version, this use of the Tweet Parser is turned off by instead using `tweetify=False`.
 
 
 Command-line options
@@ -150,11 +150,11 @@ optional arguments:
   --max-pages MAX_PAGES
                         Maximum number of pages/API calls to use for this session.
   --results-per-file RESULTS_PER_FILE
-                        Maximum tweets to save per file.
+                        Maximum Tweets to save per file.
   --filename-prefix FILENAME_PREFIX
-                        prefix for the filename where tweet json data will be stored.
+                        prefix for the filename where Tweet json data will be stored.
   --no-print-stream     disable print streaming
-  --print-stream        Print tweet stream to stdout
+  --print-stream        Print Tweet stream to stdout
   --extra-headers EXTRA_HEADERS
                         JSON-formatted str representing a dict of additional HTTP request headers
   --debug               print all info and warning messages
