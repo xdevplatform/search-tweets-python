@@ -123,8 +123,8 @@ def gen_request_parameters(query, granularity, results_per_call=None,
     #Set endpoint request parameter to command-line arguments. This is where 'translation' happens.
     query = ' '.join(query.split())  # allows multi-line strings
     payload = {"query": query}
-    if results_per_call is not None and isinstance(results_per_call, int) is True:
-        payload["max_results"] = results_per_call
+
+    #These request parameters are support by both search and count Tweets endpoints.
     if start_time:
         payload["start_time"] = convert_utc_time(start_time)
     if end_time:
@@ -133,20 +133,27 @@ def gen_request_parameters(query, granularity, results_per_call=None,
         payload["since_id"] = since_id
     if until_id:
         payload["until_id"] = until_id
-    if tweet_fields:
-        payload["tweet.fields"] = tweet_fields
-    if user_fields:
-        payload["user.fields"] = user_fields
-    if media_fields:
-        payload["media.fields"] = media_fields
-    if place_fields:
-        payload["place.fields"] = place_fields
-    if poll_fields:
-        payload["poll.fields"] = poll_fields
-    if expansions:
-        payload["expansions"] = expansions
+
+
+
+    #Drop request parameters if this is a 'counts' request.
     if granularity:
         payload["granularity"] = granularity
+    else:
+        if results_per_call is not None and isinstance(results_per_call, int) is True:
+            payload["max_results"] = results_per_call
+        if tweet_fields:
+            payload["tweet.fields"] = tweet_fields
+        if user_fields:
+            payload["user.fields"] = user_fields
+        if media_fields:
+            payload["media.fields"] = media_fields
+        if place_fields:
+            payload["place.fields"] = place_fields
+        if poll_fields:
+            payload["poll.fields"] = poll_fields
+        if expansions:
+            payload["expansions"] = expansions
 
     return json.dumps(payload) if stringify else payload
 

@@ -1,7 +1,7 @@
 """
 Utility functions that are used in various parts of the program.
 """
-# Copyright 2020 Twitter, Inc.
+# Copyright 2021 Twitter, Inc.
 # Licensed under the MIT License
 # https://opensource.org/licenses/MIT
 
