@@ -40,7 +40,7 @@ def take(n, iterable):
 
 def partition(iterable, chunk_size, pad_none=False):
     """adapted from Toolz. Breaks an iterable into n iterables up to the
-    certain chunk size, padding with Nones if availble.
+    certain chunk size, padding with Nones if available.
 
     Example:
         >>> from searchtweets.utils import partition
@@ -185,7 +185,7 @@ def read_config(filename):
     config = configparser.ConfigParser()
 
     if file_type == "yaml":
-        with open(os.path.expanduser(filename)) as f:
+        with open(os.path.expanduser(filename), encoding="utf-8") as f:
             config_dict = yaml.safe_load(f)
 
         config_dict = merge_dicts(*[dict(config_dict[s]) for s
