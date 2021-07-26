@@ -58,7 +58,7 @@ def _load_env_credentials():
     for var in vars_:
         key = var.replace('SEARCHTWEETS_', '').lower()
         try:
-            parsed[key] = os.environ[key]
+            parsed[key] = os.environ[var]
         except KeyError:
             pass
     return parsed
