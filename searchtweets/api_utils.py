@@ -84,7 +84,7 @@ def convert_utc_time(datetime_str):
 
     return _date.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-def gen_request_parameters(query, granularity, results_per_call=None,
+def gen_request_parameters(query, granularity=None, results_per_call=None,
                            start_time=None, end_time=None, since_id=None, until_id=None,
                            tweet_fields=None, user_fields=None, media_fields=None,
                            place_fields=None, poll_fields=None,
