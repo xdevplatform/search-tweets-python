@@ -12,7 +12,7 @@ echo "Building documentation from $BRANCH_NAME"
 echo "checking out gh-pages"
 if ! git checkout gh-pages
 then
-  echo >&2 "checkout of gh-pages branch failed; please ensure you have local changes commited prior to running this script "
+  echo >&2 "checkout of gh-pages branch failed; please ensure you have local changes committed prior to running this script "
   echo "exiting"
   exit 1
 fi
