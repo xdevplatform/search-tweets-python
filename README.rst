@@ -452,7 +452,8 @@ Let's see how it goes:
 
    tweets = collect_results(query,
                             max_tweets=100,
-                            result_stream_args=search_args) # change this if you need to
+                            result_stream_args=search_args,
+                            granularity=False) # change this if you need to
 
 An overwhelming number of Tweet attributes are made available directly, as such:
 
