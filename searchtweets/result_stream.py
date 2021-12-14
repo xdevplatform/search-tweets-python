@@ -266,7 +266,7 @@ class ResultStream:
                 poll_id = payload["poll_ids"][-1] # always 1, only 1 poll per tweet.
                 payload["poll"] = includes_polls[poll_id]
 
-            if "geo" in payload:
+            if "geo" in payload and "place_id" in payload["geo"]:
                 place_id = payload["geo"]['place_id']
                 payload["geo"] = merge_dicts(payload["geo"], includes_places[place_id])
 
