@@ -458,7 +458,7 @@ An overwhelming number of Tweet attributes are made available directly, as such:
 
 .. code:: python
 
-   [print(tweet.text, end='\n\n') for tweet in tweets[0:10]]
+   [print(tweet['text'], end='\n\n') for tweet in tweets[0]['data']]
 
 ::
 
