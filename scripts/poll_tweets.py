@@ -243,14 +243,17 @@ def main():
         tweets_num = 0
 
         #Iterate through Tweet array and handle output.
-        for tweet in stream:
-            tweets_num = tweets_num + 1
-            #Get Tweet ID from first Tweet
-            if first_tweet:
-                newest_id = tweet['id']
-                first_tweet = False
-            if config_dict["print_stream"] is True:
-                print(json.dumps(tweet))
+        newest_id = None
+        for response in stream:
+            tweets = response['data']
+            for tweet in tweets:
+                tweets_num = tweets_num + 1
+                #Get Tweet ID from first Tweet
+                if first_tweet:
+                    newest_id = tweet['id']
+                    first_tweet = False
+                if config_dict["print_stream"] is True:
+                    print(json.dumps(tweet))
 
         #This polling script switches to a since_id requests and removes the start_time parameter if it is used for backfill.
         #Prepare next query, by setting the since_id request parameter.
