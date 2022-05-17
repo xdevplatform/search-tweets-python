@@ -297,9 +297,9 @@ class ResultStream:
                     return
             yield self.current_response
 
-            #With counts, there is nothing to count here... we aren't counting Tweets (but should count requests)
-            if self.search_type == 'tweets':
-                self.total_results += self.meta['result_count']
+#             #With counts, there is nothing to count here... we aren't counting Tweets (but should count requests)
+#             if self.search_type == 'tweets':
+#                 self.total_results += self.meta['result_count']
 
         def output_atomic_format():
             """
