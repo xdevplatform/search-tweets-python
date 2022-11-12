@@ -74,7 +74,7 @@ def merge_dicts(*dicts):
         >>> d1 = {"query": "snow has:media -is:retweet"}
         >>> d2 = {"max_tweets": 1000}
         >>> merge_dicts(*[d1, d2])
-        {"max_results": 1000, "rule": "something has:geo"}
+        {"query": "snow has:media -is:retweet", "max_tweets": 1000}
     """
     def _merge_dicts(dict1, dict2):
         merged = dict1.copy()
