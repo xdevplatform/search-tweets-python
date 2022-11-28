@@ -124,8 +124,8 @@ optional arguments:
                         the search counts API. Options: day, hour, minute.
                         Aligned to midnight UTC.
   --start-time START_TIME
-                        Start of datetime window, format 'YYYY-mm-DDTHH:MM' (default: -7 days for /recent, -30 days for /all)
-  --end-time END_TIME   End of datetime window, format 'YYYY-mm-DDTHH:MM' (default: to 30 seconds before request time)
+                        Start of datetime window, format 'YYYY-MM-DD HH:MM' (default: -7 days for /recent, -30 days for /all)
+  --end-time END_TIME   End of datetime window, format 'YYYY-MM-DD HH:MM' (default: to 30 seconds before request time)
   --since-id SINCE_ID   Tweet ID, will start search from Tweets after this one. (See: https://developer.twitter.com/en/docs/labs/recent-search/guides/pagination)
   --until-id UNTIL_ID   Tweet ID, will end search from Tweets before this one. (See: https://developer.twitter.com/en/docs/labs/recent-search/guides/pagination)
   --results-per-call RESULTS_PER_CALL
@@ -171,7 +171,7 @@ https://pypi.org/project/searchtweets-v2/
 Another option to work directly with this code by cloning the repository, installing the required Python packages, setting up your credentials, and start making requests.
 For those not using the Pypi package, and instead are cloning the repository, a ``requirements.txt`` is provided. Dependencies can be installed with the ``pip install -r requirements.txt`` command.
 
-To confirm the your code is ready to go, run the ``$python3 scripts/search-tweets.py -h`` command. You should see the help details shown above.
+To confirm the your code is ready to go, run the ``$python3 scripts/search_tweets.py -h`` command. You should see the help details shown above.
 
 
 
