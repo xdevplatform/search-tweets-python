@@ -235,7 +235,7 @@ are used to control credential behavior from the command-line app.
 
 --------------
 
-Using the Comand Line Application
+Using the Command Line Application
 =================================
 
 The library includes an application, ``search_tweets.py``, that provides
