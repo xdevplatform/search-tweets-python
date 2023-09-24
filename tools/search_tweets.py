@@ -194,7 +194,7 @@ def main():
     if config_dict.get("filename_prefix") is not None:
         stream = write_result_stream(rs,
                                      filename_prefix=config_dict.get("filename_prefix"),
-                                     results_per_file=config_dict.get("results_per_file"))
+                                     results_per_file=stream_params.get("results_per_file"))
     else:
         stream = rs.stream()
 
